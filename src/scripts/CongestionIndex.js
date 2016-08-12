@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import LE from 'esri-leaflet';
-import {statesData,GeoJsonPoints} from '../test/US';
+import { statesData, GeoJsonPoints } from '../test/US';
 
 export function addGracLayer(layerName) {
     switch (layerName.id) {
@@ -11,141 +11,438 @@ export function addGracLayer(layerName) {
             roadLayer();
             break;
         case 'area':
-            console.log(3);
+            areaLayer();
             break;
         default:
             break;
     }
 
 }
-const crossLayer = () => {
+const crossLayer = function() {
     map.eachLayer((layer) => {
         if (layer.options.id != 'crossLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
-    let crossLayer = L.esri.featureLayer({
-        id: 'crossLayer',
-        url: 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Heritage_Trees_Portland/FeatureServer/0'
+    /*这个GeoJsonPoints是需要后台请求的*/
+    var GeoJsonPoints = {
+        "type": "FeatureCollection",
+        "features": [
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6672, 45.5254] }, "properties": { "index": "1" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6662, 45.5262] }, "properties": { "index": "2" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6651, 45.5255] }, "properties": { "index": "3" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6672, 45.5262] }, "properties": { "index": "4" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6673, 45.5268] }, "properties": { "index": "2" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6682, 45.5261] }, "properties": { "index": "3" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6652, 45.5268] }, "properties": { "index": "1" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6682, 45.5272] }, "properties": { "index": "2" } },
+            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6678, 45.5252] }, "properties": { "index": "5" } }
+        ]
+    };
+    var greenMarker = {
+        radius: 9,
+        fillColor: "#7FFF00",
+        color: "#7FFF00",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.9
+    };
+    var yellowMarker = {
+        radius: 9,
+        fillColor: "#EEC900",
+        color: "#EEC900",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.9
+    };
+    var orangeMarker = {
+        radius: 9,
+        fillColor: "#EE9A00",
+        color: "#EE9A00",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.9
+    };
+    var brownMarker = {
+        radius: 9,
+        fillColor: "#D2691E",
+        color: "#D2691E",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.9
+    };
+    var redMarker = {
+        radius: 9,
+        fillColor: "#CD0000",
+        color: "#CD0000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.9
+    };
+    var pointMarkerOption = null;
+
+    var pointLayer;
+
+    function panTotarget(e) {
+        //console.log(map.getZoom());
+        if (map.getZoom() <= 16) {
+            map.setZoomAround(e.target._latlng, 17);
+        } else map.panTo(e.target._latlng);
+
+    };
+
+    function highlightFeature(e) {
+        var l = e.target;
+        l.setStyle({
+            weight: 3,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+    };
+
+    function resetFeature(e) {
+        var l = e.target;
+        l.setStyle({
+            radius: 9,
+            fillColor: e.target.defaultOptions.fillColor,
+            color: e.target.defaultOptions.fillColor,
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.9
+        });
+    };
+
+    function eachPointFeature(feature, layer) {
+        layer.on({
+            click: panTotarget,
+            mouseover: highlightFeature,
+            mouseout: resetFeature
+        });
+    };
+    pointLayer = L.geoJson(GeoJsonPoints, {
+        pointToLayer: function(feature, latlng) {
+            var indexVal = feature.properties.index;
+            if (indexVal > 0 && indexVal <= 1) pointMarkerOption = greenMarker;
+            else if (indexVal > 1 && indexVal <= 2) pointMarkerOption = yellowMarker;
+            else if (indexVal > 2 && indexVal <= 3) pointMarkerOption = orangeMarker;
+            else if (indexVal > 3 && indexVal <= 4) pointMarkerOption = brownMarker;
+            else if (indexVal > 4 && indexVal <= 5) pointMarkerOption = redMarker;
+            return L.circleMarker(latlng, pointMarkerOption);
+        },
+        onEachFeature: eachPointFeature
+
     });
-    map.addLayer(crossLayer);
-}
-const roadLayer = () => {
+
+    var popup1 = L.popup().setContent("hello, this is a popup");
+
+    pointLayer.bindPopup(popup1)
+        .addTo(map);
+};
+const roadLayer = function() {
     map.eachLayer((layer) => {
         if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
-    let roadLayer = L.esri.featureLayer({
-        url: 'https://services.arcgis.com/uCXeTVveQzP4IIcx/ArcGIS/rest/services/Bike_Routes/FeatureServer/0',
-        style: function (feature) {
-            var c, o = 0.75;
-            switch (feature.properties.BIKEMODE) {
-                case 'Low traffic through street':
-                    c = '#007D7D';
-                    break;
-                case 'Bike boulevard':
-                    c = '#00FF3C';
-                    break;
-                case 'Caution area':
-                    c = '#FF0000';
-                    break;
-                case 'Local multi-use path':
-                    c = '#00BEFF';
-                    break;
-                case 'Regional multi-use path':
-                    c = '#b1a9d0';
-                    break;
-                case 'Moderate traffic through street':
-                    c = '#FFEB00';
-                    break;
-                case 'Planned multi-use path':
-                    c = '#000000';
-                    break;
-                case 'Bike lane':
-                    c = '#328000';
-                    o = '0.70';
-                    break;
-                case 'High traffic through street':
-                    c = '#FFA500';
-                    break;
-                case 'Planned bike lane':
-                    c = '#000000';
-                    o = '1.0';
-                    break;
-                default:
-                    c = '#C0C0C0';
-            }
-            return { color: c, opacity: o, weight: 5 };
-        }
-    }).addTo(map);
-
-    roadLayer.on('mouseout', function (e) {
-        document.getElementById('info-pane').innerHTML = 'Hover to Inspect';
-    });
-
-    roadLayer.on('mouseover', function (e) {
-        document.getElementById('info-pane').innerHTML = e.layer.feature.properties.BIKEMODE;
-    });
-}
-
-
-export const addCrossGracLayer = () => {
-
-function getColor(d) {
-    return d > 5.5  ? '#BD3026' :
-           d > 4.5  ? '#E31A1C' :
-           d > 3.5  ? '#FC4E2A' :
-           d > 2.5  ? '#FD8D3f' :
-           d > 1.5  ? '#F2B24C' :
-           d > 0.5  ? '#34b000' :
-                      '#FFEDA0';
-}
-function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.index),
-        radius: 8,
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8
+    /*这个GeoJsonLines是需要后台请求的*/
+    var GeoJsonLines = {
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [-122.6672, 45.5254],
+                    [-122.6572, 45.5254],
+                    [-122.6672, 45.5354]
+                ]
+            },
+            "properties": { "index": 1 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [-122.6311, 45.4354],
+                    [-122.6844, 45.4133],
+                    [-122.6722, 45.4321],
+                    [-122.6611, 45.4211]
+                ]
+            },
+            "properties": { "index": 2 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [-122.6222, 45.4354],
+                    [-122.6811, 45.4511],
+                    [-122.6672, 45.5354],
+                    [-122.6652, 45.5654],
+                    [-122.6431, 45.5422]
+                ]
+            },
+            "properties": { "index": 3 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [-122.6122, 45.4454],
+                    [-122.6411, 45.4311],
+                    [-122.6572, 45.5654],
+                    [-122.6652, 45.5254],
+                    [-122.6731, 45.5122]
+                ]
+            },
+            "properties": { "index": 4 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [-122.6222, 45.5354],
+                    [-122.6611, 45.5111],
+                    [-122.6682, 45.5354],
+                    [-122.6452, 45.5554],
+                    [-122.6451, 45.5522]
+                ]
+            },
+            "properties": { "index": 5 }
+        }]
     };
-}
-function onEachFeature(feature, layer){
-    feature.properties.index=100;
-    //self.setInterval("clock(feature)",3000)
-    //console.log(feature);
-}
-function clock(feature){
-    feature.properties.index=100;
-}
-var geojsonlayer=L.geoJson(GeoJsonPoints,{
-    onEachFeature: onEachFeature,
-        pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, style(feature));
-    },
-}).addTo(map);
 
-function changeValue (Points){
+    var greenLine = {
+        "color": "#7FFF00",
+        "weight": 9,
+        "opacity": 0.8
+    };
+    var yellowLine = {
+        "color": "#FFEB00",
+        "weight": 9,
+        "opacity": 0.8
+    };
+    var orangeLine = {
+        "color": "#FFA500",
+        "weight": 9,
+        "opacity": 0.8
+    };
+    var brownLine = {
+        "color": "#CD3333",
+        "weight": 9,
+        "opacity": 0.8
+    };
 
-}(GeoJsonPoints)
+    var redLine = {
+        "color": "#FF0000",
+        "weight": 9,
+        "opacity": 0.8
+    };
+    var lineLayer;
+
+    function panToBound(e) {
+        //console.log(e.target);
+        map.fitBounds(e.target.getBounds());
+
+    };
+
+    function highlightFeature(e) {
+        var l = e.target;
+        l.setStyle({
+            weight: 9,
+            color: '#007D7D',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+    };
+
+    function resetFeature(e) {
+        lineLayer.resetStyle(e.target);
+    };
+
+    function eachLineFeature(feature, layer) {
+        layer.on({
+            click: panToBound,
+            mouseover: highlightFeature,
+            mouseout: resetFeature
+        });
+    };
 
 
-    // map.eachLayer((layer) => {
-    //     if (layer.options.id != 'crossLayer' && layer.options.id != 'streetLayer')
-    //         map.removeLayer(layer);
-    // });
-    // let crossLayer = L.esri.featureLayer({
-    //     id: 'crossLayer',
-    //     url: 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Heritage_Trees_Portland/FeatureServer/0'
-    // });
-    //map.addLayer(crossLayer);
-    // crossLayer.on('mouseover', (e) => {
-    //     let popup = L.popup(
-    //         {
-    //             offset: L.point(0, -20),
-    //             closeButton: false
-    //         })
-    //         .setLatLng(e.latlng)
-    //         .setContent("You clicked the map at " + e.latlng.toString())
-    //         .openOn(map);
+    lineLayer = L.geoJson(GeoJsonLines, {
+        style: function(feature) {
+            var indexVal = feature.properties.index;
+            if (indexVal > 0 && indexVal <= 1) return greenLine;
+            else if (indexVal > 1 && indexVal <= 2) return yellowLine;
+            else if (indexVal > 2 && indexVal <= 3) return orangeLine;
+            else if (indexVal > 3 && indexVal <= 4) return brownLine;
+            else if (indexVal > 4 && indexVal <= 5) return redLine;
+        },
+        onEachFeature: eachLineFeature
+    });
+    var popup2 = L.popup().setContent("hello, this is a popup LINE");
+    lineLayer.bindPopup(popup2).addTo(map);
+};
 
-    // })
-}
+const areaLayer = function() {
+    map.eachLayer((layer) => {
+        if (layer.options.id != 'areaLayer' && layer.options.id != 'streetLayer')
+            map.removeLayer(layer);
+    });
+    /*这个GeoJsonRegion是需要后台请求的*/
+    var GeoJsonRegion = {
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [-122.6311, 45.4354],
+                        [-122.6844, 45.4133],
+                        [-122.6722, 45.4321],
+                        [-122.6611, 45.4211]
+                    ]
+                ]
+            },
+            "properties": { "index": 1 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [-122.6211, 45.4354],
+                        [-122.6244, 45.4333],
+                        [-122.6222, 45.4321],
+                        [-122.6211, 45.4311]
+                    ]
+                ]
+            },
+            "properties": { "index": 2 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [-122.6411, 45.4454],
+                        [-122.6444, 45.4433],
+                        [-122.6422, 45.4421],
+                        [-122.6411, 45.4411]
+                    ]
+                ]
+            },
+            "properties": { "index": 3 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [-122.6511, 45.4554],
+                        [-122.6544, 45.4533],
+                        [-122.6522, 45.4521],
+                        [-122.6511, 45.4511]
+                    ]
+                ]
+            },
+            "properties": { "index": 4 }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [-122.6811, 45.4854],
+                        [-122.6844, 45.4833],
+                        [-122.6822, 45.4821],
+                        [-122.6811, 45.4811]
+                    ]
+                ]
+            },
+            "properties": { "index": 5 }
+        }]
+    };
+    var greenRegion = {
+        fillColor: "#7FFF00",
+        fillOpacity: 1,
+        color: "#7FFF00",
+        weight: 5,
+        opacity: 0.8
+    };
+    var yellowRegion = {
+        fillColor: "#FFEB00",
+        fillOpacity: 1,
+        color: "#FFEB00",
+        weight: 5,
+        opacity: 0.8
+
+    };
+    var orangeRegion = {
+        fillColor: "#FFA500",
+        fillOpacity: 1,
+        color: "#FFA500",
+        weight: 5,
+        opacity: 0.8
+
+    };
+    var brownRegion = {
+        fillColor: "#CD3333",
+        fillOpacity: 1,
+        color: "#CD3333",
+        weight: 5,
+        opacity: 0.8
+    };
+
+    var redRegion = {
+        fillColor: "#FF0000",
+        fillOpacity: 1,
+        color: "#FF0000",
+        weight: 5,
+        opacity: 0.8
+
+    };
+    var regionLayer;
+
+    function panToBound(e) {
+        map.fitBounds(e.target.getBounds());
+    };
+
+    function highlightFeature(e) {
+        var l = e.target;
+        l.setStyle({
+            weight: 5,
+            color: '#007D7D',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+    };
+
+    function resetFeature(e) {
+        regionLayer.resetStyle(e.target);
+    };
+
+    function eachRegionFeature(feature, layer) {
+        layer.on({
+            click: panToBound,
+            mouseover: highlightFeature,
+            mouseout: resetFeature
+        });
+    };
+
+
+    regionLayer = L.geoJson(GeoJsonRegion, {
+        style: function(feature) {
+            var indexVal = feature.properties.index;
+            if (indexVal > 0 && indexVal <= 1) return greenRegion;
+            else if (indexVal > 1 && indexVal <= 2) return yellowRegion;
+            else if (indexVal > 2 && indexVal <= 3) return orangeRegion;
+            else if (indexVal > 3 && indexVal <= 4) return brownRegion;
+            else if (indexVal > 4 && indexVal <= 5) return redRegion;
+        },
+        onEachFeature: eachRegionFeature
+    });
+    var popup3 = L.popup().setContent("hello, this is a popup REGION");
+    regionLayer.bindPopup(popup3).addTo(map);
+
+};

@@ -29,28 +29,17 @@ class Rbox extends React.Component {
                     return React.createElement(SearchResults, item);
                 });
             case 'cross':
-                CI.addCrossGracLayer();
+                CI.addGracLayer(cross);
                 return React.createElement(CraResults);
             case 'road':
+            CI.addGracLayer(road);
                 return <h1>{this.props.search.rboxKey}</h1>
             case 'area':
+            CI.addGracLayer(area);
                 return <h1>{this.props.search.rboxKey}</h1>
             default:
                 break;
         }
-
-        // if (this.props.search.rboxKey=='search') {
-        //     console.log('rbox1111:rboxKey: '+this.props.search.rboxKey)
-        //     return this.props.search.list.map(item => {
-        //         item.key = item.title
-        //         return React.createElement(SearchResults, item);
-        //     })
-        // }
-        // else{
-        //     console.log('rbox2222:rboxKey: '+this.props.search.rboxKey)
-        //     console.log('rbox2222:list: '+this.props.search.list)
-        //     return <h1>{this.props.search.rboxKey}</h1>
-        // }
     }
     crsBtnClick(layerName) {
         this.props.fetchCrossList(layerName)

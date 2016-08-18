@@ -21,34 +21,38 @@ class Rbox extends React.Component {
         })
     }
     renderList() {
-        let rboxkey = this.props.search.rboxKey;
-        switch (rboxkey) {
-            case 'search':
-                return this.props.search.list.map(item => {
-                    item.key = item.title
-                    return React.createElement(SearchResults, item);
-                });
-            case 'cross':
-                CI.addGracLayer(cross);
-                return React.createElement(CraResults);
-            case 'road':
-            CI.addGracLayer(road);
-                return <h1>{this.props.search.rboxKey}</h1>
-            case 'area':
-            CI.addGracLayer(area);
-                return <h1>{this.props.search.rboxKey}</h1>
-            default:
-                break;
-        }
-    }
+     let rboxkey = this.props.search.rboxKey;
+     let dataRec = null;
+     switch (rboxkey) {
+         case 'search':
+             return this.props.search.list.map(item => {
+                 item.key = item.title
+                 return React.createElement(SearchResults, item);
+             });
+         case 'cross':
+             dataRec = this.props.cra.cralist;
+             CI.addGracLayer(cross, dataRec);
+             return React.createElement(CraResults, dataRec);
+         case 'road':
+             dataRec = this.props.cra.cralist;
+             //CI.addGracLayer(road, dataRec);
+             return React.createElement(CraResults, dataRec);
+         case 'area':
+             dataRec = this.props.cra.cralist;
+             //CI.addGracLayer(area, dataRec);
+             return React.createElement(CraResults, dataRec);
+         default:
+             break;
+
+     }
+ }
     crsBtnClick(layerName) {
-        this.props.fetchCrossList(layerName)
+        this.props.fetchCRAList(layerName);
     }
+
     render() {
         let {page, totalPage, dispatch} = this.props;
         let searchAvtive = (this.props.searchValue === "");
-
-        //console.log('searchAvtive:' + searchAvtive);
         return (
             <div id="rbox" className={styles.rbox}>
                 <div id="navBody" className={this.state.contraction ? styles.navBody_none : styles.navBody_display}>
@@ -60,7 +64,7 @@ class Rbox extends React.Component {
                             <li id='road' ref='road' className={styles.craLi} onClick={() => this.crsBtnClick(this.refs.road.id) }>
                                 <span className={styles.navTxt}>路段</span>
                             </li>
-                            <li id='area' ref='area' className={styles.craLi} onClick={() => CI.addGracLayer(this.refs.area) }>
+                            <li id='area' ref='area' className={styles.craLi} onClick={() => this.crsBtnClick(this.refs.area.id) }>
                                 <span className={styles.navTxt}>区域</span>
                             </li>
                         </ul>

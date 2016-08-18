@@ -19,9 +19,10 @@ class Map extends React.Component {
     }
     componentDidMount() {
         var map = L.map("map", {
-            center: [45.526, -122.667],
+            center: [31.31, 121.37],
             zoom: 14,
             zoomControl: false
+            
         });
         L.esri.tiledMapLayer({
             id:'streetLayer',

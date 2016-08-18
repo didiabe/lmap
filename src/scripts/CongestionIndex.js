@@ -1,30 +1,34 @@
 import L from 'leaflet';
 import LE from 'esri-leaflet';
 import { statesData, GeoJsonPoints } from '../test/US';
+import * as lmap from '../libs/lmap';
 
-export function addGracLayer(layerName) {
+export function addGracLayer(layerName, data) {
+    console.log(data);
     switch (layerName.id) {
         case 'cross':
-            crossLayer();
+            crossLayer(data);
             break;
         case 'road':
-            roadLayer();
+            roadLayer(data);
             break;
         case 'area':
-            areaLayer();
+            areaLayer(data);
             break;
         default:
             break;
     }
 
 }
-const crossLayer = function() {
+
+const crossLayer = function(data) {
     map.eachLayer((layer) => {
         if (layer.options.id != 'crossLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
+
     /*这个GeoJsonPoints是需要后台请求的*/
-    var GeoJsonPoints = {
+    /*var GeoJsonPoints = {
         "type": "FeatureCollection",
         "features": [
             { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6672, 45.5254] }, "properties": { "index": "1" } },
@@ -37,79 +41,34 @@ const crossLayer = function() {
             { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6682, 45.5272] }, "properties": { "index": "2" } },
             { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6678, 45.5252] }, "properties": { "index": "5" } }
         ]
-    };
-    var greenMarker = {
-        radius: 9,
-        fillColor: "#7FFF00",
-        color: "#7FFF00",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.9
-    };
-    var yellowMarker = {
-        radius: 9,
-        fillColor: "#EEC900",
-        color: "#EEC900",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.9
-    };
-    var orangeMarker = {
-        radius: 9,
-        fillColor: "#EE9A00",
-        color: "#EE9A00",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.9
-    };
-    var brownMarker = {
-        radius: 9,
-        fillColor: "#D2691E",
-        color: "#D2691E",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.9
-    };
-    var redMarker = {
-        radius: 9,
-        fillColor: "#CD0000",
-        color: "#CD0000",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.9
-    };
+    };*/
+    var GeoJsonPoints = data.geoJson;
+    var greenMarker = lmap.icon({ iconSize: [15, 15], color: '#7FFF00' });
+    var yellowMarker = lmap.icon({ iconSize: [15, 15], color: '#EEC900' });
+    var orangeMarker = lmap.icon({ iconSize: [15, 15], color: '#EE9A00' });
+    var brownMarker = lmap.icon({ iconSize: [15, 15], color: '#D2691E' });
+    var redMarker = lmap.icon({ iconSize: [15, 15], color: '#CD0000' });
+
     var pointMarkerOption = null;
 
     var pointLayer;
 
     function panTotarget(e) {
-        //console.log(map.getZoom());
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
-
     };
 
     function highlightFeature(e) {
-        var l = e.target;
-        l.setStyle({
-            weight: 3,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.9
-        });
+        var highlighticon = lmap.icon({ iconSize: [25, 25], color: e.target.defaultOptions.icon.options.color });
+        e.target.setIcon(highlighticon);
+        L.popup({ offset: [0, -8], closeButton: false }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);
     };
 
     function resetFeature(e) {
-        var l = e.target;
-        l.setStyle({
-            radius: 9,
-            fillColor: e.target.defaultOptions.fillColor,
-            color: e.target.defaultOptions.fillColor,
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.9
-        });
+        var reseticon = lmap.icon({ iconSize: [15, 15], color: e.target.defaultOptions.icon.options.color });
+        e.target.setIcon(reseticon);
+        map.closePopup();
     };
 
     function eachPointFeature(feature, layer) {
@@ -122,29 +81,38 @@ const crossLayer = function() {
     pointLayer = L.geoJson(GeoJsonPoints, {
         pointToLayer: function(feature, latlng) {
             var indexVal = feature.properties.index;
-            if (indexVal > 0 && indexVal <= 1) pointMarkerOption = greenMarker;
-            else if (indexVal > 1 && indexVal <= 2) pointMarkerOption = yellowMarker;
-            else if (indexVal > 2 && indexVal <= 3) pointMarkerOption = orangeMarker;
-            else if (indexVal > 3 && indexVal <= 4) pointMarkerOption = brownMarker;
-            else if (indexVal > 4 && indexVal <= 5) pointMarkerOption = redMarker;
-            return L.circleMarker(latlng, pointMarkerOption);
+            if (indexVal > 0 && indexVal <= 2) pointMarkerOption = greenMarker;
+            else if (indexVal > 2 && indexVal <= 4) pointMarkerOption = yellowMarker;
+            else if (indexVal > 4 && indexVal <= 6) pointMarkerOption = orangeMarker;
+            else if (indexVal > 6 && indexVal <= 8) pointMarkerOption = brownMarker;
+            else if (indexVal > 8) pointMarkerOption = redMarker;
+
+            return L.marker(latlng, { icon: pointMarkerOption });
         },
         onEachFeature: eachPointFeature
 
-    });
+    }).addTo(map);
 
-    var popup1 = L.popup().setContent("hello, this is a popup");
+
+
+    var popup1 = L.popup().setContent(
+        '<button class="aa">1</button>' +
+        '<button class="aa">2</button>' +
+        '<button class="aa">3</button>');
 
     pointLayer.bindPopup(popup1)
         .addTo(map);
+
+
 };
-const roadLayer = function() {
+const roadLayer = function(data) {
+
     map.eachLayer((layer) => {
         if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
     /*这个GeoJsonLines是需要后台请求的*/
-    var GeoJsonLines = {
+    /*var GeoJsonLines = {
         "type": "FeatureCollection",
         "features": [{
             "type": "Feature",
@@ -209,8 +177,9 @@ const roadLayer = function() {
             },
             "properties": { "index": 5 }
         }]
-    };
+    };*/
 
+    var GeoJsonLines = data.geoJson;
     var greenLine = {
         "color": "#7FFF00",
         "weight": 9,
@@ -271,25 +240,29 @@ const roadLayer = function() {
     lineLayer = L.geoJson(GeoJsonLines, {
         style: function(feature) {
             var indexVal = feature.properties.index;
-            if (indexVal > 0 && indexVal <= 1) return greenLine;
-            else if (indexVal > 1 && indexVal <= 2) return yellowLine;
-            else if (indexVal > 2 && indexVal <= 3) return orangeLine;
-            else if (indexVal > 3 && indexVal <= 4) return brownLine;
-            else if (indexVal > 4 && indexVal <= 5) return redLine;
+            if (indexVal > 0 && indexVal <= 2) return greenLine;
+            else if (indexVal > 2 && indexVal <= 4) return yellowLine;
+            else if (indexVal > 4 && indexVal <= 6) return orangeLine;
+            else if (indexVal > 6 && indexVal <= 8) return brownLine;
+            else if (indexVal > 8) return redLine;
         },
         onEachFeature: eachLineFeature
     });
-    var popup2 = L.popup().setContent("hello, this is a popup LINE");
+
+    var popup2 = L.popup().setContent('<button  >1</button');
     lineLayer.bindPopup(popup2).addTo(map);
 };
 
-const areaLayer = function() {
+const areaLayer = function(data) {
     map.eachLayer((layer) => {
         if (layer.options.id != 'areaLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
+    console.log(data);
+
+    var GeoJsonRegion = data.geoJson;
     /*这个GeoJsonRegion是需要后台请求的*/
-    var GeoJsonRegion = {
+    /*var GeoJsonRegion = {
         "type": "FeatureCollection",
         "features": [{
             "type": "Feature",
@@ -362,7 +335,7 @@ const areaLayer = function() {
             },
             "properties": { "index": 5 }
         }]
-    };
+    };*/
     var greenRegion = {
         fillColor: "#7FFF00",
         fillOpacity: 1,

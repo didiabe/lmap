@@ -23,6 +23,7 @@
     "babel-preset-react": "^6.11.1",
     "classnames": "^2.2.5",
     "css-loader": "^0.23.1",
+    "echarts": "^3.2.2",
     "esri-leaflet": "^2.0.1",
     "is-svg": "^2.0.1",
     "leaflet": "^1.0.0-rc.1",

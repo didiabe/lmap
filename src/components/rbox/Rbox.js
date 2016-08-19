@@ -35,11 +35,11 @@ class Rbox extends React.Component {
              return React.createElement(CraResults, dataRec);
          case 'road':
              dataRec = this.props.cra.cralist;
-             //CI.addGracLayer(road, dataRec);
+             CI.addGracLayer(road, dataRec);
              return React.createElement(CraResults, dataRec);
          case 'area':
              dataRec = this.props.cra.cralist;
-             //CI.addGracLayer(area, dataRec);
+             CI.addGracLayer(area, dataRec);
              return React.createElement(CraResults, dataRec);
          default:
              break;

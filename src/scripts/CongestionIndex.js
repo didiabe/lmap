@@ -247,10 +247,10 @@ const roadLayer = function(data) {
             else if (indexVal > 8) return redLine;
         },
         onEachFeature: eachLineFeature
-    });
+    }).addTo(map);
 
-    var popup2 = L.popup().setContent('<button  >1</button');
-    lineLayer.bindPopup(popup2).addTo(map);
+   /* var popup2 = L.popup().setContent('<button  >1</button');
+    lineLayer.bindPopup(popup2).addTo(map);*/
 };
 
 const areaLayer = function(data) {
@@ -339,14 +339,14 @@ const areaLayer = function(data) {
     var greenRegion = {
         fillColor: "#7FFF00",
         fillOpacity: 1,
-        color: "#7FFF00",
+        color: "#fff",
         weight: 5,
         opacity: 0.8
     };
     var yellowRegion = {
         fillColor: "#FFEB00",
         fillOpacity: 1,
-        color: "#FFEB00",
+        color: "#fff",
         weight: 5,
         opacity: 0.8
 
@@ -354,7 +354,7 @@ const areaLayer = function(data) {
     var orangeRegion = {
         fillColor: "#FFA500",
         fillOpacity: 1,
-        color: "#FFA500",
+        color: "#fff",
         weight: 5,
         opacity: 0.8
 
@@ -362,7 +362,7 @@ const areaLayer = function(data) {
     var brownRegion = {
         fillColor: "#CD3333",
         fillOpacity: 1,
-        color: "#CD3333",
+        color: "#fff",
         weight: 5,
         opacity: 0.8
     };
@@ -370,7 +370,7 @@ const areaLayer = function(data) {
     var redRegion = {
         fillColor: "#FF0000",
         fillOpacity: 1,
-        color: "#FF0000",
+        color: "#fff",
         weight: 5,
         opacity: 0.8
 
@@ -407,11 +407,11 @@ const areaLayer = function(data) {
     regionLayer = L.geoJson(GeoJsonRegion, {
         style: function(feature) {
             var indexVal = feature.properties.index;
-            if (indexVal > 0 && indexVal <= 1) return greenRegion;
-            else if (indexVal > 1 && indexVal <= 2) return yellowRegion;
-            else if (indexVal > 2 && indexVal <= 3) return orangeRegion;
-            else if (indexVal > 3 && indexVal <= 4) return brownRegion;
-            else if (indexVal > 4 && indexVal <= 5) return redRegion;
+            if (indexVal > 0 && indexVal <= 2) return greenRegion;
+            else if (indexVal > 2 && indexVal <= 4) return yellowRegion;
+            else if (indexVal > 4 && indexVal <= 6) return orangeRegion;
+            else if (indexVal > 6 && indexVal <= 8) return brownRegion;
+            else if (indexVal > 8) return redRegion;
         },
         onEachFeature: eachRegionFeature
     });

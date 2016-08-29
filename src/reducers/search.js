@@ -4,7 +4,7 @@ import {RECEIVE_CRA_LIST, SET_KEYWORD, PAGE_SIZE,SET_RBOX_KEY} from '../actions/
 
 export default combineReducers({
     list: cr([], {
-        [RECEIVE_CRA_LIST](state, {data}) { return data.tngou }
+        [RECEIVE_CRA_LIST](state, {data}) { return data }
     }),
     totalPage: cr(0, {
         [RECEIVE_CRA_LIST](state, {data}) { return Math.ceil(data.total / PAGE_SIZE) }

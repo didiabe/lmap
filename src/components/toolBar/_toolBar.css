@@ -62,7 +62,13 @@ ol, ul {
 }
 .satellite{
     composes:layerItemSpan;
+    padding: 20px, 10px, 0, 10px;
     background-position: 11px -336px;
+}
+.satellite_active{
+    composes:layerItemSpan;
+    padding-top: 20px;
+    background-position: 11px -530px;
 }
 .satellite:hover{
     opacity: 0.6

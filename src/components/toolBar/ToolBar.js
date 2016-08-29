@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TrafficConditions from './menu/Traffic'
+import UpdateIndex from './menu/updateIndex'
 import styles from './_toolBar.css';
 
 class ToolBar extends React.Component {
@@ -14,11 +15,13 @@ class ToolBar extends React.Component {
                     <div id="toolBar">
                         <ul>
                             <TrafficConditions/>
-                            <li id="satelliteMap">
+                            <UpdateIndex />
+                            {/*<li id="satelliteMap">
                                 <div type="satellite">
                                     <span className={styles.satellite}>回放</span>
                                 </div>
-                            </li>
+                            </li>*/}
+
                             <li id="subway">
                                 <div type="subway">
                                     <span className={styles.subway}>事故</span>
@@ -37,8 +40,10 @@ class ToolBar extends React.Component {
                         </ul>
                     </div>
                     <div id='presetBox'/>
+                    </div>
+                   
+                   
                 </div>
-            </div>
         )
     }
 }

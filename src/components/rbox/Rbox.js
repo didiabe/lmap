@@ -22,13 +22,16 @@ class Rbox extends React.Component {
     }
     renderList() {
      let rboxkey = this.props.search.rboxKey;
+     console.log(rboxkey);
      let dataRec = null;
      switch (rboxkey) {
          case 'search':
-             return this.props.search.list.map(item => {
-                 item.key = item.title
+         dataRec = this.props.search.list;
+         return React.createElement(SearchResults, dataRec);
+             /*return this.props.search.list.map(item => {
+                console.log(item);
                  return React.createElement(SearchResults, item);
-             });
+             });*/
          case 'cross':
              dataRec = this.props.cra.cralist;
              CI.addGracLayer(cross, dataRec);
@@ -46,8 +49,8 @@ class Rbox extends React.Component {
 
      }
  }
-    crsBtnClick(layerName) {
-        this.props.fetchCRAList(layerName);
+    crsBtnClick(layerName, t) {
+        this.props.fetchCRAList(layerName, t);
     }
 
     render() {

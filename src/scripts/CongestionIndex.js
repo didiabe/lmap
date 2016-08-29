@@ -1,6 +1,5 @@
 import L from 'leaflet';
 import LE from 'esri-leaflet';
-import { statesData, GeoJsonPoints } from '../test/US';
 import * as lmap from '../libs/lmap';
 
 export function addGracLayer(layerName, data) {
@@ -43,11 +42,26 @@ const crossLayer = function(data) {
         ]
     };*/
     var GeoJsonPoints = data.geoJson;
-    var greenMarker = lmap.icon({ iconSize: [15, 15], color: '#7FFF00' });
-    var yellowMarker = lmap.icon({ iconSize: [15, 15], color: '#EEC900' });
-    var orangeMarker = lmap.icon({ iconSize: [15, 15], color: '#EE9A00' });
-    var brownMarker = lmap.icon({ iconSize: [15, 15], color: '#D2691E' });
-    var redMarker = lmap.icon({ iconSize: [15, 15], color: '#CD0000' });
+    var greenMarker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#7FFF00'
+    });
+    var yellowMarker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#EEC900'
+    });
+    var orangeMarker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#EE9A00'
+    });
+    var brownMarker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#D2691E'
+    });
+    var redMarker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#CD0000'
+    });
 
     var pointMarkerOption = null;
 
@@ -60,13 +74,22 @@ const crossLayer = function(data) {
     };
 
     function highlightFeature(e) {
-        var highlighticon = lmap.icon({ iconSize: [25, 25], color: e.target.defaultOptions.icon.options.color });
+        var highlighticon = lmap.icon({
+            iconSize: [25, 25],
+            color: e.target.defaultOptions.icon.options.color
+        });
         e.target.setIcon(highlighticon);
-        L.popup({ offset: [0, -8], closeButton: false }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);
+        L.popup({
+            offset: [0, -8],
+            closeButton: false
+        }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);
     };
 
     function resetFeature(e) {
-        var reseticon = lmap.icon({ iconSize: [15, 15], color: e.target.defaultOptions.icon.options.color });
+        var reseticon = lmap.icon({
+            iconSize: [15, 15],
+            color: e.target.defaultOptions.icon.options.color
+        });
         e.target.setIcon(reseticon);
         map.closePopup();
     };
@@ -87,7 +110,9 @@ const crossLayer = function(data) {
             else if (indexVal > 6 && indexVal <= 8) pointMarkerOption = brownMarker;
             else if (indexVal > 8) pointMarkerOption = redMarker;
 
-            return L.marker(latlng, { icon: pointMarkerOption });
+            return L.marker(latlng, {
+                icon: pointMarkerOption
+            });
         },
         onEachFeature: eachPointFeature
 
@@ -249,8 +274,8 @@ const roadLayer = function(data) {
         onEachFeature: eachLineFeature
     }).addTo(map);
 
-   /* var popup2 = L.popup().setContent('<button  >1</button');
-    lineLayer.bindPopup(popup2).addTo(map);*/
+    /* var popup2 = L.popup().setContent('<button  >1</button');
+     lineLayer.bindPopup(popup2).addTo(map);*/
 };
 
 const areaLayer = function(data) {
@@ -419,3 +444,30 @@ const areaLayer = function(data) {
     regionLayer.bindPopup(popup3).addTo(map);
 
 };
+
+/*const DataService = (api_path, param, a, b) => {
+    window.$.ajax({
+        type: 'POST',
+        //10.25.67.72
+        url: 'http://10.25.67.130:8080/trafficIndex_web' + api_path,
+        data: param,
+        dataType: 'json',
+        async: false,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        success: a,
+        error: b
+    });
+};*/
+
+export const playback = (a) => {
+
+
+    let markerPlayBack = lmap.geoTime(a, {
+        map: map,
+        duration: 1000
+    });
+    return markerPlayBack;
+};
+

@@ -11,6 +11,12 @@
 .panel_header{
     height: 30px;
 }
+.tab1{
+     float: left;
+     line-height: 30px;
+     font-size: 14px;
+    padding: 0px 10px;
+}
 .panel_tab{
     float: left;
     height: 28px;
@@ -40,6 +46,8 @@
 .traffic_tag {
     float: right;
     line-height: 30px;
+
+
 }
 .smooth_jam{
     float: left;
@@ -92,6 +100,7 @@
 }
 .loadingButton{
     margin-left: 150px;
+    margin-top: 10px;
 }
 .splitline_H{
     width:320px;
@@ -121,5 +130,23 @@ float:right;
 
 }
 .QueContent{
-background-color:#f4f5f6;
+background-color:#fff;
+}
+.radio_btnGroup{
+    /*margin: 5px 0 10px 70px;*/
+    float:right;
+}
+.selectCra{
+    float:left;
+    margin-left:10px;
+}
+.radio_btnGroup2{
+    margin: 5px 0 10px 100px;
+
+}
+.ConListPanel{
+    margin-left:50px;
+}
+.slider{
+    width:60px;
 }

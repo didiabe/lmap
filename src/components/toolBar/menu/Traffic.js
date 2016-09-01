@@ -124,7 +124,9 @@ class Forecast extends React.Component {
             inputValue: 0,
             checked: false,
             isLoading: false,
-            isLoaded: false
+            isLoaded: false,
+            CraType: null,
+
         };
     }
     onSliderChange(val) {
@@ -155,16 +157,33 @@ class Forecast extends React.Component {
         }
         console.log(CheckOptions);
         if (CheckOptions.length !== 0) this.setState({
-            checked: true
+            checked: true,
+            CraType: CheckOptions
         });
     }
     startForcast() {
         this.setState({
             isLoading: true
         });
-
-        //DataService();
-        setTimeout(() => {
+        let param = {
+            type: this.state.CraType,
+            time: this.state.inputValue
+        }
+        DataService('/zone/forecast.json', param,
+            (resp) => {
+                if (markerPlayBack) markerPlayBack.clearLayer();
+                this.setState({
+                    isLoading: false,
+                    isLoaded: true
+                });
+                console.log(resp.data);
+                let geo_playback = resp.data;
+                markerPlayBack = CI.playback(geo_playback);
+            },
+            (e) => {
+                console.log(e)
+            });
+        /*setTimeout(() => {
             if (markerPlayBack) markerPlayBack.clearLayer();
             this.setState({
                 isLoading: false,
@@ -228,7 +247,7 @@ class Forecast extends React.Component {
             };
             markerPlayBack = CI.playback(geo_playback);
 
-        }, 1000);
+        }, 1000);*/
 
     }
     clearForcast() {
@@ -291,10 +310,10 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.67.130:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.78:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
-        async: false,
+        async: true,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
@@ -429,91 +448,115 @@ class Playback extends React.Component {
             alert("请选择信息后查询");
             return;
         }
-        //console.log(this.state);
+        console.log(this.state.loading);
         this.setState({
-            loading: true,
-            percent: 0
-        });
-
+                loading: true
+            })
+            /* this.setState({
+                 loading: true,
+                 percent: 0,
+             });*/
+        console.log(this.state.loading)
         var param1 = {
             kssj: this.state.startTime,
             jssj: this.state.endTime,
             type: this.state.checkedOptions
         }
 
-        /*DataService("zone/hisPlayBack.json", param1,
+        DataService("/zone/hisPlayBack.json", param1,
             (data) => {
-                console.log(data);
+                let geo_playback = data.data;
+                console.log(geo_playback);
+                if (geo_playback.features.length < 1) {
+                    this.setState({
+                        loading: false,
+                        isLoaded: false
+                    });
+                    alert("没有相应信息")
+                } else {
+                    this.setState({
+                        loading: false,
+                        isLoaded: true
+                    })
+                    var percent_length = geo_playback.features[0].properties.index.length;
+                    var each_percent = Math.round(100 / percent_length);
+
+                    this.setState({
+                        each_percent: each_percent
+                    });
+                    markerPlayBack = CI.playback(geo_playback);
+                }
+
             }, (e) => {
                 console.log(e);
-            });*/
-        var geo_playback = {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [121.35, 28.491]
-                },
-                "properties": {
-                    "index": [{
-                        time: "08:22-13:00",
-                        val: 5.1
-                    }, {
-                        time: "08:22-13:05",
-                        val: 9.5
-                    }, {
-                        time: "08:22-13:10",
-                        val: 3.9
-                    }, {
-                        time: "08:22-13:15",
-                        val: 2.9
-                    }, {
-                        time: "08:22-13:20",
-                        val: 7
-                    }],
-                    "name": "友谊路"
-                }
-            }, {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [121.35, 28.411]
-                },
-                "properties": {
-                    "index": [{
-                        time: "08:22-13:00",
-                        val: 9
-                    }, {
-                        time: "08:22-13:05",
-                        val: 5
-                    }, {
-                        time: "08:22-13:10",
-                        val: 7
-                    }, {
-                        time: "08:22-13:15",
-                        val: 3.5
-                    }, {
-                        time: "08:22-13:20",
-                        val: 7.9
-                    }],
-                    "name": "延陵中路"
-                }
-            }]
-        };
-
-        var percent_length = geo_playback.features[0].properties.index.length;
-        var each_percent = 100 / percent_length;
-
-        setTimeout(() => {
-            this.setState({
-                loading: false,
-                isLoaded: true,
-                each_percent: each_percent
             });
+        /* var geo_playback = {
+             "type": "FeatureCollection",
+             "features": [{
+                 "type": "Feature",
+                 "geometry": {
+                     "type": "Point",
+                     "coordinates": [121.35, 28.491]
+                 },
+                 "properties": {
+                     "index": [{
+                         time: "08:22-13:00",
+                         val: 5.1
+                     }, {
+                         time: "08:22-13:05",
+                         val: 9.5
+                     }, {
+                         time: "08:22-13:10",
+                         val: 3.9
+                     }, {
+                         time: "08:22-13:15",
+                         val: 2.9
+                     }, {
+                         time: "08:22-13:20",
+                         val: 7
+                     }],
+                     "name": "友谊路"
+                 }
+             }, {
+                 "type": "Feature",
+                 "geometry": {
+                     "type": "Point",
+                     "coordinates": [121.35, 28.411]
+                 },
+                 "properties": {
+                     "index": [{
+                         time: "08:22-13:00",
+                         val: 9
+                     }, {
+                         time: "08:22-13:05",
+                         val: 5
+                     }, {
+                         time: "08:22-13:10",
+                         val: 7
+                     }, {
+                         time: "08:22-13:15",
+                         val: 3.5
+                     }, {
+                         time: "08:22-13:20",
+                         val: 7.9
+                     }],
+                     "name": "延陵中路"
+                 }
+             }]
+         };*/
 
-            markerPlayBack = CI.playback(geo_playback);
-        }, 1000);
+        /*  var percent_length = geo_playback.features[0].properties.index.length;
+          var each_percent = 100 / percent_length;*/
+
+        /* setTimeout(() => {
+             this.setState({
+                 loading: false,
+                 isLoaded: true,
+                 each_percent: each_percent
+             });
+
+             markerPlayBack = CI.playback(geo_playback);
+         }, 1000);*/
         //<Slider max={30} min={0} onChange={this.onSliderChange} value={this.state.inputValue}/>
     }
 

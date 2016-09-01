@@ -265,7 +265,7 @@ const roadLayer = function(data) {
     lineLayer = L.geoJson(GeoJsonLines, {
         style: function(feature) {
             var indexVal = feature.properties.index;
-            if (indexVal > 0 && indexVal <= 2) return greenLine;
+            if (indexVal <= 2) return greenLine;
             else if (indexVal > 2 && indexVal <= 4) return yellowLine;
             else if (indexVal > 4 && indexVal <= 6) return orangeLine;
             else if (indexVal > 6 && indexVal <= 8) return brownLine;
@@ -432,7 +432,7 @@ const areaLayer = function(data) {
     regionLayer = L.geoJson(GeoJsonRegion, {
         style: function(feature) {
             var indexVal = feature.properties.index;
-            if (indexVal > 0 && indexVal <= 2) return greenRegion;
+            if (indexVal <= 2) return greenRegion;
             else if (indexVal > 2 && indexVal <= 4) return yellowRegion;
             else if (indexVal > 4 && indexVal <= 6) return orangeRegion;
             else if (indexVal > 6 && indexVal <= 8) return brownRegion;
@@ -470,4 +470,3 @@ export const playback = (a) => {
     });
     return markerPlayBack;
 };
-

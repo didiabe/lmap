@@ -84,7 +84,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.67.130:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.78:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,
@@ -95,7 +95,7 @@ const DataService = (api_path, param, a, b) => {
         error: b
     });
 };
-const data = [];
+/*const data = [];
 for (let i = 0; i < 46; i++) {
     data.push({
         key: i,
@@ -103,50 +103,63 @@ for (let i = 0; i < 46; i++) {
         index: `西湖区湖底公园${i}号`,
     });
 }
-/*"data":[
-        {
-            "id":"10",
-            "jtzs":4.27,
-            "name":"太平街道西",
-            "xh":0,
-            "yddj":""
-        },
-        {
-            "id":"11",
-            "jtzs":4.27,
-            "name":"太平街道南",
-            "xh":0,
-            "yddj":""
-        },
-        {
-            "id":"6",
-            "jtzs":4.28,
-            "name":"城西街道",
-            "xh":0,
-            "yddj":""
-        },
-        {
-            "id":"7",
-            "jtzs":4.36,
-            "name":"城东街道",
-            "xh":0,
-            "yddj":""
-        },
-        {
-            "id":"8",
-            "jtzs":4.25,
-            "name":"太平街道北",
-            "xh":0,
-            "yddj":""
-        },
-        {
-            "id":"9",
-            "jtzs":4.28,
-            "name":"太平街道东",
-            "xh":0,
-            "yddj":""
-        }
-    ]*/
+const data123 = [{
+    "id": "10",
+    "jtzs": 4.27,
+    "name": "太平街道西",
+    "xh": 0,
+    "yddj": ""
+}, {
+    "id": "11",
+    "jtzs": 4.27,
+    "name": "太平街道南",
+    "xh": 0,
+    "yddj": ""
+}, {
+    "id": "6",
+    "jtzs": 4.28,
+    "name": "城西街道",
+    "xh": 0,
+    "yddj": ""
+}, {
+    "id": "7",
+    "jtzs": 4.36,
+    "name": "城东街道",
+    "xh": 0,
+    "yddj": ""
+}, {
+    "id": "8",
+    "jtzs": 4.25,
+    "name": "太平街道北",
+    "xh": 0,
+    "yddj": ""
+}, {
+    "id": "9",
+    "jtzs": 4.28,
+    "name": "太平街道东",
+    "xh": 0,
+    "yddj": ""
+}];
+const data222 = [];*/
+
+/*data123.map((item) => {
+    //console.log(item);
+    data222.push({
+        name: item.name,
+        index: item.jtzs
+    });
+});*/
+//var qwe = [2, 4];
+/*for (var i in qwe) {
+    console.log(qwe[i]);
+    console.log(data123[qwe[i]]);
+}*/
+/*var ll = [];
+qwe.map((item) => {
+    console.log(data123[item].id);
+    ll.push(data123[item].id);
+});
+console.log(ll)*/
 class UpdateIndexPanel extends React.Component {
     constructor() {
         super();
@@ -166,6 +179,8 @@ class UpdateIndexPanel extends React.Component {
             newIndex: null,
             StartTime: null,
             EndTime: null,
+            dataList: null,
+            selectIDs: null,
         }
         this.selectCongestion = this.selectCongestion.bind(this);
         this.selectCRA = this.selectCRA.bind(this);
@@ -177,6 +192,7 @@ class UpdateIndexPanel extends React.Component {
         this.switchRadio = this.switchRadio.bind(this);
         this.updateMins = this.updateMins.bind(this);
         this.getIndex = this.getIndex.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
 
     }
 
@@ -206,23 +222,53 @@ class UpdateIndexPanel extends React.Component {
             loading: true
         });
         let param = {
+
             type: this.state.craType,
             level: this.state.ConLevel
         };
         console.log(param);
-        /*DataService("zone/zsLevel.json", param, 
-            (resp)=>{
-                console.log(resp);
+        DataService("/zone/zsLevel.json", param,
+            (resp) => {
+                console.log(resp.data);
+                let data4Table = [];
+
+                if (resp.data.length < 1) {
+                    alert("没有查到符合数据");
+                    this.setState({
+                        loading: false,
+                        isLoaded: false,
+                    });
+                } else {
+                    resp.data.map((item) => {
+                        data4Table.push({
+                            name: item.name,
+                            index: item.jtzs,
+                            id: item.id,
+                        });
+                    });
+                    console.log(data4Table)
+                    this.setState({
+                        loading: false,
+                        isLoaded: true,
+                        dataList: data4Table
+                    });
+                }
+
             },
-            (e)=>{
+            (e) => {
                 console.log(e);
-            });*/
-        setTimeout(() => {
+                alert("加载失败");
+                this.setState({
+                    loading: false,
+                    isLoaded: false,
+                });
+            });
+        /*setTimeout(() => {
             this.setState({
                 loading: false,
                 isLoaded: true,
             });
-        }, 1000)
+        }, 1000)*/
     }
     updateIndexVal() {
 
@@ -230,25 +276,47 @@ class UpdateIndexPanel extends React.Component {
             loading: true
         });
         let param2 = {
-            start: this.state.StartTime,
-            end: this.state.EndTime,
-            time: this.state.updateMins,
-            zs: this.state.newIndex,
-            type: this.state.craType,
-            ids: this.state.selectedRowKeys
+            zsUpdate: {
+                start: this.state.StartTime,
+                end: this.state.EndTime,
+                time: this.state.updateMins,
+                zs: this.state.newIndex,
+                type: this.state.craType,
+                ids: this.state.selectIDs
+            }
         };
 
         console.log(param2);
-        // 模拟 ajax 请求，完成后清空
-        setTimeout(() => {
-            this.setState({
+        DataService('/zone/zsUpdate.json', param2,
+            (resp) => {
+                console.log(resp.data);
+                this.setState({
                 selectedRowKeys: [],
                 loading: false,
             });
-        }, 1000);
+            },
+            (e) => {
+                console.log = (e);
+                alert("传输错误！")
+            });
+
+        // 模拟 ajax 请求，完成后清空
+        /*  setTimeout(() => {
+              
+          }, 1000);*/
     }
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
+        //selectedRowKeys = ['2', '3', '5'];
+        let list = this.state.dataList;
+        let selectID = [];
+        selectedRowKeys.map((item) => {
+            selectID.push(list[item].id)
+        });
+        console.log(selectID);
+        this.setState({
+            selectIDs: selectID
+        });
         this.setState({
             selectedRowKeys
         });
@@ -398,7 +466,7 @@ class UpdateIndexPanel extends React.Component {
                 <div style={{ marginBottom: 8 }}>
                   <span style={{ marginLeft: 20 }}>{hasSelected ? `您已选择 ${selectedRowKeys.length} 个对象` : ''}</span>
                 </div>
-                <Table size="small" rowSelection={rowSelection} columns={columns} dataSource={data} />
+                <Table size="small" rowSelection={rowSelection} columns={columns} dataSource={this.state.dataList} />
 
                 <QueueAnim className={UpdateIndexStyle.QueContent} 
                     animConfig={[{ opacity: [1, 0], translateY: [0, 50] },{ opacity: [1, 0], translateY: [0, -50] }]} >

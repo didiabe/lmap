@@ -22,11 +22,25 @@ export const fetchSearchList = (keyword, rboxkey, page = 1) => {
 
             if (!keyword && keyword != '') {
                 keyword = getState().search.keyword
+
             } else {
                 dispatch(setKeyord(keyword))
             }
-
-            var data = {
+            console.log(keyword);
+            let param = {
+                id: keyword
+            }
+            DataService('/zone/queryByName.json', param,
+                (resp) => {
+                    console.log(resp.data);
+                    let data = resp.data;
+                    dispatch(receiveList(data, page))
+                },
+                (e) => {
+                    console.log(e);
+                    alert("传输错误", e)
+                });
+            /*var data = {
                 "cross": [{
                     "name": "dasd",
                     "index": 2
@@ -114,9 +128,8 @@ export const fetchSearchList = (keyword, rboxkey, page = 1) => {
                     "name": "nad",
                     "index": 2
                 }]
-            };
+            };*/
 
-            dispatch(receiveList(data, page))
 
 
         }
@@ -134,7 +147,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.67.130:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.78:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,

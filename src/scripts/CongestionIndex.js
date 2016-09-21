@@ -292,7 +292,7 @@ const areaLayer = function(data) {
         "features": [{
             "type": "Feature",
             "geometry": {
-                "type": "Polygon",
+                "type": "point",
                 "coordinates": [
                     [
                         [-122.6311, 45.4354],
@@ -302,7 +302,7 @@ const areaLayer = function(data) {
                     ]
                 ]
             },
-            "properties": { "index": 1 }
+            "properties": {}
         }, {
             "type": "Feature",
             "geometry": {
@@ -320,7 +320,7 @@ const areaLayer = function(data) {
         }, {
             "type": "Feature",
             "geometry": {
-                "type": "Polygon",
+                "type": "Linestring",
                 "coordinates": [
                     [
                         [-122.6411, 45.4454],

@@ -1,6 +1,7 @@
 import React from 'react';
 import L from 'leaflet';
 import LE from 'esri-leaflet';
+import * as LDraw from 'leaflet-draw';
 
 class Map extends React.Component {
     constructor() {
@@ -21,14 +22,18 @@ class Map extends React.Component {
         var map = L.map("map", {
             center: [31.31, 121.37],
             zoom: 14,
+            drawControl: false,
             zoomControl: false
-            
+
+            //visualClick: false,
+
+
         });
         L.esri.tiledMapLayer({
-            id:'streetLayer',
+            id: 'streetLayer',
             url: "http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer"
         }).addTo(map);
-        
+
         window.map = map;
     }
 }

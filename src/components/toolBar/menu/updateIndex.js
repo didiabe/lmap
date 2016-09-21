@@ -84,7 +84,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.67.78:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.91.21:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,
@@ -291,9 +291,9 @@ class UpdateIndexPanel extends React.Component {
             (resp) => {
                 console.log(resp.data);
                 this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
+                    selectedRowKeys: [],
+                    loading: false,
+                });
             },
             (e) => {
                 console.log = (e);

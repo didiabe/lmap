@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
+import {
+    connect
+} from 'react-redux';
 import * as action from '../../actions/searchAction';
 import styles from './_rbox.css';
 import * as CI from '../../scripts/CongestionIndex';
 import SearchResults from './menu/SearchResults';
 import CraResults from './menu/CraResults';
 import Pager from './menu/Pager';
+//import * as lmsg from '../../../lmsg';
 
 class Rbox extends React.Component {
     constructor() {
@@ -21,40 +24,44 @@ class Rbox extends React.Component {
         })
     }
     renderList() {
-     let rboxkey = this.props.search.rboxKey;
-     console.log(rboxkey);
-     let dataRec = null;
-     switch (rboxkey) {
-         case 'search':
-         dataRec = this.props.search.list;
-         return React.createElement(SearchResults, dataRec);
-             /*return this.props.search.list.map(item => {
-                console.log(item);
-                 return React.createElement(SearchResults, item);
-             });*/
-         case 'cross':
-             dataRec = this.props.cra.cralist;
-             CI.addGracLayer(cross, dataRec);
-             return React.createElement(CraResults, dataRec);
-         case 'road':
-             dataRec = this.props.cra.cralist;
-             CI.addGracLayer(road, dataRec);
-             return React.createElement(CraResults, dataRec);
-         case 'area':
-             dataRec = this.props.cra.cralist;
-             CI.addGracLayer(area, dataRec);
-             return React.createElement(CraResults, dataRec);
-         default:
-             break;
+        let rboxkey = this.props.search.rboxKey;
+        console.log(rboxkey);
+        let dataRec = null;
+        switch (rboxkey) {
+            case 'search':
+                dataRec = this.props.search.list;
+                return React.createElement(SearchResults, dataRec);
+                /*return this.props.search.list.map(item => {
+                   console.log(item);
+                    return React.createElement(SearchResults, item);
+                });*/
+            case 'cross':
+                dataRec = this.props.cra.cralist;
+                CI.addGracLayer(cross, dataRec);
+                return React.createElement(CraResults, dataRec);
+            case 'road':
+                dataRec = this.props.cra.cralist;
+                CI.addGracLayer(road, dataRec);
+                return React.createElement(CraResults, dataRec);
+            case 'area':
+                dataRec = this.props.cra.cralist;
+                CI.addGracLayer(area, dataRec);
+                return React.createElement(CraResults, dataRec);
+            default:
+                break;
 
-     }
- }
+        }
+    }
     crsBtnClick(layerName, t) {
         this.props.fetchCRAList(layerName, t);
     }
 
     render() {
-        let {page, totalPage, dispatch} = this.props;
+        let {
+            page,
+            totalPage,
+            dispatch
+        } = this.props;
         let searchAvtive = (this.props.searchValue === "");
         return (
             <div id="rbox" className={styles.rbox}>
@@ -83,6 +90,23 @@ class Rbox extends React.Component {
             </div>
         )
     }
+
+    /*componentDidMount() {
+        let self = this;
+        lmsg.subscribe('crsBtnClick', function getMes(data) {
+            alert(JSON.stringify(data));
+            // if (data.message == "cross") {
+            //     self.refs.cross.click();
+            // } else if (data.message == "road") {
+            //     self.refs.road.click();
+            // } else {
+            //     self.refs.area.click();
+            // }
+        });
+
+
+    }*/
+
 }
 
 function mapStateToProps(state) {

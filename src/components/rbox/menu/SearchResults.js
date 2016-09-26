@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './_SearchResults.css';
-import {
+/*import {
     Collapse,
     Icon
-} from 'antd';
-
+} from 'antd';*/
+var Icon = require('antd/lib/icon');
+var Collapse = require('antd/lib/collapse');
 const Panel = Collapse.Panel;
 class SearchResults extends React.Component {
 

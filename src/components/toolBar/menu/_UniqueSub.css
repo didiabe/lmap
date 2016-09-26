@@ -1,0 +1,23 @@
+.boxpanel{
+    position: absolute;
+    top: 58px;
+    right: -6px;
+    width: 300px;
+    background: rgb(255,255,255);
+    padding: 12px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 6px 0px, rgba(0, 0, 0, 0.188235) 0px 2px 6px 0px;
+}
+/*panel Header*/
+.panel_header{
+    height:auto;
+    text-align: center;
+}
+.panel_body{
+margin-left: 5px;
+margin-top: 5px;
+height:auto;
+}
+.button1{
+    margin-left: 5px;
+    margin-top:10px;
+}

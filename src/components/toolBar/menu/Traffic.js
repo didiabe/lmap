@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
+/*import {
     Slider,
     Checkbox,
-    QueueAnim,
     Button,
     Progress,
     DatePicker,
@@ -13,10 +12,25 @@ import {
     Col,
     TimePicker
 } from 'antd';
+import QueueAnim from 'rc-queue-anim';*/
 import styles from '../_toolBar.css';
 import trafficStyles from './_traffic.css'
 import * as CI from '../../../scripts/CongestionIndex';
-
+//var Radio = require('antd/lib/radio');
+var Slider = require('antd/lib/slider');
+//var Select = require('antd/lib/select');
+var Checkbox = require('antd/lib/checkbox');
+//var Table = require('antd/lib/table');
+var Button = require('antd/lib/button');
+var Progress = require('antd/lib/progress');
+var DatePicker = require('antd/lib/date-picker');
+var Tooltip = require('antd/lib/tooltip');
+var Row = require('antd/lib/row');
+var InputNumber = require('antd/lib/input-number');
+var Col = require('antd/lib/col');
+//var Icon = require('antd/lib/icon');
+var TimePicker = require('antd/lib/time-picker');
+var QueueAnim = require('rc-queue-anim/lib/QueueAnim');
 class Traffic extends React.Component {
     constructor() {
         super();
@@ -310,7 +324,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.91.21:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.110:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: true,

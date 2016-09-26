@@ -20,8 +20,8 @@ class Map extends React.Component {
     }
     componentDidMount() {
         var map = L.map("map", {
-            center: [31.31, 121.37],
-            zoom: 14,
+            center: [28.31, 121.37],
+            zoom: 12,
             drawControl: false,
             zoomControl: false
 

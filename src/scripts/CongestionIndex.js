@@ -1,6 +1,7 @@
 import L from 'leaflet';
 import LE from 'esri-leaflet';
 import * as lmap from '../libs/lmap';
+import taxi_img from '../images/local_taxi.png';
 
 export function addGracLayer(layerName, data) {
     console.log(data);
@@ -29,17 +30,88 @@ const crossLayer = function(data) {
     /*这个GeoJsonPoints是需要后台请求的*/
     /*var GeoJsonPoints = {
         "type": "FeatureCollection",
-        "features": [
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6672, 45.5254] }, "properties": { "index": "1" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6662, 45.5262] }, "properties": { "index": "2" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6651, 45.5255] }, "properties": { "index": "3" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6672, 45.5262] }, "properties": { "index": "4" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6673, 45.5268] }, "properties": { "index": "2" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6682, 45.5261] }, "properties": { "index": "3" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6652, 45.5268] }, "properties": { "index": "1" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6682, 45.5272] }, "properties": { "index": "2" } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.6678, 45.5252] }, "properties": { "index": "5" } }
-        ]
+        "features": [{
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6672, 45.5254]
+            },
+            "properties": {
+                dasdqdasd: 121
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6662, 45.5262]
+            },
+            "properties": {
+                "index": "2"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6651, 45.5255]
+            },
+            "properties": {
+                "index": "3"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6672, 45.5262]
+            },
+            "properties": {
+                "index": "4"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6673, 45.5268]
+            },
+            "properties": {
+                "index": "2"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6682, 45.5261]
+            },
+            "properties": {
+                "index": "3"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6652, 45.5268]
+            },
+            "properties": {
+                "index": "1"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6682, 45.5272]
+            },
+            "properties": {
+                "index": "2"
+            }
+        }, {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-122.6678, 45.5252]
+            },
+            "properties": {
+                "index": "5"
+            }
+        }]
     };*/
     var GeoJsonPoints = data.geoJson;
     var greenMarker = lmap.icon({
@@ -470,3 +542,102 @@ export const playback = (a) => {
     });
     return markerPlayBack;
 };
+
+
+const DataService = (api_path, param, a, b) => {
+    window.$.ajax({
+        type: 'POST',
+        //10.25.67.72
+        url: 'http://10.25.67.115:8080/trafficIndex_web' + api_path,
+        data: param,
+        dataType: 'json',
+        async: false,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        success: a,
+        error: b
+    });
+};
+export const displayUniLayer = (ref) => {
+    console.log(ref)
+    map.eachLayer((layer) => {
+        console.log(layer);
+        if (layer.options.id !== "streetLayer") {
+            console.log(layer);
+            map.removeLayer(layer);
+        }
+        //map.removeLayer(layer);
+    });
+    var param = null,
+        _APIpath = null,
+        featurecollectiondata = null,
+        specialpointlayer = null,
+        specialstyle = null;
+
+
+    if (ref == 'fudongche') {
+        _APIpath = "/map/floatCar.json";
+        var fudongcheIcon = L.icon({
+            iconUrl: '../src/images/local_taxi.png',
+            iconSize: [20, 20], // size of the icon
+            iconAnchor: [22, 22], // point of the icon which will correspond to marker's location
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+        specialpointlayer = (feature, latlng) => {
+            //var indexVal = feature.properties.index;
+            return L.marker(latlng, {
+                icon: fudongcheIcon
+            });
+        }
+    } else if (ref == 'shigong') {
+        _APIpath = "/map/roadConstruction.json";
+        specialstyle = (feature) => {
+            return {
+                fillColor: '#007D7D',
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.7
+            };
+        }
+    } else if (ref == 'guanzhi') {
+        _APIpath = "/map/trafficControl.json";
+        specialstyle = (feature) => {
+            return {
+                fillColor: '#EEC900',
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.7
+            };
+        }
+    } else if (ref == 'shigu') {
+        _APIpath = "/map/trafficAccident.json";
+        specialstyle = (feature) => {
+            return {
+                fillColor: '#D2691E',
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.7
+            };
+        }
+    }
+    DataService(_APIpath, param, (resp) => {
+        console.log(resp.data);
+        featurecollectiondata = resp.data;
+    }, (e) => {
+        console.log(e);
+        alert("后台传输错误");
+    });
+    var SpecificLayer = L.geoJson(featurecollectiondata, {
+        style: specialstyle,
+        pointToLayer: specialpointlayer,
+    });
+    map.addLayer(SpecificLayer);
+
+}

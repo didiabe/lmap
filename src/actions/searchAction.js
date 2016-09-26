@@ -147,7 +147,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.91.21:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.110:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,
@@ -185,6 +185,7 @@ export const fetchCRAList = (rboxkey, t) => {
             (resp) => {
                 //console.log(resp);
                 let dataRecv = resp.data;
+                console.log(dataRecv)
                 dispatch(pushCRAList(dataRecv))
             },
             (e) => {

@@ -27,6 +27,7 @@ class Rbox extends React.Component {
         let rboxkey = this.props.search.rboxKey;
         console.log(rboxkey);
         let dataRec = null;
+        console.log(this.props.cra.cralist)
         switch (rboxkey) {
             case 'search':
                 dataRec = this.props.search.list;
@@ -77,6 +78,7 @@ class Rbox extends React.Component {
                             <li id='area' ref='area' className={styles.craLi} onClick={() => this.crsBtnClick(this.refs.area.id) }>
                                 <span className={styles.navTxt}>区域</span>
                             </li>
+                            
                         </ul>
                         <div id='resultPanel' className={styles.resultPanel}>
                             {this.renderList() }
@@ -91,21 +93,21 @@ class Rbox extends React.Component {
         )
     }
 
-    /*componentDidMount() {
+    componentDidMount() {
         let self = this;
         lmsg.subscribe('crsBtnClick', function getMes(data) {
             alert(JSON.stringify(data));
-            // if (data.message == "cross") {
-            //     self.refs.cross.click();
-            // } else if (data.message == "road") {
-            //     self.refs.road.click();
-            // } else {
-            //     self.refs.area.click();
-            // }
+            if (data.message == "cross") {
+                self.refs.cross.click();
+            } else if (data.message == "road") {
+                self.refs.road.click();
+            } else {
+                self.refs.area.click();
+            }
         });
 
 
-    }*/
+    }
 
 }
 

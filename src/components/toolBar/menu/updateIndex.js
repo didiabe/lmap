@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
+/*import {
     Radio,
     Slider,
     Select,
     Checkbox,
     Table,
-    QueueAnim,
     Button,
     Progress,
     DatePicker,
@@ -17,12 +16,32 @@ import {
     Icon,
     TimePicker
 } from 'antd';
+import QueueAnim from 'rc-queue-anim';*/
 /*import QueueAnim from 'rc-queue-anim';*/
+/*var _button = require('antd/lib/button');
 
+ReactDOM.render(<div>
+  <_button>xxxx</_button>
+</div>);*/
 import styles from '../_toolBar.css';
 import UpdateIndexStyle from './_updateIndex.css'
 import * as CI from '../../../scripts/CongestionIndex';
 
+var Radio = require('antd/lib/radio');
+var Slider = require('antd/lib/slider');
+var Select = require('antd/lib/select');
+var Checkbox = require('antd/lib/checkbox');
+var Table = require('antd/lib/table');
+var Button = require('antd/lib/button');
+var Progress = require('antd/lib/progress');
+var DatePicker = require('antd/lib/date-picker');
+var Tooltip = require('antd/lib/tooltip');
+var Row = require('antd/lib/row');
+var InputNumber = require('antd/lib/input-number');
+var Col = require('antd/lib/col');
+var Icon = require('antd/lib/icon');
+var TimePicker = require('antd/lib/time-picker');
+var QueueAnim = require('rc-queue-anim/lib/QueueAnim');
 
 
 class updateIndex extends React.Component {
@@ -84,7 +103,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.91.21:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.110:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,
@@ -468,7 +487,7 @@ class UpdateIndexPanel extends React.Component {
                 </div>
                 <Table size="small" rowSelection={rowSelection} columns={columns} dataSource={this.state.dataList} />
 
-                <QueueAnim className={UpdateIndexStyle.QueContent} 
+                <QueueAnim key="a" className={UpdateIndexStyle.QueContent} 
                     animConfig={[{ opacity: [1, 0], translateY: [0, 50] },{ opacity: [1, 0], translateY: [0, -50] }]} >
                         {changeIndexPanel}
                     </QueueAnim>
@@ -516,7 +535,7 @@ class UpdateIndexPanel extends React.Component {
                      loading={this.state.loading} onClick={this.loadData} disabled = {!this.state.CbtnChecked || !this.state.RbtnChecked} > 
                      {"加载数据"}
                     </Button>
-                    <QueueAnim className={UpdateIndexStyle.QueContent} 
+                    <QueueAnim key="b" className={UpdateIndexStyle.QueContent} 
                     animConfig={[{ opacity: [1, 0], translateY: [0, 50] },{ opacity: [1, 0], translateY: [0, -50] }]} >
                         {ConListPanel}
                     </QueueAnim>

@@ -3,11 +3,6 @@ import L from 'leaflet';
 import turf from 'turf';
 import leaflet_draw from 'leaflet-draw';
 
-/*export const initDrawing = {
-	start: activateDrawToolbar,
-
-};*/
-
 export const drawFeatures = {
 	activate: function() {
 		activateDrawToolbar();
@@ -142,6 +137,7 @@ const drawCreated = (e) => {
 		latlngs.push(latlngs[0])
 			//console.log('latlng:', latlngs)
 		featureDrawn = turf.polygon([latlngs]);
+		//面积是平方公里
 		measurement = turf.area(featureDrawn) / 1000000;
 
 	} else if (type == "marker") {

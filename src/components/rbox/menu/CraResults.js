@@ -1,11 +1,13 @@
 import React from 'react';
 import styles from './_craResults.css';
-
+import * as lmsg from '../../../libs/lmsg'
+var children_rboxkey = null;
 class CraResults extends React.Component {
     render() {
-        
-        let JtzsList = this.props.jtzsPage;        
-        if(!JtzsList) alert("错误");
+        console.log(this.props);
+        children_rboxkey = this.props.children;
+        let JtzsList = this.props.jtzsPage;
+        if (!JtzsList) alert("错误");
         return (
             <div className={styles.traffic_tag}>
                 <div>
@@ -55,6 +57,28 @@ class CraResults extends React.Component {
 class TableRow extends React.Component {
     constructor() {
         super();
+        this.onClickRow = this.onClickRow.bind(this);
+    }
+    onClickRow(ref) {
+        //console.log(this.props)
+        var ID2screen1 = this.props.item.id;
+        console.log(ID2screen1);
+        var iscra = null;
+        lmsg.send('crsBtn', {
+            'param': children_rboxkey,
+            'isTime': 1,
+            'ID': ID2screen1
+        });
+    }
+    componentDidMount() {
+        /*switch(children_rboxkey){
+            
+        }*/
+        /*lmsg.send("crsBtn", {
+            message: {
+                params
+            }
+        });*/
     }
     render() {
         var hierarchyStyle = null;
@@ -116,10 +140,10 @@ class TableRow extends React.Component {
         return (
             <li id='row' className={styles.row}>
                 <ul>
-                    <li className={styles.rank}>{this.props.item.xh}</li>
-                    <li className={styles.name}>{this.props.item.name}</li>
-                    <li className={styles.index}>{this.props.item.jtzs}</li>
-                    <li style={hierarchyStyle}>{this.props.item.yddj}</li>
+                    <li ref='IndexRank' id='rank' className={styles.rank}>{this.props.item.xh}</li>
+                    <li ref='IndexName' id='name' className={styles.name} onClick={this.onClickRow}>{this.props.item.name}</li>
+                    <li ref='IndexIndex' id='index' className={styles.index}>{this.props.item.jtzs}</li>
+                    <li ref='IndexLevel' id='level' style={hierarchyStyle}>{this.props.item.yddj}</li>
                 </ul>
             </li>
         )

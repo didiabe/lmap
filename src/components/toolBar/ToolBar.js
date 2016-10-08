@@ -6,23 +6,25 @@ import Drawsth from './menu/Drawsth';
 import UniqueSub from './menu/UniqueSub';
 import styles from './_toolBar.css';
 //import * as DRAW from '../../scripts/drawtest';
+import * as lmsg from '../../libs/lmsg';
 
 class ToolBar extends React.Component {
     constructor() {
-            super();
-        }
-        /* drawtest() {
-             console.log(DRAW)
-                 //console.log(DRAW.drawFeatures);
-             DRAW.drawFeatures();
+        super();
+    }
+    componentDidMount() {
+        lmsg.subscribe("locating", (data) => {
+            console.log(data);
 
-         }*/
+        });
+    }
+
     render() {
         return (
             <div id='toolBar' className={styles.layerbox}>
                 <div id="layerbox" className={styles.layerboxIn}>
                     <div id="toolBar">
-                        <ul>
+                        <ul ref="toolbar">
                             <TrafficConditions/>
                             <UpdateIndex />
                             {/*<li id="satelliteMap">

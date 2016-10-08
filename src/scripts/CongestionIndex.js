@@ -139,10 +139,22 @@ const crossLayer = function(data) {
 
     var pointLayer;
 
+    function aaaa() {
+        alert('1');
+    }
+
     function panTotarget(e) {
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
+
+        var popup1 = L.popup().setContent(
+            '<button class="aa">档案</button>' +
+            '<button class="aa">实时</button>' +
+            '<button class="aa">更新</button>');
+
+        pointLayer.bindPopup(popup1)
+            .addTo(map);
     };
 
     function highlightFeature(e) {
@@ -151,10 +163,10 @@ const crossLayer = function(data) {
             color: e.target.defaultOptions.icon.options.color
         });
         e.target.setIcon(highlighticon);
-        L.popup({
+        /*L.popup({
             offset: [0, -8],
             closeButton: false
-        }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);
+        }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);*/
     };
 
     function resetFeature(e) {
@@ -163,7 +175,7 @@ const crossLayer = function(data) {
             color: e.target.defaultOptions.icon.options.color
         });
         e.target.setIcon(reseticon);
-        map.closePopup();
+        //map.closePopup();
     };
 
     function eachPointFeature(feature, layer) {
@@ -190,15 +202,6 @@ const crossLayer = function(data) {
 
     }).addTo(map);
 
-
-
-    var popup1 = L.popup().setContent(
-        '<button class="aa">1</button>' +
-        '<button class="aa">2</button>' +
-        '<button class="aa">3</button>');
-
-    pointLayer.bindPopup(popup1)
-        .addTo(map);
 
 
 };
@@ -517,21 +520,6 @@ const areaLayer = function(data) {
 
 };
 
-/*const DataService = (api_path, param, a, b) => {
-    window.$.ajax({
-        type: 'POST',
-        //10.25.67.72
-        url: 'http://10.25.67.130:8080/trafficIndex_web' + api_path,
-        data: param,
-        dataType: 'json',
-        async: false,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        success: a,
-        error: b
-    });
-};*/
 
 export const playback = (a) => {
 
@@ -547,8 +535,7 @@ export const playback = (a) => {
 const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
-        //10.25.67.72
-        url: 'http://10.25.67.115:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.109:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,
@@ -562,12 +549,9 @@ const DataService = (api_path, param, a, b) => {
 export const displayUniLayer = (ref) => {
     console.log(ref)
     map.eachLayer((layer) => {
-        console.log(layer);
         if (layer.options.id !== "streetLayer") {
-            console.log(layer);
             map.removeLayer(layer);
         }
-        //map.removeLayer(layer);
     });
     var param = null,
         _APIpath = null,
@@ -581,8 +565,8 @@ export const displayUniLayer = (ref) => {
         var fudongcheIcon = L.icon({
             iconUrl: '../src/images/local_taxi.png',
             iconSize: [20, 20], // size of the icon
-            iconAnchor: [22, 22], // point of the icon which will correspond to marker's location
-            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+            iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+            popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
         });
         specialpointlayer = (feature, latlng) => {
             //var indexVal = feature.properties.index;
@@ -627,6 +611,7 @@ export const displayUniLayer = (ref) => {
             };
         }
     }
+
     DataService(_APIpath, param, (resp) => {
         console.log(resp.data);
         featurecollectiondata = resp.data;
@@ -634,10 +619,115 @@ export const displayUniLayer = (ref) => {
         console.log(e);
         alert("后台传输错误");
     });
+
+    function panToBound(e) {
+        var eachFeatureID = e.target.feature.properties.id;
+        var sendparamID = {
+            "id": eachFeatureID
+        };
+        console.log(sendparamID);
+        /*DataService("/floatcar/fdcarMessage.json", sendparamID, (resp) => {
+            console.log(resp);
+
+        }, (e) => {
+            console.log(e)
+        });*/
+        console.log(e.target);
+
+        var specialpopup = L.popup().setContent("这是浮动车信息");
+        SpecificLayer.bindPopup(specialpopup).addTo(map);
+
+        if (specialpointlayer) {
+            if (map.getZoom() <= 16) {
+                map.setZoomAround(e.target._latlng, 17);
+            } else map.panTo(e.target._latlng);
+        } else map.fitBounds(e.target.getBounds());
+
+    };
+
+    function eachUniFeature(feature, layer) {
+        layer.on({
+            click: panToBound,
+            //mouseover: highlightFeature,
+            //mouseout: resetFeature
+        });
+    };
     var SpecificLayer = L.geoJson(featurecollectiondata, {
         style: specialstyle,
         pointToLayer: specialpointlayer,
+        onEachFeature: eachUniFeature
     });
     map.addLayer(SpecificLayer);
 
+}
+
+var taxiInterval = null;
+
+export const trackingTaxi = (params) => {
+    /* var params = {
+         id: '浙JT8001',
+         date: '2015/4/17 1:00:40'
+     }*/
+    console.log(params);
+    if (params) {
+        var sendtaxiparams = {
+            id: params.id,
+            date: params.date
+        };
+
+        var taxiRoute = DataService('/map/track.json', sendtaxiparams, (resp) => {
+            console.log(resp.data)
+            map.eachLayer((layer) => {
+                if (layer.options.id !== "streetLayer") {
+                    map.removeLayer(layer);
+                }
+            });
+            var fudongcheIcon = L.icon({
+                iconUrl: '../src/images/local_taxi.png',
+                iconSize: [20, 20], // size of the icon
+                iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+                popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
+            });
+            var taxipointlayer = (feature, latlng) => {
+                //var indexVal = feature.properties.index;
+                return L.marker(latlng, {
+                    icon: fudongcheIcon
+                });
+            }
+            var taxijson = resp.data;
+            var routestyle = (feature) => {
+                return {
+                    fillColor: '#2db7f5',
+                    weight: 2,
+                    opacity: 1,
+                    color: '#2db7f5',
+                    dashArray: '3',
+                    fillOpacity: 0.7
+                };
+            }
+            var taxitracklayer = L.geoJson(taxijson, {
+                style: routestyle,
+                pointToLayer: taxipointlayer
+
+            });
+            map.addLayer(taxitracklayer);
+        }, (e) => {
+            console.log(e);
+            alert("后台传输错误");
+        });
+
+        taxiInterval = setInterval(() => {
+            taxiRoute();
+        }, 61000);
+
+
+    } else alert("无法追踪");
+}
+export const stopTrackingTaxi = () => {
+    clearInterval(taxiInterval);
+    map.eachLayer((layer) => {
+        if (layer.options.id !== "streetLayer") {
+            map.removeLayer(layer);
+        }
+    });
 }

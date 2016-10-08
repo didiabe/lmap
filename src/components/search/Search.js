@@ -17,7 +17,7 @@ class Search extends React.Component {
     update() {
         let keyword = this.refs.searchVal.value;
         if(keyword&&keyword!='')
-        this.props.fetchSearchList(keyword,'search');
+        this.props.fetchSearchList(keyword, 'search');
         else
         alert('请输入有效的搜索内容！')
         //browserHistory.push('/TG');

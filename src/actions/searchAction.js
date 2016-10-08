@@ -40,97 +40,6 @@ export const fetchSearchList = (keyword, rboxkey, page = 1) => {
                     console.log(e);
                     alert("传输错误", e)
                 });
-            /*var data = {
-                "cross": [{
-                    "name": "dasd",
-                    "index": 2
-                }, {
-                    "name": "nabbd",
-                    "index": 4
-                }, {
-                    "name": "na11d",
-                    "index": 3
-                }, {
-                    "name": "nad",
-                    "index": 1
-                }, {
-                    "name": "nadqe",
-                    "index": 3
-                }, {
-                    "name": "na565d",
-                    "index": 5
-                }, {
-                    "name": "n4234gdgad",
-                    "index": 9
-                }, {
-                    "name": "nad",
-                    "index": 7
-                }, {
-                    "name": "nad",
-                    "index": 1
-                }, {
-                    "name": "nad",
-                    "index": 3
-                }, {
-                    "name": "nad",
-                    "index": 8
-                }, {
-                    "name": "nad",
-                    "index": 2
-                }],
-                "road": [{
-                    "name": "dasd",
-                    "index": 2
-                }, {
-                    "name": "nabbd",
-                    "index": 4
-                }, {
-                    "name": "na11d",
-                    "index": 3
-                }, {
-                    "name": "nad",
-                    "index": 1
-                }, {
-                    "name": "nadqe",
-                    "index": 3
-                }, {
-                    "name": "na565d",
-                    "index": 5
-                }, {
-                    "name": "n4234gdgad",
-                    "index": 9
-                }],
-                "region": [{
-                    "name": "dasd",
-                    "index": 2
-                }, {
-                    "name": "nadqe",
-                    "index": 3
-                }, {
-                    "name": "na565d",
-                    "index": 5
-                }, {
-                    "name": "n4234gdgad",
-                    "index": 9
-                }, {
-                    "name": "nad",
-                    "index": 7
-                }, {
-                    "name": "nad",
-                    "index": 1
-                }, {
-                    "name": "nad",
-                    "index": 3
-                }, {
-                    "name": "nad",
-                    "index": 8
-                }, {
-                    "name": "nad",
-                    "index": 2
-                }]
-            };*/
-
-
 
         }
     }
@@ -147,7 +56,7 @@ const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
-        url: 'http://10.25.67.110:8080/trafficIndex_web' + api_path,
+        url: 'http://10.25.67.121:8080/trafficIndex_web' + api_path,
         data: param,
         dataType: 'json',
         async: false,
@@ -165,35 +74,54 @@ export const pushCRAList = cac(PUSH_CRA_LIST, 'list')
 var d = new Date();
 var myday = null;
 var last_Path;
+var sendParam2 = null;
+var dataRecv = null;
 export const fetchCRAList = (rboxkey, t) => {
-
-    if (rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';
-    else if (rboxkey == 'road') last_Path = '/road/ydldMore.json';
-    else if (rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
-
-    return (dispatch, getState) => {
-        dispatch(setRboxKey(rboxkey))
-        if (t == null) myday = d.getFullYear() + "/" + d.getMonth() + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        else myday = t;
-        var param = {
+    if (t == undefined) {
+        myday = d.getFullYear() + "/" + d.getMonth() + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        if (rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';
+        else if (rboxkey == 'road') last_Path = '/road/ydldMore.json';
+        else if (rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+        console.log(myday)
+        sendParam2 = {
             queryTime: myday,
             pageIndex: 1,
             pageSize: 10,
             isFirst: true
         };
-        DataService(last_Path, param,
-            (resp) => {
-                //console.log(resp);
-                let dataRecv = resp.data;
-                console.log(dataRecv)
-                dispatch(pushCRAList(dataRecv))
-            },
-            (e) => {
-                console.log(e);
-                alert("后台传输有误！")
-            });
+    } else {
+        myday = t.sj;
+        var YWD = t.flag;
+        sendParam2 = {
+            date: myday,
+            flag: YWD,
+            pageIndex: 1,
+            pageSize: 10,
+            isFirst: true
+        };
+        if (rboxkey == 'cross') last_Path = '/map/crossJtda.json';
+        else if (rboxkey == 'road') last_Path = '/map/roadJtda.json';
+        else if (rboxkey == 'area') last_Path = '/map/zoneJtda.json';
     }
+    DataService(last_Path, sendParam2,
+        (resp) => {
+            //console.log(resp);
+            dataRecv = resp.data;
+            console.log(dataRecv);
+        },
+        (e) => {
+            console.log(e);
+            alert("后台传输有误！")
+        });
+
+    return (dispatch, getState) => {
+
+        dispatch(setRboxKey(rboxkey));
+
+        //dispatch不执行
+        dispatch(pushCRAList(dataRecv))
 
 
+    }
 
 }

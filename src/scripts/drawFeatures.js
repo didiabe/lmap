@@ -2,6 +2,7 @@ import L from 'leaflet';
 //import LE from 'esri-leaflet';
 import turf from 'turf';
 import leaflet_draw from 'leaflet-draw';
+import * as lmsg from '../libs/lmsg';
 
 export const drawFeatures = {
 	activate: function() {
@@ -135,13 +136,13 @@ const drawCreated = (e) => {
 		});
 		//第一个点和最后一个点要保持一致，要不turf解析不了。
 		latlngs.push(latlngs[0])
-			//console.log('latlng:', latlngs)
 		featureDrawn = turf.polygon([latlngs]);
 		//面积是平方公里
 		measurement = turf.area(featureDrawn) / 1000000;
 
 	} else if (type == "marker") {
 		latlngs = [layer._latlng.lng, layer._latlng.lat];
+		measurement = latlngs;
 		featureDrawn = turf.point(latlngs);
 	} else {
 		alert("创建图形失败");
@@ -149,7 +150,20 @@ const drawCreated = (e) => {
 	}
 
 	console.log(measurement);
+	console.log(featureDrawn);
 
+	//传给1屏的,不包括后台
+	if (measurement && featureDrawn) {
+		console.log('transfer to screen 1');
+
+		lmsg.send('located', {
+			finish: true,
+			params: {
+				geometry: featureDrawn,
+				measurement: measurement
+			}
+		});
+	}
 
 	drawnItemsLayer.addLayer(layer);
 }

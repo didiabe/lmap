@@ -112,6 +112,11 @@ ol, ul {
     border: 0;
     background-position: 11px -255px;
 }
+.fullscreen_active{
+    composes:toolItemSpan;
+    border: 0;
+    background-position: 11px -319px;
+}
 .fullscreen:hover{
     opacity: 0.6
 }

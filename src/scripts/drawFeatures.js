@@ -1,6 +1,5 @@
 import L from 'leaflet';
-//import LE from 'esri-leaflet';
-import turf from 'turf';
+import turf from '@turf/turf';
 import leaflet_draw from 'leaflet-draw';
 import * as lmsg from '../libs/lmsg';
 

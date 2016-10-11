@@ -65,7 +65,7 @@ class TableRow extends React.Component {
         console.log(ID2screen1);
         var iscra = null;
         lmsg.send('crsBtn', {
-            'param': children_rboxkey,
+            'params': children_rboxkey,
             'isTime': 1,
             'ID': ID2screen1
         });

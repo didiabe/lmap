@@ -1,7 +1,7 @@
 import {
     cac
 } from '../utils/util';
-
+import * as Ds from '../libs/DataService';
 // 设置rboxkey
 export const SET_RBOX_KEY = 'SET_RBOX_KEY'
 const setRboxKey = cac(SET_RBOX_KEY, 'rboxkey')
@@ -30,7 +30,7 @@ export const fetchSearchList = (keyword, rboxkey, page = 1) => {
             let param = {
                 id: keyword
             }
-            DataService('/zone/queryByName.json', param,
+            Ds.DataService('/zone/queryByName.json', param,
                 (resp) => {
                     console.log(resp.data);
                     let data = resp.data;
@@ -52,21 +52,21 @@ export const fetchSearchList = (keyword, rboxkey, page = 1) => {
           //a => data{}
           //b => error{}
     }*/
-const DataService = (api_path, param, a, b) => {
-    window.$.ajax({
-        type: 'POST',
-        //10.25.67.72
-        url: 'http://10.25.67.121:8080/trafficIndex_web' + api_path,
-        data: param,
-        dataType: 'json',
-        async: false,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        success: a,
-        error: b
-    });
-};
+    /*const DataService = (api_path, param, a, b) => {
+        window.$.ajax({
+            type: 'POST',
+            //10.25.67.72
+            url: 'http://10.25.67.133:8080/trafficIndex_web' + api_path,
+            data: param,
+            dataType: 'json',
+            async: false,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            success: a,
+            error: b
+        });
+    };*/
 
 
 export const PUSH_CRA_LIST = 'PUSH_CRA_LIST'
@@ -103,7 +103,7 @@ export const fetchCRAList = (rboxkey, t) => {
         else if (rboxkey == 'road') last_Path = '/map/roadJtda.json';
         else if (rboxkey == 'area') last_Path = '/map/zoneJtda.json';
     }
-    DataService(last_Path, sendParam2,
+    Ds.DataService(last_Path, sendParam2,
         (resp) => {
             //console.log(resp);
             dataRecv = resp.data;

@@ -4,6 +4,7 @@ import TrafficConditions from './menu/Traffic';
 import UpdateIndex from './menu/updateIndex';
 import Drawsth from './menu/Drawsth';
 import UniqueSub from './menu/UniqueSub';
+import ConfigSub from './menu/ConfigSub';
 import styles from './_toolBar.css';
 //import * as DRAW from '../../scripts/drawtest';
 import * as lmsg from '../../libs/lmsg';
@@ -40,11 +41,8 @@ class ToolBar extends React.Component {
                                 </div>
                             </li>*/}
                             <Drawsth/>
-                            <li id="fullScreen">
-                                <div type="fullscreen">
-                                    <span className={styles.fullscreen}>全屏</span>
-                                </div>
-                            </li>
+                            <ConfigSub/>
+
                         </ul>
                     </div>
                     <div id='presetBox'/>

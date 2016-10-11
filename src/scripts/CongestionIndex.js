@@ -2,6 +2,9 @@ import L from 'leaflet';
 import LE from 'esri-leaflet';
 import * as lmap from '../libs/lmap';
 import taxi_img from '../images/local_taxi.png';
+import * as lmsg from '../libs/lmsg';
+import * as Ds from '../libs/DataService';
+import traffic_warning_img from '../images/Traffic_Warning.png';
 
 export function addGracLayer(layerName, data) {
     console.log(data);
@@ -20,6 +23,7 @@ export function addGracLayer(layerName, data) {
     }
 
 }
+
 
 const crossLayer = function(data) {
     map.eachLayer((layer) => {
@@ -139,7 +143,7 @@ const crossLayer = function(data) {
 
     var pointLayer;
 
-    function aaaa() {
+    var aaaa = function() {
         alert('1');
     }
 
@@ -148,12 +152,31 @@ const crossLayer = function(data) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
 
-        var popup1 = L.popup().setContent(
-            '<button class="aa">档案</button>' +
-            '<button class="aa">实时</button>' +
-            '<button class="aa">更新</button>');
+        /*var popup1 = L.popup().setContent(
+            '<button class="aa"  onclick = aaaa()>档案</button>' +
+            '<button id="shishi" class="aa">实时</button>' +
+            '<button class="aa">更新</button>');*/
+        var popupCross = $('<div/>');
+        popupCross.append($('<button class="aa">更新</button>').click(function() {
+            alert("update index")
+        }));
+        popupCross.append($('<button class="aa">实时</button>').click(function() {
+            console.log(e.target.feature.properties.id);
+            lmsg.send('crsBtn', {
+                params: 'cross',
+                isTime: '1',
+                ID: e.target.feature.properties.id
+            });
+        }));
+        popupCross.append($('<button class="aa">档案</button>').click(function() {
+            lmsg.send('crsBtn', {
+                params: 'cross',
+                isTime: '2',
+                ID: e.target.feature.properties.id
+            });
+        }));
 
-        pointLayer.bindPopup(popup1)
+        pointLayer.bindPopup(popupCross[0])
             .addTo(map);
     };
 
@@ -311,7 +334,28 @@ const roadLayer = function(data) {
     function panToBound(e) {
         //console.log(e.target);
         map.fitBounds(e.target.getBounds());
+        var popupRoad = $('<div/>');
+        popupRoad.append($('<button class="aa">更新</button>').click(function() {
+            alert("update index")
+        }));
+        popupRoad.append($('<button class="aa">实时</button>').click(function() {
+            ///console.log(e.target);
+            lmsg.send('crsBtn', {
+                params: 'road',
+                isTime: '1',
+                ID: e.target.feature.properties.id
+            });
+        }));
+        popupRoad.append($('<button class="aa">档案</button>').click(function() {
+            lmsg.send('crsBtn', {
+                params: 'road',
+                isTime: '2',
+                ID: e.target.feature.properties.id
+            });
+        }));
 
+        lineLayer.bindPopup(popupRoad[0])
+            .addTo(map);
     };
 
     function highlightFeature(e) {
@@ -479,6 +523,28 @@ const areaLayer = function(data) {
 
     function panToBound(e) {
         map.fitBounds(e.target.getBounds());
+        var popupArea = $('<div/>');
+        popupArea.append($('<button class="aa">更新</button>').click(function() {
+            alert("update index")
+        }));
+        popupArea.append($('<button class="aa">实时</button>').click(function() {
+            //console.log(e.target.feature.properties.id);
+            lmsg.send('crsBtn', {
+                params: 'area',
+                isTime: '1',
+                ID: e.target.feature.properties.id
+            });
+        }));
+        popupArea.append($('<button class="aa">档案</button>').click(function() {
+            lmsg.send('crsBtn', {
+                params: 'area',
+                isTime: '2',
+                ID: e.target.feature.properties.id
+            });
+        }));
+
+        regionLayer.bindPopup(popupArea[0])
+            .addTo(map);
     };
 
     function highlightFeature(e) {
@@ -531,23 +597,9 @@ export const playback = (a) => {
     return markerPlayBack;
 };
 
-
-const DataService = (api_path, param, a, b) => {
-    window.$.ajax({
-        type: 'POST',
-        url: 'http://10.25.67.109:8080/trafficIndex_web' + api_path,
-        data: param,
-        dataType: 'json',
-        async: false,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        success: a,
-        error: b
-    });
-};
-export const displayUniLayer = (ref) => {
-    console.log(ref)
+export const displayUniLayer = (ref, data) => {
+    console.log(ref);
+    console.log(data);
     map.eachLayer((layer) => {
         if (layer.options.id !== "streetLayer") {
             map.removeLayer(layer);
@@ -557,13 +609,15 @@ export const displayUniLayer = (ref) => {
         _APIpath = null,
         featurecollectiondata = null,
         specialpointlayer = null,
+        clickPanBound = null,
+        specialpopup = null,
         specialstyle = null;
 
 
     if (ref == 'fudongche') {
         _APIpath = "/map/floatCar.json";
         var fudongcheIcon = L.icon({
-            iconUrl: '../src/images/local_taxi.png',
+            iconUrl: taxi_img,
             iconSize: [20, 20], // size of the icon
             iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
             popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
@@ -586,6 +640,7 @@ export const displayUniLayer = (ref) => {
                 fillOpacity: 0.7
             };
         }
+
     } else if (ref == 'guanzhi') {
         _APIpath = "/map/trafficControl.json";
         specialstyle = (feature) => {
@@ -605,14 +660,100 @@ export const displayUniLayer = (ref) => {
                 fillColor: '#D2691E',
                 weight: 2,
                 opacity: 1,
-                color: 'white',
+                color: 'yellow',
                 dashArray: '3',
                 fillOpacity: 0.7
             };
         }
+    } else if (ref == 'yongdu_cross') {
+        _APIpath = "/map/cfydCross.json";
+        var yongduCrossIcon = L.icon({
+            iconUrl: traffic_warning_img,
+            iconSize: [20, 20], // size of the icon
+            iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+            popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
+        });
+        specialpointlayer = (feature, latlng) => {
+                //var indexVal = feature.properties.index;
+                return L.marker(latlng, {
+                    icon: yongduCrossIcon
+                });
+            }
+            //param从哪里来？
+        param = {
+            flag: data.flag,
+            date: data.date
+        }
+    } else if (ref == 'yongdu_road') {
+        _APIpath = "/map/cfydRoad.json";
+        specialstyle = (feature) => {
+            return {
+                fillColor: '#D2691E',
+                weight: 2,
+                opacity: 1,
+                color: 'yellow',
+                fillOpacity: 0.7
+            };
+        }
+        param = {
+            flag: data.flag,
+            date: data.date
+        }
+    } else if (ref == 'jiari_cross') {
+        _APIpath = "/map/holiday.json";
+        var yongduCrossIcon = L.icon({
+            iconUrl: traffic_warning_img,
+            iconSize: [20, 20], // size of the icon
+            iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+            popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
+        });
+        specialpointlayer = (feature, latlng) => {
+                //var indexVal = feature.properties.index;
+                return L.marker(latlng, {
+                    icon: yongduCrossIcon
+                });
+            }
+            //param从哪里来？
+        param = {
+            type: 'cross',
+            qyType: 1,
+            date: '20160818'
+        }
+    } else if (ref == 'jiari_road') {
+        _APIpath = "/map/holiday.json";
+        specialstyle = (feature) => {
+            return {
+                fillColor: '#D2691E',
+                weight: 2,
+                opacity: 1,
+                color: 'blue',
+                fillOpacity: 0.7
+            };
+        }
+        param = {
+            type: 'road',
+            qyType: 1,
+            date: '20160818'
+        }
+    } else if (ref == 'jiari_zone') {
+        _APIpath = "/map/holiday.json";
+        specialstyle = (feature) => {
+            return {
+                fillColor: '#D2691E',
+                weight: 2,
+                opacity: 1,
+                color: 'blue',
+                fillOpacity: 0.7
+            };
+        }
+        param = {
+            type: 'region',
+            qyType: 0,
+            date: '20160818'
+        }
     }
 
-    DataService(_APIpath, param, (resp) => {
+    Ds.DataService(_APIpath, param, (resp) => {
         console.log(resp.data);
         featurecollectiondata = resp.data;
     }, (e) => {
@@ -620,21 +761,92 @@ export const displayUniLayer = (ref) => {
         alert("后台传输错误");
     });
 
-    function panToBound(e) {
+    clickPanBound = (e) => {
         var eachFeatureID = e.target.feature.properties.id;
         var sendparamID = {
-            "id": eachFeatureID
+            "xh": eachFeatureID
         };
         console.log(sendparamID);
-        /*DataService("/floatcar/fdcarMessage.json", sendparamID, (resp) => {
-            console.log(resp);
+        var popupData = null;
+        if (ref == 'fudongche') {
+            Ds.DataService("/floatcar/fdcarMessage.json", sendparamID, (resp) => {
+                console.log(resp);
+                popupData = resp.data;
+            }, (e) => {
+                alert('后台传输错误');
+                console.log(e)
+            });
+            specialpopup = L.popup().setContent(
+                "车牌照: " + popupData.carid + '<br/>' +
+                "车朝向: " + popupData.direction + '<br/>' +
+                "浮动车类型: " + popupData.floatcartype + '<br/>' +
+                "GPS时间: " + popupData.gpsDate + '<br/>' +
+                "经度: " + popupData.gpsJd + '<br/>' +
+                "纬度: " + popupData.gpsWd + '<br/>' +
+                "浮动车速度: " + popupData.velocity + '<br/>');
 
-        }, (e) => {
-            console.log(e)
-        });*/
-        console.log(e.target);
+        } else if (ref == "shigong") {
+            Ds.DataService("/roadconstruction/queryConstOne.json", sendparamID, (resp) => {
+                console.log(resp);
+                popupData = resp.data;
+            }, (e) => {
+                alert('后台传输错误');
+                console.log(e)
+            });
+            specialpopup = L.popup().setContent(
+                "施工单位: " + popupData.company + '<br/>' +
+                "联系人: " + popupData.contact + '<br/>' +
+                "施工类别: " + popupData.objecttype + '<br/>' +
+                "位置描述: " + popupData.locationdesc + '<br/>' +
+                "施工名称: " + popupData.objectname + '<br/>' +
+                "施工原因: " + popupData.reason + '<br/>' +
+                "当前状态: " + popupData.state + '<br/>' +
+                "开始时间: " + popupData.startdate + '<br/>' +
+                "结束时间: " + popupData.enddate + '<br/>' +
+                "联系电话: " + popupData.telephone + '<br/>');
+        } else if (ref == "guanzhi") {
+            Ds.DataService("/trafficControl/queryControlOne.json", sendparamID, (resp) => {
+                console.log(resp);
+                popupData = resp.data;
+            }, (e) => {
+                alert('后台传输错误');
+                console.log(e)
+            });
+            specialpopup = L.popup().setContent(
+                "申请时间: " + popupData.applydate + '<br/>' +
+                "开始时间: " + popupData.startdate + '<br/>' +
+                "预计结束时间: " + popupData.planenddate + '<br/>' +
+                "实际结束时间: " + popupData.actualenddate + '<br/>' +
+                "当前状态: " + popupData.state + '<br/>' +
+                "所属辖区: " + popupData.area + '<br/>' +
+                "责任单位: " + popupData.liablecompany + '<br/>' +
+                "责任人: " + popupData.liableperson + '<br/>' +
+                "联系电话: " + popupData.telephone + '<br/>' +
+                "位置描述: " + popupData.locationdesc + '<br/>' +
+                "管制名称: " + popupData.objectname + '<br/>' +
+                "管制类型: " + popupData.type + '<br/>' +
+                "管制说明: " + popupData.remark + '<br/>');
+        } else if (ref == "shigu") {
+            Ds.DataService("/trifficAccident/queryAccidentOne.json", sendparamID, (resp) => {
+                console.log(resp);
+                popupData = resp.data;
+            }, (e) => {
+                alert('后台传输错误');
+                console.log(e)
+            });
+            specialpopup = L.popup().setContent(
+                "事故等级: " + popupData.accidentlevel + '<br/>' +
+                "事故类型: " + popupData.accidenttype + '<br/>' +
+                "发生位置: " + popupData.locationdesc + '<br/>' +
+                "发生时间: " + popupData.occurrencedate + '<br/>' +
+                "接报人: " + popupData.recipientperson + '<br/>' +
+                "事故描述: " + popupData.remark + '<br/>' +
+                "上报人: " + popupData.reportperson + '<br/>' +
+                "上报人联系方式: " + popupData.reportpersoncontact + '<br/>');
+        }
 
-        var specialpopup = L.popup().setContent("这是浮动车信息");
+
+        //var specialpopup = L.popup().setContent("这是浮动车信息");
         SpecificLayer.bindPopup(specialpopup).addTo(map);
 
         if (specialpointlayer) {
@@ -642,12 +854,11 @@ export const displayUniLayer = (ref) => {
                 map.setZoomAround(e.target._latlng, 17);
             } else map.panTo(e.target._latlng);
         } else map.fitBounds(e.target.getBounds());
-
-    };
+    }
 
     function eachUniFeature(feature, layer) {
         layer.on({
-            click: panToBound,
+            click: clickPanBound,
             //mouseover: highlightFeature,
             //mouseout: resetFeature
         });
@@ -675,7 +886,7 @@ export const trackingTaxi = (params) => {
             date: params.date
         };
 
-        var taxiRoute = DataService('/map/track.json', sendtaxiparams, (resp) => {
+        var taxiRoute = Ds.DataService('/map/track.json', sendtaxiparams, (resp) => {
             console.log(resp.data)
             map.eachLayer((layer) => {
                 if (layer.options.id !== "streetLayer") {
@@ -683,7 +894,7 @@ export const trackingTaxi = (params) => {
                 }
             });
             var fudongcheIcon = L.icon({
-                iconUrl: '../src/images/local_taxi.png',
+                iconUrl: taxi_img,
                 iconSize: [20, 20], // size of the icon
                 iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
                 popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor

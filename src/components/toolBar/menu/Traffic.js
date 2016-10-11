@@ -16,6 +16,7 @@ import QueueAnim from 'rc-queue-anim';*/
 import styles from '../_toolBar.css';
 import trafficStyles from './_traffic.css'
 import * as CI from '../../../scripts/CongestionIndex';
+import * as Ds from '../../../libs/DataService';
 //var Radio = require('antd/lib/radio');
 var Slider = require('antd/lib/slider');
 //var Select = require('antd/lib/select');
@@ -31,6 +32,7 @@ var Col = require('antd/lib/col');
 //var Icon = require('antd/lib/icon');
 var TimePicker = require('antd/lib/time-picker');
 var QueueAnim = require('rc-queue-anim/lib/QueueAnim');
+
 class Traffic extends React.Component {
     constructor() {
         super();
@@ -183,7 +185,7 @@ class Forecast extends React.Component {
             type: this.state.CraType,
             time: this.state.inputValue
         }
-        DataService('/zone/forecast.json', param,
+        Ds.DataService('/zone/forecast.json', param,
             (resp) => {
                 if (markerPlayBack) markerPlayBack.clearLayer();
                 this.setState({
@@ -320,7 +322,7 @@ class Forecast extends React.Component {
     }
 }
 
-const DataService = (api_path, param, a, b) => {
+/*const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
@@ -334,7 +336,7 @@ const DataService = (api_path, param, a, b) => {
         success: a,
         error: b
     });
-};
+};*/
 const RangePicker = DatePicker.RangePicker;
 const CheckboxGroup = Checkbox.Group;
 const CRA_options = [{
@@ -477,7 +479,7 @@ class Playback extends React.Component {
             type: this.state.checkedOptions
         }
 
-        DataService("/zone/hisPlayBack.json", param1,
+        Ds.DataService("/zone/hisPlayBack.json", param1,
             (data) => {
                 let geo_playback = data.data;
                 console.log(geo_playback);
@@ -575,7 +577,7 @@ class Playback extends React.Component {
     }
 
     render() {
-        var player_panel = this.state.isLoaded ? [
+        const player_panel = this.state.isLoaded ? [
             <div id="hisPlayer" className={trafficStyles.hisPlayer_panel}>
     {"Time Range: "}<span className={trafficStyles.date} id="dateNow"></span>
                     <Button className={trafficStyles.hisPlayer_btn2} type="ghost"  size="large" icon="plus" onClick={this.speedUp} /><br/>

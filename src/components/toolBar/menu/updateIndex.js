@@ -26,6 +26,7 @@ ReactDOM.render(<div>
 import styles from '../_toolBar.css';
 import UpdateIndexStyle from './_updateIndex.css'
 import * as CI from '../../../scripts/CongestionIndex';
+import * as Ds from '../../../libs/DataService';
 
 var Radio = require('antd/lib/radio');
 var Slider = require('antd/lib/slider');
@@ -99,7 +100,7 @@ const columns = [{
     dataIndex: "index"
 }];
 
-const DataService = (api_path, param, a, b) => {
+/*const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
         //10.25.67.72
@@ -113,7 +114,7 @@ const DataService = (api_path, param, a, b) => {
         success: a,
         error: b
     });
-};
+};*/
 /*const data = [];
 for (let i = 0; i < 46; i++) {
     data.push({
@@ -246,7 +247,7 @@ class UpdateIndexPanel extends React.Component {
             level: this.state.ConLevel
         };
         console.log(param);
-        DataService("/zone/zsLevel.json", param,
+        Ds.DataService("/zone/zsLevel.json", param,
             (resp) => {
                 console.log(resp.data);
                 let data4Table = [];
@@ -306,7 +307,7 @@ class UpdateIndexPanel extends React.Component {
         };
 
         console.log(param2);
-        DataService('/zone/zsUpdate.json', param2,
+        Ds.DataService('/zone/zsUpdate.json', param2,
             (resp) => {
                 console.log(resp.data);
                 this.setState({

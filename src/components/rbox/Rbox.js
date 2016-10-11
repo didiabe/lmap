@@ -11,6 +11,7 @@ import CraResults from './menu/CraResults';
 import Pager from './menu/Pager';
 import * as lmsg from '../../libs/lmsg';
 
+
 class Rbox extends React.Component {
     constructor() {
         super();
@@ -134,7 +135,7 @@ class Rbox extends React.Component {
 
             if (data.isTime == 1) {
                 if (param_cra == 'cross') self.refs.cross.click();
-                else if (param_cra == 'cross') self.refs.road.click();
+                else if (param_cra == 'road') self.refs.road.click();
                 else if (param_cra == 'area') self.refs.area.click();
 
             } else if (data.isTime == 2) {
@@ -145,7 +146,7 @@ class Rbox extends React.Component {
                     self.refs.cross.click();
 
 
-                } else if (param_cra == 'cross') {
+                } else if (param_cra == 'road') {
 
                     self.setState({
                         timing: param_cra.time

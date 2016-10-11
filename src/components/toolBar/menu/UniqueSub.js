@@ -13,6 +13,7 @@ import {
 var Button = require('antd/lib/button');
 var Icon = require('antd/lib/icon');
 var Popover = require('antd/lib/popover');
+var Modal = require('antd/lib/modal');
 const ButtonGroup = Button.Group;
 class UniqueSub extends React.Component {
     constructor() {
@@ -52,11 +53,11 @@ class UniqueSub extends React.Component {
         )
     }
     componentDidMount() {
-        setTimeout(function() {
-            ReactDOM.render(
-                <UniquePanel/>, document.getElementById("presetBox")
-            )
-        }, 3000)
+        /* setTimeout(function() {
+             ReactDOM.render(
+                 <UniquePanel/>, document.getElementById("presetBox")
+             )
+         }, 3000)*/
 
         let self = this;
         lmsg.subscribe('locating', (data) => {
@@ -73,38 +74,74 @@ class UniqueSub extends React.Component {
             } else if (!data.startTracking) CI.stopTrackingTaxi();
             else alert("追踪参数错误！");
         });
+        lmsg.subscribe('cfxydBtnClick', (data) => {
+            console.log(data);
+            ReactDOM.render(
+                <UniquePanel/>, document.getElementById("presetBox")
+            )
+        });
 
     }
 }
 
 var _APIpath = null;
+
+var showModalWarning = () => {
+    Modal.warning({
+        title: '定位已经启动',
+        content: '请点击屏幕右上角画图工具定位地图信息',
+    });
+}
+
 class UniquePanel extends React.Component {
         constructor() {
             super();
             this.onClickButton = this.onClickButton.bind(this);
             this.state = {
                 disabled: false,
+                cfydData: null,
             };
+
         }
-        onClickButton(ref) {
-            CI.displayUniLayer(ref);
+        onClickButton(ref, data) {
+            CI.displayUniLayer(ref, data);
         }
         componentDidMount() {
             let self = this;
+
+            /*            setTimeout(() => {
+                            showModalWarning();
+                            DR.drawFeatures.activate();
+                        }, 3000)*/
+
 
             lmsg.subscribe('locating', (data) => {
                 console.log(data)
                 switch (data.params) {
                     case 'shigong':
+                        DR.drawFeatures.disable();
                         self.refs.shigong.props.onClick();
+                        //DR.drawFeatures.activate();
+                        break;
+                    case 'shigong_start':
+                        //self.refs.shigong.props.onClick();
+                        showModalWarning();
                         DR.drawFeatures.activate();
                         break;
                     case 'guanzhi':
+                        DR.drawFeatures.disable();
                         self.refs.guanzhi.props.onClick();
+                        break;
+                    case 'guanzhi_start':
+                        showModalWarning();
                         DR.drawFeatures.activate();
                         break;
                     case 'shigu':
+                        DR.drawFeatures.disable();
                         self.refs.shigu.props.onClick();
+                        break;
+                    case 'shigu_start':
+                        showModalWarning();
                         DR.drawFeatures.activate();
                         break;
                     case 'fdc':
@@ -114,14 +151,73 @@ class UniquePanel extends React.Component {
                         return;
                 }
             });
+
+            lmsg.subscribe('cfxydBtnClick', (data) => {
+                console.log(data);
+                self.setState({
+                    cfydData: null
+                });
+                if (data.isCross == 1) {
+                    //路口
+                    self.setState({
+                        cfydData: data.time
+                    });
+                    self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+                } else if (data.isCross == 2) {
+                    //路段
+                    self.setState({
+                        cfydData: data.time
+                    });
+                    self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
+                } else alert('双屏通讯错误');
+
+            });
+        /*var data = {
+            'isCross': 1,
+            'time': {
+                'date': '20151122',
+                'flag': 0
+            }
+        };
+        setTimeout(function() {
+
+                console.log(data);
+                self.setState({
+                    cfydData: null
+                });
+                if (data.isCross == 1) {
+                    //路口
+                    self.setState({
+                        cfydData: data.time
+                    });
+                    self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+                } else if (data.isCross == 2) {
+                    //路段
+                    self.setState({
+                        cfydData: data.time
+                    });
+                    self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
+                } else alert('双屏通讯错误');
+            })*/
+                /*setTimeout(function() {
+                    console.log(self.refs)
+                    self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+                }, 2000)*/
+
         }
         render() {
             const yongduButton = (
                 <div>
-                <Button type='ghost' size='small'>路段</Button>
-                <Button type='ghost' size='small'>路口</Button>
+                    <Button id="yongdu_road" ref="yongdu_road" className={UniqueStyles.button1} type='ghost' size='small' onClick={()=>this.onClickButton('yongdu_road', this.state.cfydData)}>路段</Button>
+        <Button id="yongdu_cross" ref="yongdu_cross" className={UniqueStyles.button1} type='ghost' size='small' onClick={()=>this.onClickButton('yongdu_cross', this.state.cfydData)}>路口</Button>
                 </div>
             );
+            const jiariButton = (
+                <div>
+                    <Button id="jiari_cross" ref="jiari_cross" className={UniqueStyles.button1} type='ghost' size='small' onClick={()=>this.onClickButton(this.refs.jiari_cross.props.id)}>路口</Button>
+                    <Button id="jiari_road" ref="jiari_road" className={UniqueStyles.button1}type='ghost' size='small' onClick={()=>this.onClickButton(this.refs.jiari_road.props.id)}>路段</Button>
+                    <Button id="jiari_zone" ref="jiari_zone" className={UniqueStyles.button1}type='ghost' size='small' onClick={()=>this.onClickButton(this.refs.jiari_zone.props.id)}>区域</Button>
+                </div>);
             return (
                 <div className={UniqueStyles.boxpanel}  id="uniqueDetails">
                 <div className={UniqueStyles.panel_header}>
@@ -133,12 +229,13 @@ class UniquePanel extends React.Component {
                     <Button id="guanzhi" ref="guanzhi" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.guanzhi.props.id)}>交通管制</Button>
                     <Button id="shigu" ref="shigu" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.shigu.props.id)}>交通事故</Button>
                     <Button id="fudongche" ref="fudongche" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.fudongche.props.id)}>浮动车</Button><br/>
-                    <Button id="jiari" ref="jiari" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.jiari.props.id)}>节假专题</Button>
-                    <Popover content={yongduButton} title="Title" trigger="hover">
-                    <Button id="yongdu" ref="yongdu" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.yongdu.props.id)}>常发拥堵</Button>
+                    <Popover content={jiariButton} placement="bottom" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('uniqueDetails')}>
+                        <Button id="jiari" ref="jiari" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled}>节假专题</Button>
                     </Popover>
-                    <Button id="OD" ref="OD" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.OD.props.id)}>O/D分析</Button>
-                    {/*<Button  onClick={()=>this.ttt()}>Odasd</Button>*/}
+                    <Popover ref="yongduPop" content={yongduButton} placement="bottom" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('uniqueDetails')}>
+                        <Button id="yongdu" ref="yongdu" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled}>常发拥堵</Button>
+                    </Popover>
+                    <Button id="OD" ref="OD" className={UniqueStyles.button1} type="primary" size="small" disabled={!this.state.disabled} onClick={()=>this.onClickButton(this.refs.OD.props.id)}>O/D分析</Button>
                  </div>
 
             </div>

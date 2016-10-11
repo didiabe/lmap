@@ -21,3 +21,11 @@ height:auto;
     margin-left: 5px;
     margin-top:10px;
 }
+.QueContent{
+background-color:#f4f5f6;
+}
+.sub_panel{    
+    margin: 5px 44px 5px 44px;
+    background-color: 'red';
+    height: 20px;
+}

@@ -15,23 +15,28 @@ class CraResults extends React.Component {
                         <span className={styles.traffic_level_3}></span>
                         <span className={styles.smooth_jam}>轻度拥堵: </span>
                         <span className={styles.smooth_jam_num2}>{JtzsList.qdyds}</span>
+                        <span id="separator" className={styles.separator_LV3}></span>
                         <span className={styles.traffic_level_1}></span>
-                        <span className={styles.smooth_jam}>畅通: </span>
-                        <span className={styles.smooth_jam_num}>{JtzsList.cts}</span>
+                        <span className={styles.smooth_jam1}>畅通: </span>
+                        <span className={styles.smooth_jam_num3}>{JtzsList.cts}</span>
+                        <span id="separator" className={styles.separator_LV1}></span>
                     </div>
                     <div>
                         <span className={styles.traffic_level_4}></span>
                         <span className={styles.smooth_jam}>中度拥堵: </span>
                         <span className={styles.smooth_jam_num2}>{JtzsList.zdyds}</span>
+                        <span id="separator" className={styles.separator_LV4}></span>
                         <span className={styles.traffic_level_2}></span>
-                        <span className={styles.smooth_jam}>基本畅通: </span>
-                        <span className={styles.smooth_jam_num2}>{JtzsList.jbcts}</span>
+                        <span className={styles.smooth_jam2}>基本畅通: </span>
+                        <span className={styles.smooth_jam_num4}>{JtzsList.jbcts}</span>
+                        <span id="separator" className={styles.separator_LV2}></span>
                     </div>
                     <div>
                         <span className={styles.traffic_level_5}></span>
                         <span className={styles.smooth_jam}>严重拥堵: </span>
                         <span className={styles.smooth_jam_num2}>{JtzsList.yzyds}</span>
-                        <span id="separator" className={styles.separator}></span>
+                        <span id="separator" className={styles.separator_LV5}></span>
+                        <span id="separator" className={styles.separator_LV0}></span>
                     </div>
                 </div>
                 <div id='table' className={styles.table}>
@@ -62,12 +67,14 @@ class TableRow extends React.Component {
     onClickRow(ref) {
         //console.log(this.props)
         var ID2screen1 = this.props.item.id;
+        var Name2screen1 = this.props.item.name;
         console.log(ID2screen1);
         var iscra = null;
         lmsg.send('crsBtn', {
             'params': children_rboxkey,
             'isTime': 1,
-            'ID': ID2screen1
+            'ID': ID2screen1,
+            'name': Name2screen1
         });
     }
     componentDidMount() {
@@ -141,7 +148,7 @@ class TableRow extends React.Component {
             <li id='row' className={styles.row}>
                 <ul>
                     <li ref='IndexRank' id='rank' className={styles.rank}>{this.props.item.xh}</li>
-                    <li ref='IndexName' id='name' className={styles.name} onClick={this.onClickRow}>{this.props.item.name}</li>
+                    <li ref='IndexName' id='name' className={styles.name} title={this.props.item.name} onClick={this.onClickRow}>{this.props.item.name}</li>
                     <li ref='IndexIndex' id='index' className={styles.index}>{this.props.item.jtzs}</li>
                     <li ref='IndexLevel' id='level' style={hierarchyStyle}>{this.props.item.yddj}</li>
                 </ul>

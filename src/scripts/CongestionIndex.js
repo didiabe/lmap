@@ -143,10 +143,6 @@ const crossLayer = function(data) {
 
     var pointLayer;
 
-    var aaaa = function() {
-        alert('1');
-    }
-
     function panTotarget(e) {
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
@@ -165,14 +161,16 @@ const crossLayer = function(data) {
             lmsg.send('crsBtn', {
                 params: 'cross',
                 isTime: '1',
-                ID: e.target.feature.properties.id
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
             });
         }));
         popupCross.append($('<button class="aa">档案</button>').click(function() {
             lmsg.send('crsBtn', {
                 params: 'cross',
                 isTime: '2',
-                ID: e.target.feature.properties.id
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
             });
         }));
 
@@ -343,14 +341,16 @@ const roadLayer = function(data) {
             lmsg.send('crsBtn', {
                 params: 'road',
                 isTime: '1',
-                ID: e.target.feature.properties.id
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
             });
         }));
         popupRoad.append($('<button class="aa">档案</button>').click(function() {
             lmsg.send('crsBtn', {
                 params: 'road',
                 isTime: '2',
-                ID: e.target.feature.properties.id
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
             });
         }));
 
@@ -532,14 +532,16 @@ const areaLayer = function(data) {
             lmsg.send('crsBtn', {
                 params: 'area',
                 isTime: '1',
-                ID: e.target.feature.properties.id
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
             });
         }));
         popupArea.append($('<button class="aa">档案</button>').click(function() {
             lmsg.send('crsBtn', {
                 params: 'area',
                 isTime: '2',
-                ID: e.target.feature.properties.id
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
             });
         }));
 
@@ -588,8 +590,6 @@ const areaLayer = function(data) {
 
 
 export const playback = (a) => {
-
-
     let markerPlayBack = lmap.geoTime(a, {
         map: map,
         duration: 1000
@@ -934,6 +934,8 @@ export const trackingTaxi = (params) => {
 
     } else alert("无法追踪");
 }
+
+
 export const stopTrackingTaxi = () => {
     clearInterval(taxiInterval);
     map.eachLayer((layer) => {
@@ -941,4 +943,9 @@ export const stopTrackingTaxi = () => {
             map.removeLayer(layer);
         }
     });
+}
+
+export const displayConfigLayer = (data) => {
+    console.log(data);
+
 }

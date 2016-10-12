@@ -53,14 +53,16 @@ class UniqueSub extends React.Component {
         )
     }
     componentDidMount() {
-        /* setTimeout(function() {
-             ReactDOM.render(
-                 <UniquePanel/>, document.getElementById("presetBox")
-             )
-         }, 3000)*/
-
+        /*setTimeout(function() {
+            ReactDOM.render(
+                <UniquePanel/>, document.getElementById("presetBox")
+            )
+        }, 3000)
+*/
+        //console.log(ReactDOM.unmountComponentAtNode(<UniquePanel/>))
         let self = this;
         lmsg.subscribe('locating', (data) => {
+
             console.log(data);
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
@@ -172,37 +174,37 @@ class UniquePanel extends React.Component {
                 } else alert('双屏通讯错误');
 
             });
-        /*var data = {
-            'isCross': 1,
-            'time': {
-                'date': '20151122',
-                'flag': 0
-            }
-        };
-        setTimeout(function() {
+            /*var data = {
+                'isCross': 1,
+                'time': {
+                    'date': '20151122',
+                    'flag': 0
+                }
+            };
+            setTimeout(function() {
 
-                console.log(data);
-                self.setState({
-                    cfydData: null
-                });
-                if (data.isCross == 1) {
-                    //路口
+                    console.log(data);
                     self.setState({
-                        cfydData: data.time
+                        cfydData: null
                     });
-                    self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
-                } else if (data.isCross == 2) {
-                    //路段
-                    self.setState({
-                        cfydData: data.time
-                    });
-                    self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
-                } else alert('双屏通讯错误');
-            })*/
-                /*setTimeout(function() {
-                    console.log(self.refs)
-                    self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
-                }, 2000)*/
+                    if (data.isCross == 1) {
+                        //路口
+                        self.setState({
+                            cfydData: data.time
+                        });
+                        self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+                    } else if (data.isCross == 2) {
+                        //路段
+                        self.setState({
+                            cfydData: data.time
+                        });
+                        self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
+                    } else alert('双屏通讯错误');
+                })*/
+            /*setTimeout(function() {
+                console.log(self.refs)
+                self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+            }, 2000)*/
 
         }
         render() {

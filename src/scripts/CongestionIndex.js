@@ -24,99 +24,11 @@ export function addGracLayer(layerName, data) {
 
 }
 
-
 const crossLayer = function(data) {
     map.eachLayer((layer) => {
         if (layer.options.id != 'crossLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
-
-    /*这个GeoJsonPoints是需要后台请求的*/
-    /*var GeoJsonPoints = {
-        "type": "FeatureCollection",
-        "features": [{
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6672, 45.5254]
-            },
-            "properties": {
-                dasdqdasd: 121
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6662, 45.5262]
-            },
-            "properties": {
-                "index": "2"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6651, 45.5255]
-            },
-            "properties": {
-                "index": "3"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6672, 45.5262]
-            },
-            "properties": {
-                "index": "4"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6673, 45.5268]
-            },
-            "properties": {
-                "index": "2"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6682, 45.5261]
-            },
-            "properties": {
-                "index": "3"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6652, 45.5268]
-            },
-            "properties": {
-                "index": "1"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6682, 45.5272]
-            },
-            "properties": {
-                "index": "2"
-            }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-122.6678, 45.5252]
-            },
-            "properties": {
-                "index": "5"
-            }
-        }]
-    };*/
     var GeoJsonPoints = data.geoJson;
     var greenMarker = lmap.icon({
         iconSize: [15, 15],
@@ -147,11 +59,6 @@ const crossLayer = function(data) {
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
-
-        /*var popup1 = L.popup().setContent(
-            '<button class="aa"  onclick = aaaa()>档案</button>' +
-            '<button id="shishi" class="aa">实时</button>' +
-            '<button class="aa">更新</button>');*/
         var popupCross = $('<div/>');
         popupCross.append($('<button class="aa">更新</button>').click(function() {
             alert("update index")
@@ -223,83 +130,14 @@ const crossLayer = function(data) {
 
     }).addTo(map);
 
-
-
 };
-const roadLayer = function(data) {
 
+const roadLayer = function(data) {
+    console.log('data', data)
     map.eachLayer((layer) => {
         if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
-    /*这个GeoJsonLines是需要后台请求的*/
-    /*var GeoJsonLines = {
-        "type": "FeatureCollection",
-        "features": [{
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [-122.6672, 45.5254],
-                    [-122.6572, 45.5254],
-                    [-122.6672, 45.5354]
-                ]
-            },
-            "properties": { "index": 1 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [-122.6311, 45.4354],
-                    [-122.6844, 45.4133],
-                    [-122.6722, 45.4321],
-                    [-122.6611, 45.4211]
-                ]
-            },
-            "properties": { "index": 2 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [-122.6222, 45.4354],
-                    [-122.6811, 45.4511],
-                    [-122.6672, 45.5354],
-                    [-122.6652, 45.5654],
-                    [-122.6431, 45.5422]
-                ]
-            },
-            "properties": { "index": 3 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [-122.6122, 45.4454],
-                    [-122.6411, 45.4311],
-                    [-122.6572, 45.5654],
-                    [-122.6652, 45.5254],
-                    [-122.6731, 45.5122]
-                ]
-            },
-            "properties": { "index": 4 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [-122.6222, 45.5354],
-                    [-122.6611, 45.5111],
-                    [-122.6682, 45.5354],
-                    [-122.6452, 45.5554],
-                    [-122.6451, 45.5522]
-                ]
-            },
-            "properties": { "index": 5 }
-        }]
-    };*/
-
     var GeoJsonLines = data.geoJson;
     var greenLine = {
         "color": "#7FFF00",
@@ -405,81 +243,7 @@ const areaLayer = function(data) {
     console.log(data);
 
     var GeoJsonRegion = data.geoJson;
-    /*这个GeoJsonRegion是需要后台请求的*/
-    /*var GeoJsonRegion = {
-        "type": "FeatureCollection",
-        "features": [{
-            "type": "Feature",
-            "geometry": {
-                "type": "point",
-                "coordinates": [
-                    [
-                        [-122.6311, 45.4354],
-                        [-122.6844, 45.4133],
-                        [-122.6722, 45.4321],
-                        [-122.6611, 45.4211]
-                    ]
-                ]
-            },
-            "properties": {}
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [-122.6211, 45.4354],
-                        [-122.6244, 45.4333],
-                        [-122.6222, 45.4321],
-                        [-122.6211, 45.4311]
-                    ]
-                ]
-            },
-            "properties": { "index": 2 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Linestring",
-                "coordinates": [
-                    [
-                        [-122.6411, 45.4454],
-                        [-122.6444, 45.4433],
-                        [-122.6422, 45.4421],
-                        [-122.6411, 45.4411]
-                    ]
-                ]
-            },
-            "properties": { "index": 3 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [-122.6511, 45.4554],
-                        [-122.6544, 45.4533],
-                        [-122.6522, 45.4521],
-                        [-122.6511, 45.4511]
-                    ]
-                ]
-            },
-            "properties": { "index": 4 }
-        }, {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [-122.6811, 45.4854],
-                        [-122.6844, 45.4833],
-                        [-122.6822, 45.4821],
-                        [-122.6811, 45.4811]
-                    ]
-                ]
-            },
-            "properties": { "index": 5 }
-        }]
-    };*/
+
     var greenRegion = {
         fillColor: "#7FFF00",
         fillOpacity: 1,
@@ -674,12 +438,11 @@ export const displayUniLayer = (ref, data) => {
             popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
         });
         specialpointlayer = (feature, latlng) => {
-                //var indexVal = feature.properties.index;
-                return L.marker(latlng, {
-                    icon: yongduCrossIcon
-                });
-            }
-            //param从哪里来？
+            //var indexVal = feature.properties.index;
+            return L.marker(latlng, {
+                icon: yongduCrossIcon
+            });
+        }
         param = {
             flag: data.flag,
             date: data.date
@@ -708,12 +471,10 @@ export const displayUniLayer = (ref, data) => {
             popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
         });
         specialpointlayer = (feature, latlng) => {
-                //var indexVal = feature.properties.index;
-                return L.marker(latlng, {
-                    icon: yongduCrossIcon
-                });
-            }
-            //param从哪里来？
+            return L.marker(latlng, {
+                icon: yongduCrossIcon
+            });
+        }
         param = {
             type: 'cross',
             qyType: 1,
@@ -877,7 +638,7 @@ var taxiInterval = null;
 export const trackingTaxi = (params) => {
     /* var params = {
          id: '浙JT8001',
-         date: '2015/4/17 1:00:40'
+         date: '2010/10/26 1:11:11'
      }*/
     console.log(params);
     if (params) {
@@ -947,5 +708,116 @@ export const stopTrackingTaxi = () => {
 
 export const displayConfigLayer = (data) => {
     console.log(data);
+    var Config_crossGeojson = null,
+        Config_roadGeojson = null,
+        Config_zoneGeojson = null,
+        ConfigCrossLayer = null,
+        ConfigRoadLayer = null,
+        ConfigZoneLayer = null;
+    if (data.cross) Config_crossGeojson = data.cross;
+    if (data.road) Config_roadGeojson = data.road;
+    if (data.zone) Config_zoneGeojson = data.zone;
+    map.eachLayer((layer) => {
+        if (layer.options.id !== "streetLayer") {
+            map.removeLayer(layer);
+        }
+    });
+    var CrossMarker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#EEC900'
+    });
+    var RoadLine = {
+        "color": "#bc18dc",
+        "weight": 2,
+        "opacity": 0.8
+    };
+    var ZoneRegion = {
+        fillColor: "#26d249",
+        fillOpacity: 1,
+        color: "#e5e5e5",
+        weight: 2,
+        opacity: 0.8
+    };
+    if (Config_crossGeojson) {
+        ConfigCrossLayer = L.geoJson(Config_crossGeojson, {
+            pointToLayer: function(feature, latlng) {
+                    var indexVal = feature.properties.index;
+                    return L.marker(latlng, {
+                        icon: CrossMarker
+                    });
+                }
+                //onEachFeature: eachPointFeature
+        }).addTo(map);
+    }
+
+    if (Config_roadGeojson) {
+        ConfigRoadLayer = L.geoJson(Config_roadGeojson, {
+            style: function(feature) {
+                return RoadLine;
+            }
+        }).addTo(map);
+    }
+
+    if (Config_zoneGeojson) {
+        ConfigZoneLayer = L.geoJson(Config_zoneGeojson, {
+            style: function(feature) {
+                return ZoneRegion;
+            }
+        }).addTo(map);
+    }
 
 }
+
+export const displayConfigLayer_road = (data) => {
+    console.log('data', data)
+    map.eachLayer((layer) => {
+        if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer')
+            map.removeLayer(layer);
+    });
+    var GeoJsonLines = data;
+
+    let orangeLine = {
+        "color": "#FFA500",
+        "weight": 3,
+        "opacity": 0.8
+    };
+
+    var lineLayer;
+
+    function panToBound(e) {
+        //console.log(e.target);
+        map.fitBounds(e.target.getBounds());
+    };
+
+    function highlightFeature(e) {
+        var l = e.target;
+        l.setStyle({
+            weight: 9,
+            color: '#007D7D',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+    };
+
+    function resetFeature(e) {
+        lineLayer.resetStyle(e.target);
+    };
+
+    function eachLineFeature(feature, layer) {
+        layer.on({
+            click: panToBound,
+            mouseover: highlightFeature,
+            mouseout: resetFeature
+        });
+    };
+
+
+    lineLayer = L.geoJson(GeoJsonLines, {
+        style: function(feature) {
+            return orangeLine;
+            var indexVal = feature.properties.index;
+        },
+        onEachFeature: eachLineFeature
+    }).addTo(map);
+
+};

@@ -28,27 +28,13 @@ class ToolBar extends React.Component {
                         <ul ref="toolbar">
                             <TrafficConditions/>
                             <UpdateIndex />
-                            {/*<li id="satelliteMap">
-                                <div type="satellite">
-                                    <span className={styles.satellite}>回放</span>
-                                </div>
-                            </li>*/}
-
                             <UniqueSub/>
-                            {/*<li id="distanceMeasure">
-                                <div type="ranging">
-                                    <span className={styles.ranging}>工具</span>
-                                </div>
-                            </li>*/}
                             <Drawsth/>
                             <ConfigSub/>
-
                         </ul>
                     </div>
                     <div id='presetBox'/>
-                    </div>
-                   
-                   
+                    </div>   
                 </div>
         )
     }
@@ -57,3 +43,9 @@ class ToolBar extends React.Component {
 
 
 export default ToolBar
+
+/*<li id="satelliteMap">
+                                <div type="satellite">
+                                    <span className={styles.satellite}>回放</span>
+                                </div>
+                            </li>*/

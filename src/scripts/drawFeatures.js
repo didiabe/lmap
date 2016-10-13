@@ -168,8 +168,8 @@ const drawCreated = (e) => {
 }
 
 const stopDrawToolbar = () => {
-	map.removeLayer(drawnItemsLayer);
-	map.removeControl(drawControl);
+	if (drawnItemsLayer) map.removeLayer(drawnItemsLayer);
+	if (drawControl) map.removeControl(drawControl);
 	drawnItemsLayer = null;
 	drawControl = null;
 }

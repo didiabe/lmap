@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import styles from '../_toolBar.css';
 import ConfigStyles from './_UniqueSub.css'
 import * as CI from '../../../scripts/CongestionIndex';
-//import * as DR from '../../../scripts/drawFeatures';
+import * as DR from '../../../scripts/drawFeatures';
 import * as lmsg from '../../../libs/lmsg';
 import {
     connect
@@ -66,9 +66,6 @@ class ConfigSubPanel extends React.Component {
     constructor() {
         super();
         this.state = {
-            disabled1: false,
-            disabled2: false,
-            disabled3: false,
             isloading1: false,
             isloading2: false,
             isloading3: false,
@@ -85,9 +82,6 @@ class ConfigSubPanel extends React.Component {
             ReactDom.unmountCOmponentAtNode()
         }*/
         this.setState({
-            disabled1: false,
-            disabled2: false,
-            disabled3: false,
             isloading1: false,
             isloading2: false,
             isloading3: false,
@@ -97,31 +91,23 @@ class ConfigSubPanel extends React.Component {
         });
 
         if (ref == 'roadConfig') {
+            console.log(self.state.isloading1);
             this.setState({
                 isloading1: true,
-                disabled2: true,
-                disabled3: true
             });
             Ds.DataService('/map/roadMap.json', null, (resp) => {
-                console.log(resp);
-                CI.displayConfigLayer(resp.data);
-
                 self.setState({
                     isloading1: false,
                     isloaded1: true
                 });
-                if (self.state.isloaded1) {
-                    ReactDOM.render(
-                        <RoadConfigPanel/>, document.getElementById("configPanel")
-                    );
-                }
+                CI.displayConfigLayer_road(resp.data);
+                ReactDOM.render(
+                    <RoadConfigPanel/>, document.getElementById("configPanel")
+                );
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
                 self.setState({
-                    disabled1: false,
-                    disabled2: false,
-                    disabled3: false,
                     isloading1: false,
                     isloading2: false,
                     isloading3: false,
@@ -130,20 +116,10 @@ class ConfigSubPanel extends React.Component {
                     isloaded3: false,
                 });
             });
-            /*setTimeout(function() {
-                self.setState({
-                    isloading1: false,
-                    isloaded1: true
-                })
-                ReactDOM.render(
-                    <RoadConfigPanel/>, document.getElementById("configPanel")
-                );
-            }, 1000)*/
+
         } else if (ref == 'regionConfig') {
             this.setState({
                 isloading2: true,
-                disabled1: true,
-                disabled3: true
             });
             Ds.DataService('/zoneConfig/map.json', null, (resp) => {
                 //console.log(resp);
@@ -153,19 +129,14 @@ class ConfigSubPanel extends React.Component {
                     isloading2: false,
                     isloaded2: true
                 });
+                ReactDOM.render(
+                    <RegionConfigPanel/>, document.getElementById("configPanel")
+                );
 
-                if (self.state.isloaded2) {
-                    ReactDOM.render(
-                        <RegionConfigPanel/>, document.getElementById("configPanel")
-                    );
-                }
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
                 self.setState({
-                    disabled1: false,
-                    disabled2: false,
-                    disabled3: false,
                     isloading1: false,
                     isloading2: false,
                     isloading3: false,
@@ -178,29 +149,22 @@ class ConfigSubPanel extends React.Component {
         } else if (ref == 'odConfig') {
             self.setState({
                 isloading3: true,
-                disabled1: true,
-                disabled2: true
             });
             Ds.DataService('/odRegion/initMap.json', null, (resp) => {
-                console.log(resp);
+                //console.log(resp);
                 CI.displayConfigLayer(resp.data);
-
                 self.setState({
                     isloading3: false,
                     isloaded3: true
                 });
-                if (self.state.isloaded3) {
-                    ReactDOM.render(
-                        <OdConfigPanel/>, document.getElementById("configPanel")
-                    );
-                }
+                ReactDOM.render(
+                    <OdConfigPanel/>, document.getElementById("configPanel")
+                );
+
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
                 self.setState({
-                    disabled1: false,
-                    disabled2: false,
-                    disabled3: false,
                     isloading1: false,
                     isloading2: false,
                     isloading3: false,
@@ -225,12 +189,11 @@ class ConfigSubPanel extends React.Component {
                 </div>
                 <div className={ConfigStyles.panel_body} id="Configpanel_body">
                    <Button id="crossConfig" ref="crossConfig" className={ConfigStyles.button1} type="primary" size="small" disabled={true} onClick={()=>this.onClickButton(this.refs.crossConfig.props.id)}>路口配置</Button>
-                   <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1} disabled={this.state.disabled1} onClick={()=>this.onClickButton(this.refs.roadConfig.props.id)}>路段配置</Button>
-                   <Button id="regionConfig" ref="regionConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading2} disabled={this.state.disabled2} onClick={()=>this.onClickButton(this.refs.regionConfig.props.id)}>区域配置</Button>
-                   <Button id="odConfig" ref="odConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading3} disabled={this.state.disabled3} onClick={()=>this.onClickButton(this.refs.odConfig.props.id)}>OD配置</Button>
+                   <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1} onClick={()=>this.onClickButton(this.refs.roadConfig.props.id)}>路段配置</Button>
+                   <Button id="regionConfig" ref="regionConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading2}  onClick={()=>this.onClickButton(this.refs.regionConfig.props.id)}>区域配置</Button>
+                   <Button id="odConfig" ref="odConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading3} onClick={()=>this.onClickButton(this.refs.odConfig.props.id)}>OD配置</Button>
                 </div><br/>
-        <div id='configPanel'></div>
-                   
+                <div id='configPanel'></div>   
             </div>
         )
 
@@ -251,6 +214,9 @@ let RegionConfigPanel = React.createClass({
             }
 
         });
+    },
+    componentDidMount() {
+        DR.drawFeatures.activate();
     },
     render() {
         const {
@@ -291,6 +257,9 @@ let OdConfigPanel = React.createClass({
 
         });
     },
+    componentDidMount() {
+        DR.drawFeatures.activate();
+    },
     render() {
         const {
             getFieldProps
@@ -324,6 +293,9 @@ let RoadConfigPanel = React.createClass({
         return {
             options: [],
         };
+    },
+    componentDidMount() {
+        DR.drawFeatures.activate();
     },
     handleSelection(value) {
 

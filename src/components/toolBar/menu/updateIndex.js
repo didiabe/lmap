@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-/*import {
+import {
     Radio,
     Slider,
     Select,
@@ -14,36 +14,15 @@ import ReactDOM from 'react-dom';
     InputNumber,
     Col,
     Icon,
-    TimePicker
+    TimePicker,
+    Modal
 } from 'antd';
-import QueueAnim from 'rc-queue-anim';*/
-/*import QueueAnim from 'rc-queue-anim';*/
-/*var _button = require('antd/lib/button');
-
-ReactDOM.render(<div>
-  <_button>xxxx</_button>
-</div>);*/
+import QueueAnim from 'rc-queue-anim';
 import styles from '../_toolBar.css';
 import UpdateIndexStyle from './_updateIndex.css'
 import * as CI from '../../../scripts/CongestionIndex';
 import * as Ds from '../../../libs/DataService';
-
-var Radio = require('antd/lib/radio');
-var Slider = require('antd/lib/slider');
-var Select = require('antd/lib/select');
-var Checkbox = require('antd/lib/checkbox');
-var Table = require('antd/lib/table');
-var Button = require('antd/lib/button');
-var Progress = require('antd/lib/progress');
-var DatePicker = require('antd/lib/date-picker');
-var Tooltip = require('antd/lib/tooltip');
-var Row = require('antd/lib/row');
-var InputNumber = require('antd/lib/input-number');
-var Col = require('antd/lib/col');
-var Icon = require('antd/lib/icon');
-var TimePicker = require('antd/lib/time-picker');
-var QueueAnim = require('rc-queue-anim/lib/QueueAnim');
-
+import * as lmsg from '../../../libs/lmsg';
 
 class updateIndex extends React.Component {
     constructor() {
@@ -83,9 +62,13 @@ class updateIndex extends React.Component {
         )
     }
     componentDidMount() {
-        // ReactDOM.render(
-        //         <TrafficConditions/>, document.getElementById("presetBox")
-        //     )
+
+        //监听单个指数更新
+        lmsg.subscribe('openModal_updIdx', (data) => {
+            console.log('openModal_updIdx', data)
+            showModal_updIdx(data);
+        });
+        localStorage.removeItem('openModal_updIdx');
     }
 }
 const RadioButton = Radio.Button;
@@ -100,86 +83,7 @@ const columns = [{
     dataIndex: "index"
 }];
 
-/*const DataService = (api_path, param, a, b) => {
-    window.$.ajax({
-        type: 'POST',
-        //10.25.67.72
-        url: 'http://10.25.67.110:8080/trafficIndex_web' + api_path,
-        data: param,
-        dataType: 'json',
-        async: false,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        success: a,
-        error: b
-    });
-};*/
-/*const data = [];
-for (let i = 0; i < 46; i++) {
-    data.push({
-        key: i,
-        name: `李大嘴${i}`,
-        index: `西湖区湖底公园${i}号`,
-    });
-}
-const data123 = [{
-    "id": "10",
-    "jtzs": 4.27,
-    "name": "太平街道西",
-    "xh": 0,
-    "yddj": ""
-}, {
-    "id": "11",
-    "jtzs": 4.27,
-    "name": "太平街道南",
-    "xh": 0,
-    "yddj": ""
-}, {
-    "id": "6",
-    "jtzs": 4.28,
-    "name": "城西街道",
-    "xh": 0,
-    "yddj": ""
-}, {
-    "id": "7",
-    "jtzs": 4.36,
-    "name": "城东街道",
-    "xh": 0,
-    "yddj": ""
-}, {
-    "id": "8",
-    "jtzs": 4.25,
-    "name": "太平街道北",
-    "xh": 0,
-    "yddj": ""
-}, {
-    "id": "9",
-    "jtzs": 4.28,
-    "name": "太平街道东",
-    "xh": 0,
-    "yddj": ""
-}];
-const data222 = [];*/
 
-/*data123.map((item) => {
-    //console.log(item);
-    data222.push({
-        name: item.name,
-        index: item.jtzs
-    });
-});*/
-//var qwe = [2, 4];
-/*for (var i in qwe) {
-    console.log(qwe[i]);
-    console.log(data123[qwe[i]]);
-}*/
-/*var ll = [];
-qwe.map((item) => {
-    console.log(data123[item].id);
-    ll.push(data123[item].id);
-});
-console.log(ll)*/
 class UpdateIndexPanel extends React.Component {
     constructor() {
         super();
@@ -196,7 +100,7 @@ class UpdateIndexPanel extends React.Component {
             T2Checked: false,
             T3Checked: false,
             updateMins: null,
-            newIndex: null,
+            newIndex: 1,
             StartTime: null,
             EndTime: null,
             dataList: null,
@@ -242,14 +146,13 @@ class UpdateIndexPanel extends React.Component {
             loading: true
         });
         let param = {
-
             type: this.state.craType,
             level: this.state.ConLevel
         };
         console.log(param);
         Ds.DataService("/zone/zsLevel.json", param,
             (resp) => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 let data4Table = [];
 
                 if (resp.data.length < 1) {
@@ -259,14 +162,14 @@ class UpdateIndexPanel extends React.Component {
                         isLoaded: false,
                     });
                 } else {
-                    resp.data.map((item) => {
+                    for (var i = 0; i < resp.data.length; i++) {
                         data4Table.push({
-                            name: item.name,
-                            index: item.jtzs,
-                            id: item.id,
+                            name: resp.data[i].name,
+                            index: resp.data[i].jtzs,
+                            id: resp.data[i].id,
+                            key: i
                         });
-                    });
-                    console.log(data4Table)
+                    };
                     this.setState({
                         loading: false,
                         isLoaded: true,
@@ -283,47 +186,41 @@ class UpdateIndexPanel extends React.Component {
                     isLoaded: false,
                 });
             });
-        /*setTimeout(() => {
-            this.setState({
-                loading: false,
-                isLoaded: true,
-            });
-        }, 1000)*/
     }
     updateIndexVal() {
 
         this.setState({
             loading: true
         });
-        let param2 = {
-            zsUpdate: {
-                start: this.state.StartTime,
-                end: this.state.EndTime,
-                time: this.state.updateMins,
-                zs: this.state.newIndex,
-                type: this.state.craType,
-                ids: this.state.selectIDs
-            }
+        let zsUpdate = {
+
+            start: this.state.StartTime,
+            end: this.state.EndTime,
+            time: this.state.updateMins,
+            zs: this.state.newIndex.toString(),
+            type: this.state.craType.toString(),
+            ids: this.state.selectIDs.toString()
+
         };
 
-        console.log(param2);
-        Ds.DataService('/zone/zsUpdate.json', param2,
+        Ds.DataService('/zone/zsUpdate.json', zsUpdate,
             (resp) => {
                 console.log(resp.data);
                 this.setState({
                     selectedRowKeys: [],
                     loading: false,
                 });
+                if (resp.errorCode == 0) {
+                    alert('保存成功！');
+                } else {
+                    alert('保存失败', resp.errorText);
+                }
             },
             (e) => {
                 console.log = (e);
-                alert("传输错误！")
+                alert("后台传输错误！")
             });
 
-        // 模拟 ajax 请求，完成后清空
-        /*  setTimeout(() => {
-              
-          }, 1000);*/
     }
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -333,6 +230,7 @@ class UpdateIndexPanel extends React.Component {
         selectedRowKeys.map((item) => {
             selectID.push(list[item].id)
         });
+
         console.log(selectID);
         this.setState({
             selectIDs: selectID
@@ -344,17 +242,23 @@ class UpdateIndexPanel extends React.Component {
 
     getStartTime(value, dateString) {
         console.log(dateString);
+        let d = new Date();
+        var month = d.getMonth() + 1;
+        var today = d.getFullYear() + "-" + month + "-" + d.getDate();
         this.setState({
             T1Checked: true,
-            StartTime: dateString
+            StartTime: today + " " + dateString
         })
 
     }
     getEndTime(value, dateString) {
         console.log(dateString);
+        let d = new Date();
+        var month = d.getMonth() + 1;
+        var today = d.getFullYear() + "-" + month + "-" + d.getDate();
         this.setState({
             T2Checked: true,
-            EndTime: dateString
+            EndTime: today + " " + dateString
         })
     }
     updateMins(val) {
@@ -412,7 +316,7 @@ class UpdateIndexPanel extends React.Component {
         }
         const myDate = new Date();
         const changeIndexPanel = this.state.updateToggle ? [
-            <div>
+            <div  key={'aa'}>
             <Row>
             <Col span={4}>
         <RadioGroup onChange={this.switchRadio} defaultValue={1}>
@@ -432,7 +336,7 @@ class UpdateIndexPanel extends React.Component {
             {"更新时段: "}
             <TimePicker disabledSeconds={()=>{return newArray(0, 60).filter(value => value % 5 !== 0);}} onChange={this.getStartTime} hideDisabledOptions getPopupContainer={() => document.getElementById('updateDetails')}/> 
             {"~"}
-            <TimePicker disabledSeconds={()=>{return newArray(0, 60).filter(value => value % 5 !== 0);}} onChange={this.getEndTime} hideDisabledOptions getPopupContainer={() => document.getElementById('updateDetails')}/> <br/> 
+        <TimePicker disabledSeconds={()=>{return newArray(0, 60).filter(value => value % 5 !== 0);}} onChange={this.getEndTime} hideDisabledOptions getPopupContainer={() => document.getElementById('updateDetails')}/> < br / >
             {"更新指数: "}
             <InputNumber style={{marginTop: 3}} min={0} max={10} defaultValue={1} step={0.1} onChange={this.getIndex}></InputNumber>
             <Button style={{marginLeft:30}} type="primary" onClick={this.updateIndexVal}
@@ -441,14 +345,14 @@ class UpdateIndexPanel extends React.Component {
             </Row>
             </div>
         ] : [
-            <div>
+            <div  key={'bb'}>
             <Row>
             <Col span={4}>
         <RadioGroup onChange={this.switchRadio} defaultValue={1}>
                 <Radio style={{
                   display: 'block',
                   height: '30px',
-                  lineHeight: '30px',
+                lineHeight: '30px',
                 }} key="a" value={1}>方法1</Radio>
                     <Radio style={{
                   display: 'block',
@@ -480,22 +384,21 @@ class UpdateIndexPanel extends React.Component {
             </Row>
             </div>
         ];
-
         var ConListPanel = this.state.isLoaded ? [
-            <div >
-                <div style={{ marginBottom: 8 }}>
+            <QueueAnim key={'aaa'} delay={1000} className="queue-simple">
+            <div key={'a'}>
+                <div key={'bbb'} style={{ marginBottom: 8 }}>
                   <span style={{ marginLeft: 20 }}>{hasSelected ? `您已选择 ${selectedRowKeys.length} 个对象` : ''}</span>
                 </div>
-                <Table size="small" rowSelection={rowSelection} columns={columns} dataSource={this.state.dataList} />
+                <Table rowKey={'key'} size="small" rowSelection={rowSelection} columns={columns} dataSource={this.state.dataList} />
 
-                <QueueAnim key="a" className={UpdateIndexStyle.QueContent} 
-                    animConfig={[{ opacity: [1, 0], translateY: [0, 50] },{ opacity: [1, 0], translateY: [0, -50] }]} >
+                <div key={'ccc'} className={UpdateIndexStyle.QueContent} >
                         {changeIndexPanel}
-                    </QueueAnim>
-                
+                    </div>
                 
                 
           </div>
+            </QueueAnim>
         ] : null;
 
         return (
@@ -518,27 +421,27 @@ class UpdateIndexPanel extends React.Component {
                 <div className={UpdateIndexStyle.panel_body} id="traffic_detailed">
                 <div className={UpdateIndexStyle.selectCra} >
                                 <Select style={{ width: 80 }} placeholder={"请选择"} getPopupContainer={() => document.getElementById('updateDetails')} onChange={this.selectCRA}>
-                                  <DropOption value="cross">路口</DropOption>
-                                  <DropOption value="road">路段</DropOption>
-                                  <DropOption value="region">区域</DropOption>
+                                  <DropOption key={'q'} value="cross">路口</DropOption>
+                                  <DropOption key={'w'} value="road">路段</DropOption>
+                                  <DropOption key={'e'} value="region">区域</DropOption>
                                 </Select>
                 </div>    
                      <div className={UpdateIndexStyle.radio_btnGroup}>
-                        <RadioGroup onChange={this.selectCongestion}>
-                          <RadioButton value="1">畅通</RadioButton>
-                          <RadioButton value="2">基本</RadioButton>
-                          <RadioButton value="3">一般</RadioButton>
-                          <RadioButton value="4">拥堵</RadioButton>
-                          <RadioButton value="5">严重</RadioButton>
+                        <RadioGroup  onChange={this.selectCongestion}>
+                          <RadioButton key={'1'} value="1">畅通</RadioButton>
+                          <RadioButton key={'2'} value="2">基本</RadioButton>
+                          <RadioButton key={'3'} value="3">一般</RadioButton>
+                          <RadioButton key={'4'} value="4">拥堵</RadioButton>
+                          <RadioButton key={'5'} value="5">严重</RadioButton>
                         </RadioGroup>
                       </div>
                     <Button className={UpdateIndexStyle.loadingButton} type="primary" icon="cloud-upload" 
                      loading={this.state.loading} onClick={this.loadData} disabled = {!this.state.CbtnChecked || !this.state.RbtnChecked} > 
                      {"加载数据"}
                     </Button>
-                    <QueueAnim key="b" className={UpdateIndexStyle.QueContent} 
+                    <QueueAnim key={"b"} className={UpdateIndexStyle.QueContent} 
                     animConfig={[{ opacity: [1, 0], translateY: [0, 50] },{ opacity: [1, 0], translateY: [0, -50] }]} >
-                        {ConListPanel}
+        {ConListPanel}
                     </QueueAnim>
         
                 
@@ -550,7 +453,50 @@ class UpdateIndexPanel extends React.Component {
     }
 
 }
+const newArray = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+        result.push(i);
+    }
+    return result;
+}
+var slider_value = null;
+var onSliderTimeChange = (va) => {
+    slider_value = va;
+}
 
+var showModal_updIdx = (data) => {
+    Modal.confirm({
+        title: '更新指数信息',
+        content: (<div id="signal_update">
+                    {'输入您翔更新的指数,当前的指数为：'+ data.index+ '  '}<br/>
+                    {'更新的分钟： '}<Slider id="timeLong" min={1} max={20} step={1} onChange={onSliderTimeChange}/>
+                    {'更新的指数： '}<InputNumber id="newIndexVal" defaultValue={data.index} min={1} max={10} step={0.1}/>  
+                  </div>),
+        onOk() {
+            //console.log('ok');
+            //console.log(document.getElementById('newIndexVal').value);
+            var sendNewIndParam = {
+                ids: data.id,
+                zs: document.getElementById('newIndexVal').value,
+                time: slider_value,
+                type: data.type,
+                start: null,
+                end: null
+            };
+            console.log(sendNewIndParam);
+            Ds.DataService('/zone/zsUpdate.json', sendNewIndParam, (resp) => {
+                if (resp.errorCode == 0) alert('保存成功');
+                else alert('保存失败');
+            }, (e) => {
+                alert('保存失败');
+            });
+        },
+        onCancel() {
+            console.log('取消')
+        }
+    });
+}
 
 
 export default updateIndex

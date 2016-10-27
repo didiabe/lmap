@@ -8,18 +8,21 @@ import * as lmsg from '../../../libs/lmsg';
 import {
     connect
 } from 'react-redux';
-//import * as action from '../../actions/searchAction';
-import * as Ds from '../../../libs/DataService';
 
-var Button = require('antd/lib/button');
-var Icon = require('antd/lib/icon');
-var Form = require('antd/lib/form');
-var Input = require('antd/lib/input');
-var Select = require('antd/lib/select');
-var QueueAnim = require('rc-queue-anim/lib/QueueAnim');
+import * as Ds from '../../../libs/DataService';
+import {
+    Button,
+    Icon,
+    Form,
+    Input,
+    Select,
+    Tag
+} from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+
+var selectionOptions_road = null;
 class ConfigSub extends React.Component {
     constructor() {
         super();
@@ -49,7 +52,7 @@ class ConfigSub extends React.Component {
         return (
 
             <div>
-        <li refs="startUnipanel" id="trafficConditions" onClick={() => this.mountTrafficConditions() }>
+        <li ref="startUnipanel" id="trafficConditions" onClick={() => this.mountTrafficConditions() }>
                     <div type="fullscreen">
                         <span className={this.state.active ? styles.fullscreen_active : styles.fullscreen}>配置</span>
                     </div>
@@ -58,6 +61,13 @@ class ConfigSub extends React.Component {
         )
     }
     componentDidMount() {
+
+
+        lmsg.subscribe('peizhi', (data) => {
+            ReactDOM.render(
+                <ConfigSubPanel/>, document.getElementById("presetBox")
+            )
+        });
 
     }
 }
@@ -78,9 +88,6 @@ class ConfigSubPanel extends React.Component {
     onClickButton(ref) {
         let self = this;
         console.log(ref);
-        /*if (this.state.isloaded1 || this.state.isloaded2 || this.state.isloaded3) {
-            ReactDom.unmountCOmponentAtNode()
-        }*/
         this.setState({
             isloading1: false,
             isloading2: false,
@@ -101,6 +108,7 @@ class ConfigSubPanel extends React.Component {
                     isloaded1: true
                 });
                 CI.displayConfigLayer_road(resp.data);
+                DR.DrawConfigLayer.DrawRoad.activate();
                 ReactDOM.render(
                     <RoadConfigPanel/>, document.getElementById("configPanel")
                 );
@@ -129,6 +137,8 @@ class ConfigSubPanel extends React.Component {
                     isloading2: false,
                     isloaded2: true
                 });
+                DR.DrawConfigLayer.DrawRegion.activate();
+                DR.DrawConfigLayer.DrawRegion.dataRecv(resp.data);
                 ReactDOM.render(
                     <RegionConfigPanel/>, document.getElementById("configPanel")
                 );
@@ -157,8 +167,11 @@ class ConfigSubPanel extends React.Component {
                     isloading3: false,
                     isloaded3: true
                 });
+                DR.DrawConfigLayer.DrawOD.activate();
+                DR.DrawConfigLayer.DrawOD.dataRecv(resp.data);
                 ReactDOM.render(
-                    <OdConfigPanel/>, document.getElementById("configPanel")
+                    <OdConfigPanel/>,
+                    document.getElementById("configPanel")
                 );
 
             }, (e) => {
@@ -179,7 +192,29 @@ class ConfigSubPanel extends React.Component {
 
     }
     componentDidMount() {
+        let self = this;
+        //路段配置下拉框内容
+        Ds.DataService('/roadConfig/searchDoubleRoadList.json', null, (resp) => {
+            selectionOptions_road = resp.data;
+        }, (e) => {
+            alert('后台传输错误！');
+            console.log(e);
+        });
 
+        lmsg.subscribe('peizhi', (data) => {
+            switch (data.params) {
+                case 'odqypz':
+                    self.onClickButton("odConfig");
+                    break;
+                case 'ldpz':
+                    self.onClickButton("roadConfig");
+                    break;
+                case 'qypz':
+                    self.onClickButton("regionConfig");
+                    break;
+            }
+            localStorage.removeItem('peizhi');
+        });
     }
     render() {
         return (
@@ -188,10 +223,10 @@ class ConfigSubPanel extends React.Component {
                     配置信息
                 </div>
                 <div className={ConfigStyles.panel_body} id="Configpanel_body">
-                   <Button id="crossConfig" ref="crossConfig" className={ConfigStyles.button1} type="primary" size="small" disabled={true} onClick={()=>this.onClickButton(this.refs.crossConfig.props.id)}>路口配置</Button>
-                   <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1} onClick={()=>this.onClickButton(this.refs.roadConfig.props.id)}>路段配置</Button>
-                   <Button id="regionConfig" ref="regionConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading2}  onClick={()=>this.onClickButton(this.refs.regionConfig.props.id)}>区域配置</Button>
-                   <Button id="odConfig" ref="odConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading3} onClick={()=>this.onClickButton(this.refs.odConfig.props.id)}>OD配置</Button>
+                    <Button id="crossConfig" ref="crossConfig" className={ConfigStyles.button1} type="primary" size="small" disabled={true} onClick={()=>this.onClickButton(this.refs.crossConfig.props.id)}>复合路段</Button>
+                    <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1} onClick={()=>this.onClickButton("roadConfig")}>双向路段</Button>
+                    <Button id="regionConfig" ref="regionConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading2}  onClick={()=>this.onClickButton("regionConfig")}>区域配置</Button>
+                    <Button id="odConfig" ref="odConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading3} onClick={()=>this.onClickButton("odConfig")}>OD区域</Button>
                 </div><br/>
                 <div id='configPanel'></div>   
             </div>
@@ -207,34 +242,92 @@ let RegionConfigPanel = React.createClass({
         //console.log(this.props.form.getFieldsValue());
         this.props.form.validateFields((errors, values) => {
             if (!!errors) {
-                console.log(errors);
-                alert('请输入区域名称');
+                alert('请检查错误');
             } else {
-                console.log('传给后台的值', values);
-            }
+                //console.log('传给后台的值', values);
+                var sendParams_region = {
+                    qybh: values.regionNumber,
+                    qymc: values.regionName,
+                    qyfw: JSON.stringify(DR.DrawConfigLayer.DrawRegion.getValue()),
+                    ylzd1: values.regionColor,
+                    crossid: DR.DrawConfigLayer.DrawRegion.calculateWithin().crossIds.toString(),
+                    roadid: DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString()
+                };
+                console.log('传给后台的值', sendParams_region);
+                Ds.DataService('/zoneConfig/save.json', sendParams_region, (resp) => {
+                    console.log(resp);
+                    if (resp.errorCode == 0) {
+                        alert('保存成功');
+                        DR.drawFeatures.disable();
+                        ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+                        lmsg.send('qypz', {
+                            'data': 'success'
+                        });
+                    } else {
+                        alert(resp.errorText);
+                    }
+                }, (e) => {
+                    console.log(e);
+                    alert('后台传输错误！')
+                });
 
+
+            }
         });
+
+
     },
-    componentDidMount() {
-        DR.drawFeatures.activate();
+    componentDidMount() {},
+    checkPrime(rule, value, callback) {
+        if (!value) {
+            callback(new Error('编号值不能为空'));
+        } else if (value.length !== 9) {
+            callback(new Error('请输入9位区域编号'));
+        } else {
+            callback();
+        }
     },
     render() {
         const {
-            getFieldProps
+            getFieldDecorator
         } = this.props.form;
-        const regionNameProps = getFieldProps('regionName', {
-            rules: [{
-                required: true,
-                message: '请填写区域名称'
-            }, ]
-        });
 
         return (
             <Form inline onSubmit={this.handleSubmit}>
         <FormItem label="区域名称">
-          <Input placeholder="请输入区域名称" size='small'
-            {...regionNameProps} type = 'regionName' id='regionName' name='regionName'
-          />
+          {getFieldDecorator('regionName', {
+            rules: [{
+                required: true,
+                message: '请填写区域名称'
+            }, ]
+        })(<Input placeholder="请输入名称" size='small'type = 'regionName' id='regionName' name='regionName'
+          />)}
+        </FormItem>
+        <FormItem label="区域编号">
+          {getFieldDecorator('regionNumber', {
+            rules: [{
+                required: true,
+                validator: this.checkPrime
+            }]
+        })(<Input placeholder="请填写区域编号" size='small'
+        type = 'number'
+        id = 'regionNumber'
+        name = 'regionNumber'
+          />)}
+        </FormItem>
+        <FormItem label="区域颜色">
+          
+          {getFieldDecorator('regionColor', {
+            rules: [{
+                required: true,
+                message: '请选择颜色'
+            }]
+        })(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='regionColor' name='regionColor'>
+              <Option value="red" style={{color: 'red'}}>红色</Option>
+              <Option value="green" style={{color: 'green'}}>绿色</Option>
+              <Option value="yellow" style={{color: 'yellow'}}>黄色</Option>
+              <Option value="blue" style={{color: 'blue'}}>蓝色</Option>
+          </Select>)}
         </FormItem>
         <Button type="primary" size='small' htmlType="submit">保存</Button>
       </Form>
@@ -247,35 +340,100 @@ let OdConfigPanel = React.createClass({
     handleSubmit(e) {
         e.preventDefault();
         //console.log(this.props.form.getFieldsValue());
-        this.props.form.validateFields((errors, values) => {
+        this.props.form.validateFieldsAndScroll((errors, values) => {
+            //console.log(errors)
+            var regionFeature = DR.DrawConfigLayer.DrawOD.getValue();
+            var selectedIDs = DR.DrawConfigLayer.DrawOD.calculateWithin().toString();
+
             if (!!errors) {
-                console.log(errors);
-                alert('请输入区域名称');
+                alert('请检查错误');
+
+            } else if (!regionFeature) {
+                alert('请绘制图层');
             } else {
-                console.log('传给后台的值', values);
+                //console.log('传给后台的值', values);
+                var sendParams_od = {
+                    qybh: values.odNumber,
+                    qymc: values.odName,
+                    qyfw: JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()),
+                    ylzd1: values.odColor,
+                    crossId: selectedIDs
+                };
+                console.log(sendParams_od);
+                Ds.DataService('/odRegion/save.json', sendParams_od, (resp) => {
+                    console.log(resp);
+                    if (resp.errorCode == 0) {
+                        alert('保存成功');
+                        DR.drawFeatures.disable();
+                        ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+                        lmsg.send('odpz', {
+                            'data': 'success'
+                        });
+                    } else {
+                        alert(resp.errorText);
+                    }
+                }, (e) => {
+                    console.log(e);
+                    alert('后台传输错误！')
+                });
+
             }
 
         });
+
     },
     componentDidMount() {
-        DR.drawFeatures.activate();
+
+    },
+    checkPrime(rule, value, callback) {
+        if (!value) {
+            callback(new Error('编号值不能为空'));
+        } else if (value.length !== 9) {
+            callback(new Error('请输入9位区域编号'));
+        } else {
+            callback();
+        }
     },
     render() {
         const {
-            getFieldProps
+            getFieldDecorator
         } = this.props.form;
-        const odNameProps = getFieldProps('odName', {
-            rules: [{
-                required: true,
-                message: '请填写OD区域名称'
-            }, ]
-        })
+
         return (
             <Form inline onSubmit={this.handleSubmit}>
         <FormItem label="OD名称">
-          <Input placeholder="请输入OD名称" size='small'
-            {...odNameProps} type = 'odName' id='odName' name='odName'
-          />
+          {getFieldDecorator('odName', {
+            rules: [{
+                required: true,
+                message: '请填写OD区域名称'
+            }]
+        })(<Input placeholder="请输入OD名称" size='small' type = 'odName' id = 'odName' name = 'odName'/>)}
+        </FormItem>
+        <FormItem label="OD编号">
+        {getFieldDecorator('odNumber', {
+            rules: [{
+                required: true,
+                validator: this.checkPrime
+            }]
+        })(
+          <Input placeholder="请填写OD编号" size='small'
+        type = 'number'
+        id = 'odNumber'
+        name = 'odNumber'
+          />)}
+        </FormItem>
+        <FormItem label="OD颜色">
+{getFieldDecorator('odColor', {
+            rules: [{
+                required: true,
+                message: '请选择颜色'
+            }]
+        })(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='odColor' name='odColor'>
+            <Option value="red" style={{backgroundColor:'rgba(245,45,79,0.8)',}}>红色</Option>
+            <Option value="green" style={{backgroundColor:'rgba(82,245,45,0.8)'}}>绿色</Option>
+            <Option value="yellow" style={{backgroundColor:'rgba(245,223,45,0.8)'}}>黄色</Option>
+            <Option value="blue" style={{backgroundColor:'rgba(45,183,245,0.8)'}}>蓝色</Option>
+          </Select>)}
         </FormItem>
         <Button type="primary" size='small' htmlType="submit">保存</Button>
       </Form>
@@ -284,96 +442,96 @@ let OdConfigPanel = React.createClass({
 });
 OdConfigPanel = Form.create()(OdConfigPanel);
 
-let options = [];
-for (let i = 10; i < 36; i++) {
-    options.push(<Option key={i} value={i}>{i+i}</Option>)
-}
+
 let RoadConfigPanel = React.createClass({
     getInitialState() {
         return {
             options: [],
         };
+
     },
     componentDidMount() {
-        DR.drawFeatures.activate();
+
     },
     handleSelection(value) {
 
         console.log(value)
     },
+
     handleSubmit(e) {
         e.preventDefault();
         //console.log(this.props.form.getFieldsValue());
         this.props.form.validateFields((errors, values) => {
             if (!!errors) {
                 console.log(errors);
-                alert('请输入路段名称');
+                alert('有误，请检查错误');
             } else {
-                console.log('传给后台的值', values);
+                //console.log('传给后台的值', values);
+                var sendParam_road = {
+                    xgla: values.startSelect,
+                    xglb: values.endSelect,
+                    ldmc: values.roadName,
+                    coordinates: JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue())
+                }
+                if (!sendParam_road.coordinates) alert('请画图先');
+                Ds.DataService('/roadConfig/addDoubleSidedRoadInfo.json', sendParam_road, (resp) => {
+                    console.log(resp);
+                    if (resp.errorCode == 0) {
+                        alert('保存成功');
+                        DR.drawFeatures.disable();
+                        ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+                        lmsg.send('ldpz', {
+                            'data': 'success'
+                        });
+                    } else {
+                        alert(resp.errorText);
+                    }
+                }, (e) => {
+                    alert('后台传输错误！');
+                    console.log(e);
+                });
             }
 
         });
     },
     render() {
         const {
-            getFieldProps
+            getFieldDecorator
         } = this.props.form;
-        const roadNameProps = getFieldProps('roadName', {
-            rules: [{
-                required: true,
-                message: '请填写路段名称'
-            }, ]
-        });
-        const roadNameProps_start = getFieldProps('startCross', {
-            rules: [{
-                required: true,
-                message: '请选择开始路口'
-            }, ]
-        });
-        const roadNameProps_end = getFieldProps('endCross', {
-            rules: [{
-                required: true,
-                message: '请选择结束路口'
-            }, ]
-        });
+
+        const RoadCrossOptions = selectionOptions_road.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>);
+
         return (
             <Form inline onSubmit={this.handleSubmit}>
         <FormItem label="路段名称">
-          <Input placeholder="请输入路段名称" size='small'
-            {...roadNameProps} type = 'roadName' id='roadName' name='roadName'
-          />
+          {getFieldDecorator('roadName', {
+            rules: [{
+                required: true,
+                message: '请填写路段名称'
+            }]
+        })(<Input placeholder="请输入路段名称" size='small' type = 'roadName' id='roadName' name='roadName'/>)}
         </FormItem>
         <FormItem label="开始路口">
-        <Select 
-        {...roadNameProps_start} 
-        type = 'startCross' 
-        id='startCross' 
-        name='startCross' 
-        size='small'
-        defaultValue="1"
-        style={{ width: 150 }}
-        onChange={this.handleSelection}
-        placeholder="请选择开始路口"
-        getPopupContainer={()=>document.getElementById('configPanel')}
-      >
-        {options}
-      </Select>
+        {getFieldDecorator('startSelect', {
+            rules: [
+              { required: true, message: '请选择开始路口'},
+            ],
+          })(
+            <Select showSearch optionFilterProp="children"  notFoundContent="未找到相应信息" placeholder="选择开始路口" style={{ width:150}} size='small' getPopupContainer={()=>document.getElementById('configPanel')}>
+              {RoadCrossOptions}
+            </Select>
+          )}
         </FormItem>
         <FormItem label="结束路口">
-          <Select 
-        {...roadNameProps_end} 
-        type = 'startCross' 
-        id='endCross' 
-        name='endCross' 
-        size='small'
-        defaultValue="1"
-        style={{ width: 150 }}
-        onChange={this.handleSelection}
-        placeholder="请选择结束路口"
-        getPopupContainer={()=>document.getElementById('configPanel')}
-      >
-        {options}
-      </Select>
+          {getFieldDecorator('endSelect', {
+            rules: [
+              { required: true, message: '请选择结束路口' },
+            ],
+          })(
+            <Select showSearch optionFilterProp="children"  notFoundContent="未找到相应信息" placeholder="选择结束路口" style={{ width:150}} size='small' getPopupContainer={()=>document.getElementById('configPanel')}>
+              {RoadCrossOptions}
+            </Select>
+          )}
         </FormItem>
         <Button type="primary" size='small' htmlType="submit">保存</Button>
       </Form>

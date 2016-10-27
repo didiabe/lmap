@@ -1,5 +1,6 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var extractCSS = new ExtractTextPlugin('assets/' + 'style.css');
+var webpack = require('webpack');
+var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 
 module.exports = {
 	entry: {
@@ -13,12 +14,15 @@ module.exports = {
 		'react': 'React',
 		'react-dom': 'ReactDOM',
 		'leaflet': 'L',
-		'esri-leaflet': 'L.esri'
+		'esri-leaflet': 'L.esri',
+		'antd': 'antd',
+		'leaflet-draw': 'L.draw'
 	},
 	devServer: {
 		inline: true,
 		port: 2222
 	},
+	devtool: 'source-map',
 	module: {
 		loaders: [{
 			test: /\.js$/,
@@ -36,6 +40,11 @@ module.exports = {
 		}]
 	},
 	plugins: [
-		extractCSS
+		new ExtractTextPlugin('assets/' + 'style.css')
+		/*new uglifyJsPlugin({
+			compress: {
+				warnings: false
+			}
+		})*/
 	]
 }

@@ -55,25 +55,32 @@ const crossLayer = function(data) {
 
     var pointLayer;
 
+
+
     function panTotarget(e) {
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
         var popupCross = $('<div/>');
-        popupCross.append($('<button class="aa">更新</button>').click(function() {
-            alert("update index")
+        popupCross.append($('<p>   路口名称:  ' + e.target.feature.properties.name + '</p>'));
+        popupCross.append($('<button class="green_button">更新</button>').click(function() {
+            lmsg.send('openModal_updIdx', {
+                id: e.target.feature.properties.id,
+                index: e.target.feature.properties.index,
+                type: 3 //（1区域(region) 2 路段(road) 3 路口(cross)）
+            });
         }));
-        popupCross.append($('<button class="aa">实时</button>').click(function() {
+        popupCross.append($('<button class="green_button">实时</button>').click(function() {
             console.log(e.target.feature.properties.id);
-            lmsg.send('crsBtn', {
+            lmsg.send('lksszs', {
                 params: 'cross',
                 isTime: '1',
                 ID: e.target.feature.properties.id,
                 name: e.target.feature.properties.name
             });
         }));
-        popupCross.append($('<button class="aa">档案</button>').click(function() {
-            lmsg.send('crsBtn', {
+        popupCross.append($('<button class="green_button">档案</button>').click(function() {
+            lmsg.send('lkjt', {
                 params: 'cross',
                 isTime: '2',
                 ID: e.target.feature.properties.id,
@@ -171,20 +178,25 @@ const roadLayer = function(data) {
         //console.log(e.target);
         map.fitBounds(e.target.getBounds());
         var popupRoad = $('<div/>');
-        popupRoad.append($('<button class="aa">更新</button>').click(function() {
-            alert("update index")
+        popupRoad.append($('<p>   路段名称:  ' + e.target.feature.properties.name + '</p>'));
+        popupRoad.append($('<button class="green_button">更新</button>').click(function() {
+            lmsg.send('openModal_updIdx', {
+                id: e.target.feature.properties.id,
+                index: e.target.feature.properties.index,
+                type: 2 //（1区域(region) 2 路段(road) 3 路口(cross)）
+            });
         }));
-        popupRoad.append($('<button class="aa">实时</button>').click(function() {
+        popupRoad.append($('<button class="green_button">实时</button>').click(function() {
             ///console.log(e.target);
-            lmsg.send('crsBtn', {
+            lmsg.send('ldsszs', {
                 params: 'road',
                 isTime: '1',
                 ID: e.target.feature.properties.id,
                 name: e.target.feature.properties.name
             });
         }));
-        popupRoad.append($('<button class="aa">档案</button>').click(function() {
-            lmsg.send('crsBtn', {
+        popupRoad.append($('<button class="green_button">档案</button>').click(function() {
+            lmsg.send('ldjt', {
                 params: 'road',
                 isTime: '2',
                 ID: e.target.feature.properties.id,
@@ -288,20 +300,26 @@ const areaLayer = function(data) {
     function panToBound(e) {
         map.fitBounds(e.target.getBounds());
         var popupArea = $('<div/>');
-        popupArea.append($('<button class="aa">更新</button>').click(function() {
-            alert("update index")
+        popupArea.append($('<p>   区域名称:   ' + e.target.feature.properties.name + '</p>'))
+        popupArea.append($('<button class="green_button">更新</button>').click(function() {
+            lmsg.send('openModal_updIdx', {
+                id: e.target.feature.properties.id,
+                index: e.target.feature.properties.index,
+                type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
+            });
+
         }));
-        popupArea.append($('<button class="aa">实时</button>').click(function() {
+        popupArea.append($('<button class="green_button">实时</button>').click(function() {
             //console.log(e.target.feature.properties.id);
-            lmsg.send('crsBtn', {
+            lmsg.send('qysszs', {
                 params: 'area',
                 isTime: '1',
                 ID: e.target.feature.properties.id,
                 name: e.target.feature.properties.name
             });
         }));
-        popupArea.append($('<button class="aa">档案</button>').click(function() {
-            lmsg.send('crsBtn', {
+        popupArea.append($('<button class="green_button">档案</button>').click(function() {
+            lmsg.send('qyjt', {
                 params: 'area',
                 isTime: '2',
                 ID: e.target.feature.properties.id,
@@ -397,9 +415,9 @@ export const displayUniLayer = (ref, data) => {
         specialstyle = (feature) => {
             return {
                 fillColor: '#007D7D',
-                weight: 2,
+                weight: 8,
                 opacity: 1,
-                color: 'white',
+                color: 'green',
                 dashArray: '3',
                 fillOpacity: 0.7
             };
@@ -410,9 +428,9 @@ export const displayUniLayer = (ref, data) => {
         specialstyle = (feature) => {
             return {
                 fillColor: '#EEC900',
-                weight: 2,
+                weight: 8,
                 opacity: 1,
-                color: 'white',
+                color: 'red',
                 dashArray: '3',
                 fillOpacity: 0.7
             };
@@ -443,24 +461,44 @@ export const displayUniLayer = (ref, data) => {
                 icon: yongduCrossIcon
             });
         }
+        var date2Java_date = null;
+        if (data.flag == 3) {
+            date2Java_date = data.date;
+        } else if (data.flag == 2) {
+            date2Java_date = data.date.replace(/-/g, "").substring(0, 6);
+        } else if (data.flag == 1) {
+            date2Java_date = data.date.replace(/-/g, "").replace(/,/g, "&");
+        } else if (data.flag == 0) {
+            date2Java_date = data.date.replace(/-/g, "");
+        }
         param = {
             flag: data.flag,
-            date: data.date
+            date: date2Java_date
         }
     } else if (ref == 'yongdu_road') {
         _APIpath = "/map/cfydRoad.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
-                weight: 2,
+                weight: 8,
                 opacity: 1,
                 color: 'yellow',
                 fillOpacity: 0.7
             };
         }
+        var date2Java_date = null;
+        if (data.flag == 3) {
+            date2Java_date = data.date;
+        } else if (data.flag == 2) {
+            date2Java_date = data.date.replace(/-/g, "").substring(0, 6);
+        } else if (data.flag == 1) {
+            date2Java_date = data.date.replace(/-/g, "").replace(/,/g, "&");
+        } else if (data.flag == 0) {
+            date2Java_date = data.date.replace(/-/g, "");
+        }
         param = {
             flag: data.flag,
-            date: data.date
+            date: date2Java_date
         }
     } else if (ref == 'jiari_cross') {
         _APIpath = "/map/holiday.json";
@@ -477,7 +515,7 @@ export const displayUniLayer = (ref, data) => {
         }
         param = {
             type: 'cross',
-            qyType: 1,
+            qyType: 1, //如果cross road就是编号,如果区域就是类型
             date: '20160818'
         }
     } else if (ref == 'jiari_road') {
@@ -485,7 +523,7 @@ export const displayUniLayer = (ref, data) => {
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
-                weight: 2,
+                weight: 8,
                 opacity: 1,
                 color: 'blue',
                 fillOpacity: 0.7
@@ -501,7 +539,7 @@ export const displayUniLayer = (ref, data) => {
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
-                weight: 2,
+                weight: 8,
                 opacity: 1,
                 color: 'blue',
                 fillOpacity: 0.7
@@ -633,7 +671,8 @@ export const displayUniLayer = (ref, data) => {
 
 }
 
-var taxiInterval = null;
+var taxiInterval = null,
+    taxiRoute = null;
 
 export const trackingTaxi = (params) => {
     /* var params = {
@@ -647,42 +686,48 @@ export const trackingTaxi = (params) => {
             date: params.date
         };
 
-        var taxiRoute = Ds.DataService('/map/track.json', sendtaxiparams, (resp) => {
-            console.log(resp.data)
-            map.eachLayer((layer) => {
-                if (layer.options.id !== "streetLayer") {
-                    map.removeLayer(layer);
-                }
-            });
-            var fudongcheIcon = L.icon({
-                iconUrl: taxi_img,
-                iconSize: [20, 20], // size of the icon
-                iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
-                popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
-            });
-            var taxipointlayer = (feature, latlng) => {
-                //var indexVal = feature.properties.index;
-                return L.marker(latlng, {
-                    icon: fudongcheIcon
+        taxiRoute = Ds.DataService('/map/track.json', sendtaxiparams, (resp) => {
+            console.log(resp.data);
+            if (!resp.data) {
+                alert('没有查询到浮动车信息');
+                return;
+            } else {
+                map.eachLayer((layer) => {
+                    if (layer.options.id !== "streetLayer") {
+                        map.removeLayer(layer);
+                    }
                 });
-            }
-            var taxijson = resp.data;
-            var routestyle = (feature) => {
-                return {
-                    fillColor: '#2db7f5',
-                    weight: 2,
-                    opacity: 1,
-                    color: '#2db7f5',
-                    dashArray: '3',
-                    fillOpacity: 0.7
-                };
-            }
-            var taxitracklayer = L.geoJson(taxijson, {
-                style: routestyle,
-                pointToLayer: taxipointlayer
+                var fudongcheIcon = L.icon({
+                    iconUrl: taxi_img,
+                    iconSize: [20, 20], // size of the icon
+                    iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+                    popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
+                });
+                var taxipointlayer = (feature, latlng) => {
+                    //var indexVal = feature.properties.index;
+                    return L.marker(latlng, {
+                        icon: fudongcheIcon
+                    });
+                }
+                var taxijson = resp.data;
+                var routestyle = (feature) => {
+                    return {
+                        fillColor: '#2db7f5',
+                        weight: 8,
+                        opacity: 1,
+                        color: '#2db7f5',
+                        dashArray: '3',
+                        fillOpacity: 0.7
+                    };
+                }
+                var taxitracklayer = L.geoJson(taxijson, {
+                    style: routestyle,
+                    pointToLayer: taxipointlayer
 
-            });
-            map.addLayer(taxitracklayer);
+                });
+                map.addLayer(taxitracklayer);
+            }
+
         }, (e) => {
             console.log(e);
             alert("后台传输错误");
@@ -724,20 +769,14 @@ export const displayConfigLayer = (data) => {
     });
     var CrossMarker = lmap.icon({
         iconSize: [15, 15],
-        color: '#EEC900'
+        color: 'rgba(243, 106, 90, 0.5)'
     });
     var RoadLine = {
-        "color": "#bc18dc",
-        "weight": 2,
-        "opacity": 0.8
+        "color": "#32c5d2",
+        "weight": 8,
+        "opacity": 0.5
     };
-    var ZoneRegion = {
-        fillColor: "#26d249",
-        fillOpacity: 1,
-        color: "#e5e5e5",
-        weight: 2,
-        opacity: 0.8
-    };
+
     if (Config_crossGeojson) {
         ConfigCrossLayer = L.geoJson(Config_crossGeojson, {
             pointToLayer: function(feature, latlng) {
@@ -761,6 +800,13 @@ export const displayConfigLayer = (data) => {
     if (Config_zoneGeojson) {
         ConfigZoneLayer = L.geoJson(Config_zoneGeojson, {
             style: function(feature) {
+                var ZoneRegion = {
+                    fillColor: feature.properties.rgb,
+                    fillOpacity: 1,
+                    color: "white",
+                    weight: 3,
+                    opacity: 0.9
+                };
                 return ZoneRegion;
             }
         }).addTo(map);
@@ -769,22 +815,85 @@ export const displayConfigLayer = (data) => {
 }
 
 export const displayConfigLayer_road = (data) => {
-    console.log('data', data)
+    console.log('data', data);
+
     map.eachLayer((layer) => {
-        if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer')
+        if (layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
     var GeoJsonLines = data;
 
     let orangeLine = {
         "color": "#FFA500",
-        "weight": 3,
+        "weight": 8,
         "opacity": 0.8
     };
 
-    var lineLayer;
+    var lineLayer, popup2;
 
     function panToBound(e) {
+        //console.log(e.target);
+        map.fitBounds(e.target.getBounds());
+    };
+
+    function highlightFeature(e) {
+        var l = e.target;
+        l.setStyle({
+            weight: 9,
+            color: '#007D7D',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+        popup2 = L.popup().setContent(l.feature.properties.id);
+        l.bindPopup(popup2).openPopup();
+    };
+
+    function resetFeature(e) {
+        lineLayer.resetStyle(e.target);
+        map.closePopup();
+    };
+
+    function eachLineFeature(feature, layer) {
+        layer.on({
+            click: panToBound,
+            mouseover: highlightFeature,
+            mouseout: resetFeature
+        });
+    };
+
+
+    lineLayer = L.geoJson(GeoJsonLines, {
+        style: function(feature) {
+            return orangeLine;
+        },
+        onEachFeature: eachLineFeature
+    }).addTo(map);
+    //lineLayer.bindPopup(popup2).addTo(map);
+
+
+};
+
+export const displayCommonLayer = (data) => {
+    console.log('data', data);
+
+    map.eachLayer((layer) => {
+        if (layer.options.id != 'streetLayer')
+            map.removeLayer(layer);
+    });
+    var GeoJson = data;
+
+    let orangeLine = {
+        "color": "#FFA500",
+        "weight": 8,
+        "opacity": 0.8
+    };
+    let Marker = lmap.icon({
+        iconSize: [15, 15],
+        color: '#7FFF00'
+    });
+    var CommonLayer;
+
+    /*function panToBound(e) {
         //console.log(e.target);
         map.fitBounds(e.target.getBounds());
     };
@@ -800,7 +909,7 @@ export const displayConfigLayer_road = (data) => {
     };
 
     function resetFeature(e) {
-        lineLayer.resetStyle(e.target);
+        CommonLayer.resetStyle(e.target);
     };
 
     function eachLineFeature(feature, layer) {
@@ -809,15 +918,26 @@ export const displayConfigLayer_road = (data) => {
             mouseover: highlightFeature,
             mouseout: resetFeature
         });
-    };
+    };*/
 
 
-    lineLayer = L.geoJson(GeoJsonLines, {
+    CommonLayer = L.geoJson(GeoJson, {
         style: function(feature) {
             return orangeLine;
-            var indexVal = feature.properties.index;
         },
-        onEachFeature: eachLineFeature
+        pointToLayer: function(feature, latlng) {
+                return L.marker(latlng, {
+                    icon: Marker
+                });
+            }
+            //onEachFeature: eachLineFeature
     }).addTo(map);
-
+    //lineLayer.bindPopup(popup2).addTo(map);
 };
+
+export const clearLayer = () => {
+    map.eachLayer((layer) => {
+        if (layer.options.id != 'streetLayer')
+            map.removeLayer(layer);
+    });
+}

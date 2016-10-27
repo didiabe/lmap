@@ -31,7 +31,7 @@ class Map extends React.Component {
         });
         L.esri.tiledMapLayer({
             id: 'streetLayer',
-            url: "http://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer"
+            url: _mapserverUrl.streetLayer
         }).addTo(map);
 
         window.map = map;

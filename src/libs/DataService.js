@@ -1,8 +1,7 @@
 export const DataService = (api_path, param, a, b) => {
     window.$.ajax({
         type: 'POST',
-        //10.25.67.72
-        url: Path_Url + api_path,
+        url: _DataService + api_path,
         data: param,
         dataType: 'json',
         async: false,

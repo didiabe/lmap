@@ -8,12 +8,14 @@ import * as lmsg from '../../../libs/lmsg';
 import {
     connect
 } from 'react-redux';
-//import * as action from '../../actions/searchAction';
 
-var Button = require('antd/lib/button');
-var Icon = require('antd/lib/icon');
-var Popover = require('antd/lib/popover');
-var Modal = require('antd/lib/modal');
+import {
+    Button,
+    Icon,
+    Popover,
+    Modal
+} from 'antd';
+
 const ButtonGroup = Button.Group;
 class UniqueSub extends React.Component {
     constructor() {
@@ -44,7 +46,7 @@ class UniqueSub extends React.Component {
         return (
 
             <div>
-        <li refs="startUnipanel" id="trafficConditions" onClick={() => this.mountTrafficConditions() }>
+        <li ref="startUnipanel" id="trafficConditions" onClick={() => this.mountTrafficConditions() }>
                     <div type="subway">
                         <span className={this.state.active ? styles.subway_active : styles.subway}>专题</span>
                     </div>
@@ -53,14 +55,9 @@ class UniqueSub extends React.Component {
         )
     }
     componentDidMount() {
-        /*setTimeout(function() {
-            ReactDOM.render(
-                <UniquePanel/>, document.getElementById("presetBox")
-            )
-        }, 3000)
-*/
-        //console.log(ReactDOM.unmountComponentAtNode(<UniquePanel/>))
+
         let self = this;
+
         lmsg.subscribe('locating', (data) => {
 
             console.log(data);
@@ -69,12 +66,15 @@ class UniqueSub extends React.Component {
             )
         });
         lmsg.subscribe('tracktaxi', (data) => {
-            console.log(data);
+            console.log('tracktaxi', data);
             //data={startTracking=true, params:{id:223, time:20123039}}
             if (data.startTracking) {
-                CI.trackingTaxi(data.params);
+                if (!data.params.id) {
+                    alert('没有选中的浮动车');
+                } else CI.trackingTaxi(data.params);
             } else if (!data.startTracking) CI.stopTrackingTaxi();
             else alert("追踪参数错误！");
+            localStorage.removeItem('tracktaxi');
         });
         lmsg.subscribe('cfxydBtnClick', (data) => {
             console.log(data);
@@ -86,6 +86,8 @@ class UniqueSub extends React.Component {
     }
 }
 
+
+
 var _APIpath = null;
 
 var showModalWarning = () => {
@@ -96,65 +98,90 @@ var showModalWarning = () => {
 }
 
 class UniquePanel extends React.Component {
-        constructor() {
-            super();
-            this.onClickButton = this.onClickButton.bind(this);
-            this.state = {
-                disabled: false,
-                cfydData: null,
-            };
+    constructor() {
+        super();
+        this.onClickButton = this.onClickButton.bind(this);
+        this.state = {
+            disabled: false,
+            cfydData: null,
+        };
 
-        }
-        onClickButton(ref, data) {
-            CI.displayUniLayer(ref, data);
-        }
-        componentDidMount() {
-            let self = this;
+    }
+    onClickButton(ref, data) {
+        CI.displayUniLayer(ref, data);
 
-            /*            setTimeout(() => {
-                            showModalWarning();
-                            DR.drawFeatures.activate();
-                        }, 3000)*/
+    }
+    componentDidMount() {
+        let self = this;
+        console.log(self.refs.guanzhi)
+        lmsg.subscribe('locating', (data) => {
+            console.log('locating', data);
+            switch (data.params) {
+                case 'shigong':
+                    DR.drawFeatures.disable();
+                    self.refs.shigong.props.onClick();
+                    //DR.drawFeatures.activate();
+                    break;
+                case 'shigong_start':
+                    //self.refs.shigong.props.onClick();
+                    showModalWarning();
+                    DR.drawFeatures.activate();
+                    break;
+                case 'guanzhi':
+                    DR.drawFeatures.disable();
+                    self.refs.guanzhi.props.onClick();
+                    break;
+                case 'guanzhi_start':
+                    showModalWarning();
+                    DR.drawFeatures.activate();
+                    break;
+                case 'shigu':
+                    DR.drawFeatures.disable();
+                    self.refs.shigu.props.onClick();
+                    break;
+                case 'shigu_start':
+                    showModalWarning();
+                    DR.drawFeatures.activate();
+                    break;
+                case 'fdc':
+                    self.refs.fudongche.props.onClick();
+                    break;
+                default:
+                    return;
+            }
+            localStorage.removeItem('locating');
+        });
 
-
-            lmsg.subscribe('locating', (data) => {
-                console.log(data)
-                switch (data.params) {
-                    case 'shigong':
-                        DR.drawFeatures.disable();
-                        self.refs.shigong.props.onClick();
-                        //DR.drawFeatures.activate();
-                        break;
-                    case 'shigong_start':
-                        //self.refs.shigong.props.onClick();
-                        showModalWarning();
-                        DR.drawFeatures.activate();
-                        break;
-                    case 'guanzhi':
-                        DR.drawFeatures.disable();
-                        self.refs.guanzhi.props.onClick();
-                        break;
-                    case 'guanzhi_start':
-                        showModalWarning();
-                        DR.drawFeatures.activate();
-                        break;
-                    case 'shigu':
-                        DR.drawFeatures.disable();
-                        self.refs.shigu.props.onClick();
-                        break;
-                    case 'shigu_start':
-                        showModalWarning();
-                        DR.drawFeatures.activate();
-                        break;
-                    case 'fdc':
-                        self.refs.fudongche.props.onClick();
-                        break;
-                    default:
-                        return;
-                }
+        lmsg.subscribe('cfxydBtnClick', (data) => {
+            console.log('cfxydBtnClick', data);
+            self.setState({
+                cfydData: null
             });
 
-            lmsg.subscribe('cfxydBtnClick', (data) => {
+            if (data.isCross == 1) {
+                //路口
+                self.setState({
+                    cfydData: data.time
+                });
+                self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+            } else if (data.isCross == 2) {
+                //路段
+                self.setState({
+                    cfydData: data.time
+                });
+                self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
+            } else alert('双屏通讯错误');
+            localStorage.removeItem('cfxydBtnClick');
+        });
+        /*var data = {
+            'isCross': 1,
+            'time': {
+                'date': '20151122',
+                'flag': 0
+            }
+        };
+        setTimeout(function() {
+
                 console.log(data);
                 self.setState({
                     cfydData: null
@@ -172,56 +199,28 @@ class UniquePanel extends React.Component {
                     });
                     self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
                 } else alert('双屏通讯错误');
+            })*/
+        /*setTimeout(function() {
+            console.log(self.refs)
+            self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+        }, 2000)*/
 
-            });
-            /*var data = {
-                'isCross': 1,
-                'time': {
-                    'date': '20151122',
-                    'flag': 0
-                }
-            };
-            setTimeout(function() {
-
-                    console.log(data);
-                    self.setState({
-                        cfydData: null
-                    });
-                    if (data.isCross == 1) {
-                        //路口
-                        self.setState({
-                            cfydData: data.time
-                        });
-                        self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
-                    } else if (data.isCross == 2) {
-                        //路段
-                        self.setState({
-                            cfydData: data.time
-                        });
-                        self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
-                    } else alert('双屏通讯错误');
-                })*/
-            /*setTimeout(function() {
-                console.log(self.refs)
-                self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
-            }, 2000)*/
-
-        }
-        render() {
-            const yongduButton = (
-                <div>
+    }
+    render() {
+        const yongduButton = (
+            <div>
                     <Button id="yongdu_road" ref="yongdu_road" className={UniqueStyles.button1} type='ghost' size='small' onClick={()=>this.onClickButton('yongdu_road', this.state.cfydData)}>路段</Button>
         <Button id="yongdu_cross" ref="yongdu_cross" className={UniqueStyles.button1} type='ghost' size='small' onClick={()=>this.onClickButton('yongdu_cross', this.state.cfydData)}>路口</Button>
                 </div>
-            );
-            const jiariButton = (
-                <div>
+        );
+        const jiariButton = (
+            <div>
                     <Button id="jiari_cross" ref="jiari_cross" className={UniqueStyles.button1} type='ghost' size='small' onClick={()=>this.onClickButton(this.refs.jiari_cross.props.id)}>路口</Button>
                     <Button id="jiari_road" ref="jiari_road" className={UniqueStyles.button1}type='ghost' size='small' onClick={()=>this.onClickButton(this.refs.jiari_road.props.id)}>路段</Button>
                     <Button id="jiari_zone" ref="jiari_zone" className={UniqueStyles.button1}type='ghost' size='small' onClick={()=>this.onClickButton(this.refs.jiari_zone.props.id)}>区域</Button>
                 </div>);
-            return (
-                <div className={UniqueStyles.boxpanel}  id="uniqueDetails">
+        return (
+            <div className={UniqueStyles.boxpanel}  id="uniqueDetails">
                 <div className={UniqueStyles.panel_header}>
                     专题信息
                 </div>
@@ -241,17 +240,11 @@ class UniquePanel extends React.Component {
                  </div>
 
             </div>
-            )
-
-        }
-
+        )
 
     }
-    /*function mapStateToProps(state) {
-        return {
-            search: state.search,
-            cra: state.cra
-        }
-    }
-    export default connect(mapStateToProps, action)(UniqueSub);*/
+
+
+}
+
 export default UniqueSub

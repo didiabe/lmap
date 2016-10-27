@@ -13,13 +13,7 @@ class ToolBar extends React.Component {
     constructor() {
         super();
     }
-    componentDidMount() {
-        lmsg.subscribe("locating", (data) => {
-            console.log(data);
-
-        });
-    }
-
+    componentDidMount() {}
     render() {
         return (
             <div id='toolBar' className={styles.layerbox}>
@@ -34,18 +28,11 @@ class ToolBar extends React.Component {
                         </ul>
                     </div>
                     <div id='presetBox'/>
-                    </div>   
+                    </div> 
                 </div>
+
         )
     }
 }
 
-
-
 export default ToolBar
-
-/*<li id="satelliteMap">
-                                <div type="satellite">
-                                    <span className={styles.satellite}>回放</span>
-                                </div>
-                            </li>*/

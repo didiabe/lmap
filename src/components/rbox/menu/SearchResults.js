@@ -1,11 +1,10 @@
 import React from 'react';
 import styles from './_SearchResults.css';
-/*import {
+import {
     Collapse,
     Icon
-} from 'antd';*/
-var Icon = require('antd/lib/icon');
-var Collapse = require('antd/lib/collapse');
+} from 'antd';
+
 const Panel = Collapse.Panel;
 class SearchResults extends React.Component {
 
@@ -29,14 +28,14 @@ class SearchResults extends React.Component {
                                     </thead>
                                     <tbody>
                                     {crossResults.map((item)=>{
-                                        return <tr>
-                                            <td><Icon type="loading" /></td>
-                                            <td>{item.name}</td>
-                                            <td className={item.index > 8 ? styles.font_color5 :
+                                        return <tr key={item.id}>
+                                            <td key={item.id}><Icon type="loading" /></td>
+                                            <td key={item.id}>{item.name}</td>
+                                            <td key={item.id} className={item.index > 8 ? styles.font_color5 :
                                                            item.index > 6 ? styles.font_color4 :
                                                            item.index > 4 ? styles.font_color3 :
                                                            item.index > 2 ? styles.font_color2 :
-                                                           styles.font_color1}>{item.index}</td>
+                                                           styles.font_color1}>{item.jtzs}</td>
                                         </tr>
                                     })}
                                     </tbody>
@@ -54,15 +53,15 @@ class SearchResults extends React.Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {crossResults.map((item)=>{
-                                        return <tr>
-                                            <td><Icon type="smile" /></td>
-                                            <td>{item.name}</td>
-                                            <td className={item.index > 8 ? styles.font_color5 :
+                                    {roadResults.map((item)=>{
+                                        return <tr key={item.id}>
+                                            <td key={item.id}><Icon type="smile" /></td>
+                                            <td key={item.id}>{item.name}</td>
+                                            <td key={item.id} className={item.index > 8 ? styles.font_color5 :
                                                            item.index > 6 ? styles.font_color4 :
                                                            item.index > 4 ? styles.font_color3 :
                                                            item.index > 2 ? styles.font_color2 :
-                                                           styles.font_color1}>{item.index}</td>
+                                                           styles.font_color1}>{item.jtzs}</td>
                                         </tr>
                                     })}
                                     </tbody>
@@ -80,15 +79,15 @@ class SearchResults extends React.Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {crossResults.map((item)=>{
-                                        return <tr>
-                                            <td><img src="src/components/rbox/menu/a.gif"/></td>
-                                            <td>{item.name}</td>
-                                            <td className={item.index > 8 ? styles.font_color5 :
+                                    {regionResults.map((item)=>{
+                                        return <tr key={item.id}>
+                                            <td key={item.id}><Icon type="smile" /></td>
+                                            <td key={item.id}>{item.name}</td>
+                                            <td key={item.id} className={item.index > 8 ? styles.font_color5 :
                                                            item.index > 6 ? styles.font_color4 :
                                                            item.index > 4 ? styles.font_color3 :
                                                            item.index > 2 ? styles.font_color2 :
-                                                           styles.font_color1}>{item.index}</td>
+                                                           styles.font_color1}>{item.jtzs}</td>
                                         </tr>
                                     })}
                                     </tbody>

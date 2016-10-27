@@ -313,3 +313,64 @@ html, body, #map {
 		line-height: 3em;
 	}
 }
+
+
+.green_button {
+	margin-left: 10px;
+	border-width: 1px;
+	border-radius: 15px;
+	font-size: 10px;
+	color:#fff;
+	height:30px;
+	width:30px;
+  -webkit-animation-name: greenPulse;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes greenPulse {
+  from { background-color: #06b0ed; -webkit-box-shadow: 0 0 9px #0996c8; }
+  50% { background-color: #0996c8; -webkit-box-shadow: 0 0 18px #06b0ed; }
+  to { background-color: #06b0ed; -webkit-box-shadow: 0 0 9px #0996c8; }
+}
+
+.testboxid{
+    margin-top: 20px;
+    width:80px;
+    padding:5px 5px 5px 5px;
+    height:50px;
+}
+
+.leaflet-pulsing-icon {
+			border-radius: 100%;
+			box-shadow: 1px 1px 8px 0 rgba(0, 0, 0, 0.75);
+		}
+		
+		.leaflet-pulsing-icon:after {
+			content: "";
+			-webkit-border-radius: 100%;
+			border-radius: 100%;
+			height: 300%;
+			width: 300%;
+			position: absolute;
+			margin: -100% 0 0 -100%;
+		}
+		
+		@keyframes pulsate {
+			0% {
+				transform: scale(0.1, 0.1);
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+			}
+			50% {
+				opacity: 1;
+				-ms-filter: none;
+				filter: none;
+			}
+			100% {
+				transform: scale(1.2, 1.2);
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+			}
+		}

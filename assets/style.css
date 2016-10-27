@@ -221,7 +221,8 @@ ol, ul {
 }
 ._3VAB4dBvLz8kQUt0_kWuUW:hover{
     opacity: 0.6
-}._1VviI9DWdMBhq-zzZn-fTs{
+}
+._1VviI9DWdMBhq-zzZn-fTs{
     position: absolute;
     top: 58px;
     right: -6px;
@@ -515,6 +516,7 @@ background-color:#f4f5f6;
     background-color: 'red';
     height: 20px;
 }
+
 ._2llNwVAGqDnhF4R1h3Zbm0 {
     z-index: 2000;
     position: absolute;
@@ -678,6 +680,12 @@ background-color:#f4f5f6;
     background-color: #555;
 }
 
+._3nnZ53mW6wLdGl31YWBkQB{
+    padding: 20px 20px 20px 20px;
+    background: #fff;
+    
+    overflow: hidden;
+}
 ._3xAJYEmGKcooe-b84qX1C {
     display: inline-block;
     position: relative;

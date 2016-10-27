@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-/*import {
+import {
     Slider,
     Checkbox,
     Button,
@@ -12,27 +12,11 @@ import ReactDOM from 'react-dom';
     Col,
     TimePicker
 } from 'antd';
-
-import QueueAnim from 'rc-queue-anim';*/
+import QueueAnim from 'rc-queue-anim';
 import styles from '../_toolBar.css';
 import trafficStyles from './_traffic.css'
 import * as CI from '../../../scripts/CongestionIndex';
 import * as Ds from '../../../libs/DataService';
-//var Radio = require('antd/lib/radio');
-var Slider = require('antd/lib/slider');
-//var Select = require('antd/lib/select');
-var Checkbox = require('antd/lib/checkbox');
-//var Table = require('antd/lib/table');
-var Button = require('antd/lib/button');
-var Progress = require('antd/lib/progress');
-var DatePicker = require('antd/lib/date-picker');
-var Tooltip = require('antd/lib/tooltip');
-var Row = require('antd/lib/row');
-var InputNumber = require('antd/lib/input-number');
-var Col = require('antd/lib/col');
-//var Icon = require('antd/lib/icon');
-var TimePicker = require('antd/lib/time-picker');
-var QueueAnim = require('rc-queue-anim/lib/QueueAnim');
 
 class Traffic extends React.Component {
     constructor() {
@@ -195,7 +179,8 @@ class Forecast extends React.Component {
                 });
                 console.log(resp.data);
                 let geo_playback = resp.data;
-                markerPlayBack = CI.playback(geo_playback);
+                CI.displayCommonLayer(geo_playback);
+                //markerPlayBack = CI.playback(geo_playback);
             },
             (e) => {
                 console.log(e)
@@ -323,21 +308,6 @@ class Forecast extends React.Component {
     }
 }
 
-/*const DataService = (api_path, param, a, b) => {
-    window.$.ajax({
-        type: 'POST',
-        //10.25.67.72
-        url: 'http://10.25.67.110:8080/trafficIndex_web' + api_path,
-        data: param,
-        dataType: 'json',
-        async: true,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        success: a,
-        error: b
-    });
-};*/
 const RangePicker = DatePicker.RangePicker;
 const CheckboxGroup = Checkbox.Group;
 const CRA_options = [{
@@ -465,48 +435,53 @@ class Playback extends React.Component {
             alert("请选择信息后查询");
             return;
         }
-        console.log(this.state.loading);
+        let self = this;
         this.setState({
-                loading: true
-            })
-            /* this.setState({
-                 loading: true,
-                 percent: 0,
-             });*/
-        console.log(this.state.loading)
-        var param1 = {
-            kssj: this.state.startTime,
-            jssj: this.state.endTime,
-            type: this.state.checkedOptions
-        }
+            loading: true
+        });
+        setTimeout(() => {
+            var param1 = {
+                kssj: self.state.startTime,
+                jssj: self.state.endTime,
+                type: self.state.checkedOptions
+            }
 
-        Ds.DataService("/zone/hisPlayBack.json", param1,
-            (data) => {
-                let geo_playback = data.data;
-                console.log(geo_playback);
-                if (geo_playback.features.length < 1) {
-                    this.setState({
-                        loading: false,
-                        isLoaded: false
-                    });
-                    alert("没有相应信息")
-                } else {
-                    this.setState({
-                        loading: false,
-                        isLoaded: true
-                    })
-                    var percent_length = geo_playback.features[0].properties.index.length;
-                    var each_percent = Math.round(100 / percent_length);
+            Ds.DataService("/zone/hisPlayBack.json", param1,
+                (data) => {
+                    let geo_playback = data.data;
+                    console.log(geo_playback);
+                    if (geo_playback.features.length < 1) {
+                        self.setState({
+                            loading: false,
+                            isLoaded: false
+                        });
+                        alert("没有相应信息")
+                    } else {
+                        self.setState({
+                            loading: false,
+                            isLoaded: true
+                        })
+                        var percent_length = geo_playback.features[0].properties.index.length;
+                        var each_percent = Math.round(100 / percent_length);
 
-                    this.setState({
-                        each_percent: each_percent
-                    });
-                    markerPlayBack = CI.playback(geo_playback);
-                }
+                        self.setState({
+                            each_percent: each_percent
+                        });
+                        markerPlayBack = CI.playback(geo_playback);
+                    }
 
-            }, (e) => {
-                console.log(e);
-            });
+                }, (e) => {
+                    alert('后台传输错误');
+                    console.log(e);
+                });
+        }, 1000)
+
+        /* this.setState({
+             loading: true,
+             percent: 0,
+         });*/
+
+
         /* var geo_playback = {
              "type": "FeatureCollection",
              "features": [{
@@ -579,37 +554,41 @@ class Playback extends React.Component {
 
     render() {
         const player_panel = this.state.isLoaded ? [
-            <div id="hisPlayer" className={trafficStyles.hisPlayer_panel}>
-    {"Time Range: "}<span className={trafficStyles.date} id="dateNow"></span>
-                    <Button className={trafficStyles.hisPlayer_btn2} type="ghost"  size="large" icon="plus" onClick={this.speedUp} /><br/>
-                    <Button className={trafficStyles.hisPlayer_btnL} type="ghost"  onClick={this.reload} loading={this.state.loading} size="large" icon="reload" />
-                    <Button className={trafficStyles.hisPlayer_btn1} type="ghost"  size="large" icon="fast-backward" />
-                    <Button className={trafficStyles.hisPlayer_btn1} type="primary" onClick={this.play} size="large" icon={this.state.playingBtn ? "pause" : "play-circle"} />
-                    <Button className={trafficStyles.hisPlayer_btn1} type="ghost" onClick={this.speedDown} size="large" icon="fast-forward" />
-                    <Button className={trafficStyles.hisPlayer_btnR} type="ghost" onClick={this.clear} size="large" icon="file-excel" /><br/>
-                    <Button className={trafficStyles.hisPlayer_btn2} type="ghost"  size="large" icon="minus" />
-                    <Progress className={trafficStyles.date} percent={this.state.percent} />
+            <QueueAnim key='QueueAnim11' delay={500} className="queue-simple">
+            <div key={'a'} id="hisPlayer" className={trafficStyles.hisPlayer_panel}>
+                    
+                    <Button key={'1'} className={trafficStyles.hisPlayer_btn2} type="ghost"  size="large" icon="plus" onClick={this.speedUp} /><br/>
+                    <Button key={'2'} className={trafficStyles.hisPlayer_btnL} type="ghost"  onClick={this.reload} loading={this.state.loading} size="large" icon="reload" />
+                    <Button key={'3'} className={trafficStyles.hisPlayer_btn1} type="ghost"  size="large" icon="fast-backward" />
+                    <Button key={'4'} className={trafficStyles.hisPlayer_btn1} type="primary" onClick={this.play} size="large" icon={this.state.playingBtn ? "pause" : "play-circle"} />
+                    <Button key={'5'} className={trafficStyles.hisPlayer_btn1} type="ghost" onClick={this.speedDown} size="large" icon="fast-forward" />
+                    <Button key={'6'} className={trafficStyles.hisPlayer_btnR} type="ghost" onClick={this.clear} size="large" icon="file-excel" /><br/>
+                    <Button key={'7'} className={trafficStyles.hisPlayer_btn2} type="ghost"  size="large" icon="minus" /><br/>
+                    <Progress key={'8'} className={trafficStyles.date} percent={this.state.percent} />
+
                 </div>
+                </QueueAnim>
         ] : null;
         return (
             <div className={trafficStyles.panel_body}>
                 <div>
                 <ul>
-                    <li>{"时间区间: "}<RangePicker showTime format="yyyy-MM-dd HH:mm:ss" 
+                    <li>{"时间区间: "}<RangePicker format="YYYY-MM-DD HH:mm:ss" 
                     onChange={this.getTimeRange} getCalendarContainer={trigger=>trigger.parentNode} />
                     </li><br/>
                    <li><CheckboxGroup className={trafficStyles.checkboxes} options={CRA_options} onChange={this.getCheckOption} />
                     </li><br/>
                      <Button className={trafficStyles.loadingButton} type="primary" size="large" icon="cloud-upload" 
-                     loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "Completed!" : "加载数据"}</Button>
+                     loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "加载完成!" : "加载数据"}</Button>
                     <br/>
-                    <li className={trafficStyles.splitline_H}></li>
+                    <li className={trafficStyles.splitline_H}></li><br/>
+                    <li className={trafficStyles.date} id='dateNow'></li>
                     </ul>
                 </div>
                 <br/>
-                    <QueueAnim className={trafficStyles.QueContent} animConfig={[{ opacity: [1, 0], translateY: [0, 50] },{ opacity: [1, 0], translateY: [0, -50] }]}>
+                    <div className={trafficStyles.QueContent}>
                         {player_panel}
-                    </QueueAnim>
+                    </div>
 
             </div>
         )

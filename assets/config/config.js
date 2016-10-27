@@ -1,1 +1,0 @@
-var Path_Url = 'http://10.25.67.162:8080/trafficIndex_web';

@@ -207,3 +207,9 @@
     height: 20px;
     text-align:center;
 }
+
+.pager{
+    margin-top: 340px;
+    margin-right: 20px;
+    float: right;
+}

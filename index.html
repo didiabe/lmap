@@ -6,62 +6,26 @@
     <title>lmap</title>
     <link rel="stylesheet" type="text/css" href="src/styles/base.css">
     <link rel="stylesheet" type="text/css" href="src/styles/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="src/styles/antd.css">
+    <link rel="stylesheet" type="text/css" href="src/styles/antd.min.css">
     <link rel="stylesheet" type="text/css" href="assets/libs/leaflet/leaflet.css">
     <link rel="Shortcut Icon" href="http://a.amap.com/lbs-p/static/img/887205ad.png" title="GitHub">
     <link rel="stylesheet" type="text/css" href="src/scripts/L.VisualClick.css">
-    <link rel="stylesheet" type="text/css" href="src/styles/leafletdraw.css">
+    <link rel="stylesheet" type="text/css" href="assets/libs/leaflet/plugins/leaflet.draw.css">
     <link rel="stylesheet" type="text/css" href="assets/style.css">
-
-    <style>
-    .leaflet-pulsing-icon {
-        border-radius: 100%;
-        box-shadow: 1px 1px 8px 0 rgba(0, 0, 0, 0.75);
-    }
-    
-    .leaflet-pulsing-icon:after {
-        content: "";
-        -webkit-border-radius: 100%;
-        border-radius: 100%;
-        height: 300%;
-        width: 300%;
-        position: absolute;
-        margin: -100% 0 0 -100%;
-    }
-    
-    @keyframes pulsate {
-        0% {
-            transform: scale(0.1, 0.1);
-            opacity: 0;
-            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-            filter: alpha(opacity=0);
-        }
-        50% {
-            opacity: 1;
-            -ms-filter: none;
-            filter: none;
-        }
-        100% {
-            transform: scale(1.2, 1.2);
-            opacity: 0;
-            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-            filter: alpha(opacity=0);
-        }
-    }
-
-    </style>
 </head>
 
 <body>
     <div id="root"></div>
-    <script src="assets/libs/react.min.js"></script>
-    <script src="assets/libs/react-dom.min.js"></script>
+    <script src="assets/libs/react.js"></script>
+    <script src="assets/libs/react-dom.js"></script>
     <script src="assets/libs/leaflet/leaflet.js"></script>
     <script src="assets/libs/leaflet/esri-leaflet.js"></script>
     <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script src="assets/libs/leaflet/plugins/leaflet.draw.js"></script>
     <script src="src/scripts/L.VisualClick.js"></script>
-    <script src="assets/config/config.js"></script>
-    <script src="assets/config/config_2screen1.js"></script>
+    <script src="assets/libs/antd/antd.js"></script>
+    <script src="assets/config/client.js"></script>
+    <script src="assets/libs/echarts.source.js"></script>
     <script src="assets/bundle.js"></script>
 </body>
 

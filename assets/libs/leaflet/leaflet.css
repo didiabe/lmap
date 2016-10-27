@@ -122,8 +122,9 @@
 .leaflet-right .leaflet-control {
 	float: right;
 	}
+/*改了css*/
 .leaflet-top .leaflet-control {
-	margin-top: 10px;
+	margin-top: 70px;
 	}
 .leaflet-bottom .leaflet-control {
 	margin-bottom: 10px;

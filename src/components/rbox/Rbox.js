@@ -239,7 +239,22 @@ class Rbox extends React.Component {
             });
             localStorage.removeItem('tracktaxi');
         });
-
+        lmsg.subscribe('ODClick', (data) => {
+            self.setState({
+                contraction: true,
+                initCraResults: false,
+                isCFYDpanel: false
+            });
+            localStorage.removeItem('ODClick');
+        });
+        lmsg.subscribe('hbjjr_init', (data) => {
+            self.setState({
+                contraction: true,
+                initCraResults: false,
+                isCFYDpanel: false
+            });
+            localStorage.removeItem('hbjjr_init');
+        });
     }
 
 }

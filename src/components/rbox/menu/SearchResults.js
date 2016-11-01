@@ -29,9 +29,9 @@ class SearchResults extends React.Component {
                                     <tbody>
                                     {crossResults.map((item)=>{
                                         return <tr key={item.id}>
-                                            <td key={item.id}><Icon type="loading" /></td>
-                                            <td key={item.id}>{item.name}</td>
-                                            <td key={item.id} className={item.index > 8 ? styles.font_color5 :
+                                            <td ><Icon type="loading" /></td>
+                                            <td >{item.name}</td>
+                                            <td className={item.index > 8 ? styles.font_color5 :
                                                            item.index > 6 ? styles.font_color4 :
                                                            item.index > 4 ? styles.font_color3 :
                                                            item.index > 2 ? styles.font_color2 :
@@ -55,9 +55,9 @@ class SearchResults extends React.Component {
                                     <tbody>
                                     {roadResults.map((item)=>{
                                         return <tr key={item.id}>
-                                            <td key={item.id}><Icon type="smile" /></td>
-                                            <td key={item.id}>{item.name}</td>
-                                            <td key={item.id} className={item.index > 8 ? styles.font_color5 :
+                                            <td><Icon type="smile" /></td>
+                                            <td>{item.name}</td>
+                                            <td className={item.index > 8 ? styles.font_color5 :
                                                            item.index > 6 ? styles.font_color4 :
                                                            item.index > 4 ? styles.font_color3 :
                                                            item.index > 2 ? styles.font_color2 :
@@ -81,9 +81,9 @@ class SearchResults extends React.Component {
                                     <tbody>
                                     {regionResults.map((item)=>{
                                         return <tr key={item.id}>
-                                            <td key={item.id}><Icon type="smile" /></td>
-                                            <td key={item.id}>{item.name}</td>
-                                            <td key={item.id} className={item.index > 8 ? styles.font_color5 :
+                                            <td><Icon type="smile" /></td>
+                                            <td>{item.name}</td>
+                                            <td className={item.index > 8 ? styles.font_color5 :
                                                            item.index > 6 ? styles.font_color4 :
                                                            item.index > 4 ? styles.font_color3 :
                                                            item.index > 2 ? styles.font_color2 :

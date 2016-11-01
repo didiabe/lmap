@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Sylvenas/lmap#readme",
   "dependencies": {
+    "@turf/meta": "^3.5.2",
     "@turf/turf": "^3.5.2",
     "antd": "^2.1.0",
     "babel-core": "^6.11.4",

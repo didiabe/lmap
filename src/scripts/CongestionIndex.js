@@ -1,7 +1,12 @@
 import L from 'leaflet';
 import LE from 'esri-leaflet';
+import * as turf from '@turf/turf';
+import * as meta from '@turf/meta';
 import * as lmap from '../libs/lmap';
 import taxi_img from '../images/local_taxi.png';
+import construction_img from '../images/construction.png';
+import accident_img from '../images/accident.png';
+import control_img from '../images/traffic_control.png';
 import * as lmsg from '../libs/lmsg';
 import * as Ds from '../libs/DataService';
 import traffic_warning_img from '../images/Traffic_Warning.png';
@@ -393,7 +398,8 @@ export const displayUniLayer = (ref, data) => {
         specialpointlayer = null,
         clickPanBound = null,
         specialpopup = null,
-        specialstyle = null;
+        specialstyle = null,
+        centerPointLogo = null;
 
 
     if (ref == 'fudongche') {
@@ -422,6 +428,17 @@ export const displayUniLayer = (ref, data) => {
                 fillOpacity: 0.7
             };
         }
+        var icon = L.icon({
+            iconUrl: construction_img,
+            iconSize: [30, 30],
+            iconAnchor: [0, 0],
+            popupAnchor: [10, 0]
+        });
+        centerPointLogo = (feature, latlng) => {
+            return L.marker(latlng, {
+                icon: icon
+            });
+        }
 
     } else if (ref == 'guanzhi') {
         _APIpath = "/map/trafficControl.json";
@@ -435,6 +452,17 @@ export const displayUniLayer = (ref, data) => {
                 fillOpacity: 0.7
             };
         }
+        var icon = L.icon({
+            iconUrl: control_img,
+            iconSize: [30, 30],
+            iconAnchor: [0, 0],
+            popupAnchor: [10, 0]
+        });
+        centerPointLogo = (feature, latlng) => {
+            return L.marker(latlng, {
+                icon: icon
+            });
+        }
     } else if (ref == 'shigu') {
         _APIpath = "/map/trafficAccident.json";
         specialstyle = (feature) => {
@@ -446,6 +474,17 @@ export const displayUniLayer = (ref, data) => {
                 dashArray: '3',
                 fillOpacity: 0.7
             };
+        }
+        var icon = L.icon({
+            iconUrl: accident_img,
+            iconSize: [30, 30],
+            iconAnchor: [0, 0],
+            popupAnchor: [10, 0]
+        });
+        centerPointLogo = (feature, latlng) => {
+            return L.marker(latlng, {
+                icon: icon
+            });
         }
     } else if (ref == 'yongdu_cross') {
         _APIpath = "/map/cfydCross.json";
@@ -515,8 +554,8 @@ export const displayUniLayer = (ref, data) => {
         }
         param = {
             type: 'cross',
-            qyType: 1, //如果cross road就是编号,如果区域就是类型
-            date: '20160818'
+            qyType: data.qyType,
+            date: data.date
         }
     } else if (ref == 'jiari_road') {
         _APIpath = "/map/holiday.json";
@@ -531,8 +570,8 @@ export const displayUniLayer = (ref, data) => {
         }
         param = {
             type: 'road',
-            qyType: 1,
-            date: '20160818'
+            qyType: data.qyType,
+            date: data.date
         }
     } else if (ref == 'jiari_zone') {
         _APIpath = "/map/holiday.json";
@@ -547,8 +586,8 @@ export const displayUniLayer = (ref, data) => {
         }
         param = {
             type: 'region',
-            qyType: 0,
-            date: '20160818'
+            qyType: data.qyType,
+            date: data.date
         }
     }
 
@@ -584,7 +623,38 @@ export const displayUniLayer = (ref, data) => {
                 "纬度: " + popupData.gpsWd + '<br/>' +
                 "浮动车速度: " + popupData.velocity + '<br/>');
 
-        } else if (ref == "shigong") {
+        }
+        SpecificLayer.bindPopup(specialpopup).addTo(map);
+
+        if (specialpointlayer) {
+            if (map.getZoom() <= 16) {
+                map.setZoomAround(e.target._latlng, 17);
+            } else map.panTo(e.target._latlng);
+        } else map.fitBounds(e.target.getBounds());
+    }
+
+    var eachUniFeature = (feature, layer) => {
+        layer.on({
+            click: clickPanBound,
+            //mouseover: highlightFeature,
+            //mouseout: resetFeature
+        });
+    };
+    var SpecificLayer = L.geoJson(featurecollectiondata, {
+        style: specialstyle,
+        pointToLayer: specialpointlayer,
+        onEachFeature: eachUniFeature
+    });
+
+
+    var displayDetails = (e) => {
+        var eachFeatureID = e.target.feature.properties.id;
+        var sendparamID = {
+            "xh": eachFeatureID
+        };
+        var popupData = null,
+            popup_spec = null;
+        if (ref == "shigong") {
             Ds.DataService("/roadconstruction/queryConstOne.json", sendparamID, (resp) => {
                 console.log(resp);
                 popupData = resp.data;
@@ -592,7 +662,7 @@ export const displayUniLayer = (ref, data) => {
                 alert('后台传输错误');
                 console.log(e)
             });
-            specialpopup = L.popup().setContent(
+            popup_spec = L.popup().setContent(
                 "施工单位: " + popupData.company + '<br/>' +
                 "联系人: " + popupData.contact + '<br/>' +
                 "施工类别: " + popupData.objecttype + '<br/>' +
@@ -611,7 +681,7 @@ export const displayUniLayer = (ref, data) => {
                 alert('后台传输错误');
                 console.log(e)
             });
-            specialpopup = L.popup().setContent(
+            popup_spec = L.popup().setContent(
                 "申请时间: " + popupData.applydate + '<br/>' +
                 "开始时间: " + popupData.startdate + '<br/>' +
                 "预计结束时间: " + popupData.planenddate + '<br/>' +
@@ -633,7 +703,7 @@ export const displayUniLayer = (ref, data) => {
                 alert('后台传输错误');
                 console.log(e)
             });
-            specialpopup = L.popup().setContent(
+            popup_spec = L.popup().setContent(
                 "事故等级: " + popupData.accidentlevel + '<br/>' +
                 "事故类型: " + popupData.accidenttype + '<br/>' +
                 "发生位置: " + popupData.locationdesc + '<br/>' +
@@ -643,32 +713,47 @@ export const displayUniLayer = (ref, data) => {
                 "上报人: " + popupData.reportperson + '<br/>' +
                 "上报人联系方式: " + popupData.reportpersoncontact + '<br/>');
         }
+        if (map.getZoom() <= 15) {
+            map.setZoomAround(e.target._latlng, 15);
+        } else map.panTo(e.target._latlng);
 
+        centerPointLayer.bindPopup(popup_spec).addTo(map);
 
-        //var specialpopup = L.popup().setContent("这是浮动车信息");
-        SpecificLayer.bindPopup(specialpopup).addTo(map);
-
-        if (specialpointlayer) {
-            if (map.getZoom() <= 16) {
-                map.setZoomAround(e.target._latlng, 17);
-            } else map.panTo(e.target._latlng);
-        } else map.fitBounds(e.target.getBounds());
+    }
+    var showLayer_spec = () => {
+        map.addLayer(SpecificLayer);
+    }
+    var hideLayer_spec = () => {
+        map.removeLayer(SpecificLayer);
     }
 
-    function eachUniFeature(feature, layer) {
+    var showHideLayer = (feature, layer) => {
         layer.on({
-            click: clickPanBound,
-            //mouseover: highlightFeature,
-            //mouseout: resetFeature
+            click: displayDetails,
+            mouseout: hideLayer_spec,
+            mouseover: showLayer_spec
         });
-    };
-    var SpecificLayer = L.geoJson(featurecollectiondata, {
-        style: specialstyle,
-        pointToLayer: specialpointlayer,
-        onEachFeature: eachUniFeature
-    });
+    }
     map.addLayer(SpecificLayer);
-
+    if (ref == 'shigu' || ref == 'shigong' || ref == 'guanzhi') {
+        map.eachLayer((layer) => {
+            if (layer.options.id !== "streetLayer") {
+                map.removeLayer(layer);
+            }
+        });
+        var centerPointsTotal = [];
+        meta.featureEach(featurecollectiondata, (feature) => {
+            var centerPoint1 = turf.centroid(feature);
+            var centerPoint = turf.point(centerPoint1.geometry.coordinates, feature.properties)
+            centerPointsTotal.push(centerPoint);
+        });
+        var centerCollection = turf.featureCollection(centerPointsTotal);
+        var centerPointLayer = L.geoJson(centerCollection, {
+            pointToLayer: centerPointLogo,
+            onEachFeature: showHideLayer
+        });
+        map.addLayer(centerPointLayer);
+    }
 }
 
 var taxiInterval = null,
@@ -751,6 +836,64 @@ export const stopTrackingTaxi = () => {
     });
 }
 
+export const changeConfigLayer = (data, ref) => {
+    console.log(data);
+    map.eachLayer((layer) => {
+        if (layer.options.id !== "streetLayer") {
+            map.removeLayer(layer);
+        }
+    });
+    var ChangeLayerData = data;
+    var onClickLayer = (e) => {
+        console.log(e.target.feature.properties.id);
+        console.log(ref)
+        lmsg.send('openChangeConfigPanel', {
+            ref: ref,
+            id: e.target.feature.properties.id
+        });
+
+    }
+    var showName = (e) => {
+        e.target.setStyle({
+            weight: 7,
+            color: '#FF4500',
+            dashArray: '',
+            fillOpacity: 0.9
+        });
+        var popup = L.popup().setContent('名称：' + e.target.feature.properties.id);
+        e.target.bindPopup(popup).openPopup();
+    }
+    var closePopup = (e) => {
+        ChangeConfigLayer.resetStyle(e.target);
+        map.closePopup();
+    }
+    var ChangeConfigLayer = L.geoJson(ChangeLayerData, {
+        style: function(feature) {
+            var color1 = null;
+            if (feature.properties.rgb) color1 = feature.properties.rgb;
+            else color1 = 'LightSalmon';
+            var styles = {
+                fillColor: color1,
+                fillOpacity: 1,
+                color: color1,
+                weight: 3,
+                opacity: 0.9
+            };
+            return styles;
+        },
+        onEachFeature: (feature, layer) => {
+            layer.on({
+                click: onClickLayer,
+                mouseover: showName,
+                mouseout: closePopup
+            });
+        }
+    }).addTo(map);
+
+
+}
+
+
 export const displayConfigLayer = (data) => {
     console.log(data);
     var Config_crossGeojson = null,
@@ -796,7 +939,6 @@ export const displayConfigLayer = (data) => {
             }
         }).addTo(map);
     }
-
     if (Config_zoneGeojson) {
         ConfigZoneLayer = L.geoJson(Config_zoneGeojson, {
             style: function(feature) {

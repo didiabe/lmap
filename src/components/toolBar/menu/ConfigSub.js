@@ -5,6 +5,7 @@ import ConfigStyles from './_UniqueSub.css'
 import * as CI from '../../../scripts/CongestionIndex';
 import * as DR from '../../../scripts/drawFeatures';
 import * as lmsg from '../../../libs/lmsg';
+import * as lmap from '../../../libs/lmap';
 import {
     connect
 } from 'react-redux';
@@ -16,7 +17,7 @@ import {
     Form,
     Input,
     Select,
-    Tag
+    Popover
 } from 'antd';
 
 const FormItem = Form.Item;
@@ -47,6 +48,10 @@ class ConfigSub extends React.Component {
             });
             ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"))
         }
+    }
+    componentWillUnmount() {
+        lmap.removeEchartsLayer();
+        DR.drawFeatures.disable();
     }
     render() {
         return (
@@ -189,9 +194,37 @@ class ConfigSubPanel extends React.Component {
 
         } else alert('加载地图图层错误');
 
+    }
+    ChangeConfig(ref) {
+        ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+        DR.drawFeatures.disable();
+        if (ref == 'regionConfig') {
+            Ds.DataService('/zoneConfig/map.json', null, (resp) => {
+                CI.changeConfigLayer(resp.data.zone, ref);
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误！');
+            });
+        } else if (ref == 'odConfig') {
+            Ds.DataService('/odRegion/initMap.json', null, (resp) => {
+                CI.changeConfigLayer(resp.data.zone, ref);
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误！');
+            });
+        } else if (ref == 'roadConfig') {
+            Ds.DataService('/map/roadMap.json', null, (resp) => {
+                CI.changeConfigLayer(resp.data, ref);
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误！');
+            });
+        }
 
     }
     componentDidMount() {
+        //如果od在先remove
+        lmap.removeEchartsLayer();
         let self = this;
         //路段配置下拉框内容
         Ds.DataService('/roadConfig/searchDoubleRoadList.json', null, (resp) => {
@@ -202,6 +235,7 @@ class ConfigSubPanel extends React.Component {
         });
 
         lmsg.subscribe('peizhi', (data) => {
+            localStorage.removeItem('peizhi');
             switch (data.params) {
                 case 'odqypz':
                     self.onClickButton("odConfig");
@@ -212,11 +246,46 @@ class ConfigSubPanel extends React.Component {
                 case 'qypz':
                     self.onClickButton("regionConfig");
                     break;
+                case 'fhld_init':
+
+                    break;
+                case 'fhld_locating':
+
+                    break;
             }
-            localStorage.removeItem('peizhi');
+
         });
+        //lmsg.send('fhld_ok',{new_fhld:11, doublers:[{name:11, id:11},{name:11, id:11},{name:11, id:11}]})
+        lmsg.subscribe('openChangeConfigPanel', (data) => {
+            localStorage.removeItem('openChangeConfigPanel');
+
+            if (data.ref == 'regionConfig') {
+                console.log(data.id);
+            } else if (data.ref == 'odConfig') {
+                console.log(data.id);
+            } else if (data.ref == 'roadConfig') {
+                console.log(data.id);
+            }
+        });
+
     }
     render() {
+        const regionConfig = (
+            <div>
+            <Button id="regionConfig_add" ref="regionConfig_add" className={ConfigStyles.button1} type="ghost" size="small" loading={this.state.isloading2}  onClick={()=>this.onClickButton("regionConfig")}>新增</Button>
+            <Button id="regionConfig_fix" ref="regionConfig_fix" className={ConfigStyles.button1} type="ghost" size="small" loading={this.state.isloading2} onClick={()=>this.ChangeConfig("regionConfig")}>修改</Button>
+        </div>);
+        const odConfig = (
+            <div>
+            <Button id="odConfig_add" ref="odConfig_add" className={ConfigStyles.button1} type="ghost" size="small" loading={this.state.isloading2} onClick={()=>this.onClickButton("odConfig")}>新增</Button>
+            <Button id="odConfig_fix" ref="odConfig_fix" className={ConfigStyles.button1} type="ghost" size="small" loading={this.state.isloading2} onClick={()=>this.ChangeConfig("odConfig")}>修改</Button>
+        </div>);
+        const roadConfig = (
+            <div>
+            <Button id="roadConfig_add" ref="roadConfig_add" className={ConfigStyles.button1} type="ghost" size="small" loading={this.state.isloading2} onClick={()=>this.onClickButton("roadConfig")}>新增</Button>
+            <Button id="roadConfig_fix" ref="roadConfig_fix" className={ConfigStyles.button1} type="ghost" size="small" loading={this.state.isloading2} onClick={()=>this.ChangeConfig("roadConfig")}>修改</Button>
+        </div>);
+
         return (
             <div className={ConfigStyles.boxpanel}  id="configDetails">
                 <div className={ConfigStyles.panel_header}>
@@ -224,9 +293,17 @@ class ConfigSubPanel extends React.Component {
                 </div>
                 <div className={ConfigStyles.panel_body} id="Configpanel_body">
                     <Button id="crossConfig" ref="crossConfig" className={ConfigStyles.button1} type="primary" size="small" disabled={true} onClick={()=>this.onClickButton(this.refs.crossConfig.props.id)}>复合路段</Button>
-                    <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1} onClick={()=>this.onClickButton("roadConfig")}>双向路段</Button>
-                    <Button id="regionConfig" ref="regionConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading2}  onClick={()=>this.onClickButton("regionConfig")}>区域配置</Button>
-                    <Button id="odConfig" ref="odConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading3} onClick={()=>this.onClickButton("odConfig")}>OD区域</Button>
+                    
+                    <Popover ref="roadConfig" content={roadConfig} placement="topLeft" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('configDetails')}>
+                        <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1}>双向路段</Button>
+                    </Popover>
+                    <Popover ref="regionConfig" content={regionConfig} placement="top" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('configDetails')}>
+                        <Button id="regionConfig" ref="regionConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading2}>区域配置</Button>
+                    </Popover>
+                    <Popover ref="odConfig" content={odConfig} placement="topRight" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('configDetails')}>
+                        <Button id="odConfig" ref="odConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading3}>OD区域</Button>
+                    </Popover>
+                    
                 </div><br/>
                 <div id='configPanel'></div>   
             </div>
@@ -514,7 +591,7 @@ let RoadConfigPanel = React.createClass({
         <FormItem label="开始路口">
         {getFieldDecorator('startSelect', {
             rules: [
-              { required: true, message: '请选择开始路口'},
+              { required: false, message: '请选择开始路口'},
             ],
           })(
             <Select showSearch optionFilterProp="children"  notFoundContent="未找到相应信息" placeholder="选择开始路口" style={{ width:150}} size='small' getPopupContainer={()=>document.getElementById('configPanel')}>
@@ -525,7 +602,7 @@ let RoadConfigPanel = React.createClass({
         <FormItem label="结束路口">
           {getFieldDecorator('endSelect', {
             rules: [
-              { required: true, message: '请选择结束路口' },
+              { required: false, message: '请选择结束路口' },
             ],
           })(
             <Select showSearch optionFilterProp="children"  notFoundContent="未找到相应信息" placeholder="选择结束路口" style={{ width:150}} size='small' getPopupContainer={()=>document.getElementById('configPanel')}>

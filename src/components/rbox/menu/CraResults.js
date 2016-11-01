@@ -81,16 +81,21 @@ class CraResults extends React.Component {
             localStorage.removeItem('crsBtnClick');
         });
     }
-    componentWillReceiveProps() {
-        console.log(112)
+    componentWillReceiveProps(nextProps) {
+        console.log('nextProps', nextProps);
+        this.setState({
+            tableContent: nextProps.jtzsPage.jtzsList
+        });
+    }
+    componentDidUpdate() {
+        /*不能在这里setstate，会重复执行
+        this.setState({
+            tableContent: JtzsList.jtzsList
+        });*/
     }
     render() {
-
         children_rboxkey = this.props.children;
         JtzsList = this.props.jtzsPage;
-
-        console.log('list', JtzsList);
-        console.log('state', this.state.tableContent)
         if (!JtzsList) alert("错误");
         return (
             <div className={styles.traffic_tag}>
@@ -177,7 +182,6 @@ class TableRow extends React.Component {
             'name': Name2screen1
         });
     }
-
     componentDidMount() {}
     render() {
         var hierarchyStyle = null;

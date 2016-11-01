@@ -220,7 +220,15 @@ export const geoTime = (geoJSON, options) => {
     return new L.GeoTime(geoJSON, options);
 };
 
-export const echartsLayer = (ec) => {
+export const removeEchartsLayer = () => {
+    var echartPane = map.getPanes().overlayPane;
+    while (echartPane.hasChildNodes()) //当div下还存在子节点时 循环继续
+    {
+        echartPane.removeChild(echartPane.firstChild);
+    }
+};
+
+export const echartsLayer = (id, ec) => {
     L.EchartsLayer = L.Class.extend({
         includes: [L.Mixin.Events],
         _echartsContainer: null,
@@ -232,22 +240,42 @@ export const echartsLayer = (ec) => {
         _delta: 0,
         _startTime: null,
         _lastMousePos: null,
-        initialize: function(ec) {
-            this._map = window.map;
+        initialize: function(id, ec) {
+            //删除地图上已有的echarts元素
+            var echartPane = map.getPanes().overlayPane;
+            while (echartPane.hasChildNodes()) //当div下还存在子节点时 循环继续
+            {
+                echartPane.removeChild(echartPane.firstChild);
+            }
+            //新增echarts容器元素
+            this._map = map;
             var size = map.getSize();
-            console.log(size);
             var div = this._echartsContainer = document.createElement('div');
             div.style.position = 'absolute';
             div.style.height = size.y + 'px';
             div.style.width = size.x + 'px';
-            div.style.top = 0;
-            div.style.left = 0;
+            div.id = id;
+            var domPosition = map._getMapPanePos();
+            // 记录偏移量
+            var _mapOffset = [-parseInt(domPosition.x) || 0, -parseInt(domPosition.y) || 0];
+            div.style.top = _mapOffset[0] + 'px';
+            div.style.left = _mapOffset[1] + 'px';
             map.getPanes().overlayPane.appendChild(div);
-            this._init(map, ec);
+            this._init(map, ec, id);
         },
-        _init: function(map, ec) {
+        _init: function(map, ec, id) {
             var self = this;
+
             self._map = map;
+
+            self.removeLayer = function() {
+                var echartPane = map.getPanes().overlayPane;
+                while (echartPane.hasChildNodes()) //当div下还存在子节点时 循环继续
+                {
+                    echartPane.removeChild(echartPane.firstChild);
+                }
+            };
+
             //初始化mapoverlay
             /**
              * 获取echarts容器
@@ -544,5 +572,5 @@ export const echartsLayer = (ec) => {
         }
 
     });
-    return new L.EchartsLayer(ec);
+    return new L.EchartsLayer(id, ec);
 }

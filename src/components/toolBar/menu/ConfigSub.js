@@ -17,7 +17,8 @@ import {
     Form,
     Input,
     Select,
-    Popover
+    Popover,
+    Modal
 } from 'antd';
 
 const FormItem = Form.Item;
@@ -192,6 +193,15 @@ class ConfigSubPanel extends React.Component {
                 });
             });
 
+        } else if (ref = 'fhld') {
+            Ds.DataService('/map/roadMap.json', null, (resp) => {
+                CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+
+                DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+
+            }, (e) => {
+                console.log(e)
+            });
         } else alert('加载地图图层错误');
 
     }
@@ -247,10 +257,24 @@ class ConfigSubPanel extends React.Component {
                     self.onClickButton("regionConfig");
                     break;
                 case 'fhld_init':
+                    Ds.DataService('/map/roadMap.json', null, (resp) => {
+                        CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
 
+
+
+                    }, (e) => {
+                        console.log(e)
+                    });
                     break;
                 case 'fhld_locating':
+                    Ds.DataService('/map/roadMap.json', null, (resp) => {
 
+
+                        DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+
+                    }, (e) => {
+                        console.log(e)
+                    });
                     break;
             }
 
@@ -258,14 +282,44 @@ class ConfigSubPanel extends React.Component {
         //lmsg.send('fhld_ok',{new_fhld:11, doublers:[{name:11, id:11},{name:11, id:11},{name:11, id:11}]})
         lmsg.subscribe('openChangeConfigPanel', (data) => {
             localStorage.removeItem('openChangeConfigPanel');
+            /* Modal.warning({
+                 title: '您选择的道路/区域名称是：' + data.id,
+                 content: '确认修改请重新绘制并填入相关信息。',
+             });*/
+            Modal.confirm({
+                title: '您选择的道路/区域名称是：' + data.id,
+                content: '确认修改请重新绘制并填入相关信息。',
+                onOk() {
+                    if (data.ref == 'regionConfig') {
+                        console.log(data.id);
+                        ReactDOM.render(
+                            <RegionConfigPanel/>, document.getElementById("configPanel")
+                        );
+                        DR.DrawConfigLayer.DrawRegion.activate();
+                    } else if (data.ref == 'odConfig') {
+                        console.log(data.id);
 
-            if (data.ref == 'regionConfig') {
-                console.log(data.id);
-            } else if (data.ref == 'odConfig') {
-                console.log(data.id);
-            } else if (data.ref == 'roadConfig') {
-                console.log(data.id);
-            }
+                        ReactDOM.render(
+                            <OdConfigPanel/>, document.getElementById("configPanel")
+                        );
+                        DR.DrawConfigLayer.DrawOD.activate();
+                    } else if (data.ref == 'roadConfig') {
+                        console.log(data.id);
+                        ReactDOM.render(
+                            <RoadConfigPanel/>, document.getElementById("configPanel")
+                        );
+                        DR.DrawConfigLayer.DrawRoad.activate();
+                    }
+                    /*return new Promise((resolve, reject) => {
+                        //setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+                        setTimeout(resolve, 1000);
+                    }).catch(() => console.log('Oops errors!'));*/
+                },
+                onCancel() {
+                    self.ChangeConfig(data.ref);
+                },
+            });
+
         });
 
     }
@@ -292,7 +346,7 @@ class ConfigSubPanel extends React.Component {
                     配置信息
                 </div>
                 <div className={ConfigStyles.panel_body} id="Configpanel_body">
-                    <Button id="crossConfig" ref="crossConfig" className={ConfigStyles.button1} type="primary" size="small" disabled={true} onClick={()=>this.onClickButton(this.refs.crossConfig.props.id)}>复合路段</Button>
+                    <Button id="crossConfig" ref="crossConfig" className={ConfigStyles.button1} type="primary" size="small" disabled={false} onClick={()=>this.onClickButton('fhld')}>复合路段</Button>
                     
                     <Popover ref="roadConfig" content={roadConfig} placement="topLeft" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('configDetails')}>
                         <Button id="roadConfig" ref="roadConfig" className={ConfigStyles.button1} type="primary" size="small" loading={this.state.isloading1}>双向路段</Button>

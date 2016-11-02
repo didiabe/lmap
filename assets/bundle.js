@@ -13764,7 +13764,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.clearLayer = exports.displayCommonLayer = exports.displayConfigLayer_road = exports.displayConfigLayer = exports.stopTrackingTaxi = exports.trackingTaxi = exports.displayUniLayer = exports.playback = undefined;
+	exports.clearLayer = exports.displayCommonLayer = exports.displayConfigLayer_road = exports.displayConfigLayer = exports.changeConfigLayer = exports.stopTrackingTaxi = exports.trackingTaxi = exports.displayUniLayer = exports.playback = undefined;
 	exports.addGracLayer = addGracLayer;
 	
 	var _leaflet = __webpack_require__(98);
@@ -14568,6 +14568,77 @@
 	    });
 	};
 	
+	var changeConfigLayer = exports.changeConfigLayer = function changeConfigLayer(data, ref) {
+	    console.log(data);
+	    map.eachLayer(function (layer) {
+	        if (layer.options.id !== "streetLayer") {
+	            map.removeLayer(layer);
+	        }
+	    });
+	    var ChangeLayerData = data;
+	    var onClickLayer = function onClickLayer(e) {
+	
+	        if (e.target.options.color !== '#696969') {
+	            e.target.setStyle({
+	                weight: 7,
+	                color: '#696969',
+	                dashArray: '',
+	                fillOpacity: 0.9
+	            });
+	        } else {
+	            var color1;
+	            if (e.target.feature.properties.rgb) color1 = e.target.feature.properties.rgb;else color1 = 'LightSalmon';
+	            e.target.setStyle({
+	                fillColor: color1,
+	                fillOpacity: 1,
+	                color: color1,
+	                weight: 7,
+	                opacity: 0.9
+	            });
+	        }
+	
+	        lmsg.send('openChangeConfigPanel', {
+	            ref: ref,
+	            id: e.target.feature.properties.id
+	        });
+	    };
+	    var showName = function showName(e) {
+	        /*e.target.setStyle({
+	            weight: 7,
+	            color: '#FF4500',
+	            dashArray: '',
+	            fillOpacity: 0.9
+	        });*/
+	        var popup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.id);
+	        e.target.bindPopup(popup).openPopup();
+	    };
+	    var closePopup = function closePopup(e) {
+	        //ChangeConfigLayer.resetStyle(e.target);
+	        e.target.closePopup();
+	    };
+	    var ChangeConfigLayer = _leaflet2.default.geoJson(ChangeLayerData, {
+	        style: function style(feature) {
+	            var color1 = null;
+	            if (feature.properties.rgb) color1 = feature.properties.rgb;else color1 = 'LightSalmon';
+	            var styles = {
+	                fillColor: color1,
+	                fillOpacity: 1,
+	                color: color1,
+	                weight: 7,
+	                opacity: 0.9
+	            };
+	            return styles;
+	        },
+	        onEachFeature: function onEachFeature(feature, layer) {
+	            layer.on({
+	                click: onClickLayer,
+	                mouseover: showName,
+	                mouseout: closePopup
+	            });
+	        }
+	    }).addTo(map);
+	};
+	
 	var displayConfigLayer = exports.displayConfigLayer = function displayConfigLayer(data) {
 	    console.log(data);
 	    var Config_crossGeojson = null,
@@ -14613,7 +14684,6 @@
 	            }
 	        }).addTo(map);
 	    }
-	
 	    if (Config_zoneGeojson) {
 	        ConfigZoneLayer = _leaflet2.default.geoJson(Config_zoneGeojson, {
 	            style: function style(feature) {
@@ -14665,7 +14735,7 @@
 	
 	    function resetFeature(e) {
 	        lineLayer.resetStyle(e.target);
-	        map.closePopup();
+	        e.target.closePopup();
 	    };
 	
 	    function eachLineFeature(feature, layer) {
@@ -27577,6 +27647,7 @@
 	    drawControl = null,
 	    NewRoadfeature = null,
 	    NewRegionfeature = null,
+	    NewFhldfeature = null,
 	    NewODRegionfeature = null,
 	    ODDataRec = null,
 	    regionDataRec = null,
@@ -27586,7 +27657,8 @@
 	    pointIDWithin_Region = [],
 	    roadWithin_Region = null,
 	    roadIDWithin_Region = [],
-	    totalIdWithin_Region = {};
+	    totalIdWithin_Region = {},
+	    doublerIds = [];
 	
 	var MyCustomMarker = _leaflet2.default.Icon.extend({
 		options: {
@@ -27869,6 +27941,17 @@
 			calculateWithin: function calculateWithin() {
 				CalculateWithin_OD();
 				return pointIDWithin_OD;
+			}
+		},
+		DrawFhld: {
+			activate: function activate(doublersData) {
+				drawFhld(doublersData);
+			},
+			getValue: function getValue() {
+				return NewFhldfeature;
+			},
+			getDoublerIds: function getDoublerIds() {
+				return doublerIds;
 			}
 		}
 	};
@@ -28167,6 +28250,144 @@
 			});
 		} else alert('请先画图');
 		//console.log(pointIDWithin_OD)
+	};
+	
+	var drawFhld = function drawFhld(doublersData) {
+		if (drawnItemsLayer) {
+			map.removeLayer(drawnItemsLayer);
+			drawnItemsLayer = null;
+		}
+		if (drawControl) {
+			map.removeControl(drawControl);
+			drawControl = null;
+		}
+		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer);
+		drawControl = new _leaflet2.default.Control.Draw({
+			edit: {
+				featureGroup: drawnItemsLayer
+			},
+			draw: {
+				polyline: {
+					allowIntersection: false,
+					drawError: {
+						color: '#e1e100',
+						message: '<strong>STOP<strong>重叠了亲'
+					},
+					shapeOptions: {
+						color: '#f357a1',
+						weight: 8
+					}
+				},
+				polygon: false,
+				rectangle: false,
+				marker: false,
+				circle: false
+			},
+			position: 'topright'
+		});
+		map.addControl(drawControl);
+		var latlngs = [],
+		    coords = null;
+		var bufferSelection = function bufferSelection() {
+			if (NewFhldfeature) {
+				var bufferedFhld = _turf2.default.buffer(NewFhldfeature, 1000, 'meters');
+	
+				var bufferFC = {
+					"type": "FeatureCollection",
+					"features": [bufferedFhld]
+				};
+				_leaflet2.default.geoJson(bufferFC, {
+					style: function style(feature) {
+						return {
+							color: 'red'
+						};
+					}
+				}).addTo(map);
+				// console.log(bufferFC);
+				// console.log(doublersData)
+				var features = [];
+				doublersData.features.map(function (oneLine) {
+					var theID = oneLine.properties.id;
+					var theName = oneLine.properties.name;
+					if (oneLine.geometry) {
+						oneLine.geometry.coordinates[0].map(function (oneCoords) {
+							var onePoint = {
+								"type": "Feature",
+								"properties": {
+									'id': theID,
+									'name': theName
+								},
+								"geometry": {
+									"type": "Point",
+									"coordinates": oneCoords
+								}
+							};
+							features.push(onePoint);
+						});
+					}
+				});
+	
+				var fc_Points_FromRoad = _turf2.default.featureCollection(features);
+				var pointsWithin_fhld = _turf2.default.within(fc_Points_FromRoad, bufferFC);
+				//console.log(pointsWithin_fhld)
+				//提取出所有的id
+				//doublerIds = [];
+				var doublersID_all = [];
+				pointsWithin_fhld.features.map(function (p1) {
+					doublersID_all.push({
+						'id': p1.properties.id,
+						'name': p1.properties.name
+					});
+				});
+				//console.log(1, doublersID_all);
+				//doublersID_all现在是带重复的,去重复
+				var hash = {};
+				for (var i = 0; i < doublersID_all.length; i++) {
+					if (!hash[doublersID_all[i].id]) {
+						hash[doublersID_all[i].id] = true;
+						doublerIds.push({
+							'id': doublersID_all[i].id,
+							'name': doublersID_all[i].name
+						});
+					}
+				};
+				//console.log(2, doublerIds);
+				lmsg.send('fhld_ok', {
+					new_fhld: NewFhldfeature,
+					doublers: doublerIds
+				});
+			}
+		};
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+			    layer = e.layer;
+			layer._latlngs.map(function (item) {
+				coords = [item.lng, item.lat];
+				latlngs.push(coords);
+			});
+			NewFhldfeature = _turf2.default.lineString(latlngs);
+			drawnItemsLayer.addLayer(layer);
+			bufferSelection();
+		});
+		map.on('draw:edited', function (e) {
+			for (var item in e.layers._layers) {
+				e.layers._layers[item]._latlngs.map(function (item) {
+					coords = [item.lng, item.lat];
+					latlngs.push(coords);
+					NewFhldfeature = _turf2.default.lineString(latlngs);
+				});
+			}
+			bufferSelection();
+		});
+		map.on('draw:deleted', function (e) {
+			if (drawnItemsLayer) {
+				map.removeLayer(drawnItemsLayer);
+				drawnItemsLayer = null;
+			}
+			NewFhldfeature = null;
+			doublerIds = ['id', 'name'];
+		});
 	};
 
 /***/ },
@@ -28989,6 +29210,12 @@
 	            }
 	        }
 	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            lmap.removeEchartsLayer();
+	            DR.drawFeatures.disable();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -29138,7 +29365,43 @@
 	                        isloaded3: false
 	                    });
 	                });
+	            } else if (ref = 'fhld') {
+	                Ds.DataService('/map/roadMap.json', null, function (resp) {
+	                    CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+	
+	                    DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+	                }, function (e) {
+	                    console.log(e);
+	                });
 	            } else alert('加载地图图层错误');
+	        }
+	    }, {
+	        key: 'ChangeConfig',
+	        value: function ChangeConfig(ref) {
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            DR.drawFeatures.disable();
+	            if (ref == 'regionConfig') {
+	                Ds.DataService('/zoneConfig/map.json', null, function (resp) {
+	                    CI.changeConfigLayer(resp.data.zone, ref);
+	                }, function (e) {
+	                    console.log(e);
+	                    alert('后台传输错误！');
+	                });
+	            } else if (ref == 'odConfig') {
+	                Ds.DataService('/odRegion/initMap.json', null, function (resp) {
+	                    CI.changeConfigLayer(resp.data.zone, ref);
+	                }, function (e) {
+	                    console.log(e);
+	                    alert('后台传输错误！');
+	                });
+	            } else if (ref == 'roadConfig') {
+	                Ds.DataService('/map/roadMap.json', null, function (resp) {
+	                    CI.changeConfigLayer(resp.data, ref);
+	                }, function (e) {
+	                    console.log(e);
+	                    alert('后台传输错误！');
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -29155,6 +29418,7 @@
 	            });
 	
 	            lmsg.subscribe('peizhi', function (data) {
+	                localStorage.removeItem('peizhi');
 	                switch (data.params) {
 	                    case 'odqypz':
 	                        self.onClickButton("odConfig");
@@ -29165,8 +29429,58 @@
 	                    case 'qypz':
 	                        self.onClickButton("regionConfig");
 	                        break;
+	                    case 'fhld_init':
+	                        Ds.DataService('/map/roadMap.json', null, function (resp) {
+	                            CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+	
+	                        }, function (e) {
+	                            console.log(e);
+	                        });
+	                        break;
+	                    case 'fhld_locating':
+	                        Ds.DataService('/map/roadMap.json', null, function (resp) {
+	
+	                            DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+	                        }, function (e) {
+	                            console.log(e);
+	                        });
+	                        break;
 	                }
-	                localStorage.removeItem('peizhi');
+	            });
+	            //lmsg.send('fhld_ok',{new_fhld:11, doublers:[{name:11, id:11},{name:11, id:11},{name:11, id:11}]})
+	            lmsg.subscribe('openChangeConfigPanel', function (data) {
+	                localStorage.removeItem('openChangeConfigPanel');
+	                /* Modal.warning({
+	                     title: '您选择的道路/区域名称是：' + data.id,
+	                     content: '确认修改请重新绘制并填入相关信息。',
+	                 });*/
+	                _antd.Modal.confirm({
+	                    title: '您选择的道路/区域名称是：' + data.id,
+	                    content: '确认修改请重新绘制并填入相关信息。',
+	                    onOk: function onOk() {
+	                        if (data.ref == 'regionConfig') {
+	                            console.log(data.id);
+	                            _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
+	                            DR.DrawConfigLayer.DrawRegion.activate();
+	                        } else if (data.ref == 'odConfig') {
+	                            console.log(data.id);
+	
+	                            _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
+	                            DR.DrawConfigLayer.DrawOD.activate();
+	                        } else if (data.ref == 'roadConfig') {
+	                            console.log(data.id);
+	                            _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
+	                            DR.DrawConfigLayer.DrawRoad.activate();
+	                        }
+	                        /*return new Promise((resolve, reject) => {
+	                            //setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+	                            setTimeout(resolve, 1000);
+	                        }).catch(() => console.log('Oops errors!'));*/
+	                    },
+	                    onCancel: function onCancel() {
+	                        self.ChangeConfig(data.ref);
+	                    }
+	                });
 	            });
 	        }
 	    }, {
@@ -29186,7 +29500,9 @@
 	                ),
 	                _react2.default.createElement(
 	                    _antd.Button,
-	                    { id: 'regionConfig_fix', ref: 'regionConfig_fix', className: _UniqueSub2.default.button1, type: 'ghost', size: 'small', loading: this.state.isloading2 },
+	                    { id: 'regionConfig_fix', ref: 'regionConfig_fix', className: _UniqueSub2.default.button1, type: 'ghost', size: 'small', loading: this.state.isloading2, onClick: function onClick() {
+	                            return _this4.ChangeConfig("regionConfig");
+	                        } },
 	                    '修改'
 	                )
 	            );
@@ -29202,7 +29518,9 @@
 	                ),
 	                _react2.default.createElement(
 	                    _antd.Button,
-	                    { id: 'odConfig_fix', ref: 'odConfig_fix', className: _UniqueSub2.default.button1, type: 'ghost', size: 'small', loading: this.state.isloading2 },
+	                    { id: 'odConfig_fix', ref: 'odConfig_fix', className: _UniqueSub2.default.button1, type: 'ghost', size: 'small', loading: this.state.isloading2, onClick: function onClick() {
+	                            return _this4.ChangeConfig("odConfig");
+	                        } },
 	                    '修改'
 	                )
 	            );
@@ -29218,7 +29536,9 @@
 	                ),
 	                _react2.default.createElement(
 	                    _antd.Button,
-	                    { id: 'roadConfig_fix', ref: 'roadConfig_fix', className: _UniqueSub2.default.button1, type: 'ghost', size: 'small', loading: this.state.isloading2 },
+	                    { id: 'roadConfig_fix', ref: 'roadConfig_fix', className: _UniqueSub2.default.button1, type: 'ghost', size: 'small', loading: this.state.isloading2, onClick: function onClick() {
+	                            return _this4.ChangeConfig("roadConfig");
+	                        } },
 	                    '修改'
 	                )
 	            );
@@ -29236,8 +29556,8 @@
 	                    { className: _UniqueSub2.default.panel_body, id: 'Configpanel_body' },
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { id: 'crossConfig', ref: 'crossConfig', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: true, onClick: function onClick() {
-	                                return _this4.onClickButton(_this4.refs.crossConfig.props.id);
+	                        { id: 'crossConfig', ref: 'crossConfig', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: false, onClick: function onClick() {
+	                                return _this4.onClickButton('fhld');
 	                            } },
 	                        '复合路段'
 	                    ),
@@ -29986,6 +30306,14 @@
 	                    isCFYDpanel: false
 	                });
 	                localStorage.removeItem('ODClick');
+	            });
+	            lmsg.subscribe('peizhi', function (data) {
+	                self.setState({
+	                    contraction: true,
+	                    initCraResults: false,
+	                    isCFYDpanel: false
+	                });
+	                localStorage.removeItem('peizhi');
 	            });
 	            lmsg.subscribe('hbjjr_init', function (data) {
 	                self.setState({

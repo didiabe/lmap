@@ -17,6 +17,7 @@ var drawnItemsLayer = null,
 	drawControl = null,
 	NewRoadfeature = null,
 	NewRegionfeature = null,
+	NewFhldfeature = null,
 	NewODRegionfeature = null,
 	ODDataRec = null,
 	regionDataRec = null,
@@ -26,7 +27,8 @@ var drawnItemsLayer = null,
 	pointIDWithin_Region = [],
 	roadWithin_Region = null,
 	roadIDWithin_Region = [],
-	totalIdWithin_Region = {};
+	totalIdWithin_Region = {},
+	doublerIds = [];
 
 let MyCustomMarker = L.Icon.extend({
 	options: {
@@ -312,6 +314,17 @@ export const DrawConfigLayer = {
 		calculateWithin: function() {
 			CalculateWithin_OD();
 			return pointIDWithin_OD;
+		}
+	},
+	DrawFhld: {
+		activate: function(doublersData) {
+			drawFhld(doublersData);
+		},
+		getValue: function() {
+			return NewFhldfeature
+		},
+		getDoublerIds: function() {
+			return doublerIds
 		}
 	}
 }
@@ -617,4 +630,149 @@ const CalculateWithin_OD = () => {
 		});
 	} else alert('请先画图');
 	//console.log(pointIDWithin_OD)
+}
+
+const drawFhld = (doublersData) => {
+	if (drawnItemsLayer) {
+		map.removeLayer(drawnItemsLayer);
+		drawnItemsLayer = null;
+	}
+	if (drawControl) {
+		map.removeControl(drawControl);
+		drawControl = null;
+	}
+	drawnItemsLayer = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer);
+	drawControl = new L.Control.Draw({
+		edit: {
+			featureGroup: drawnItemsLayer,
+			//remove: false
+		},
+		draw: {
+			polyline: {
+				allowIntersection: false,
+				drawError: {
+					color: '#e1e100',
+					message: '<strong>STOP<strong>重叠了亲'
+				},
+				shapeOptions: {
+					color: '#f357a1',
+					weight: 8
+				}
+			},
+			polygon: false,
+			rectangle: false,
+			marker: false,
+			circle: false
+		},
+		position: 'topright'
+	});
+	map.addControl(drawControl);
+	var latlngs = [],
+		coords = null;
+	var bufferSelection = () => {
+		if (NewFhldfeature) {
+			var bufferedFhld = turf.buffer(NewFhldfeature, 1000, 'meters')
+
+			var bufferFC = {
+				"type": "FeatureCollection",
+				"features": [bufferedFhld]
+			};
+			L.geoJson(bufferFC, {
+				style: function(feature) {
+					return {
+						color: 'red'
+					};
+				}
+			}).addTo(map);
+			// console.log(bufferFC);
+			// console.log(doublersData)
+			var features = [];
+			doublersData.features.map(
+				(oneLine) => {
+					var theID = oneLine.properties.id;
+					var theName = oneLine.properties.name;
+					if (oneLine.geometry) {
+						oneLine.geometry.coordinates[0].map((oneCoords) => {
+							var onePoint = {
+								"type": "Feature",
+								"properties": {
+									'id': theID,
+									'name': theName
+								},
+								"geometry": {
+									"type": "Point",
+									"coordinates": oneCoords
+								}
+							};
+							features.push(onePoint);
+						});
+					}
+
+				});
+
+			var fc_Points_FromRoad = turf.featureCollection(features);
+			var pointsWithin_fhld = turf.within(fc_Points_FromRoad, bufferFC);
+			//console.log(pointsWithin_fhld)
+			//提取出所有的id
+			//doublerIds = [];
+			var doublersID_all = [];
+			pointsWithin_fhld.features.map((p1) => {
+				doublersID_all.push({
+					'id': p1.properties.id,
+					'name': p1.properties.name
+				});
+			});
+			//console.log(1, doublersID_all);
+			//doublersID_all现在是带重复的,去重复
+			var hash = {};
+			for (var i = 0; i < doublersID_all.length; i++) {
+				if (!hash[doublersID_all[i].id]) {
+					hash[doublersID_all[i].id] = true;
+					doublerIds.push({
+						'id': doublersID_all[i].id,
+						'name': doublersID_all[i].name
+					});
+				}
+			};
+			//console.log(2, doublerIds);
+			lmsg.send('fhld_ok', {
+				new_fhld: NewFhldfeature,
+				doublers: doublerIds
+			});
+		}
+
+	}
+	map.on('draw:created', function(e) {
+		var type = e.layerType,
+			layer = e.layer;
+		layer._latlngs.map((item) => {
+			coords = [item.lng, item.lat];
+			latlngs.push(coords);
+		});
+		NewFhldfeature = turf.lineString(latlngs);
+		drawnItemsLayer.addLayer(layer);
+		bufferSelection();
+	});
+	map.on('draw:edited', function(e) {
+		for (var item in e.layers._layers) {
+			e.layers._layers[item]._latlngs.map((item) => {
+				coords = [item.lng, item.lat];
+				latlngs.push(coords);
+				NewFhldfeature = turf.lineString(latlngs);
+			});
+		}
+		bufferSelection();
+	});
+	map.on('draw:deleted', function(e) {
+		if (drawnItemsLayer) {
+			map.removeLayer(drawnItemsLayer);
+			drawnItemsLayer = null;
+		}
+		NewFhldfeature = null;
+		doublerIds = ['id': '', 'name': ''];
+	});
+
+
+
 }

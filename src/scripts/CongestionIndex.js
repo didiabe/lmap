@@ -845,8 +845,27 @@ export const changeConfigLayer = (data, ref) => {
     });
     var ChangeLayerData = data;
     var onClickLayer = (e) => {
-        console.log(e.target.feature.properties.id);
-        console.log(ref)
+
+        if (e.target.options.color !== '#696969') {
+            e.target.setStyle({
+                weight: 7,
+                color: '#696969',
+                dashArray: '',
+                fillOpacity: 0.9
+            });
+        } else {
+            var color1;
+            if (e.target.feature.properties.rgb) color1 = e.target.feature.properties.rgb;
+            else color1 = 'LightSalmon';
+            e.target.setStyle({
+                fillColor: color1,
+                fillOpacity: 1,
+                color: color1,
+                weight: 7,
+                opacity: 0.9
+            });
+        }
+
         lmsg.send('openChangeConfigPanel', {
             ref: ref,
             id: e.target.feature.properties.id
@@ -854,18 +873,18 @@ export const changeConfigLayer = (data, ref) => {
 
     }
     var showName = (e) => {
-        e.target.setStyle({
+        /*e.target.setStyle({
             weight: 7,
             color: '#FF4500',
             dashArray: '',
             fillOpacity: 0.9
-        });
+        });*/
         var popup = L.popup().setContent('名称：' + e.target.feature.properties.id);
         e.target.bindPopup(popup).openPopup();
     }
     var closePopup = (e) => {
-        ChangeConfigLayer.resetStyle(e.target);
-        map.closePopup();
+        //ChangeConfigLayer.resetStyle(e.target);
+        e.target.closePopup();
     }
     var ChangeConfigLayer = L.geoJson(ChangeLayerData, {
         style: function(feature) {
@@ -876,7 +895,7 @@ export const changeConfigLayer = (data, ref) => {
                 fillColor: color1,
                 fillOpacity: 1,
                 color: color1,
-                weight: 3,
+                weight: 7,
                 opacity: 0.9
             };
             return styles;
@@ -992,7 +1011,7 @@ export const displayConfigLayer_road = (data) => {
 
     function resetFeature(e) {
         lineLayer.resetStyle(e.target);
-        map.closePopup();
+        e.target.closePopup();
     };
 
     function eachLineFeature(feature, layer) {

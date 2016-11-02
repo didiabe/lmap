@@ -247,6 +247,14 @@ class Rbox extends React.Component {
             });
             localStorage.removeItem('ODClick');
         });
+        lmsg.subscribe('peizhi', (data) => {
+            self.setState({
+                contraction: true,
+                initCraResults: false,
+                isCFYDpanel: false
+            });
+            localStorage.removeItem('peizhi');
+        });
         lmsg.subscribe('hbjjr_init', (data) => {
             self.setState({
                 contraction: true,

@@ -8005,9 +8005,9 @@
 	        var param = {
 	            id: keyword
 	        };
-	        Ds.DataService('/zone/queryByName.json', param, function (resp) {
-	            console.log('queryByName', 'dataRecv', resp.data);
-	            var data = resp.data;
+	        Ds.DataService('/trafficindex_map/queryByName.json', param, function (resp) {
+	            console.log('queryByName', 'dataRecv', resp.aaData);
+	            var data = resp.aaData;
 	            dispatch(receiveList(data, page));
 	        }, function (e) {
 	            console.log(e);
@@ -8029,7 +8029,7 @@
 	    var month = d.getMonth() + 1;
 	    if (t == undefined) {
 	        myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-	        if (rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';else if (rboxkey == 'road') last_Path = '/road/ydldMore.json';else if (rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+	        if (rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
 	        console.log('myday', myday);
 	        sendParam2 = {
 	            queryTime: myday,
@@ -8038,7 +8038,7 @@
 	            isFirst: true
 	        };
 	    } else if (t && t.flags == null) {
-	        if (t.rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';else if (t.rboxkey == 'road') last_Path = '/road/ydldMore.json';else if (t.rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+	        if (t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
 	        sendParam2 = {
 	            queryTime: t.sj,
 	            pageIndex: 1,
@@ -8055,10 +8055,10 @@
 	            pageSize: 10,
 	            isFirst: true
 	        };
-	        if (rboxkey == 'cross') last_Path = '/map/crossJtda.json';else if (rboxkey == 'road') last_Path = '/map/roadJtda.json';else if (rboxkey == 'area') last_Path = '/map/zoneJtda.json';
+	        if (rboxkey == 'cross') last_Path = '/trafficindex_map/crossJtda.json';else if (rboxkey == 'road') last_Path = '/trafficindex_map/roadJtda.json';else if (rboxkey == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
 	    }
 	    Ds.DataService(last_Path, sendParam2, function (resp) {
-	        dataRecv = resp.data;
+	        dataRecv = resp.aaData;
 	        console.log(dataRecv);
 	    }, function (e) {
 	        console.log(e);
@@ -8515,8 +8515,7 @@
 	    }, {
 	        key: 'startForcast',
 	        value: function startForcast() {
-	            var _this6 = this;
-	
+	            var self = this;
 	            this.setState({
 	                isLoading: true
 	            });
@@ -8524,14 +8523,21 @@
 	                type: this.state.CraType,
 	                time: this.state.inputValue
 	            };
-	            Ds.DataService('/zone/forecast.json', param, function (resp) {
+	            Ds.DataService('/trafficindex_map/forecast.json', param, function (resp) {
 	                if (markerPlayBack) markerPlayBack.clearLayer();
-	                _this6.setState({
+	                self.setState({
 	                    isLoading: false,
 	                    isLoaded: true
 	                });
-	                console.log(resp.data);
-	                var geo_playback = resp.data;
+	                console.log(resp.aaData);
+	                if (resp.aaData.features.length == 0) {
+	                    alert('没有查询到相应信息');
+	                    self.setState({
+	                        isLoading: false,
+	                        isLoaded: false
+	                    });
+	                }
+	                var geo_playback = resp.aaData;
 	                CI.displayCommonLayer(geo_playback);
 	                //markerPlayBack = CI.playback(geo_playback);
 	            }, function (e) {
@@ -8723,15 +8729,15 @@
 	        _classCallCheck(this, Playback);
 	
 	        /*callback函数里的this不同，需要bind*/
-	        var _this7 = _possibleConstructorReturn(this, (Playback.__proto__ || Object.getPrototypeOf(Playback)).call(this));
+	        var _this6 = _possibleConstructorReturn(this, (Playback.__proto__ || Object.getPrototypeOf(Playback)).call(this));
 	
-	        _this7.getTimeRange = _this7.getTimeRange.bind(_this7);
-	        _this7.getCheckOption = _this7.getCheckOption.bind(_this7);
-	        _this7.loadingData = _this7.loadingData.bind(_this7);
-	        _this7.play = _this7.play.bind(_this7);
-	        _this7.clear = _this7.clear.bind(_this7);
-	        _this7.reload = _this7.reload.bind(_this7);
-	        _this7.state = {
+	        _this6.getTimeRange = _this6.getTimeRange.bind(_this6);
+	        _this6.getCheckOption = _this6.getCheckOption.bind(_this6);
+	        _this6.loadingData = _this6.loadingData.bind(_this6);
+	        _this6.play = _this6.play.bind(_this6);
+	        _this6.clear = _this6.clear.bind(_this6);
+	        _this6.reload = _this6.reload.bind(_this6);
+	        _this6.state = {
 	            startTime: null,
 	            endTime: null,
 	            loading: false,
@@ -8743,13 +8749,13 @@
 	            checkedOptions: []
 	        };
 	
-	        return _this7;
+	        return _this6;
 	    }
 	
 	    _createClass(Playback, [{
 	        key: 'play',
 	        value: function play() {
-	            var _this8 = this;
+	            var _this7 = this;
 	
 	            markerPlayBack.start();
 	            this.setState({
@@ -8759,10 +8765,10 @@
 	
 	            var p = 0;
 	            var progressInterval = setInterval(function () {
-	                if (p < 100 && _this8.state.isPlaying) {
-	                    p = p + _this8.state.each_percent;
+	                if (p < 100 && _this7.state.isPlaying) {
+	                    p = p + _this7.state.each_percent;
 	                    //console.log(p);
-	                    _this8.setState({
+	                    _this7.setState({
 	                        percent: p
 	                    });
 	                } else clearInterval(progressInterval);
@@ -8858,8 +8864,8 @@
 	                    type: self.state.checkedOptions
 	                };
 	
-	                Ds.DataService("/zone/hisPlayBack.json", param1, function (data) {
-	                    var geo_playback = data.data;
+	                Ds.DataService("/trafficindex_map/hisPlayBack.json", param1, function (data) {
+	                    var geo_playback = data.aaData;
 	                    console.log(geo_playback);
 	                    if (geo_playback.features.length < 1) {
 	                        self.setState({
@@ -8960,6 +8966,12 @@
 	            //<Slider max={30} min={0} onChange={this.onSliderChange} value={this.state.inputValue}/>
 	        }
 	    }, {
+	        key: 'disabledDate',
+	        value: function disabledDate(current) {
+	            // can not select days after today
+	            return current && current.valueOf() > Date.now();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var player_panel = this.state.isLoaded ? [_react2.default.createElement(
@@ -8994,7 +9006,7 @@
 	                            'li',
 	                            null,
 	                            "时间区间: ",
-	                            _react2.default.createElement(RangePicker, { format: 'YYYY-MM-DD HH:mm:ss',
+	                            _react2.default.createElement(RangePicker, { showTime: true, disabledDate: this.disabledDate, format: 'YYYY-MM-DD HH:mm:ss',
 	                                onChange: this.getTimeRange, getCalendarContainer: function getCalendarContainer(trigger) {
 	                                    return trigger.parentNode;
 	                                } })
@@ -14183,7 +14195,7 @@
 	        centerPointLogo = null;
 	
 	    if (ref == 'fudongche') {
-	        _APIpath = "/map/floatCar.json";
+	        _APIpath = "/trafficindex_map/floatCar.json";
 	        var fudongcheIcon = _leaflet2.default.icon({
 	            iconUrl: _local_taxi2.default,
 	            iconSize: [20, 20], // size of the icon
@@ -14197,7 +14209,7 @@
 	            });
 	        };
 	    } else if (ref == 'shigong') {
-	        _APIpath = "/map/roadConstruction.json";
+	        _APIpath = "/trafficindex_map/roadConstruction.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
 	                fillColor: '#007D7D',
@@ -14220,7 +14232,7 @@
 	            });
 	        };
 	    } else if (ref == 'guanzhi') {
-	        _APIpath = "/map/trafficControl.json";
+	        _APIpath = "/trafficindex_map/trafficControl.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
 	                fillColor: '#EEC900',
@@ -14243,7 +14255,7 @@
 	            });
 	        };
 	    } else if (ref == 'shigu') {
-	        _APIpath = "/map/trafficAccident.json";
+	        _APIpath = "/trafficindex_map/trafficAccident.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
 	                fillColor: '#D2691E',
@@ -14266,7 +14278,7 @@
 	            });
 	        };
 	    } else if (ref == 'yongdu_cross') {
-	        _APIpath = "/map/cfydCross.json";
+	        _APIpath = "/trafficindex_map/cfydCross.json";
 	        var yongduCrossIcon = _leaflet2.default.icon({
 	            iconUrl: _Traffic_Warning2.default,
 	            iconSize: [20, 20], // size of the icon
@@ -14294,7 +14306,7 @@
 	            date: date2Java_date
 	        };
 	    } else if (ref == 'yongdu_road') {
-	        _APIpath = "/map/cfydRoad.json";
+	        _APIpath = "/trafficindex_map/cfydRoad.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
 	                fillColor: '#D2691E',
@@ -14319,7 +14331,7 @@
 	            date: date2Java_date
 	        };
 	    } else if (ref == 'jiari_cross') {
-	        _APIpath = "/map/holiday.json";
+	        _APIpath = "/trafficindex_map/holiday.json";
 	        var yongduCrossIcon = _leaflet2.default.icon({
 	            iconUrl: _Traffic_Warning2.default,
 	            iconSize: [20, 20], // size of the icon
@@ -14337,7 +14349,7 @@
 	            date: data.date
 	        };
 	    } else if (ref == 'jiari_road') {
-	        _APIpath = "/map/holiday.json";
+	        _APIpath = "/trafficindex_map/holiday.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
 	                fillColor: '#D2691E',
@@ -14353,7 +14365,7 @@
 	            date: data.date
 	        };
 	    } else if (ref == 'jiari_zone') {
-	        _APIpath = "/map/holiday.json";
+	        _APIpath = "/trafficindex_map/holiday.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
 	                fillColor: '#D2691E',
@@ -14371,8 +14383,8 @@
 	    }
 	
 	    Ds.DataService(_APIpath, param, function (resp) {
-	        console.log(resp.data);
-	        featurecollectiondata = resp.data;
+	        console.log(resp.aaData);
+	        featurecollectiondata = resp.aaData;
 	    }, function (e) {
 	        console.log(e);
 	        alert("后台传输错误");
@@ -14386,9 +14398,9 @@
 	        console.log(sendparamID);
 	        var popupData = null;
 	        if (ref == 'fudongche') {
-	            Ds.DataService("/floatcar/fdcarMessage.json", sendparamID, function (resp) {
+	            Ds.DataService("/trafficindex_floatCargp/listGetFdcarByCarid.json", sendparamID, function (resp) {
 	                console.log(resp);
-	                popupData = resp.data;
+	                popupData = resp.aaData;
 	            }, function (e) {
 	                alert('后台传输错误');
 	                console.log(e);
@@ -14418,32 +14430,32 @@
 	    var displayDetails = function displayDetails(e) {
 	        var eachFeatureID = e.target.feature.properties.id;
 	        var sendparamID = {
-	            "xh": eachFeatureID
+	            "id": eachFeatureID
 	        };
 	        var popupData = null,
 	            popup_spec = null;
 	        if (ref == "shigong") {
-	            Ds.DataService("/roadconstruction/queryConstOne.json", sendparamID, function (resp) {
+	            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsRoadconstruction.json", sendparamID, function (resp) {
 	                console.log(resp);
-	                popupData = resp.data;
+	                popupData = resp.aaData;
 	            }, function (e) {
 	                alert('后台传输错误');
 	                console.log(e);
 	            });
 	            popup_spec = _leaflet2.default.popup().setContent("施工单位: " + popupData.company + '<br/>' + "联系人: " + popupData.contact + '<br/>' + "施工类别: " + popupData.objecttype + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "施工名称: " + popupData.objectname + '<br/>' + "施工原因: " + popupData.reason + '<br/>' + "当前状态: " + popupData.state + '<br/>' + "开始时间: " + popupData.startdate + '<br/>' + "结束时间: " + popupData.enddate + '<br/>' + "联系电话: " + popupData.telephone + '<br/>');
 	        } else if (ref == "guanzhi") {
-	            Ds.DataService("/trafficControl/queryControlOne.json", sendparamID, function (resp) {
+	            Ds.DataService("/trafficindex_trafficControl/gotoBJtzsTrafficcontrol.json", sendparamID, function (resp) {
 	                console.log(resp);
-	                popupData = resp.data;
+	                popupData = resp.aaData;
 	            }, function (e) {
 	                alert('后台传输错误');
 	                console.log(e);
 	            });
 	            popup_spec = _leaflet2.default.popup().setContent("申请时间: " + popupData.applydate + '<br/>' + "开始时间: " + popupData.startdate + '<br/>' + "预计结束时间: " + popupData.planenddate + '<br/>' + "实际结束时间: " + popupData.actualenddate + '<br/>' + "当前状态: " + popupData.state + '<br/>' + "所属辖区: " + popupData.area + '<br/>' + "责任单位: " + popupData.liablecompany + '<br/>' + "责任人: " + popupData.liableperson + '<br/>' + "联系电话: " + popupData.telephone + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "管制名称: " + popupData.objectname + '<br/>' + "管制类型: " + popupData.type + '<br/>' + "管制说明: " + popupData.remark + '<br/>');
 	        } else if (ref == "shigu") {
-	            Ds.DataService("/trifficAccident/queryAccidentOne.json", sendparamID, function (resp) {
+	            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsTrafficaccident.json", sendparamID, function (resp) {
 	                console.log(resp);
-	                popupData = resp.data;
+	                popupData = resp.aaData;
 	            }, function (e) {
 	                alert('后台传输错误');
 	                console.log(e);
@@ -14507,9 +14519,9 @@
 	            date: params.date
 	        };
 	
-	        taxiRoute = Ds.DataService('/map/track.json', sendtaxiparams, function (resp) {
-	            console.log(resp.data);
-	            if (!resp.data) {
+	        taxiRoute = Ds.DataService('/trafficindex_map/track.json', sendtaxiparams, function (resp) {
+	            console.log(resp.aaData);
+	            if (!resp.aaData) {
 	                alert('没有查询到浮动车信息');
 	                return;
 	            } else {
@@ -14530,7 +14542,7 @@
 	                        icon: fudongcheIcon
 	                    });
 	                };
-	                var taxijson = resp.data;
+	                var taxijson = resp.aaData;
 	                var routestyle = function routestyle(feature) {
 	                    return {
 	                        fillColor: '#2db7f5',
@@ -26980,22 +26992,22 @@
 	                level: this.state.ConLevel
 	            };
 	            console.log(param);
-	            Ds.DataService("/zone/zsLevel.json", param, function (resp) {
-	                //console.log(resp.data);
+	            Ds.DataService("/trafficindex_map/zsLevel.json", param, function (resp) {
+	                //console.log(resp.aaData);
 	                var data4Table = [];
 	
-	                if (resp.data.length < 1) {
+	                if (resp.aaData.length < 1) {
 	                    alert("没有查到符合数据");
 	                    _this4.setState({
 	                        loading: false,
 	                        isLoaded: false
 	                    });
 	                } else {
-	                    for (var i = 0; i < resp.data.length; i++) {
+	                    for (var i = 0; i < resp.aaData.length; i++) {
 	                        data4Table.push({
-	                            name: resp.data[i].name,
-	                            index: resp.data[i].jtzs,
-	                            id: resp.data[i].id,
+	                            name: resp.aaData[i].name,
+	                            index: resp.aaData[i].jtzs,
+	                            id: resp.aaData[i].id,
 	                            key: i
 	                        });
 	                    };
@@ -27033,8 +27045,8 @@
 	
 	            };
 	
-	            Ds.DataService('/zone/zsUpdate.json', zsUpdate, function (resp) {
-	                console.log(resp.data);
+	            Ds.DataService('/trafficindex_map/zsUpdate.json', zsUpdate, function (resp) {
+	                console.log(resp.aaData);
 	                _this5.setState({
 	                    selectedRowKeys: [],
 	                    loading: false
@@ -27469,7 +27481,7 @@
 	                end: null
 	            };
 	            console.log(sendNewIndParam);
-	            Ds.DataService('/zone/zsUpdate.json', sendNewIndParam, function (resp) {
+	            Ds.DataService('/trafficindex_map/zsUpdate.json', sendNewIndParam, function (resp) {
 	                if (resp.errorCode == 0) alert('保存成功');else alert('保存失败');
 	            }, function (e) {
 	                alert('保存失败');
@@ -28360,6 +28372,14 @@
 			}
 		};
 		map.on('draw:created', function (e) {
+			console.log(drawnItemsLayer);
+			/*	if (Object.getOwnPropertyNames(drawnItemsLayer._layers).length > 0) {
+	  	drawnItemsLayer = null;
+	  	drawnItemsLayer = new L.FeatureGroup();
+	  	map.addLayer(drawnItemsLayer);
+	  }
+	  */
+	
 			var type = e.layerType,
 			    layer = e.layer;
 			layer._latlngs.map(function (item) {
@@ -28371,6 +28391,7 @@
 			bufferSelection();
 		});
 		map.on('draw:edited', function (e) {
+	
 			for (var item in e.layers._layers) {
 				e.layers._layers[item]._latlngs.map(function (item) {
 					coords = [item.lng, item.lat];
@@ -28611,9 +28632,9 @@
 	                    fx: data.flags
 	                };
 	                var dataRecv = null;
-	                Ds.DataService('/odChart/migrationMap.json', params, function (resp) {
+	                Ds.DataService('/trafficindex_map/migrationMap.json', params, function (resp) {
 	                    console.log('migrationMap', resp);
-	                    dataRecv = resp.data;
+	                    dataRecv = resp.aaData;
 	                }, function (e) {
 	                    console.log(e);
 	                    alert('后台传输错误');
@@ -28623,168 +28644,7 @@
 	                var chartsContainer = overlay.getEchartsContainer();
 	                var myChart = overlay.initECharts(chartsContainer);
 	                window.onresize = myChart.onresize;
-	                /*      var option = {
-	                          color: ['gold', 'aqua', 'lime'],
-	                          tooltip: {
-	                              trigger: 'item',
-	                              formatter: '{b}'
-	                          },
-	                          legend: {
-	                              orient: 'vertical',
-	                              x: 'left',
-	                              data: ['北京 Top10'],
-	                              selectedMode: 'single',
-	                              selected: {
-	                                  '上海 Top10': false,
-	                                  '广州 Top10': false
-	                              },
-	                              textStyle: {
-	                                  color: '#fff'
-	                              }
-	                          },
-	                          dataRange: {
-	                              min: 0,
-	                              max: 100,
-	                              //calculable: true,
-	                              color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
-	                              textStyle: {
-	                                  color: '#fff'
-	                              }
-	                          },
-	                          series: [{
-	                              name: '北京 Top10',
-	                              type: 'map',
-	                              mapType: 'none',
-	                              data: [],
-	                              geoCoord: {
-	                                  '上海': [121.4648, 31.2891],
-	                                  '包头': [110.3467, 41.4899],
-	                                  '北京': [116.4551, 40.2539],
-	                                  '南宁': [108.479, 23.1152],
-	                                  '南昌': [116.0046, 28.6633],
-	                                  '大连': [122.2229, 39.4409],
-	                                  '常州': [119.4543, 31.5582],
-	                                  '广州': [113.5107, 23.2196],
-	                                  '重庆': [107.7539, 30.1904]
-	                              },
-	                              markLine: {
-	                                  smooth: true,
-	                                  effect: {
-	                                      show: true,
-	                                      scaleSize: 1,
-	                                      period: 30,
-	                                      color: '#fff',
-	                                      shadowBlur: 10
-	                                  },
-	                                  itemStyle: {
-	                                      normal: {
-	                                          borderWidth: 1,
-	                                          lineStyle: {
-	                                              type: 'solid',
-	                                              shadowBlur: 10
-	                                          }
-	                                      }
-	                                  },
-	                                  data: [
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '上海',
-	                                          value: 95
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '广州',
-	                                          value: 90
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '大连',
-	                                          value: 80
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '南宁',
-	                                          value: 70
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '南昌',
-	                                          value: 60
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '包头',
-	                                          value: 30
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '重庆',
-	                                          value: 20
-	                                      }],
-	                                      [{
-	                                          name: '北京'
-	                                      }, {
-	                                          name: '常州',
-	                                          value: 10
-	                                      }]
-	                                  ]
-	                              },
-	                              markPoint: {
-	                                  symbol: 'emptyCircle',
-	                                  symbolSize: function(v) {
-	                                      return 10 + v / 10
-	                                  },
-	                                  effect: {
-	                                      show: true,
-	                                      shadowBlur: 0
-	                                  },
-	                                  itemStyle: {
-	                                      normal: {
-	                                          label: {
-	                                              show: false
-	                                          }
-	                                      },
-	                                      emphasis: {
-	                                          label: {
-	                                              position: 'top'
-	                                          }
-	                                      }
-	                                  },
-	                                  data: [{
-	                                      name: '上海',
-	                                      value: 95
-	                                  }, {
-	                                      name: '广州',
-	                                      value: 90
-	                                  }, {
-	                                      name: '大连',
-	                                      value: 80
-	                                  }, {
-	                                      name: '南宁',
-	                                      value: 70
-	                                  }, {
-	                                      name: '南昌',
-	                                      value: 60
-	                                  }, {
-	                                      name: '包头',
-	                                      value: 30
-	                                  }, {
-	                                      name: '重庆',
-	                                      value: 20
-	                                  }, {
-	                                      name: '常州',
-	                                      value: 10
-	                                  }]
-	                              }
-	                          }]
-	                      };*/
+	
 	                var option = {
 	                    color: ['gold', 'aqua', 'lime'],
 	                    tooltip: {
@@ -29101,6 +28961,169 @@
 	}(_react2.default.Component);
 	
 	exports.default = UniqueSub;
+	
+	/*      var option = {
+	          color: ['gold', 'aqua', 'lime'],
+	          tooltip: {
+	              trigger: 'item',
+	              formatter: '{b}'
+	          },
+	          legend: {
+	              orient: 'vertical',
+	              x: 'left',
+	              data: ['北京 Top10'],
+	              selectedMode: 'single',
+	              selected: {
+	                  '上海 Top10': false,
+	                  '广州 Top10': false
+	              },
+	              textStyle: {
+	                  color: '#fff'
+	              }
+	          },
+	          dataRange: {
+	              min: 0,
+	              max: 100,
+	              //calculable: true,
+	              color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
+	              textStyle: {
+	                  color: '#fff'
+	              }
+	          },
+	          series: [{
+	              name: '北京 Top10',
+	              type: 'map',
+	              mapType: 'none',
+	              data: [],
+	              geoCoord: {
+	                  '上海': [121.4648, 31.2891],
+	                  '包头': [110.3467, 41.4899],
+	                  '北京': [116.4551, 40.2539],
+	                  '南宁': [108.479, 23.1152],
+	                  '南昌': [116.0046, 28.6633],
+	                  '大连': [122.2229, 39.4409],
+	                  '常州': [119.4543, 31.5582],
+	                  '广州': [113.5107, 23.2196],
+	                  '重庆': [107.7539, 30.1904]
+	              },
+	              markLine: {
+	                  smooth: true,
+	                  effect: {
+	                      show: true,
+	                      scaleSize: 1,
+	                      period: 30,
+	                      color: '#fff',
+	                      shadowBlur: 10
+	                  },
+	                  itemStyle: {
+	                      normal: {
+	                          borderWidth: 1,
+	                          lineStyle: {
+	                              type: 'solid',
+	                              shadowBlur: 10
+	                          }
+	                      }
+	                  },
+	                  data: [
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '上海',
+	                          value: 95
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '广州',
+	                          value: 90
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '大连',
+	                          value: 80
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '南宁',
+	                          value: 70
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '南昌',
+	                          value: 60
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '包头',
+	                          value: 30
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '重庆',
+	                          value: 20
+	                      }],
+	                      [{
+	                          name: '北京'
+	                      }, {
+	                          name: '常州',
+	                          value: 10
+	                      }]
+	                  ]
+	              },
+	              markPoint: {
+	                  symbol: 'emptyCircle',
+	                  symbolSize: function(v) {
+	                      return 10 + v / 10
+	                  },
+	                  effect: {
+	                      show: true,
+	                      shadowBlur: 0
+	                  },
+	                  itemStyle: {
+	                      normal: {
+	                          label: {
+	                              show: false
+	                          }
+	                      },
+	                      emphasis: {
+	                          label: {
+	                              position: 'top'
+	                          }
+	                      }
+	                  },
+	                  data: [{
+	                      name: '上海',
+	                      value: 95
+	                  }, {
+	                      name: '广州',
+	                      value: 90
+	                  }, {
+	                      name: '大连',
+	                      value: 80
+	                  }, {
+	                      name: '南宁',
+	                      value: 70
+	                  }, {
+	                      name: '南昌',
+	                      value: 60
+	                  }, {
+	                      name: '包头',
+	                      value: 30
+	                  }, {
+	                      name: '重庆',
+	                      value: 20
+	                  }, {
+	                      name: '常州',
+	                      value: 10
+	                  }]
+	              }
+	          }]
+	      };*/
 
 /***/ },
 /* 243 */
@@ -29297,7 +29320,7 @@
 	                        isloading1: false,
 	                        isloaded1: true
 	                    });
-	                    CI.displayConfigLayer_road(resp.data);
+	                    CI.displayConfigLayer_road(resp.aaData);
 	                    DR.DrawConfigLayer.DrawRoad.activate();
 	                    _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
 	                }, function (e) {
@@ -29318,14 +29341,14 @@
 	                });
 	                Ds.DataService('/zoneConfig/map.json', null, function (resp) {
 	                    //console.log(resp);
-	                    CI.displayConfigLayer(resp.data);
+	                    CI.displayConfigLayer(resp.aaData);
 	
 	                    self.setState({
 	                        isloading2: false,
 	                        isloaded2: true
 	                    });
 	                    DR.DrawConfigLayer.DrawRegion.activate();
-	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.data);
+	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
 	                    _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
 	                }, function (e) {
 	                    console.log(e);
@@ -29345,13 +29368,13 @@
 	                });
 	                Ds.DataService('/odRegion/initMap.json', null, function (resp) {
 	                    //console.log(resp);
-	                    CI.displayConfigLayer(resp.data);
+	                    CI.displayConfigLayer(resp.aaData);
 	                    self.setState({
 	                        isloading3: false,
 	                        isloaded3: true
 	                    });
 	                    DR.DrawConfigLayer.DrawOD.activate();
-	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.data);
+	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
 	                    _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
 	                }, function (e) {
 	                    console.log(e);
@@ -29367,9 +29390,9 @@
 	                });
 	            } else if (ref = 'fhld') {
 	                Ds.DataService('/map/roadMap.json', null, function (resp) {
-	                    CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+	                    CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
 	
-	                    DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+	                    DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
 	                }, function (e) {
 	                    console.log(e);
 	                });
@@ -29382,21 +29405,21 @@
 	            DR.drawFeatures.disable();
 	            if (ref == 'regionConfig') {
 	                Ds.DataService('/zoneConfig/map.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.data.zone, ref);
+	                    CI.changeConfigLayer(resp.aaData.zone, ref);
 	                }, function (e) {
 	                    console.log(e);
 	                    alert('后台传输错误！');
 	                });
 	            } else if (ref == 'odConfig') {
 	                Ds.DataService('/odRegion/initMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.data.zone, ref);
+	                    CI.changeConfigLayer(resp.aaData.zone, ref);
 	                }, function (e) {
 	                    console.log(e);
 	                    alert('后台传输错误！');
 	                });
 	            } else if (ref == 'roadConfig') {
 	                Ds.DataService('/map/roadMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.data, ref);
+	                    CI.changeConfigLayer(resp.aaData, ref);
 	                }, function (e) {
 	                    console.log(e);
 	                    alert('后台传输错误！');
@@ -29410,8 +29433,8 @@
 	            lmap.removeEchartsLayer();
 	            var self = this;
 	            //路段配置下拉框内容
-	            Ds.DataService('/roadConfig/searchDoubleRoadList.json', null, function (resp) {
-	                selectionOptions_road = resp.data;
+	            Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
+	                selectionOptions_road = resp.aaData;
 	            }, function (e) {
 	                alert('后台传输错误！');
 	                console.log(e);
@@ -29431,7 +29454,7 @@
 	                        break;
 	                    case 'fhld_init':
 	                        Ds.DataService('/map/roadMap.json', null, function (resp) {
-	                            CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+	                            CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
 	
 	                        }, function (e) {
 	                            console.log(e);
@@ -29440,7 +29463,7 @@
 	                    case 'fhld_locating':
 	                        Ds.DataService('/map/roadMap.json', null, function (resp) {
 	
-	                            DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+	                            DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
 	                        }, function (e) {
 	                            console.log(e);
 	                        });
@@ -29449,11 +29472,7 @@
 	            });
 	            //lmsg.send('fhld_ok',{new_fhld:11, doublers:[{name:11, id:11},{name:11, id:11},{name:11, id:11}]})
 	            lmsg.subscribe('openChangeConfigPanel', function (data) {
-	                localStorage.removeItem('openChangeConfigPanel');
-	                /* Modal.warning({
-	                     title: '您选择的道路/区域名称是：' + data.id,
-	                     content: '确认修改请重新绘制并填入相关信息。',
-	                 });*/
+	
 	                _antd.Modal.confirm({
 	                    title: '您选择的道路/区域名称是：' + data.id,
 	                    content: '确认修改请重新绘制并填入相关信息。',
@@ -29481,6 +29500,7 @@
 	                        self.ChangeConfig(data.ref);
 	                    }
 	                });
+	                localStorage.removeItem('openChangeConfigPanel');
 	            });
 	        }
 	    }, {
@@ -29826,6 +29846,7 @@
 	                    { size: 'small', style: { width: 100 }, getPopupContainer: function getPopupContainer() {
 	                            return document.getElementById('configPanel');
 	                        }, id: 'odColor', name: 'odColor' },
+	                    '            ',
 	                    _react2.default.createElement(
 	                        Option,
 	                        { value: 'red', style: { backgroundColor: 'rgba(245,45,79,0.8)' } },
@@ -29886,7 +29907,7 @@
 	                    coordinates: JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue())
 	                };
 	                if (!sendParam_road.coordinates) alert('请画图先');
-	                Ds.DataService('/roadConfig/addDoubleSidedRoadInfo.json', sendParam_road, function (resp) {
+	                Ds.DataService('/trafficindex_roadConfiguration/addDoubleSidedRoadInfo.json', sendParam_road, function (resp) {
 	                    console.log(resp);
 	                    if (resp.errorCode == 0) {
 	                        alert('保存成功');
@@ -30207,10 +30228,10 @@
 	
 	            lmsg.subscribe('jrlzbbSend', function (data) {
 	                console.log('jrlzbbSend', data);
-	                Ds.DataService('/zone/initMap.json', {
+	                Ds.DataService('/trafficindex_map/initMap.json', {
 	                    querytime: data.time
 	                }, function (resp) {
-	                    CI.displayCommonLayer(resp.data);
+	                    CI.displayCommonLayer(resp.aaData);
 	                    self.setState({
 	                        contraction: true,
 	                        initCraResults: false,
@@ -30230,17 +30251,17 @@
 	                });
 	                if (data.isCross == 1) {
 	                    //路口
-	                    Ds.DataService('/recurrentCongestionCross/queryTheRankOfCongestionCrossTopTen.json', data.time, function (resp) {
+	                    Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
-	                        if (!resp.data) alert('没有相应信息');else {
+	                        if (!resp.aaData) alert('没有相应信息');else {
 	
-	                            for (var i = 0; i < resp.data.length; i++) {
+	                            for (var i = 0; i < resp.aaData.length; i++) {
 	                                cfydTabledata.push(_defineProperty({
 	                                    No: i + 1,
-	                                    Name: resp.data[i].crossName,
-	                                    ctjls: resp.data[i].ctjls,
-	                                    ydjls: resp.data[i].hxjls
-	                                }, 'ydjls', resp.data[i].ydjls));
+	                                    Name: resp.aaData[i].crossName,
+	                                    ctjls: resp.aaData[i].ctjls,
+	                                    ydjls: resp.aaData[i].hxjls
+	                                }, 'ydjls', resp.aaData[i].ydjls));
 	                            }
 	                            self.setState({
 	                                initCraResults: false,
@@ -30255,18 +30276,18 @@
 	                    });
 	                } else if (data.isCross == 2) {
 	                    //路段
-	                    Ds.DataService('/recurrentCongestionRoad/queryTheRankOfCongestionRoadTopTen.json', data.time, function (resp) {
-	                        console.log(resp.data);
+	                    Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, function (resp) {
+	                        console.log(resp.aaData);
 	                        var cfydTabledata = [];
-	                        if (!resp.data) alert('没有相应信息');else {
+	                        if (!resp.aaData) alert('没有相应信息');else {
 	
-	                            for (var i = 0; i < resp.data.length; i++) {
+	                            for (var i = 0; i < resp.aaData.length; i++) {
 	                                cfydTabledata.push(_defineProperty({
 	                                    No: i + 1,
-	                                    Name: resp.data[i].roadName,
-	                                    ctjls: resp.data[i].ctjls,
-	                                    ydjls: resp.data[i].hxjls
-	                                }, 'ydjls', resp.data[i].ydjls));
+	                                    Name: resp.aaData[i].roadName,
+	                                    ctjls: resp.aaData[i].ctjls,
+	                                    ydjls: resp.aaData[i].hxjls
+	                                }, 'ydjls', resp.aaData[i].ydjls));
 	                            }
 	                            self.setState({
 	                                initCraResults: false,
@@ -30668,7 +30689,7 @@
 	            var sendParam2;
 	            if (this.state.t == undefined) {
 	                var myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-	                if (rboxkey1 == 'cross') last_Path = '/cross/ydlkMore.json';else if (rboxkey1 == 'road') last_Path = '/road/ydldMore.json';else if (rboxkey1 == 'area') last_Path = '/zone/ydqyMore.json';
+	                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
 	                sendParam2 = {
 	                    queryTime: myday,
 	                    pageIndex: page,
@@ -30676,7 +30697,7 @@
 	                    isFirst: false
 	                };
 	            } else if (this.state.t && this.state.t.flags == null) {
-	                if (this.state.t.rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';else if (this.state.t.rboxkey == 'road') last_Path = '/road/ydldMore.json';else if (this.state.t.rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+	                if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
 	                sendParam2 = {
 	                    queryTime: this.state.t.sj,
 	                    pageIndex: page,
@@ -30693,12 +30714,12 @@
 	                    pageSize: 10,
 	                    isFirst: false
 	                };
-	                if (rboxkey1 == 'cross') last_Path = '/map/crossJtda.json';else if (rboxkey1 == 'road') last_Path = '/map/roadJtda.json';else if (rboxkey1 == 'area') last_Path = '/map/zoneJtda.json';
+	                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
 	            }
 	
 	            Ds.DataService(last_Path, sendParam2, function (resp) {
 	                self.setState({
-	                    tableContent: resp.data.jtzsPage.jtzsList
+	                    tableContent: resp.aaData.jtzsPage.jtzsList
 	                });
 	            }, function (e) {
 	                console.log(e);
@@ -30738,6 +30759,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            console.log(this.props);
 	            children_rboxkey = this.props.children;
 	            JtzsList = this.props.jtzsPage;
 	            if (!JtzsList) alert("错误");
@@ -30858,7 +30880,6 @@
 	                        'ul',
 	                        { id: 'table_rows', className: _craResults2.default.table_rows },
 	                        this.state.tableContent.map(function (item) {
-	                            // console.log(item);
 	                            return _react2.default.createElement(
 	                                _rcQueueAnim2.default,
 	                                { key: item.id, delay: 300, className: 'queue-simple' },

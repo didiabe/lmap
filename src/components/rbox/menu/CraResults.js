@@ -26,9 +26,9 @@ class CraResults extends React.Component {
         var sendParam2;
         if (this.state.t == undefined) {
             let myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-            if (rboxkey1 == 'cross') last_Path = '/cross/ydlkMore.json';
-            else if (rboxkey1 == 'road') last_Path = '/road/ydldMore.json';
-            else if (rboxkey1 == 'area') last_Path = '/zone/ydqyMore.json';
+            if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+            else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+            else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
             sendParam2 = {
                 queryTime: myday,
                 pageIndex: page,
@@ -36,9 +36,9 @@ class CraResults extends React.Component {
                 isFirst: false
             };
         } else if (this.state.t && (this.state.t.flags == null)) {
-            if (this.state.t.rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';
-            else if (this.state.t.rboxkey == 'road') last_Path = '/road/ydldMore.json';
-            else if (this.state.t.rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+            if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+            else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+            else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
             sendParam2 = {
                 queryTime: this.state.t.sj,
                 pageIndex: page,
@@ -55,14 +55,14 @@ class CraResults extends React.Component {
                 pageSize: 10,
                 isFirst: false
             };
-            if (rboxkey1 == 'cross') last_Path = '/map/crossJtda.json';
-            else if (rboxkey1 == 'road') last_Path = '/map/roadJtda.json';
-            else if (rboxkey1 == 'area') last_Path = '/map/zoneJtda.json';
+            if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';
+            else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';
+            else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
         }
 
         Ds.DataService(last_Path, sendParam2, (resp) => {
             self.setState({
-                tableContent: resp.data.jtzsPage.jtzsList
+                tableContent: resp.aaData.jtzsPage.jtzsList
             });
         }, (e) => {
             console.log(e);
@@ -93,7 +93,9 @@ class CraResults extends React.Component {
             tableContent: JtzsList.jtzsList
         });*/
     }
+
     render() {
+        console.log(this.props)
         children_rboxkey = this.props.children;
         JtzsList = this.props.jtzsPage;
         if (!JtzsList) alert("错误");
@@ -137,8 +139,7 @@ class CraResults extends React.Component {
                         <span className={styles.smooth_jam_num_hierarchy}>拥堵等级</span>
                     </div>
                     <ul id='table_rows' className={styles.table_rows}>
-                        {this.state.tableContent.map(item => {
-                           // console.log(item);
+                        { this.state.tableContent.map(item => {
                             return <QueueAnim key={item.id} delay={300} className="queue-simple"><TableRow key={item.id} item={item}/></QueueAnim>
                         }) }
                     </ul>

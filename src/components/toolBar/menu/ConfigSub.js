@@ -56,7 +56,6 @@ class ConfigSub extends React.Component {
     }
     render() {
         return (
-
             <div>
         <li ref="startUnipanel" id="trafficConditions" onClick={() => this.mountTrafficConditions() }>
                     <div type="fullscreen">
@@ -113,7 +112,7 @@ class ConfigSubPanel extends React.Component {
                     isloading1: false,
                     isloaded1: true
                 });
-                CI.displayConfigLayer_road(resp.data);
+                CI.displayConfigLayer_road(resp.aaData);
                 DR.DrawConfigLayer.DrawRoad.activate();
                 ReactDOM.render(
                     <RoadConfigPanel/>, document.getElementById("configPanel")
@@ -137,14 +136,14 @@ class ConfigSubPanel extends React.Component {
             });
             Ds.DataService('/zoneConfig/map.json', null, (resp) => {
                 //console.log(resp);
-                CI.displayConfigLayer(resp.data);
+                CI.displayConfigLayer(resp.aaData);
 
                 self.setState({
                     isloading2: false,
                     isloaded2: true
                 });
                 DR.DrawConfigLayer.DrawRegion.activate();
-                DR.DrawConfigLayer.DrawRegion.dataRecv(resp.data);
+                DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
                 ReactDOM.render(
                     <RegionConfigPanel/>, document.getElementById("configPanel")
                 );
@@ -168,13 +167,13 @@ class ConfigSubPanel extends React.Component {
             });
             Ds.DataService('/odRegion/initMap.json', null, (resp) => {
                 //console.log(resp);
-                CI.displayConfigLayer(resp.data);
+                CI.displayConfigLayer(resp.aaData);
                 self.setState({
                     isloading3: false,
                     isloaded3: true
                 });
                 DR.DrawConfigLayer.DrawOD.activate();
-                DR.DrawConfigLayer.DrawOD.dataRecv(resp.data);
+                DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
                 ReactDOM.render(
                     <OdConfigPanel/>,
                     document.getElementById("configPanel")
@@ -195,9 +194,9 @@ class ConfigSubPanel extends React.Component {
 
         } else if (ref = 'fhld') {
             Ds.DataService('/map/roadMap.json', null, (resp) => {
-                CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+                CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
 
-                DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+                DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
 
             }, (e) => {
                 console.log(e)
@@ -210,21 +209,21 @@ class ConfigSubPanel extends React.Component {
         DR.drawFeatures.disable();
         if (ref == 'regionConfig') {
             Ds.DataService('/zoneConfig/map.json', null, (resp) => {
-                CI.changeConfigLayer(resp.data.zone, ref);
+                CI.changeConfigLayer(resp.aaData.zone, ref);
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
             });
         } else if (ref == 'odConfig') {
             Ds.DataService('/odRegion/initMap.json', null, (resp) => {
-                CI.changeConfigLayer(resp.data.zone, ref);
+                CI.changeConfigLayer(resp.aaData.zone, ref);
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
             });
         } else if (ref == 'roadConfig') {
             Ds.DataService('/map/roadMap.json', null, (resp) => {
-                CI.changeConfigLayer(resp.data, ref);
+                CI.changeConfigLayer(resp.aaData, ref);
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
@@ -237,8 +236,8 @@ class ConfigSubPanel extends React.Component {
         lmap.removeEchartsLayer();
         let self = this;
         //路段配置下拉框内容
-        Ds.DataService('/roadConfig/searchDoubleRoadList.json', null, (resp) => {
-            selectionOptions_road = resp.data;
+        Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, (resp) => {
+            selectionOptions_road = resp.aaData;
         }, (e) => {
             alert('后台传输错误！');
             console.log(e);
@@ -258,7 +257,7 @@ class ConfigSubPanel extends React.Component {
                     break;
                 case 'fhld_init':
                     Ds.DataService('/map/roadMap.json', null, (resp) => {
-                        CI.displayConfigLayer_road(resp.data); //这个加载的应该是符合路段的data
+                        CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
 
 
 
@@ -270,7 +269,7 @@ class ConfigSubPanel extends React.Component {
                     Ds.DataService('/map/roadMap.json', null, (resp) => {
 
 
-                        DR.DrawConfigLayer.DrawFhld.activate(resp.data); //这个data应该是双向路段的data
+                        DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
 
                     }, (e) => {
                         console.log(e)
@@ -281,11 +280,7 @@ class ConfigSubPanel extends React.Component {
         });
         //lmsg.send('fhld_ok',{new_fhld:11, doublers:[{name:11, id:11},{name:11, id:11},{name:11, id:11}]})
         lmsg.subscribe('openChangeConfigPanel', (data) => {
-            localStorage.removeItem('openChangeConfigPanel');
-            /* Modal.warning({
-                 title: '您选择的道路/区域名称是：' + data.id,
-                 content: '确认修改请重新绘制并填入相关信息。',
-             });*/
+
             Modal.confirm({
                 title: '您选择的道路/区域名称是：' + data.id,
                 content: '确认修改请重新绘制并填入相关信息。',
@@ -319,7 +314,7 @@ class ConfigSubPanel extends React.Component {
                     self.ChangeConfig(data.ref);
                 },
             });
-
+            localStorage.removeItem('openChangeConfigPanel');
         });
 
     }
@@ -559,12 +554,12 @@ let OdConfigPanel = React.createClass({
                 required: true,
                 message: '请选择颜色'
             }]
-        })(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='odColor' name='odColor'>
-            <Option value="red" style={{backgroundColor:'rgba(245,45,79,0.8)',}}>红色</Option>
+})(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='odColor' name='odColor'>            <Option value="red" style={{backgroundColor:'rgba(245,45,79,0.8)',}}>红色</Option>
             <Option value="green" style={{backgroundColor:'rgba(82,245,45,0.8)'}}>绿色</Option>
             <Option value="yellow" style={{backgroundColor:'rgba(245,223,45,0.8)'}}>黄色</Option>
             <Option value="blue" style={{backgroundColor:'rgba(45,183,245,0.8)'}}>蓝色</Option>
-          </Select>)}
+          </Select>)
+    }
         </FormItem>
         <Button type="primary" size='small' htmlType="submit">保存</Button>
       </Form>
@@ -605,7 +600,7 @@ let RoadConfigPanel = React.createClass({
                     coordinates: JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue())
                 }
                 if (!sendParam_road.coordinates) alert('请画图先');
-                Ds.DataService('/roadConfig/addDoubleSidedRoadInfo.json', sendParam_road, (resp) => {
+                Ds.DataService('/trafficindex_roadConfiguration/addDoubleSidedRoadInfo.json', sendParam_road, (resp) => {
                     console.log(resp);
                     if (resp.errorCode == 0) {
                         alert('保存成功');

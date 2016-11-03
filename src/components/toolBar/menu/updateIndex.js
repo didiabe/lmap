@@ -150,23 +150,23 @@ class UpdateIndexPanel extends React.Component {
             level: this.state.ConLevel
         };
         console.log(param);
-        Ds.DataService("/zone/zsLevel.json", param,
+        Ds.DataService("/trafficindex_map/zsLevel.json", param,
             (resp) => {
-                //console.log(resp.data);
+                //console.log(resp.aaData);
                 let data4Table = [];
 
-                if (resp.data.length < 1) {
+                if (resp.aaData.length < 1) {
                     alert("没有查到符合数据");
                     this.setState({
                         loading: false,
                         isLoaded: false,
                     });
                 } else {
-                    for (var i = 0; i < resp.data.length; i++) {
+                    for (var i = 0; i < resp.aaData.length; i++) {
                         data4Table.push({
-                            name: resp.data[i].name,
-                            index: resp.data[i].jtzs,
-                            id: resp.data[i].id,
+                            name: resp.aaData[i].name,
+                            index: resp.aaData[i].jtzs,
+                            id: resp.aaData[i].id,
                             key: i
                         });
                     };
@@ -203,9 +203,9 @@ class UpdateIndexPanel extends React.Component {
 
         };
 
-        Ds.DataService('/zone/zsUpdate.json', zsUpdate,
+        Ds.DataService('/trafficindex_map/zsUpdate.json', zsUpdate,
             (resp) => {
-                console.log(resp.data);
+                console.log(resp.aaData);
                 this.setState({
                     selectedRowKeys: [],
                     loading: false,
@@ -485,7 +485,7 @@ var showModal_updIdx = (data) => {
                 end: null
             };
             console.log(sendNewIndParam);
-            Ds.DataService('/zone/zsUpdate.json', sendNewIndParam, (resp) => {
+            Ds.DataService('/trafficindex_map/zsUpdate.json', sendNewIndParam, (resp) => {
                 if (resp.errorCode == 0) alert('保存成功');
                 else alert('保存失败');
             }, (e) => {

@@ -142,10 +142,10 @@ class Rbox extends React.Component {
 
         lmsg.subscribe('jrlzbbSend', (data) => {
             console.log('jrlzbbSend', data);
-            Ds.DataService('/zone/initMap.json', {
+            Ds.DataService('/trafficindex_map/initMap.json', {
                 querytime: data.time
             }, (resp) => {
-                CI.displayCommonLayer(resp.data);
+                CI.displayCommonLayer(resp.aaData);
                 self.setState({
                     contraction: true,
                     initCraResults: false,
@@ -165,18 +165,18 @@ class Rbox extends React.Component {
             });
             if (data.isCross == 1) {
                 //路口
-                Ds.DataService('/recurrentCongestionCross/queryTheRankOfCongestionCrossTopTen.json', data.time, (resp) => {
+                Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
-                    if (!resp.data) alert('没有相应信息');
+                    if (!resp.aaData) alert('没有相应信息');
                     else {
 
-                        for (var i = 0; i < resp.data.length; i++) {
+                        for (var i = 0; i < resp.aaData.length; i++) {
                             cfydTabledata.push({
                                 No: i + 1,
-                                Name: resp.data[i].crossName,
-                                ctjls: resp.data[i].ctjls,
-                                ydjls: resp.data[i].hxjls,
-                                ydjls: resp.data[i].ydjls
+                                Name: resp.aaData[i].crossName,
+                                ctjls: resp.aaData[i].ctjls,
+                                ydjls: resp.aaData[i].hxjls,
+                                ydjls: resp.aaData[i].ydjls
                             });
                         }
                         self.setState({
@@ -193,19 +193,19 @@ class Rbox extends React.Component {
 
             } else if (data.isCross == 2) {
                 //路段
-                Ds.DataService('/recurrentCongestionRoad/queryTheRankOfCongestionRoadTopTen.json', data.time, (resp) => {
-                    console.log(resp.data);
+                Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, (resp) => {
+                    console.log(resp.aaData);
                     var cfydTabledata = [];
-                    if (!resp.data) alert('没有相应信息');
+                    if (!resp.aaData) alert('没有相应信息');
                     else {
 
-                        for (var i = 0; i < resp.data.length; i++) {
+                        for (var i = 0; i < resp.aaData.length; i++) {
                             cfydTabledata.push({
                                 No: i + 1,
-                                Name: resp.data[i].roadName,
-                                ctjls: resp.data[i].ctjls,
-                                ydjls: resp.data[i].hxjls,
-                                ydjls: resp.data[i].ydjls
+                                Name: resp.aaData[i].roadName,
+                                ctjls: resp.aaData[i].ctjls,
+                                ydjls: resp.aaData[i].hxjls,
+                                ydjls: resp.aaData[i].ydjls
                             });
                         }
                         self.setState({

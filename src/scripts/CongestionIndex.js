@@ -403,7 +403,7 @@ export const displayUniLayer = (ref, data) => {
 
 
     if (ref == 'fudongche') {
-        _APIpath = "/map/floatCar.json";
+        _APIpath = "/trafficindex_map/floatCar.json";
         var fudongcheIcon = L.icon({
             iconUrl: taxi_img,
             iconSize: [20, 20], // size of the icon
@@ -417,7 +417,7 @@ export const displayUniLayer = (ref, data) => {
             });
         }
     } else if (ref == 'shigong') {
-        _APIpath = "/map/roadConstruction.json";
+        _APIpath = "/trafficindex_map/roadConstruction.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#007D7D',
@@ -441,7 +441,7 @@ export const displayUniLayer = (ref, data) => {
         }
 
     } else if (ref == 'guanzhi') {
-        _APIpath = "/map/trafficControl.json";
+        _APIpath = "/trafficindex_map/trafficControl.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#EEC900',
@@ -464,7 +464,7 @@ export const displayUniLayer = (ref, data) => {
             });
         }
     } else if (ref == 'shigu') {
-        _APIpath = "/map/trafficAccident.json";
+        _APIpath = "/trafficindex_map/trafficAccident.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
@@ -487,7 +487,7 @@ export const displayUniLayer = (ref, data) => {
             });
         }
     } else if (ref == 'yongdu_cross') {
-        _APIpath = "/map/cfydCross.json";
+        _APIpath = "/trafficindex_map/cfydCross.json";
         var yongduCrossIcon = L.icon({
             iconUrl: traffic_warning_img,
             iconSize: [20, 20], // size of the icon
@@ -515,7 +515,7 @@ export const displayUniLayer = (ref, data) => {
             date: date2Java_date
         }
     } else if (ref == 'yongdu_road') {
-        _APIpath = "/map/cfydRoad.json";
+        _APIpath = "/trafficindex_map/cfydRoad.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
@@ -540,7 +540,7 @@ export const displayUniLayer = (ref, data) => {
             date: date2Java_date
         }
     } else if (ref == 'jiari_cross') {
-        _APIpath = "/map/holiday.json";
+        _APIpath = "/trafficindex_map/holiday.json";
         var yongduCrossIcon = L.icon({
             iconUrl: traffic_warning_img,
             iconSize: [20, 20], // size of the icon
@@ -558,7 +558,7 @@ export const displayUniLayer = (ref, data) => {
             date: data.date
         }
     } else if (ref == 'jiari_road') {
-        _APIpath = "/map/holiday.json";
+        _APIpath = "/trafficindex_map/holiday.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
@@ -574,7 +574,7 @@ export const displayUniLayer = (ref, data) => {
             date: data.date
         }
     } else if (ref == 'jiari_zone') {
-        _APIpath = "/map/holiday.json";
+        _APIpath = "/trafficindex_map/holiday.json";
         specialstyle = (feature) => {
             return {
                 fillColor: '#D2691E',
@@ -592,8 +592,8 @@ export const displayUniLayer = (ref, data) => {
     }
 
     Ds.DataService(_APIpath, param, (resp) => {
-        console.log(resp.data);
-        featurecollectiondata = resp.data;
+        console.log(resp.aaData);
+        featurecollectiondata = resp.aaData;
     }, (e) => {
         console.log(e);
         alert("后台传输错误");
@@ -607,9 +607,9 @@ export const displayUniLayer = (ref, data) => {
         console.log(sendparamID);
         var popupData = null;
         if (ref == 'fudongche') {
-            Ds.DataService("/floatcar/fdcarMessage.json", sendparamID, (resp) => {
+            Ds.DataService("/trafficindex_floatCargp/listGetFdcarByCarid.json", sendparamID, (resp) => {
                 console.log(resp);
-                popupData = resp.data;
+                popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
                 console.log(e)
@@ -650,14 +650,14 @@ export const displayUniLayer = (ref, data) => {
     var displayDetails = (e) => {
         var eachFeatureID = e.target.feature.properties.id;
         var sendparamID = {
-            "xh": eachFeatureID
+            "id": eachFeatureID
         };
         var popupData = null,
             popup_spec = null;
         if (ref == "shigong") {
-            Ds.DataService("/roadconstruction/queryConstOne.json", sendparamID, (resp) => {
+            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsRoadconstruction.json", sendparamID, (resp) => {
                 console.log(resp);
-                popupData = resp.data;
+                popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
                 console.log(e)
@@ -674,9 +674,9 @@ export const displayUniLayer = (ref, data) => {
                 "结束时间: " + popupData.enddate + '<br/>' +
                 "联系电话: " + popupData.telephone + '<br/>');
         } else if (ref == "guanzhi") {
-            Ds.DataService("/trafficControl/queryControlOne.json", sendparamID, (resp) => {
+            Ds.DataService("/trafficindex_trafficControl/gotoBJtzsTrafficcontrol.json", sendparamID, (resp) => {
                 console.log(resp);
-                popupData = resp.data;
+                popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
                 console.log(e)
@@ -696,9 +696,9 @@ export const displayUniLayer = (ref, data) => {
                 "管制类型: " + popupData.type + '<br/>' +
                 "管制说明: " + popupData.remark + '<br/>');
         } else if (ref == "shigu") {
-            Ds.DataService("/trifficAccident/queryAccidentOne.json", sendparamID, (resp) => {
+            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsTrafficaccident.json", sendparamID, (resp) => {
                 console.log(resp);
-                popupData = resp.data;
+                popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
                 console.log(e)
@@ -771,9 +771,9 @@ export const trackingTaxi = (params) => {
             date: params.date
         };
 
-        taxiRoute = Ds.DataService('/map/track.json', sendtaxiparams, (resp) => {
-            console.log(resp.data);
-            if (!resp.data) {
+        taxiRoute = Ds.DataService('/trafficindex_map/track.json', sendtaxiparams, (resp) => {
+            console.log(resp.aaData);
+            if (!resp.aaData) {
                 alert('没有查询到浮动车信息');
                 return;
             } else {
@@ -794,7 +794,7 @@ export const trackingTaxi = (params) => {
                         icon: fudongcheIcon
                     });
                 }
-                var taxijson = resp.data;
+                var taxijson = resp.aaData;
                 var routestyle = (feature) => {
                     return {
                         fillColor: '#2db7f5',

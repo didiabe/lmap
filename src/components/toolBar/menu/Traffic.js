@@ -163,6 +163,7 @@ class Forecast extends React.Component {
         });
     }
     startForcast() {
+        let self = this;
         this.setState({
             isLoading: true
         });
@@ -170,15 +171,22 @@ class Forecast extends React.Component {
             type: this.state.CraType,
             time: this.state.inputValue
         }
-        Ds.DataService('/zone/forecast.json', param,
+        Ds.DataService('/trafficindex_map/forecast.json', param,
             (resp) => {
                 if (markerPlayBack) markerPlayBack.clearLayer();
-                this.setState({
+                self.setState({
                     isLoading: false,
                     isLoaded: true
                 });
-                console.log(resp.data);
-                let geo_playback = resp.data;
+                console.log(resp.aaData);
+                if (resp.aaData.features.length == 0) {
+                    alert('没有查询到相应信息');
+                    self.setState({
+                        isLoading: false,
+                        isLoaded: false
+                    });
+                }
+                let geo_playback = resp.aaData;
                 CI.displayCommonLayer(geo_playback);
                 //markerPlayBack = CI.playback(geo_playback);
             },
@@ -446,9 +454,9 @@ class Playback extends React.Component {
                 type: self.state.checkedOptions
             }
 
-            Ds.DataService("/zone/hisPlayBack.json", param1,
+            Ds.DataService("/trafficindex_map/hisPlayBack.json", param1,
                 (data) => {
-                    let geo_playback = data.data;
+                    let geo_playback = data.aaData;
                     console.log(geo_playback);
                     if (geo_playback.features.length < 1) {
                         self.setState({
@@ -551,6 +559,12 @@ class Playback extends React.Component {
          }, 1000);*/
         //<Slider max={30} min={0} onChange={this.onSliderChange} value={this.state.inputValue}/>
     }
+    disabledDate(current) {
+        // can not select days after today
+        return current && current.valueOf() > Date.now();
+    }
+
+
 
     render() {
         const player_panel = this.state.isLoaded ? [
@@ -573,7 +587,7 @@ class Playback extends React.Component {
             <div className={trafficStyles.panel_body}>
                 <div>
                 <ul>
-                    <li>{"时间区间: "}<RangePicker format="YYYY-MM-DD HH:mm:ss" 
+                    <li>{"时间区间: "}<RangePicker showTime disabledDate={this.disabledDate} format="YYYY-MM-DD HH:mm:ss" 
                     onChange={this.getTimeRange} getCalendarContainer={trigger=>trigger.parentNode} />
                     </li><br/>
                    <li><CheckboxGroup className={trafficStyles.checkboxes} options={CRA_options} onChange={this.getCheckOption} />

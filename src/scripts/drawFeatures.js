@@ -744,6 +744,14 @@ const drawFhld = (doublersData) => {
 
 	}
 	map.on('draw:created', function(e) {
+		console.log(drawnItemsLayer);
+		/*	if (Object.getOwnPropertyNames(drawnItemsLayer._layers).length > 0) {
+			drawnItemsLayer = null;
+			drawnItemsLayer = new L.FeatureGroup();
+			map.addLayer(drawnItemsLayer);
+		}
+*/
+
 		var type = e.layerType,
 			layer = e.layer;
 		layer._latlngs.map((item) => {
@@ -755,6 +763,7 @@ const drawFhld = (doublersData) => {
 		bufferSelection();
 	});
 	map.on('draw:edited', function(e) {
+
 		for (var item in e.layers._layers) {
 			e.layers._layers[item]._latlngs.map((item) => {
 				coords = [item.lng, item.lat];

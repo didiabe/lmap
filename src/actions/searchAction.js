@@ -30,10 +30,10 @@ export const fetchSearchList = (keyword, rboxkey, page = 1) => {
         let param = {
             id: keyword
         }
-        Ds.DataService('/zone/queryByName.json', param,
+        Ds.DataService('/trafficindex_map/queryByName.json', param,
             (resp) => {
-                console.log('queryByName', 'dataRecv', resp.data);
-                let data = resp.data;
+                console.log('queryByName', 'dataRecv', resp.aaData);
+                let data = resp.aaData;
                 dispatch(receiveList(data, page))
             },
             (e) => {
@@ -59,9 +59,9 @@ export const fetchCRAList = (rboxkey, t, page) => {
     var month = d.getMonth() + 1;
     if (t == undefined) {
         myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        if (rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';
-        else if (rboxkey == 'road') last_Path = '/road/ydldMore.json';
-        else if (rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+        if (rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+        else if (rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+        else if (rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
         console.log('myday', myday);
         sendParam2 = {
             queryTime: myday,
@@ -70,9 +70,9 @@ export const fetchCRAList = (rboxkey, t, page) => {
             isFirst: true
         };
     } else if (t && (t.flags == null)) {
-        if (t.rboxkey == 'cross') last_Path = '/cross/ydlkMore.json';
-        else if (t.rboxkey == 'road') last_Path = '/road/ydldMore.json';
-        else if (t.rboxkey == 'area') last_Path = '/zone/ydqyMore.json';
+        if (t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+        else if (t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+        else if (t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
         sendParam2 = {
             queryTime: t.sj,
             pageIndex: 1,
@@ -89,13 +89,13 @@ export const fetchCRAList = (rboxkey, t, page) => {
             pageSize: 10,
             isFirst: true
         };
-        if (rboxkey == 'cross') last_Path = '/map/crossJtda.json';
-        else if (rboxkey == 'road') last_Path = '/map/roadJtda.json';
-        else if (rboxkey == 'area') last_Path = '/map/zoneJtda.json';
+        if (rboxkey == 'cross') last_Path = '/trafficindex_map/crossJtda.json';
+        else if (rboxkey == 'road') last_Path = '/trafficindex_map/roadJtda.json';
+        else if (rboxkey == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
     }
     Ds.DataService(last_Path, sendParam2,
-        (resp) => {
-            dataRecv = resp.data;
+    (resp) => {
+            dataRecv = resp.aaData;
             console.log(dataRecv);
         },
         (e) => {

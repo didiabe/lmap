@@ -66,7 +66,7 @@ const crossLayer = function(data) {
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
-        var popupCross = $('<div/>');
+        /*var popupCross = $('<div/>');
         popupCross.append($('<p>   路口名称:  ' + e.target.feature.properties.name + '</p>'));
         popupCross.append($('<button class="green_button">更新</button>').click(function() {
             lmsg.send('openModal_updIdx', {
@@ -91,9 +91,49 @@ const crossLayer = function(data) {
                 ID: e.target.feature.properties.id,
                 name: e.target.feature.properties.name
             });
-        }));
-
-        pointLayer.bindPopup(popupCross[0])
+        }));*/
+        var popupCross = document.createElement('div');
+        var p = document.createElement('p');
+        p.innerHTML = '路口名称:' + e.target.feature.properties.name
+        var button1 = document.createElement('button');
+        button1.classList.add('green_button');
+        button1.innerHTML = '更新';
+        button1.onclick = function() {
+            lmsg.send('openModal_updIdx', {
+                id: e.target.feature.properties.id,
+                index: e.target.feature.properties.index,
+                type: 3 //（1区域(region) 2 路段(road) 3 路口(cross)）
+            });
+        };
+        var button2 = document.createElement('button');
+        button2.classList.add('green_button');
+        button2.innerHTML = '实时';
+        button2.onclick = function() {
+            lmsg.send('lksszs', {
+                params: 'cross',
+                isTime: '1',
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
+            });
+            console.log('传送成功-实时');
+        };
+        var button3 = document.createElement('button');
+        button3.classList.add('green_button');
+        button3.innerHTML = '档案';
+        button3.onclick = function() {
+            lmsg.send('lkjt', {
+                params: 'cross',
+                isTime: '2',
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
+            });
+            console.log('传送成功-档案');
+        };
+        popupCross.appendChild(p);
+        popupCross.appendChild(button1);
+        popupCross.appendChild(button2);
+        popupCross.appendChild(button3);
+        pointLayer.bindPopup(popupCross)
             .addTo(map);
     };
 
@@ -182,7 +222,7 @@ const roadLayer = function(data) {
     function panToBound(e) {
         //console.log(e.target);
         map.fitBounds(e.target.getBounds());
-        var popupRoad = $('<div/>');
+        /*var popupRoad = $('<div/>');
         popupRoad.append($('<p>   路段名称:  ' + e.target.feature.properties.name + '</p>'));
         popupRoad.append($('<button class="green_button">更新</button>').click(function() {
             lmsg.send('openModal_updIdx', {
@@ -210,6 +250,49 @@ const roadLayer = function(data) {
         }));
 
         lineLayer.bindPopup(popupRoad[0])
+            .addTo(map);*/
+        var popupRoad = document.createElement('div');
+        var p = document.createElement('p');
+        p.innerHTML = '路段名称:' + e.target.feature.properties.name
+        var button1 = document.createElement('button');
+        button1.classList.add('green_button');
+        button1.innerHTML = '更新';
+        button1.onclick = function() {
+            lmsg.send('openModal_updIdx', {
+                id: e.target.feature.properties.id,
+                index: e.target.feature.properties.index,
+                type: 2 //（1区域(region) 2 路段(road) 3 路口(cross)）
+            });
+        };
+        var button2 = document.createElement('button');
+        button2.classList.add('green_button');
+        button2.innerHTML = '实时';
+        button2.onclick = function() {
+            lmsg.send('ldsszs', {
+                params: 'road',
+                isTime: '1',
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
+            });
+            console.log('传送成功-实时');
+        };
+        var button3 = document.createElement('button');
+        button3.classList.add('green_button');
+        button3.innerHTML = '档案';
+        button3.onclick = function() {
+            lmsg.send('ldjt', {
+                params: 'road',
+                isTime: '2',
+                ID: e.target.feature.properties.id,
+                name: e.target.feature.properties.name
+            });
+            console.log('传送成功-档案');
+        };
+        popupRoad.appendChild(p);
+        popupRoad.appendChild(button1);
+        popupRoad.appendChild(button2);
+        popupRoad.appendChild(button3);
+        pointLayer.bindPopup(popupRoad)
             .addTo(map);
     };
 
@@ -304,35 +387,78 @@ const areaLayer = function(data) {
 
     function panToBound(e) {
         map.fitBounds(e.target.getBounds());
-        var popupArea = $('<div/>');
-        popupArea.append($('<p>   区域名称:   ' + e.target.feature.properties.name + '</p>'))
-        popupArea.append($('<button class="green_button">更新</button>').click(function() {
+        /* var popupArea = $('<div/>');
+         popupArea.append($('<p>   区域名称:   ' + e.target.feature.properties.name + '</p>'))
+         popupArea.append($('<button class="green_button">更新</button>').click(function() {
+             lmsg.send('openModal_updIdx', {
+                 id: e.target.feature.properties.id,
+                 index: e.target.feature.properties.index,
+                 type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
+             });
+
+         }));
+         popupArea.append($('<button class="green_button">实时</button>').click(function() {
+             //console.log(e.target.feature.properties.id);
+             lmsg.send('qysszs', {
+                 params: 'area',
+                 isTime: '1',
+                 ID: e.target.feature.properties.id,
+                 name: e.target.feature.properties.name
+             });
+         }));
+         popupArea.append($('<button class="green_button">档案</button>').click(function() {
+             lmsg.send('qyjt', {
+                 params: 'area',
+                 isTime: '2',
+                 ID: e.target.feature.properties.id,
+                 name: e.target.feature.properties.name
+             });
+         }));
+
+         regionLayer.bindPopup(popupArea[0])
+             .addTo(map);*/
+        var popupArea = document.createElement('div');
+        var p = document.createElement('p');
+        p.innerHTML = '路段名称:' + e.target.feature.properties.name
+        var button1 = document.createElement('button');
+        button1.classList.add('green_button');
+        button1.innerHTML = '更新';
+        button1.onclick = function() {
             lmsg.send('openModal_updIdx', {
                 id: e.target.feature.properties.id,
                 index: e.target.feature.properties.index,
                 type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
             });
-
-        }));
-        popupArea.append($('<button class="green_button">实时</button>').click(function() {
-            //console.log(e.target.feature.properties.id);
+        };
+        var button2 = document.createElement('button');
+        button2.classList.add('green_button');
+        button2.innerHTML = '实时';
+        button2.onclick = function() {
             lmsg.send('qysszs', {
                 params: 'area',
                 isTime: '1',
                 ID: e.target.feature.properties.id,
                 name: e.target.feature.properties.name
             });
-        }));
-        popupArea.append($('<button class="green_button">档案</button>').click(function() {
+            console.log('传送成功-实时');
+        };
+        var button3 = document.createElement('button');
+        button3.classList.add('green_button');
+        button3.innerHTML = '档案';
+        button3.onclick = function() {
             lmsg.send('qyjt', {
                 params: 'area',
                 isTime: '2',
                 ID: e.target.feature.properties.id,
                 name: e.target.feature.properties.name
             });
-        }));
-
-        regionLayer.bindPopup(popupArea[0])
+            console.log('传送成功-档案');
+        };
+        popupArea.appendChild(p);
+        popupArea.appendChild(button1);
+        popupArea.appendChild(button2);
+        popupArea.appendChild(button3);
+        pointLayer.bindPopup(popupArea)
             .addTo(map);
     };
 

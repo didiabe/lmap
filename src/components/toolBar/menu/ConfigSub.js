@@ -23,7 +23,9 @@ import {
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-
+var regionConfigModify_id = '';
+var odConfigModify_id = '';
+var roadConfigModify_id = '';
 var selectionOptions_road = null;
 class ConfigSub extends React.Component {
     constructor() {
@@ -107,7 +109,7 @@ class ConfigSubPanel extends React.Component {
             this.setState({
                 isloading1: true,
             });
-            Ds.DataService('/map/roadMap.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
                 self.setState({
                     isloading1: false,
                     isloaded1: true
@@ -134,7 +136,7 @@ class ConfigSubPanel extends React.Component {
             this.setState({
                 isloading2: true,
             });
-            Ds.DataService('/zoneConfig/map.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
                 //console.log(resp);
                 CI.displayConfigLayer(resp.aaData);
 
@@ -165,7 +167,7 @@ class ConfigSubPanel extends React.Component {
             self.setState({
                 isloading3: true,
             });
-            Ds.DataService('/odRegion/initMap.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
                 //console.log(resp);
                 CI.displayConfigLayer(resp.aaData);
                 self.setState({
@@ -193,9 +195,18 @@ class ConfigSubPanel extends React.Component {
             });
 
         } else if (ref = 'fhld') {
-            Ds.DataService('/map/roadMap.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/roadMap.json', null, (resp) => {
+                console.log(resp.aaData)
                 CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
 
+                //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+
+            }, (e) => {
+                console.log(e)
+            });
+            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
+
+                console.log(resp.aaData);
                 DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
 
             }, (e) => {
@@ -208,21 +219,23 @@ class ConfigSubPanel extends React.Component {
         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
         DR.drawFeatures.disable();
         if (ref == 'regionConfig') {
-            Ds.DataService('/zoneConfig/map.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
                 CI.changeConfigLayer(resp.aaData.zone, ref);
+                DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
             });
         } else if (ref == 'odConfig') {
-            Ds.DataService('/odRegion/initMap.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
                 CI.changeConfigLayer(resp.aaData.zone, ref);
+                DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误！');
             });
         } else if (ref == 'roadConfig') {
-            Ds.DataService('/map/roadMap.json', null, (resp) => {
+            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
                 CI.changeConfigLayer(resp.aaData, ref);
             }, (e) => {
                 console.log(e);
@@ -244,6 +257,7 @@ class ConfigSubPanel extends React.Component {
         });
 
         lmsg.subscribe('peizhi', (data) => {
+            console.log(data)
             localStorage.removeItem('peizhi');
             switch (data.params) {
                 case 'odqypz':
@@ -256,23 +270,13 @@ class ConfigSubPanel extends React.Component {
                     self.onClickButton("regionConfig");
                     break;
                 case 'fhld_init':
-                    Ds.DataService('/map/roadMap.json', null, (resp) => {
-                        CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
-
-
-
-                    }, (e) => {
-                        console.log(e)
-                    });
+                    self.onClickButton("fhld");
                     break;
                 case 'fhld_locating':
-                    Ds.DataService('/map/roadMap.json', null, (resp) => {
-
-
-                        DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-
-                    }, (e) => {
-                        console.log(e)
+                    //self.onClickButton("fhld");
+                    Modal.success({
+                        title: '定位启动',
+                        content: '请点击右上角开始绘图',
                     });
                     break;
             }
@@ -287,21 +291,23 @@ class ConfigSubPanel extends React.Component {
                 onOk() {
                     if (data.ref == 'regionConfig') {
                         console.log(data.id);
+                        regionConfigModify_id = data.id;
                         ReactDOM.render(
-                            <RegionConfigPanel/>, document.getElementById("configPanel")
+                            <RegionConfigPanel_Modify/>, document.getElementById("configPanel")
                         );
                         DR.DrawConfigLayer.DrawRegion.activate();
                     } else if (data.ref == 'odConfig') {
                         console.log(data.id);
-
+                        odConfigModify_id = data.id;
                         ReactDOM.render(
-                            <OdConfigPanel/>, document.getElementById("configPanel")
+                            <OdConfigPanel_Modify/>, document.getElementById("configPanel")
                         );
                         DR.DrawConfigLayer.DrawOD.activate();
                     } else if (data.ref == 'roadConfig') {
                         console.log(data.id);
+                        roadConfigModify_id = data.id;
                         ReactDOM.render(
-                            <RoadConfigPanel/>, document.getElementById("configPanel")
+                            <RoadConfigPanel_Modify/>, document.getElementById("configPanel")
                         );
                         DR.DrawConfigLayer.DrawRoad.activate();
                     }
@@ -380,7 +386,7 @@ let RegionConfigPanel = React.createClass({
                     roadid: DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString()
                 };
                 console.log('传给后台的值', sendParams_region);
-                Ds.DataService('/zoneConfig/save.json', sendParams_region, (resp) => {
+                Ds.DataService('/trafficindex_zoneConfig/add.json', sendParams_region, (resp) => {
                     console.log(resp);
                     if (resp.errorCode == 0) {
                         alert('保存成功');
@@ -486,7 +492,7 @@ let OdConfigPanel = React.createClass({
                     crossId: selectedIDs
                 };
                 console.log(sendParams_od);
-                Ds.DataService('/odRegion/save.json', sendParams_od, (resp) => {
+                Ds.DataService('/trafficindex_bodregionconfig/add.json', sendParams_od, (resp) => {
                     console.log(resp);
                     if (resp.errorCode == 0) {
                         alert('保存成功');
@@ -554,7 +560,8 @@ let OdConfigPanel = React.createClass({
                 required: true,
                 message: '请选择颜色'
             }]
-})(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='odColor' name='odColor'>            <Option value="red" style={{backgroundColor:'rgba(245,45,79,0.8)',}}>红色</Option>
+})(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='odColor' name='odColor'>    
+            <Option value="red" style={{backgroundColor:'rgba(245,45,79,0.8)'}}>红色</Option>
             <Option value="green" style={{backgroundColor:'rgba(82,245,45,0.8)'}}>绿色</Option>
             <Option value="yellow" style={{backgroundColor:'rgba(245,223,45,0.8)'}}>黄色</Option>
             <Option value="blue" style={{backgroundColor:'rgba(45,183,245,0.8)'}}>蓝色</Option>
@@ -665,5 +672,248 @@ let RoadConfigPanel = React.createClass({
     },
 });
 RoadConfigPanel = Form.create()(RoadConfigPanel);
+
+let RegionConfigPanel_Modify = React.createClass({
+    handleSubmit(e) {
+        e.preventDefault();
+        //console.log(this.props.form.getFieldsValue());
+        this.props.form.validateFields((errors, values) => {
+
+            //if(!DR.DrawConfigLayer.DrawRegion.getValue()) alert('请先画图');
+
+            //console.log('传给后台的值', values);
+            var sendParams_region = {
+                qybh: regionConfigModify_id,
+                qymc: values.regionName_modify,
+                qyfw: JSON.stringify(DR.DrawConfigLayer.DrawRegion.getValue()),
+                ylzd1: values.regionColor_modify,
+                crossid: DR.DrawConfigLayer.DrawRegion.calculateWithin().crossIds.toString(),
+                roadid: DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString()
+            };
+            console.log('传给后台的值', sendParams_region);
+            Ds.DataService('/trafficindex_zoneConfig/update.json', sendParams_region, (resp) => {
+                console.log(resp);
+                if (resp.errorCode == 0) {
+                    alert('保存成功');
+                    DR.drawFeatures.disable();
+                    ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+                    lmsg.send('qypz', {
+                        'data': 'success'
+                    });
+                } else {
+                    alert(resp.errorText);
+                }
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误！')
+            });
+
+
+
+        });
+    },
+    componentDidMount() {},
+    render() {
+        const {
+            getFieldDecorator
+        } = this.props.form;
+
+        return (
+            <Form inline onSubmit={this.handleSubmit}>
+        <FormItem label="区域名称">
+          {getFieldDecorator('regionName_modify', {
+          
+        })(<Input placeholder="请输入名称" size='small' type = 'regionName_modify' id='regionName_modify' name='regionName_modify'
+          />)}
+        </FormItem>
+        <FormItem label="区域编号">
+          {getFieldDecorator('regionNumber_modify', {
+
+        })(<p id='regionNumber_modify' name='regionName_modify'>{regionConfigModify_id}</p>)}
+        </FormItem>
+        <FormItem label="区域颜色">
+          
+          {getFieldDecorator('regionColor_modify', {
+
+        })(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='regionColor_modify' name='regionColor_modify'>
+              <Option value="red" style={{color: 'red'}}>红色</Option>
+              <Option value="green" style={{color: 'green'}}>绿色</Option>
+              <Option value="yellow" style={{color: 'yellow'}}>黄色</Option>
+              <Option value="blue" style={{color: 'blue'}}>蓝色</Option>
+          </Select>)}
+        </FormItem>
+        <Button type="primary" size='small' htmlType="submit">保存</Button>
+      </Form>
+        );
+    },
+});
+RegionConfigPanel_Modify = Form.create()(RegionConfigPanel_Modify);
+
+let OdConfigPanel_Modify = React.createClass({
+    handleSubmit(e) {
+        e.preventDefault();
+        //console.log(this.props.form.getFieldsValue());
+        this.props.form.validateFieldsAndScroll((errors, values) => {
+            //console.log('传给后台的值', values);
+            var sendParams_od = {
+                qybh: odConfigModify_id,
+                qymc: values.odName_modify,
+                qyfw: JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()),
+                ylzd1: values.odColor_modify,
+                crossId: DR.DrawConfigLayer.DrawOD.calculateWithin().toString()
+            };
+            console.log(sendParams_od);
+            Ds.DataService('/trafficindex_bodregionconfig/update.json', sendParams_od, (resp) => {
+                console.log(resp);
+                if (resp.errorCode == 0) {
+                    alert('保存成功');
+                    DR.drawFeatures.disable();
+                    ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+                    lmsg.send('odpz', {
+                        'data': 'success'
+                    });
+                } else {
+                    alert(resp.errorText);
+                }
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误！')
+            });
+
+
+
+        });
+
+    },
+    componentDidMount() {},
+    render() {
+        const {
+            getFieldDecorator
+        } = this.props.form;
+
+        return (
+            <Form inline onSubmit={this.handleSubmit}>
+        <FormItem label="OD名称">
+          {getFieldDecorator('odName_modify', {
+            
+        })(<Input placeholder="请输入OD名称" size='small' type = 'odName_modify' id = 'odName_modify' name = 'odName_modify'/>)}
+        </FormItem>
+        <FormItem label="OD编号">
+        {getFieldDecorator('odNumber_modify', {
+            
+        })(
+          <p>{odConfigModify_id}</p>)}
+        </FormItem>
+        <FormItem label="OD颜色">
+{getFieldDecorator('odColor_modify', {
+    
+})(<Select size='small' style={{ width: 100 }} getPopupContainer={()=>document.getElementById('configPanel')} id='odColor_modify' name='odColor_modify'>    
+            <Option value="red" style={{backgroundColor:'rgba(245,45,79,0.8)'}}>红色</Option>
+            <Option value="green" style={{backgroundColor:'rgba(82,245,45,0.8)'}}>绿色</Option>
+            <Option value="yellow" style={{backgroundColor:'rgba(245,223,45,0.8)'}}>黄色</Option>
+            <Option value="blue" style={{backgroundColor:'rgba(45,183,245,0.8)'}}>蓝色</Option>
+          </Select>)
+    }
+        </FormItem>
+        <Button type="primary" size='small' htmlType="submit">保存</Button>
+      </Form>
+        );
+    },
+});
+OdConfigPanel_Modify = Form.create()(OdConfigPanel_Modify);
+
+let RoadConfigPanel_Modify = React.createClass({
+    getInitialState() {
+        return {
+            options: [],
+        };
+
+    },
+    componentDidMount() {
+
+    },
+    handleSelection(value) {
+
+        console.log(value)
+    },
+
+    handleSubmit(e) {
+        e.preventDefault();
+        //console.log(this.props.form.getFieldsValue());
+        this.props.form.validateFields((errors, values) => {
+            //console.log('传给后台的值', values);
+            var sendParam_road = {
+                    xgla: values.startSelect,
+                    xglb: values.endSelect,
+                    ldmc: values.roadName,
+                    coordinates: JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue()),
+                    doubleroadid: roadConfigModify_id
+                }
+                //if (!sendParam_road.coordinates) alert('请画图先');
+            Ds.DataService('/trafficindex_roadConfiguration/updateRoadConfigInfoByComplexRoad.json', sendParam_road, (resp) => {
+                console.log(resp);
+                if (resp.errorCode == 0) {
+                    alert('保存成功');
+                    DR.drawFeatures.disable();
+                    ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+                    lmsg.send('ldpz', {
+                        'data': 'success'
+                    });
+                } else {
+                    alert(resp.errorText);
+                }
+            }, (e) => {
+                alert('后台传输错误！');
+                console.log(e);
+            });
+
+
+        });
+    },
+    render() {
+        const {
+            getFieldDecorator
+        } = this.props.form;
+
+        const RoadCrossOptions = selectionOptions_road.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>);
+
+        return (
+            <Form inline onSubmit={this.handleSubmit}>
+        <FormItem label="路段名称">
+          {getFieldDecorator('roadName', {
+            rules: [{
+                required: true,
+                message: '请填写路段名称'
+            }]
+        })(<Input placeholder="请输入路段名称" size='small' type = 'roadName' id='roadName' name='roadName'/>)}
+        </FormItem>
+        <FormItem label="开始路口">
+        {getFieldDecorator('startSelect', {
+            rules: [
+              { required: false, message: '请选择开始路口'},
+            ],
+          })(
+            <Select showSearch optionFilterProp="children"  notFoundContent="未找到相应信息" placeholder="选择开始路口" style={{ width:150}} size='small' getPopupContainer={()=>document.getElementById('configPanel')}>
+              {RoadCrossOptions}
+            </Select>
+          )}
+        </FormItem>
+        <FormItem label="结束路口">
+          {getFieldDecorator('endSelect', {
+            rules: [
+              { required: false, message: '请选择结束路口' },
+            ],
+          })(
+            <Select showSearch optionFilterProp="children"  notFoundContent="未找到相应信息" placeholder="选择结束路口" style={{ width:150}} size='small' getPopupContainer={()=>document.getElementById('configPanel')}>
+              {RoadCrossOptions}
+            </Select>
+          )}
+        </FormItem>
+        <Button type="primary" size='small' htmlType="submit">保存</Button>
+      </Form>
+        );
+    },
+});
+RoadConfigPanel_Modify = Form.create()(RoadConfigPanel_Modify);
 
 export default ConfigSub

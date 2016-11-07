@@ -91,12 +91,12 @@ class UniqueSub extends React.Component {
             );
             localStorage.removeItem('ODClick')
         });
-        lmsg.subscribe('hbjjr_init', (data) => {
+        lmsg.subscribe('hbjjrToMap', (data) => {
 
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             );
-            localStorage.removeItem('hbjjr_init');
+            localStorage.removeItem('hbjjrToMap');
         });
 
     }
@@ -140,7 +140,7 @@ class UniquePanel extends React.Component {
                 fx: data.flags
             }
             var dataRecv = null;
-            Ds.DataService('/trafficindex_map/migrationMap.json', params, (resp) => {
+            Ds.DataService('/trafficindex_bodcollisionflowresult/migrationMap.json', params, (resp) => {
                 console.log('migrationMap', resp);
                 dataRecv = resp.aaData;
             }, (e) => {
@@ -301,39 +301,89 @@ class UniquePanel extends React.Component {
             self.OD(data);
             localStorage.removeItem('ODClick');
         });
-        lmsg.subscribe('hbjjr_init', (data) => {
-            if (data.signal == 1) {
+        lmsg.subscribe('hbjjrToMap', (data) => {
+            console.log(data)
+            localStorage.removeItem('hbjjrToMap');
+            if (data.messageType == '0' || data.messageType == '1' || data.messageType == '2' || data.messageType == '3') {
+                //清空图层
                 CI.clearLayer();
-            } else if (data.signal == 3) {
+            } else if (data.messageType == '4') {
+                switch (data.messageData.ztType) {
+                    case 1:
+                        self.onClickButton('jiari_zone', data.messageData);
+                        break;
+                    case 2: //路口
+                        self.onClickButton('jiari_cross', data.messageData);
+                        break;
+                    case 1: //路段
+                        self.onClickButton('jiari_road', data.messageData);
+                        break;
+                }
 
-            }
 
-            localStorage.removeItem('hbjjr_init');
-        });
-        lmsg.subscribe('hbjjr', (data) => {
-            console.log('hbjjr', data);
-            switch (data.ztType) {
-                case 1: //区域
-                    self.onClickButton('jiari_zone', data);
-                    break;
-                case 2: //路口
-                    self.onClickButton('jiari_cross', data);
-                    break;
-                case 1: //路段
-                    self.onClickButton('jiari_road', data);
-                    break;
+            } else if (data.messageType == '5') {
+                //新增区域
+                Ds.DataService('/trafficindex_map/listHolidayMap.json', null, (resp) => {
+                    console.log(resp.aaData);
+                    CI.displayCommonLayer(resp.aaData);
+                    DR.DrawHoliday.drawRegion();
+                }, (e) => {
+                    console.log(e);
+                    alert('后台传输错误');
+                });
+
+            } else if (data.messageType == '6') {
+                //编辑区域
+                var params = {
+                    id: data.messageData.qybh
+                }
+                Ds.DataService('/trafficindex_map/gotoHolidayMap.json', params, (resp) => {
+                    console.log(resp.aaData);
+                    CI.displayCommonLayer(resp.aaData);
+                    DR.DrawHoliday.drawRegion();
+                }, (e) => {
+                    console.log(e);
+                    alert('后台传输错误');
+                });
+                CI.clearLayer();
+                //加载新的layer
+                setTimeout(() => {
+                    Ds.DataService('/trafficindex_map/gotoHolidayMap.json', params, (resp) => {
+                        CI.displayCommonLayer(resp.aaData);
+                    }, (e) => {
+                        console.log(e);
+                        alert('后台传输错误');
+                    });
+                }, 1000);
+            } else if (data.messageType == '7') {
+                //新增路口
+            } else if (data.messageType == '8') {
+                //新增路段
             }
-            localStorage.removeItem('hbjjr');
         });
-        /*
-                setTimeout(function() {
-                    var data = {
-                        qssj: '2016-09-05',
-                        sd: '00:00-10:00',
-                        flags: '1'
-                    }
-                    self.OD(data)
-                }, 3000);*/
+
+
+        setTimeout(function() {
+            Ds.DataService('/trafficindex_map/listHolidayMap.json', null, (resp) => {
+                console.log(resp);
+                CI.displayCommonLayer(resp.aaData);
+                DR.DrawHoliday.drawRegion();
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误');
+            });
+            var params = {
+                id: 500002
+            }
+            Ds.DataService('/trafficindex_map/gotoHolidayMap.json', params, (resp) => {
+                console.log(resp);
+                //CI.displayCommonLayer(resp.aaData);
+                //DR.DrawHoliday.drawRegion();
+            }, (e) => {
+                console.log(e);
+                alert('后台传输错误');
+            });
+        }, 3000);
 
     }
     componentWillUnmount() {
@@ -383,165 +433,165 @@ class UniquePanel extends React.Component {
 export default UniqueSub
 
 
-            /*      var option = {
-                      color: ['gold', 'aqua', 'lime'],
-                      tooltip: {
-                          trigger: 'item',
-                          formatter: '{b}'
-                      },
-                      legend: {
-                          orient: 'vertical',
-                          x: 'left',
-                          data: ['北京 Top10'],
-                          selectedMode: 'single',
-                          selected: {
-                              '上海 Top10': false,
-                              '广州 Top10': false
-                          },
-                          textStyle: {
-                              color: '#fff'
+/*      var option = {
+          color: ['gold', 'aqua', 'lime'],
+          tooltip: {
+              trigger: 'item',
+              formatter: '{b}'
+          },
+          legend: {
+              orient: 'vertical',
+              x: 'left',
+              data: ['北京 Top10'],
+              selectedMode: 'single',
+              selected: {
+                  '上海 Top10': false,
+                  '广州 Top10': false
+              },
+              textStyle: {
+                  color: '#fff'
+              }
+          },
+          dataRange: {
+              min: 0,
+              max: 100,
+              //calculable: true,
+              color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
+              textStyle: {
+                  color: '#fff'
+              }
+          },
+          series: [{
+              name: '北京 Top10',
+              type: 'map',
+              mapType: 'none',
+              data: [],
+              geoCoord: {
+                  '上海': [121.4648, 31.2891],
+                  '包头': [110.3467, 41.4899],
+                  '北京': [116.4551, 40.2539],
+                  '南宁': [108.479, 23.1152],
+                  '南昌': [116.0046, 28.6633],
+                  '大连': [122.2229, 39.4409],
+                  '常州': [119.4543, 31.5582],
+                  '广州': [113.5107, 23.2196],
+                  '重庆': [107.7539, 30.1904]
+              },
+              markLine: {
+                  smooth: true,
+                  effect: {
+                      show: true,
+                      scaleSize: 1,
+                      period: 30,
+                      color: '#fff',
+                      shadowBlur: 10
+                  },
+                  itemStyle: {
+                      normal: {
+                          borderWidth: 1,
+                          lineStyle: {
+                              type: 'solid',
+                              shadowBlur: 10
                           }
-                      },
-                      dataRange: {
-                          min: 0,
-                          max: 100,
-                          //calculable: true,
-                          color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
-                          textStyle: {
-                              color: '#fff'
-                          }
-                      },
-                      series: [{
-                          name: '北京 Top10',
-                          type: 'map',
-                          mapType: 'none',
-                          data: [],
-                          geoCoord: {
-                              '上海': [121.4648, 31.2891],
-                              '包头': [110.3467, 41.4899],
-                              '北京': [116.4551, 40.2539],
-                              '南宁': [108.479, 23.1152],
-                              '南昌': [116.0046, 28.6633],
-                              '大连': [122.2229, 39.4409],
-                              '常州': [119.4543, 31.5582],
-                              '广州': [113.5107, 23.2196],
-                              '重庆': [107.7539, 30.1904]
-                          },
-                          markLine: {
-                              smooth: true,
-                              effect: {
-                                  show: true,
-                                  scaleSize: 1,
-                                  period: 30,
-                                  color: '#fff',
-                                  shadowBlur: 10
-                              },
-                              itemStyle: {
-                                  normal: {
-                                      borderWidth: 1,
-                                      lineStyle: {
-                                          type: 'solid',
-                                          shadowBlur: 10
-                                      }
-                                  }
-                              },
-                              data: [
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '上海',
-                                      value: 95
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '广州',
-                                      value: 90
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '大连',
-                                      value: 80
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '南宁',
-                                      value: 70
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '南昌',
-                                      value: 60
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '包头',
-                                      value: 30
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '重庆',
-                                      value: 20
-                                  }],
-                                  [{
-                                      name: '北京'
-                                  }, {
-                                      name: '常州',
-                                      value: 10
-                                  }]
-                              ]
-                          },
-                          markPoint: {
-                              symbol: 'emptyCircle',
-                              symbolSize: function(v) {
-                                  return 10 + v / 10
-                              },
-                              effect: {
-                                  show: true,
-                                  shadowBlur: 0
-                              },
-                              itemStyle: {
-                                  normal: {
-                                      label: {
-                                          show: false
-                                      }
-                                  },
-                                  emphasis: {
-                                      label: {
-                                          position: 'top'
-                                      }
-                                  }
-                              },
-                              data: [{
-                                  name: '上海',
-                                  value: 95
-                              }, {
-                                  name: '广州',
-                                  value: 90
-                              }, {
-                                  name: '大连',
-                                  value: 80
-                              }, {
-                                  name: '南宁',
-                                  value: 70
-                              }, {
-                                  name: '南昌',
-                                  value: 60
-                              }, {
-                                  name: '包头',
-                                  value: 30
-                              }, {
-                                  name: '重庆',
-                                  value: 20
-                              }, {
-                                  name: '常州',
-                                  value: 10
-                              }]
-                          }
+                      }
+                  },
+                  data: [
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '上海',
+                          value: 95
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '广州',
+                          value: 90
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '大连',
+                          value: 80
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '南宁',
+                          value: 70
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '南昌',
+                          value: 60
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '包头',
+                          value: 30
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '重庆',
+                          value: 20
+                      }],
+                      [{
+                          name: '北京'
+                      }, {
+                          name: '常州',
+                          value: 10
                       }]
-                  };*/
+                  ]
+              },
+              markPoint: {
+                  symbol: 'emptyCircle',
+                  symbolSize: function(v) {
+                      return 10 + v / 10
+                  },
+                  effect: {
+                      show: true,
+                      shadowBlur: 0
+                  },
+                  itemStyle: {
+                      normal: {
+                          label: {
+                              show: false
+                          }
+                      },
+                      emphasis: {
+                          label: {
+                              position: 'top'
+                          }
+                      }
+                  },
+                  data: [{
+                      name: '上海',
+                      value: 95
+                  }, {
+                      name: '广州',
+                      value: 90
+                  }, {
+                      name: '大连',
+                      value: 80
+                  }, {
+                      name: '南宁',
+                      value: 70
+                  }, {
+                      name: '南昌',
+                      value: 60
+                  }, {
+                      name: '包头',
+                      value: 30
+                  }, {
+                      name: '重庆',
+                      value: 20
+                  }, {
+                      name: '常州',
+                      value: 10
+                  }]
+              }
+          }]
+      };*/

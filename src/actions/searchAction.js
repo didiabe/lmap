@@ -94,7 +94,7 @@ export const fetchCRAList = (rboxkey, t, page) => {
         else if (rboxkey == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
     }
     Ds.DataService(last_Path, sendParam2,
-    (resp) => {
+        (resp) => {
             dataRecv = resp.aaData;
             console.log(dataRecv);
         },

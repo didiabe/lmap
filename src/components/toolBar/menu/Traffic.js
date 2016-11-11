@@ -22,8 +22,18 @@ class Traffic extends React.Component {
     constructor() {
         super();
         this.state = {
-            active: false
+            active: null
         }
+    }
+    componentWillMount() {
+        this.setState({
+            active: this.props.isActive.active_Traffic
+        });
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            active: nextProps.isActive.active_Traffic
+        })
     }
     mountTrafficConditions() {
         this.setState({
@@ -36,10 +46,16 @@ class Traffic extends React.Component {
         } else {
             ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"))
         }
+        this.props.callbackParent({
+            status1: this.state.active,
+            status2: !this.state.active,
+            status3: !this.state.active,
+            status4: !this.state.active,
+            status5: !this.state.active,
+        });
     }
     render() {
         return (
-
             <div>
                 <li id="trafficConditions" onClick={() => this.mountTrafficConditions() }>
                     <div type="traffic">
@@ -49,11 +65,7 @@ class Traffic extends React.Component {
             </div>
         )
     }
-    componentDidMount() {
-        // ReactDOM.render(
-        //         <TrafficConditions/>, document.getElementById("presetBox")
-        //     )
-    }
+    componentDidMount() {}
 }
 
 class TrafficConditions extends React.Component {
@@ -131,13 +143,9 @@ class Forecast extends React.Component {
         };
     }
     onSliderChange(val) {
-        console.log(val);
-
         this.setState({
             inputValue: val
         });
-
-
     }
     getCheckOption(value) {
         //console.log(value);
@@ -156,7 +164,6 @@ class Forecast extends React.Component {
                 CheckOptions = "cross-road-region";
                 break;
         }
-        console.log(CheckOptions);
         if (CheckOptions.length !== 0) this.setState({
             checked: true,
             CraType: CheckOptions
@@ -178,7 +185,6 @@ class Forecast extends React.Component {
                     isLoading: false,
                     isLoaded: true
                 });
-                console.log(resp.aaData);
                 if (resp.aaData.features.length == 0) {
                     alert('没有查询到相应信息');
                     self.setState({
@@ -193,72 +199,6 @@ class Forecast extends React.Component {
             (e) => {
                 console.log(e)
             });
-        /*setTimeout(() => {
-            if (markerPlayBack) markerPlayBack.clearLayer();
-            this.setState({
-                isLoading: false,
-                isLoaded: true
-            });
-
-
-            var geo_playback = {
-                "type": "FeatureCollection",
-                "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [121.35, 28.491]
-                    },
-                    "properties": {
-                        "index": [{
-                            time: "08:22-13:00",
-                            val: 5.1
-                        }, {
-                            time: "08:22-13:05",
-                            val: 9.5
-                        }, {
-                            time: "08:22-13:10",
-                            val: 3.9
-                        }, {
-                            time: "08:22-13:15",
-                            val: 2.9
-                        }, {
-                            time: "08:22-13:20",
-                            val: 7
-                        }],
-                        "name": "友谊路"
-                    }
-                }, {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [121.35, 28.411]
-                    },
-                    "properties": {
-                        "index": [{
-                            time: "08:22-13:00",
-                            val: 9
-                        }, {
-                            time: "08:22-13:05",
-                            val: 5
-                        }, {
-                            time: "08:22-13:10",
-                            val: 7
-                        }, {
-                            time: "08:22-13:15",
-                            val: 3.5
-                        }, {
-                            time: "08:22-13:20",
-                            val: 7.9
-                        }],
-                        "name": "延陵中路"
-                    }
-                }]
-            };
-            markerPlayBack = CI.playback(geo_playback);
-
-        }, 1000);*/
-
     }
     clearForcast() {
         markerPlayBack.clearLayer();
@@ -321,6 +261,7 @@ const CheckboxGroup = Checkbox.Group;
 const CRA_options = [{
     label: "路口",
     value: "cross"
+
 }, {
     label: "路段",
     value: "road"
@@ -328,11 +269,23 @@ const CRA_options = [{
     label: "区域",
     value: "region"
 }];
+const CRA_options2 = [{
+    label: "路口",
+    value: "cross"
+
+}, {
+    label: "路段",
+    value: "road",
+    disabled: true
+}, {
+    label: "区域",
+    value: "region",
+    disabled: true
+}];
 
 var markerPlayBack;
 
 class Playback extends React.Component {
-
     constructor() {
         super();
         /*callback函数里的this不同，需要bind*/
@@ -394,7 +347,6 @@ class Playback extends React.Component {
     }
 
     getTimeRange(value, dateString) {
-        //console.log(dateString);
         if (this.state.isLoaded) this.clear();
         let StartTime = dateString[0];
         let EndTime = dateString[1];
@@ -410,7 +362,6 @@ class Playback extends React.Component {
 
     }
     getCheckOption(value) {
-        //console.log(value);
         let CheckOptions = '';
         switch (value.length) {
             case 0:
@@ -426,7 +377,6 @@ class Playback extends React.Component {
                 CheckOptions = "cross-road-region";
                 break;
         }
-        console.log(CheckOptions);
         if (this.state.isLoaded) this.clear();
         this.setState({
             checkedOptions: CheckOptions,
@@ -447,6 +397,7 @@ class Playback extends React.Component {
         this.setState({
             loading: true
         });
+        CI.clearLayer();
         setTimeout(() => {
             var param1 = {
                 kssj: self.state.startTime,
@@ -457,7 +408,6 @@ class Playback extends React.Component {
             Ds.DataService("/trafficindex_map/hisPlayBack.json", param1,
                 (data) => {
                     let geo_playback = data.aaData;
-                    console.log(geo_playback);
                     if (geo_playback.features.length < 1) {
                         self.setState({
                             loading: false,
@@ -471,13 +421,11 @@ class Playback extends React.Component {
                         })
                         var percent_length = geo_playback.features[0].properties.index.length;
                         var each_percent = Math.round(100 / percent_length);
-
                         self.setState({
                             each_percent: each_percent
                         });
                         markerPlayBack = CI.playback(geo_playback);
                     }
-
                 }, (e) => {
                     alert('后台传输错误');
                     console.log(e);
@@ -590,7 +538,7 @@ class Playback extends React.Component {
                     <li>{"时间区间: "}<RangePicker showTime disabledDate={this.disabledDate} format="YYYY-MM-DD HH:mm:ss" 
                     onChange={this.getTimeRange} getCalendarContainer={trigger=>trigger.parentNode} />
                     </li><br/>
-                   <li><CheckboxGroup className={trafficStyles.checkboxes} options={CRA_options} onChange={this.getCheckOption} />
+                   <li><CheckboxGroup className={trafficStyles.checkboxes} options={CRA_options2} onChange={this.getCheckOption} />
                     </li><br/>
                      <Button className={trafficStyles.loadingButton} type="primary" size="large" icon="cloud-upload" 
                      loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "加载完成!" : "加载数据"}</Button>
@@ -603,7 +551,6 @@ class Playback extends React.Component {
                     <div className={trafficStyles.QueContent}>
                         {player_panel}
                     </div>
-
             </div>
         )
     }

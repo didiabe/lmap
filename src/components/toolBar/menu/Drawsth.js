@@ -8,9 +8,20 @@ class Drawsth extends React.Component {
     constructor() {
         super();
         this.state = {
-            active: false
+            active: null
         }
 
+    }
+    componentWillMount() {
+        this.setState({
+            active: this.props.isActive.active_Draw
+        });
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            active: nextProps.isActive.active_Draw
+        });
+        if (!nextProps.isActive.active_Draw) DR.drawFeatures.disable();
     }
     startDrawing() {
         this.setState({
@@ -18,6 +29,14 @@ class Drawsth extends React.Component {
         });
         if (this.state.active) DR.drawFeatures.disable();
         else DR.drawFeatures.activate();
+
+        this.props.callbackParent({
+            status1: !this.state.active,
+            status2: !this.state.active,
+            status3: !this.state.active,
+            status4: this.state.active,
+            status5: !this.state.active,
+        });
     }
     render() {
         return (

@@ -3,24 +3,23 @@ import L from 'leaflet';
 import LE from 'esri-leaflet';
 import styles from './_search.css';
 import logoSrc from '../../images/logo.png';
-import { connect } from 'react-redux';
+import {
+    connect
+} from 'react-redux';
 import * as action from '../../actions/searchAction';
 //import { browserHistory } from 'react-router';
 
 class Search extends React.Component {
     constructor() {
         super();
-        //this.state = { val: '' }
-        //this.update = this.update.bind(this);
     }
-    
+
     update() {
         let keyword = this.refs.searchVal.value;
-        if(keyword&&keyword!='')
-        this.props.fetchSearchList(keyword, 'search');
+        if (keyword && keyword != '')
+            this.props.fetchSearchList(keyword, 'search');
         else
-        alert('请输入有效的搜索内容！')
-        //browserHistory.push('/TG');
+            alert('请输入有效的搜索内容！')
     }
     render() {
         return (

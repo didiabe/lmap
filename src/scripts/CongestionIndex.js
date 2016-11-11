@@ -3,17 +3,14 @@ import LE from 'esri-leaflet';
 import * as turf from '@turf/turf';
 import * as meta from '@turf/meta';
 import * as lmap from '../libs/lmap';
-import taxi_img from '../images/local_taxi.png';
-import construction_img from '../images/construction.png';
-import accident_img from '../images/accident.png';
-import control_img from '../images/traffic_control.png';
 import * as lmsg from '../libs/lmsg';
 import * as Ds from '../libs/DataService';
-import traffic_warning_img from '../images/Traffic_Warning.png';
+import {
+    message
+} from 'antd';
 
 export function addGracLayer(layerName, data) {
-    console.log(data);
-    switch (layerName.id) {
+    switch (layerName) {
         case 'cross':
             crossLayer(data);
             break;
@@ -37,61 +34,32 @@ const crossLayer = function(data) {
     var GeoJsonPoints = data.geoJson;
     var greenMarker = lmap.icon({
         iconSize: [15, 15],
-        color: '#7FFF00'
+        color: 'rgb(54,174,76)'
     });
     var yellowMarker = lmap.icon({
         iconSize: [15, 15],
-        color: '#EEC900'
+        color: 'rgb(106,183,45)'
     });
     var orangeMarker = lmap.icon({
         iconSize: [15, 15],
-        color: '#EE9A00'
+        color: 'rgb(236,232,57)'
     });
     var brownMarker = lmap.icon({
         iconSize: [15, 15],
-        color: '#D2691E'
+        color: 'rgb(242,150,24)'
     });
     var redMarker = lmap.icon({
         iconSize: [15, 15],
-        color: '#CD0000'
+        color: 'rgb(228,26,22)'
     });
 
     var pointMarkerOption = null;
-
     var pointLayer;
-
-
 
     function panTotarget(e) {
         if (map.getZoom() <= 16) {
             map.setZoomAround(e.target._latlng, 17);
         } else map.panTo(e.target._latlng);
-        /*var popupCross = $('<div/>');
-        popupCross.append($('<p>   路口名称:  ' + e.target.feature.properties.name + '</p>'));
-        popupCross.append($('<button class="green_button">更新</button>').click(function() {
-            lmsg.send('openModal_updIdx', {
-                id: e.target.feature.properties.id,
-                index: e.target.feature.properties.index,
-                type: 3 //（1区域(region) 2 路段(road) 3 路口(cross)）
-            });
-        }));
-        popupCross.append($('<button class="green_button">实时</button>').click(function() {
-            console.log(e.target.feature.properties.id);
-            lmsg.send('lksszs', {
-                params: 'cross',
-                isTime: '1',
-                ID: e.target.feature.properties.id,
-                name: e.target.feature.properties.name
-            });
-        }));
-        popupCross.append($('<button class="green_button">档案</button>').click(function() {
-            lmsg.send('lkjt', {
-                params: 'cross',
-                isTime: '2',
-                ID: e.target.feature.properties.id,
-                name: e.target.feature.properties.name
-            });
-        }));*/
         var popupCross = document.createElement('div');
         var p = document.createElement('p');
         p.innerHTML = '路口名称:' + e.target.feature.properties.name
@@ -168,11 +136,16 @@ const crossLayer = function(data) {
     pointLayer = L.geoJson(GeoJsonPoints, {
         pointToLayer: function(feature, latlng) {
             var indexVal = feature.properties.index;
-            if (indexVal > 0 && indexVal <= 2) pointMarkerOption = greenMarker;
-            else if (indexVal > 2 && indexVal <= 4) pointMarkerOption = yellowMarker;
-            else if (indexVal > 4 && indexVal <= 6) pointMarkerOption = orangeMarker;
-            else if (indexVal > 6 && indexVal <= 8) pointMarkerOption = brownMarker;
-            else if (indexVal > 8) pointMarkerOption = redMarker;
+            if (indexVal > 0 && indexVal <= 2)
+                pointMarkerOption = greenMarker;
+            else if (indexVal > 2 && indexVal <= 4)
+                pointMarkerOption = yellowMarker;
+            else if (indexVal > 4 && indexVal <= 6)
+                pointMarkerOption = orangeMarker;
+            else if (indexVal > 6 && indexVal <= 8)
+                pointMarkerOption = brownMarker;
+            else if (indexVal > 8)
+                pointMarkerOption = redMarker;
 
             return L.marker(latlng, {
                 icon: pointMarkerOption
@@ -185,72 +158,52 @@ const crossLayer = function(data) {
 };
 
 const roadLayer = function(data) {
-    console.log('data', data)
     map.eachLayer((layer) => {
         if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
     var GeoJsonLines = data.geoJson;
     var greenLine = {
-        "color": "#7FFF00",
-        "weight": 9,
-        "opacity": 0.8
+        'fillColor': "rgb(54,174,76)",
+        "color": "rgb(54,174,76)",
+        "weight": 7,
+        "opacity": 0.8,
+        'fillOpacity': 1
     };
     var yellowLine = {
-        "color": "#FFEB00",
-        "weight": 9,
-        "opacity": 0.8
+        'fillColor': "rgb(106,183,45)",
+        "color": "rgb(106,183,45)",
+        "weight": 7,
+        "opacity": 0.8,
+        'fillOpacity': 1
     };
     var orangeLine = {
-        "color": "#FFA500",
-        "weight": 9,
-        "opacity": 0.8
+        'fillColor': "rgb(236,232,57)",
+        "color": "rgb(236,232,57)",
+        "weight": 7,
+        "opacity": 0.8,
+        'fillOpacity': 1
     };
     var brownLine = {
-        "color": "#CD3333",
-        "weight": 9,
-        "opacity": 0.8
+        'fillColor': "rgb(242,150,24)",
+        "color": "rgb(242,150,24)",
+        "weight": 7,
+        "opacity": 0.8,
+        'fillOpacity': 1
     };
 
     var redLine = {
-        "color": "#FF0000",
-        "weight": 9,
-        "opacity": 0.8
+        'fillColor': "rgb(228,26,22)",
+        "color": "rgb(228,26,22)",
+        "weight": 7,
+        "opacity": 0.8,
+        'fillOpacity': 1
     };
     var lineLayer;
 
     function panToBound(e) {
-        //console.log(e.target);
-        map.fitBounds(e.target.getBounds());
-        /*var popupRoad = $('<div/>');
-        popupRoad.append($('<p>   路段名称:  ' + e.target.feature.properties.name + '</p>'));
-        popupRoad.append($('<button class="green_button">更新</button>').click(function() {
-            lmsg.send('openModal_updIdx', {
-                id: e.target.feature.properties.id,
-                index: e.target.feature.properties.index,
-                type: 2 //（1区域(region) 2 路段(road) 3 路口(cross)）
-            });
-        }));
-        popupRoad.append($('<button class="green_button">实时</button>').click(function() {
-            ///console.log(e.target);
-            lmsg.send('ldsszs', {
-                params: 'road',
-                isTime: '1',
-                ID: e.target.feature.properties.id,
-                name: e.target.feature.properties.name
-            });
-        }));
-        popupRoad.append($('<button class="green_button">档案</button>').click(function() {
-            lmsg.send('ldjt', {
-                params: 'road',
-                isTime: '2',
-                ID: e.target.feature.properties.id,
-                name: e.target.feature.properties.name
-            });
-        }));
 
-        lineLayer.bindPopup(popupRoad[0])
-            .addTo(map);*/
+        map.fitBounds(e.target.getBounds());
         var popupRoad = document.createElement('div');
         var p = document.createElement('p');
         p.innerHTML = '路段名称:' + e.target.feature.properties.name
@@ -292,14 +245,14 @@ const roadLayer = function(data) {
         popupRoad.appendChild(button1);
         popupRoad.appendChild(button2);
         popupRoad.appendChild(button3);
-        pointLayer.bindPopup(popupRoad)
+        lineLayer.bindPopup(popupRoad)
             .addTo(map);
     };
 
     function highlightFeature(e) {
         var l = e.target;
         l.setStyle({
-            weight: 9,
+            weight: 7,
             color: '#007D7D',
             dashArray: '',
             fillOpacity: 0.9
@@ -340,45 +293,43 @@ const areaLayer = function(data) {
         if (layer.options.id != 'areaLayer' && layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
-    console.log(data);
-
     var GeoJsonRegion = data.geoJson;
 
     var greenRegion = {
-        fillColor: "#7FFF00",
+        fillColor: "rgb(54,174,76)",
         fillOpacity: 1,
-        color: "#fff",
+        color: "rgb(54,174,76)",
         weight: 5,
         opacity: 0.8
     };
     var yellowRegion = {
-        fillColor: "#FFEB00",
+        fillColor: "rgb(106,183,45)",
         fillOpacity: 1,
-        color: "#fff",
+        color: "rgb(106,183,45)",
         weight: 5,
         opacity: 0.8
 
     };
     var orangeRegion = {
-        fillColor: "#FFA500",
+        fillColor: "rgb(236,232,57)",
         fillOpacity: 1,
-        color: "#fff",
+        color: "rgb(236,232,57)",
         weight: 5,
         opacity: 0.8
 
     };
     var brownRegion = {
-        fillColor: "#CD3333",
+        fillColor: "rgb(242,150,24)",
         fillOpacity: 1,
-        color: "#fff",
+        color: "rgb(242,150,24)",
         weight: 5,
         opacity: 0.8
     };
 
     var redRegion = {
-        fillColor: "#FF0000",
+        fillColor: "rgb(228,26,22)",
         fillOpacity: 1,
-        color: "#fff",
+        color: "rgb(228,26,22)",
         weight: 5,
         opacity: 0.8
 
@@ -387,36 +338,6 @@ const areaLayer = function(data) {
 
     function panToBound(e) {
         map.fitBounds(e.target.getBounds());
-        /* var popupArea = $('<div/>');
-         popupArea.append($('<p>   区域名称:   ' + e.target.feature.properties.name + '</p>'))
-         popupArea.append($('<button class="green_button">更新</button>').click(function() {
-             lmsg.send('openModal_updIdx', {
-                 id: e.target.feature.properties.id,
-                 index: e.target.feature.properties.index,
-                 type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
-             });
-
-         }));
-         popupArea.append($('<button class="green_button">实时</button>').click(function() {
-             //console.log(e.target.feature.properties.id);
-             lmsg.send('qysszs', {
-                 params: 'area',
-                 isTime: '1',
-                 ID: e.target.feature.properties.id,
-                 name: e.target.feature.properties.name
-             });
-         }));
-         popupArea.append($('<button class="green_button">档案</button>').click(function() {
-             lmsg.send('qyjt', {
-                 params: 'area',
-                 isTime: '2',
-                 ID: e.target.feature.properties.id,
-                 name: e.target.feature.properties.name
-             });
-         }));
-
-         regionLayer.bindPopup(popupArea[0])
-             .addTo(map);*/
         var popupArea = document.createElement('div');
         var p = document.createElement('p');
         p.innerHTML = '路段名称:' + e.target.feature.properties.name
@@ -458,7 +379,7 @@ const areaLayer = function(data) {
         popupArea.appendChild(button1);
         popupArea.appendChild(button2);
         popupArea.appendChild(button3);
-        pointLayer.bindPopup(popupArea)
+        regionLayer.bindPopup(popupArea)
             .addTo(map);
     };
 
@@ -511,8 +432,6 @@ export const playback = (a) => {
 };
 
 export const displayUniLayer = (ref, data) => {
-    console.log(ref);
-    console.log(data);
     map.eachLayer((layer) => {
         if (layer.options.id !== "streetLayer") {
             map.removeLayer(layer);
@@ -531,10 +450,10 @@ export const displayUniLayer = (ref, data) => {
     if (ref == 'fudongche') {
         _APIpath = "/trafficindex_map/floatCar.json";
         var fudongcheIcon = L.icon({
-            iconUrl: taxi_img,
-            iconSize: [20, 20], // size of the icon
-            iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
-            popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
+            iconUrl: _imagePath + '/local_taxi.png',
+            iconSize: [20, 20],
+            iconAnchor: [0, 0],
+            popupAnchor: [20, 0]
         });
         specialpointlayer = (feature, latlng) => {
             //var indexVal = feature.properties.index;
@@ -555,7 +474,7 @@ export const displayUniLayer = (ref, data) => {
             };
         }
         var icon = L.icon({
-            iconUrl: construction_img,
+            iconUrl: _imagePath + '/construction.png',
             iconSize: [30, 30],
             iconAnchor: [0, 0],
             popupAnchor: [10, 0]
@@ -579,7 +498,7 @@ export const displayUniLayer = (ref, data) => {
             };
         }
         var icon = L.icon({
-            iconUrl: control_img,
+            iconUrl: _imagePath + '/traffic_control.png',
             iconSize: [30, 30],
             iconAnchor: [0, 0],
             popupAnchor: [10, 0]
@@ -602,7 +521,7 @@ export const displayUniLayer = (ref, data) => {
             };
         }
         var icon = L.icon({
-            iconUrl: accident_img,
+            iconUrl: _imagePath + '/accident.png',
             iconSize: [30, 30],
             iconAnchor: [0, 0],
             popupAnchor: [10, 0]
@@ -615,10 +534,10 @@ export const displayUniLayer = (ref, data) => {
     } else if (ref == 'yongdu_cross') {
         _APIpath = "/trafficindex_map/cfydCross.json";
         var yongduCrossIcon = L.icon({
-            iconUrl: traffic_warning_img,
-            iconSize: [20, 20], // size of the icon
-            iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
-            popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
+            iconUrl: _imagePath + '/Traffic_Warning.png',
+            iconSize: [20, 20],
+            iconAnchor: [0, 0],
+            popupAnchor: [20, 0]
         });
         specialpointlayer = (feature, latlng) => {
             //var indexVal = feature.properties.index;
@@ -667,13 +586,12 @@ export const displayUniLayer = (ref, data) => {
         }
     } else if (ref == 'jiari_cross') {
         _APIpath = "/trafficindex_map/holiday.json";
-        var yongduCrossIcon = L.icon({
-            iconUrl: traffic_warning_img,
-            iconSize: [20, 20], // size of the icon
-            iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
-            popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
-        });
         specialpointlayer = (feature, latlng) => {
+            var indexVal = feature.properties.index;
+            var yongduCrossIcon = lmap.icon({
+                iconSize: [18, 18],
+                color: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon'
+            });
             return L.marker(latlng, {
                 icon: yongduCrossIcon
             });
@@ -686,12 +604,13 @@ export const displayUniLayer = (ref, data) => {
     } else if (ref == 'jiari_road') {
         _APIpath = "/trafficindex_map/holiday.json";
         specialstyle = (feature) => {
+            var indexVal = feature.properties.index;
             return {
-                fillColor: '#D2691E',
-                weight: 8,
-                opacity: 1,
-                color: 'blue',
-                fillOpacity: 0.7
+                fillColor: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                weight: 6,
+                opacity: 0.8,
+                color: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                fillOpacity: 0.9
             };
         }
         param = {
@@ -702,12 +621,13 @@ export const displayUniLayer = (ref, data) => {
     } else if (ref == 'jiari_zone') {
         _APIpath = "/trafficindex_map/holiday.json";
         specialstyle = (feature) => {
+            var indexVal = feature.properties.index;
             return {
-                fillColor: '#D2691E',
-                weight: 8,
-                opacity: 1,
-                color: 'blue',
-                fillOpacity: 0.7
+                fillColor: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                weight: 6,
+                opacity: 0.8,
+                color: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                fillOpacity: 0.9
             };
         }
         param = {
@@ -718,8 +638,8 @@ export const displayUniLayer = (ref, data) => {
     }
 
     Ds.DataService(_APIpath, param, (resp) => {
-        console.log(resp.aaData);
         featurecollectiondata = resp.aaData;
+        if (!featurecollectiondata.features || featurecollectiondata.features.length == 0) message.error('没有查询到相应地图数据！');
     }, (e) => {
         console.log(e);
         alert("后台传输错误");
@@ -730,11 +650,9 @@ export const displayUniLayer = (ref, data) => {
         var sendparamID = {
             "xh": eachFeatureID
         };
-        console.log(sendparamID);
         var popupData = null;
         if (ref == 'fudongche') {
             Ds.DataService("/trafficindex_floatCargp/listGetFdcarByCarid.json", sendparamID, (resp) => {
-                console.log(resp);
                 popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
@@ -749,6 +667,8 @@ export const displayUniLayer = (ref, data) => {
                 "纬度: " + popupData.gpsWd + '<br/>' +
                 "浮动车速度: " + popupData.velocity + '<br/>');
 
+        } else if (ref == 'jiari_zone' || ref == 'jiari_cross' || ref == 'jiari_road') {
+            specialpopup = L.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数:' + e.target.feature.properties.index)
         }
         SpecificLayer.bindPopup(specialpopup).addTo(map);
 
@@ -781,8 +701,7 @@ export const displayUniLayer = (ref, data) => {
         var popupData = null,
             popup_spec = null;
         if (ref == "shigong") {
-            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsRoadconstruction.json", sendparamID, (resp) => {
-                console.log(resp);
+            Ds.DataService("/trafficindex_RoadConst/gotoBJtzsRoadconstruction.json", sendparamID, (resp) => {
                 popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
@@ -801,7 +720,6 @@ export const displayUniLayer = (ref, data) => {
                 "联系电话: " + popupData.telephone + '<br/>');
         } else if (ref == "guanzhi") {
             Ds.DataService("/trafficindex_trafficControl/gotoBJtzsTrafficcontrol.json", sendparamID, (resp) => {
-                console.log(resp);
                 popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
@@ -823,7 +741,6 @@ export const displayUniLayer = (ref, data) => {
                 "管制说明: " + popupData.remark + '<br/>');
         } else if (ref == "shigu") {
             Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsTrafficaccident.json", sendparamID, (resp) => {
-                console.log(resp);
                 popupData = resp.aaData;
             }, (e) => {
                 alert('后台传输错误');
@@ -886,11 +803,6 @@ var taxiInterval = null,
     taxiRoute = null;
 
 export const trackingTaxi = (params) => {
-    /* var params = {
-         id: '浙JT8001',
-         date: '2010/10/26 1:11:11'
-     }*/
-    console.log(params);
     if (params) {
         var sendtaxiparams = {
             id: params.id,
@@ -898,7 +810,6 @@ export const trackingTaxi = (params) => {
         };
 
         taxiRoute = Ds.DataService('/trafficindex_map/track.json', sendtaxiparams, (resp) => {
-            console.log(resp.aaData);
             if (!resp.aaData) {
                 alert('没有查询到浮动车信息');
                 return;
@@ -909,7 +820,7 @@ export const trackingTaxi = (params) => {
                     }
                 });
                 var fudongcheIcon = L.icon({
-                    iconUrl: taxi_img,
+                    iconUrl: _imagePath + '/local_taxi.png',
                     iconSize: [20, 20], // size of the icon
                     iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
                     popupAnchor: [20, 0] // point from which the popup should open relative to the iconAnchor
@@ -962,8 +873,7 @@ export const stopTrackingTaxi = () => {
     });
 }
 
-export const changeConfigLayer = (data, ref) => {
-    console.log(data);
+export const changeConfigLayer = (data, ref) => {;
     map.eachLayer((layer) => {
         if (layer.options.id !== "streetLayer") {
             map.removeLayer(layer);
@@ -981,32 +891,32 @@ export const changeConfigLayer = (data, ref) => {
             });
         } else {
             var color1;
-            if (e.target.feature.properties.rgb) color1 = e.target.feature.properties.rgb;
-            else color1 = 'LightSalmon';
+            if (e.target.feature.properties.rgb)
+                color1 = 'rgba(' + e.target.feature.properties.rgb + ')';
+            else
+                color1 = 'LightSalmon';
             e.target.setStyle({
                 fillColor: color1,
                 fillOpacity: 1,
                 color: color1,
                 weight: 7,
-                opacity: 0.9
+                opacity: 1
             });
         }
 
         lmsg.send('openChangeConfigPanel', {
             ref: ref,
-            id: e.target.feature.properties.id
+            id: e.target.feature.properties.id,
+            name: e.target.feature.properties.name,
+            color: e.target.feature.properties.rgb
         });
 
     }
     var showName = (e) => {
-        /*e.target.setStyle({
-            weight: 7,
-            color: '#FF4500',
-            dashArray: '',
-            fillOpacity: 0.9
-        });*/
-        var popup = L.popup().setContent('名称：' + e.target.feature.properties.id);
-        e.target.bindPopup(popup).openPopup();
+        var popup = L.popup().setContent('名称：' + e.target.feature.properties.name);
+        e.target.bindPopup(popup, {
+            offset: [0, -30]
+        }).openPopup();
     }
     var closePopup = (e) => {
         //ChangeConfigLayer.resetStyle(e.target);
@@ -1015,14 +925,16 @@ export const changeConfigLayer = (data, ref) => {
     var ChangeConfigLayer = L.geoJson(ChangeLayerData, {
         style: function(feature) {
             var color1 = null;
-            if (feature.properties.rgb) color1 = feature.properties.rgb;
-            else color1 = 'LightSalmon';
+            if (feature.properties.rgb) {
+                color1 = 'rgba(' + feature.properties.rgb + ')';
+            } else
+                color1 = 'LightSalmon';
             var styles = {
                 fillColor: color1,
                 fillOpacity: 1,
                 color: color1,
                 weight: 7,
-                opacity: 0.9
+                opacity: 1
             };
             return styles;
         },
@@ -1040,16 +952,18 @@ export const changeConfigLayer = (data, ref) => {
 
 
 export const displayConfigLayer = (data) => {
-    console.log(data);
     var Config_crossGeojson = null,
         Config_roadGeojson = null,
         Config_zoneGeojson = null,
         ConfigCrossLayer = null,
         ConfigRoadLayer = null,
         ConfigZoneLayer = null;
-    if (data.cross) Config_crossGeojson = data.cross;
-    if (data.road) Config_roadGeojson = data.road;
-    if (data.zone) Config_zoneGeojson = data.zone;
+    if (data.cross)
+        Config_crossGeojson = data.cross;
+    if (data.road)
+        Config_roadGeojson = data.road;
+    if (data.zone)
+        Config_zoneGeojson = data.zone;
     map.eachLayer((layer) => {
         if (layer.options.id !== "streetLayer") {
             map.removeLayer(layer);
@@ -1088,11 +1002,11 @@ export const displayConfigLayer = (data) => {
         ConfigZoneLayer = L.geoJson(Config_zoneGeojson, {
             style: function(feature) {
                 var ZoneRegion = {
-                    fillColor: feature.properties.rgb,
+                    fillColor: 'rgba(' + feature.properties.rgb + ')',
                     fillOpacity: 1,
-                    color: "white",
+                    color: 'rgba(' + feature.properties.rgb + ')',
                     weight: 3,
-                    opacity: 0.9
+                    opacity: 1
                 };
                 return ZoneRegion;
             }
@@ -1102,8 +1016,6 @@ export const displayConfigLayer = (data) => {
 }
 
 export const displayConfigLayer_road = (data) => {
-    console.log('data', data);
-
     map.eachLayer((layer) => {
         if (layer.options.id != 'streetLayer')
             map.removeLayer(layer);
@@ -1119,7 +1031,7 @@ export const displayConfigLayer_road = (data) => {
     var lineLayer, popup2;
 
     function panToBound(e) {
-        //console.log(e.target);
+
         map.fitBounds(e.target.getBounds());
     };
 
@@ -1131,7 +1043,7 @@ export const displayConfigLayer_road = (data) => {
             dashArray: '',
             fillOpacity: 0.9
         });
-        popup2 = L.popup().setContent(l.feature.properties.id);
+        popup2 = L.popup().setContent(l.feature.properties.name);
         l.bindPopup(popup2).openPopup();
     };
 
@@ -1161,8 +1073,6 @@ export const displayConfigLayer_road = (data) => {
 };
 
 export const displayCommonLayer = (data) => {
-    console.log('data', data);
-
     map.eachLayer((layer) => {
         if (layer.options.id != 'streetLayer')
             map.removeLayer(layer);
@@ -1179,34 +1089,6 @@ export const displayCommonLayer = (data) => {
         color: '#7FFF00'
     });
     var CommonLayer;
-
-    /*function panToBound(e) {
-        //console.log(e.target);
-        map.fitBounds(e.target.getBounds());
-    };
-
-    function highlightFeature(e) {
-        var l = e.target;
-        l.setStyle({
-            weight: 9,
-            color: '#007D7D',
-            dashArray: '',
-            fillOpacity: 0.9
-        });
-    };
-
-    function resetFeature(e) {
-        CommonLayer.resetStyle(e.target);
-    };
-
-    function eachLineFeature(feature, layer) {
-        layer.on({
-            click: panToBound,
-            mouseover: highlightFeature,
-            mouseout: resetFeature
-        });
-    };*/
-
 
     CommonLayer = L.geoJson(GeoJson, {
         style: function(feature) {
@@ -1227,4 +1109,5 @@ export const clearLayer = () => {
         if (layer.options.id != 'streetLayer')
             map.removeLayer(layer);
     });
+    lmap.removeEchartsLayer();
 }

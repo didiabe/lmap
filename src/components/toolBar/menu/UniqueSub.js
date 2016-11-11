@@ -15,7 +15,8 @@ import {
     Button,
     Icon,
     Popover,
-    Modal
+    Modal,
+    message
 } from 'antd';
 
 const ButtonGroup = Button.Group;
@@ -23,8 +24,18 @@ class UniqueSub extends React.Component {
     constructor() {
         super();
         this.state = {
-            active: false
+            active: null
         }
+    }
+    componentWillMount() {
+        this.setState({
+            active: this.props.isActive.active_Unique
+        });
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            active: nextProps.isActive.active_Unique
+        });
     }
     mountTrafficConditions() {
         this.setState({
@@ -43,6 +54,13 @@ class UniqueSub extends React.Component {
             });
             ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"))
         }
+        this.props.callbackParent({
+            status1: !this.state.active,
+            status2: !this.state.active,
+            status3: this.state.active,
+            status4: !this.state.active,
+            status5: !this.state.active,
+        });
     }
     render() {
         return (
@@ -61,14 +79,12 @@ class UniqueSub extends React.Component {
         let self = this;
 
         lmsg.subscribe('locating', (data) => {
-            console.log(data);
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             )
         });
         lmsg.subscribe('tracktaxi', (data) => {
-            console.log('tracktaxi', data);
-            //data={startTracking=true, params:{id:223, time:20123039}}
+            message.success('您已进入追踪浮动车页面');
             if (data.startTracking) {
                 if (!data.params.id) {
                     alert('没有选中的浮动车');
@@ -78,21 +94,18 @@ class UniqueSub extends React.Component {
             localStorage.removeItem('tracktaxi');
         });
         lmsg.subscribe('cfxydBtnClick', (data) => {
-            console.log(data);
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             )
             localStorage.removeItem('cfxydBtnClick');
         });
         lmsg.subscribe('ODClick', (data) => {
-            console.log('ODClick', data);
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             );
             localStorage.removeItem('ODClick')
         });
         lmsg.subscribe('hbjjrToMap', (data) => {
-
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             );
@@ -141,99 +154,101 @@ class UniquePanel extends React.Component {
             }
             var dataRecv = null;
             Ds.DataService('/trafficindex_bodcollisionflowresult/migrationMap.json', params, (resp) => {
-                console.log('migrationMap', resp);
                 dataRecv = resp.aaData;
             }, (e) => {
                 console.log(e);
                 alert('后台传输错误');
             });
-            //console.log(eval('(' + dataRecv.geoCoord + ')'));
-            var overlay = new lmap.echartsLayer('ODLayer', echarts);
-            var chartsContainer = overlay.getEchartsContainer();
-            var myChart = overlay.initECharts(chartsContainer);
-            window.onresize = myChart.onresize;
 
-            var option = {
-                color: ['gold', 'aqua', 'lime'],
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{b}'
-                },
-                legend: {
-                    orient: 'vertical',
-                    x: 'left',
-                    data: ['北京 Top10'],
-                    selectedMode: 'single',
-                    selected: {
-                        '上海 Top10': false,
-                        '广州 Top10': false
+            if (dataRecv && dataRecv.dataPoint.length > 0) {
+                CI.clearLayer();
+                var overlay = new lmap.echartsLayer('ODLayer', echarts);
+                var chartsContainer = overlay.getEchartsContainer();
+                var myChart = overlay.initECharts(chartsContainer);
+                window.onresize = myChart.onresize;
+
+                var option = {
+                    color: ['gold', 'aqua', 'lime'],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{b}'
                     },
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                dataRange: {
-                    min: 0,
-                    max: 100,
-                    //calculable: true,
-                    color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                series: [{
-                    name: 'OD分析',
-                    type: 'map',
-                    mapType: 'none',
-                    data: [],
-                    geoCoord: eval('(' + dataRecv.geoCoord + ')'),
-                    markLine: {
-                        smooth: true,
-                        effect: {
-                            show: true,
-                            scaleSize: 1,
-                            period: 30,
-                            color: '#fff',
-                            shadowBlur: 10
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: ['北京 Top10'],
+                        selectedMode: 'single',
+                        selected: {
+                            '上海 Top10': false,
+                            '广州 Top10': false
                         },
-                        itemStyle: {
-                            normal: {
-                                borderWidth: 1,
-                                lineStyle: {
-                                    type: 'solid',
-                                    shadowBlur: 10
-                                }
-                            }
-                        },
-                        data: dataRecv.dataLine
+                        textStyle: {
+                            color: '#fff'
+                        }
                     },
-                    markPoint: {
-                        symbol: 'emptyCircle',
-                        symbolSize: function(v) {
-                            return 10 + v / 10
-                        },
-                        effect: {
-                            show: true,
-                            shadowBlur: 0
-                        },
-                        itemStyle: {
-                            normal: {
-                                label: {
-                                    show: false
+                    dataRange: {
+                        min: 0,
+                        max: 100,
+                        //calculable: true,
+                        color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    series: [{
+                        name: 'OD分析',
+                        type: 'map',
+                        mapType: 'none',
+                        data: [],
+                        geoCoord: eval('(' + dataRecv.geoCoord + ')'),
+                        markLine: {
+                            smooth: true,
+                            effect: {
+                                show: true,
+                                scaleSize: 1,
+                                period: 30,
+                                color: '#fff',
+                                shadowBlur: 10
+                            },
+                            itemStyle: {
+                                normal: {
+                                    borderWidth: 1,
+                                    lineStyle: {
+                                        type: 'solid',
+                                        shadowBlur: 10
+                                    }
                                 }
                             },
-                            emphasis: {
-                                label: {
-                                    position: 'top'
-                                }
-                            }
+                            data: dataRecv.dataLine
                         },
-                        data: dataRecv.dataPoint
-                    }
-                }]
-            };
-            overlay.setOption(option);
-            map.setView(map.getCenter());
+                        markPoint: {
+                            symbol: 'emptyCircle',
+                            symbolSize: function(v) {
+                                return 10 + v / 10
+                            },
+                            effect: {
+                                show: true,
+                                shadowBlur: 0
+                            },
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: false
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        position: 'top'
+                                    }
+                                }
+                            },
+                            data: dataRecv.dataPoint
+                        }
+                    }]
+                };
+                overlay.setOption(option);
+                map.setView(map.getCenter());
+            } else message.warning('没有相应地图数据');
         } else return;
     }
     componentDidMount() {
@@ -242,6 +257,7 @@ class UniquePanel extends React.Component {
             console.log('locating', data);
             switch (data.params) {
                 case 'shigong':
+                    message.success('您已进入道路施工页面');
                     DR.drawFeatures.disable();
                     self.refs.shigong.props.onClick();
                     break;
@@ -251,6 +267,7 @@ class UniquePanel extends React.Component {
                     DR.drawFeatures.activate();
                     break;
                 case 'guanzhi':
+                    message.success('您已进入交通管制页面');
                     DR.drawFeatures.disable();
                     self.refs.guanzhi.props.onClick();
                     break;
@@ -259,6 +276,7 @@ class UniquePanel extends React.Component {
                     DR.drawFeatures.activate();
                     break;
                 case 'shigu':
+                    message.success('您已进入交通事故页面');
                     DR.drawFeatures.disable();
                     self.refs.shigu.props.onClick();
                     break;
@@ -267,6 +285,7 @@ class UniquePanel extends React.Component {
                     DR.drawFeatures.activate();
                     break;
                 case 'fdc':
+                    message.success('您已进入浮动车页面');
                     self.refs.fudongche.props.onClick();
                     break;
                 default:
@@ -280,7 +299,7 @@ class UniquePanel extends React.Component {
             self.setState({
                 cfydData: null
             });
-
+            message.success('您已進入常發擁堵頁面');
             if (data.isCross == 1) {
                 //路口
                 self.setState({
@@ -298,24 +317,26 @@ class UniquePanel extends React.Component {
         });
         lmsg.subscribe('ODClick', (data) => {
             console.log('ODClick', data);
+            message.success('您已進入OD分析頁面');
             self.OD(data);
             localStorage.removeItem('ODClick');
         });
         lmsg.subscribe('hbjjrToMap', (data) => {
-            console.log(data)
+            console.log('hbjjrToMap', data)
             localStorage.removeItem('hbjjrToMap');
             if (data.messageType == '0' || data.messageType == '1' || data.messageType == '2' || data.messageType == '3') {
+                message.success('您已進入節假日頁面');
                 //清空图层
                 CI.clearLayer();
             } else if (data.messageType == '4') {
                 switch (data.messageData.ztType) {
-                    case 1:
+                    case "1":
                         self.onClickButton('jiari_zone', data.messageData);
                         break;
-                    case 2: //路口
+                    case "2": //路口
                         self.onClickButton('jiari_cross', data.messageData);
                         break;
-                    case 1: //路段
+                    case "3": //路段
                         self.onClickButton('jiari_road', data.messageData);
                         break;
                 }
@@ -323,8 +344,11 @@ class UniquePanel extends React.Component {
 
             } else if (data.messageType == '5') {
                 //新增区域
+                Modal.success({
+                    title: '定位已经启动',
+                    content: '请点击屏幕右上角画图工具定位区域信息',
+                });
                 Ds.DataService('/trafficindex_map/listHolidayMap.json', null, (resp) => {
-                    console.log(resp.aaData);
                     CI.displayCommonLayer(resp.aaData);
                     DR.DrawHoliday.drawRegion();
                 }, (e) => {
@@ -334,56 +358,50 @@ class UniquePanel extends React.Component {
 
             } else if (data.messageType == '6') {
                 //编辑区域
+                Modal.success({
+                    title: '定位已经启动',
+                    content: '请点击屏幕右上角画图工具定位区域信息',
+                });
                 var params = {
                     id: data.messageData.qybh
                 }
                 Ds.DataService('/trafficindex_map/gotoHolidayMap.json', params, (resp) => {
-                    console.log(resp.aaData);
                     CI.displayCommonLayer(resp.aaData);
                     DR.DrawHoliday.drawRegion();
                 }, (e) => {
                     console.log(e);
                     alert('后台传输错误');
                 });
-                CI.clearLayer();
-                //加载新的layer
-                setTimeout(() => {
-                    Ds.DataService('/trafficindex_map/gotoHolidayMap.json', params, (resp) => {
-                        CI.displayCommonLayer(resp.aaData);
-                    }, (e) => {
-                        console.log(e);
-                        alert('后台传输错误');
-                    });
-                }, 1000);
+
             } else if (data.messageType == '7') {
+                Modal.success({
+                    title: '定位已经启动',
+                    content: '请点击屏幕右上角画图工具圈选包含的道路路口',
+                });
                 //新增路口
+                Ds.DataService('/trafficindex_map/listCrossMap.json', null, (resp) => {
+                    CI.displayCommonLayer(resp.aaData); //展示路口
+                    DR.DrawHoliday.selectCross(resp.aaData);
+                }, (e) => {
+                    console.log(e);
+                    alert('后台传输错误');
+                });
+
             } else if (data.messageType == '8') {
+                Modal.success({
+                    title: '定位已经启动',
+                    content: '请点击屏幕右上角画图工具圈选包含的道路',
+                });
                 //新增路段
+                Ds.DataService('/trafficindex_map/roadMap.json', null, (resp) => {
+                    CI.displayConfigLayer_road(resp.aaData); //复合路段
+                    DR.DrawHoliday.selectRoad(resp.aaData);
+                }, (e) => {
+                    console.log(e);
+                    alert('后台传输错误');
+                });
             }
         });
-
-
-        setTimeout(function() {
-            Ds.DataService('/trafficindex_map/listHolidayMap.json', null, (resp) => {
-                console.log(resp);
-                CI.displayCommonLayer(resp.aaData);
-                DR.DrawHoliday.drawRegion();
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误');
-            });
-            var params = {
-                id: 500002
-            }
-            Ds.DataService('/trafficindex_map/gotoHolidayMap.json', params, (resp) => {
-                console.log(resp);
-                //CI.displayCommonLayer(resp.aaData);
-                //DR.DrawHoliday.drawRegion();
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误');
-            });
-        }, 3000);
 
     }
     componentWillUnmount() {

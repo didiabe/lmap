@@ -2,7 +2,6 @@ import L from 'leaflet';
 import turf from '@turf/turf';
 import leaflet_draw from 'leaflet-draw';
 import * as lmsg from '../libs/lmsg';
-import PinImg from '../images/pin_location2.png';
 
 export const drawFeatures = {
 	activate: function() {
@@ -28,14 +27,18 @@ var drawnItemsLayer = null,
 	roadWithin_Region = null,
 	roadIDWithin_Region = [],
 	totalIdWithin_Region = {},
-	doublerIds = [];
+	doublerIds = [],
+	drawHolidayRegionLayer = null,
+	holidayRoadSelectRegion = null,
+	holidayRoadSelectIds = [],
+	CenterPoint_OD = null;
 
 let MyCustomMarker = L.Icon.extend({
 	options: {
 		shadowUrl: null,
 		iconAnchor: new L.Point(8, 35),
 		iconSize: new L.Point(20, 40),
-		iconUrl: PinImg
+		iconUrl: _imagePath + '/pin_location2.png'
 	}
 });
 L.drawLocal = {
@@ -203,13 +206,11 @@ const drawCreated = (e) => {
 
 	let type = e.layerType;
 	let layer = e.layer;
-	//console.log(layer);
 	var latlngs = [],
 		coords = null,
 		featureDrawn = null,
 		measurement = null;
 	if (type == 'polyline') {
-		console.log("您已画了线");
 		layer._latlngs.map((item) => {
 			coords = [item.lng, item.lat];
 			latlngs.push(coords);
@@ -218,7 +219,6 @@ const drawCreated = (e) => {
 		measurement = turf.lineDistance(featureDrawn, "kilometers");
 
 	} else if (type == 'polygon' || type == 'rectangle') {
-		console.log("您已画了面");
 		layer._latlngs[0].map((item) => {
 			coords = [item.lng, item.lat];
 			latlngs.push(coords);
@@ -229,9 +229,7 @@ const drawCreated = (e) => {
 		//面积是平方公里
 		measurement = turf.area(featureDrawn) / 1000000;
 
-	} else if (type == "circle") {
-		console.log(layer)
-	} else if (type == "marker") {
+	} else if (type == "circle") {} else if (type == "marker") {
 		latlngs = [layer._latlng.lng, layer._latlng.lat];
 		measurement = latlngs;
 		featureDrawn = turf.point(latlngs);
@@ -239,12 +237,9 @@ const drawCreated = (e) => {
 		alert("创建图形失败");
 		return;
 	}
-	console.log(measurement);
-	console.log(featureDrawn);
 	//传给1屏的,不包括后台
 	if (measurement && featureDrawn) {
 		console.log('transfer to screen 1');
-
 		lmsg.send('jtgz', {
 			finish: true,
 			params: {
@@ -268,6 +263,7 @@ const drawCreated = (e) => {
 		});
 	}
 	drawnItemsLayer.addLayer(layer);
+	map.removeEventListener();
 }
 
 const stopDrawToolbar = () => {
@@ -275,6 +271,7 @@ const stopDrawToolbar = () => {
 	if (drawControl) map.removeControl(drawControl);
 	drawnItemsLayer = null;
 	drawControl = null;
+	map.removeEventListener();
 }
 
 export const DrawConfigLayer = {
@@ -314,6 +311,10 @@ export const DrawConfigLayer = {
 		calculateWithin: function() {
 			CalculateWithin_OD();
 			return pointIDWithin_OD;
+		},
+		calculateCenterPoint: function() {
+			CalculateCenterPoint_OD();
+			return CenterPoint_OD;
 		}
 	},
 	DrawFhld: {
@@ -371,6 +372,7 @@ const DrawConfigLayer_road = () => {
 		});
 		NewRoadfeature = turf.lineString(latlngs);
 		drawnItemsLayer.addLayer(layer);
+		map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
 		for (var item in e.layers._layers) {
@@ -380,7 +382,7 @@ const DrawConfigLayer_road = () => {
 				NewRoadfeature = turf.lineString(latlngs);
 			});
 		}
-
+		map.removeEventListener('draw:edited');
 	});
 	map.on('draw:deleted', function(e) {
 		if (drawnItemsLayer) {
@@ -388,6 +390,7 @@ const DrawConfigLayer_road = () => {
 			drawnItemsLayer = null;
 		}
 		NewRoadfeature = null;
+		map.removeEventListener('draw:deleted');
 	});
 }
 
@@ -438,7 +441,6 @@ const DrawConfigLayer_region = () => {
 	map.on('draw:created', function(e) {
 		var type = e.layerType,
 			layer = e.layer;
-		console.log(layer._latlngs)
 		layer._latlngs[0].map((item) => {
 			coords = [item.lng, item.lat];
 			latlngs.push(coords);
@@ -447,6 +449,7 @@ const DrawConfigLayer_region = () => {
 		latlngs.push(latlngs[0])
 		NewRegionfeature = turf.polygon([latlngs]);
 		drawnItemsLayer.addLayer(layer);
+		map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
 		for (var id in e.layers._layers) {
@@ -458,9 +461,11 @@ const DrawConfigLayer_region = () => {
 		//第一个点和最后一个点要保持一致，要不turf解析不了。
 		latlngs.push(latlngs[0])
 		NewRegionfeature = turf.polygon([latlngs]);
+		map.removeEventListener('draw:edited');
 	});
 	map.on('draw:deleted', function(e) {
 		NewRegionfeature = null;
+		map.removeEventListener('draw:deleted');
 	});
 }
 
@@ -519,6 +524,7 @@ const DrawConfigLayer_ODregion = () => {
 		latlngs.push(latlngs[0])
 		NewODRegionfeature = turf.polygon([latlngs]);
 		drawnItemsLayer.addLayer(layer);
+		map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
 		for (var id in e.layers._layers) {
@@ -530,15 +536,15 @@ const DrawConfigLayer_ODregion = () => {
 		//第一个点和最后一个点要保持一致，要不turf解析不了。
 		latlngs.push(latlngs[0])
 		NewODRegionfeature = turf.polygon([latlngs]);
+		map.removeEventListener('draw:edited');
 	});
 	map.on('draw:deleted', function(e) {
 		NewODRegionfeature = null;
+		map.removeEventListener('draw:deleted');
 	});
 }
 
 const CalculateWithin_Region = () => {
-
-	console.log(regionDataRec);
 	if (regionDataRec && NewRegionfeature) {
 		var CrossPointLayer = regionDataRec.cross;
 		var RoadLineLayer = regionDataRec.road;
@@ -551,18 +557,21 @@ const CalculateWithin_Region = () => {
 		RoadLineLayer.features.map(
 			(oneLine) => {
 				var theID = oneLine.properties.id;
-				oneLine.geometry.coordinates[0].map((oneCoords) => {
-					var onePoint = {
-						"type": "Feature",
-						"properties": {
-							'id': theID
-						},
-						"geometry": {
-							"type": "Point",
-							"coordinates": oneCoords
-						}
-					};
-					features.push(onePoint);
+				oneLine.geometry.coordinates.map((singleLine) => {
+					singleLine.map((oneCoords) => {
+						var onePoint = {
+							"type": "Feature",
+							"properties": {
+								'id': theID
+							},
+							"geometry": {
+								"type": "Point",
+								"coordinates": oneCoords
+							}
+						};
+						features.push(onePoint);
+					});
+
 				});
 			}
 		);
@@ -583,23 +592,20 @@ const CalculateWithin_Region = () => {
 				roadIDWithin_Region.push(IDresultsroad_region[i]);
 			}
 		};
-		console.log('road', roadIDWithin_Region);
-
 		pointsWithin_Region = turf.within(CrossPointLayer, regionFC);
 		pointsWithin_Region.features.map((p1) => {
 			pointIDWithin_Region.push(p1.properties.id);
 		});
-		console.log('cross', pointIDWithin_Region);
 		totalIdWithin_Region = {
 			roadIds: roadIDWithin_Region,
 			crossIds: pointIDWithin_Region
 		};
-	} else alert('请先画图');
+	} else totalIdWithin_Region = null;
 
 }
 
 const CalculateWithin_OD = () => {
-	if (ODDataRec && NewODRegionfeature) {
+	if (NewODRegionfeature) {
 		var CrossPointLayer = ODDataRec.cross;
 		//这里得拼接成FeatureCollection
 		var odregionFC = {
@@ -607,21 +613,25 @@ const CalculateWithin_OD = () => {
 			"features": [NewODRegionfeature]
 		};
 		pointsWithin_OD = turf.within(CrossPointLayer, odregionFC);
-
-		//console.log(pointsWithin_OD);
 		pointsWithin_OD.features.map((p1) => {
 			pointIDWithin_OD.push(p1.properties.id);
 		});
-	} else alert('请先画图');
-	//console.log(pointIDWithin_OD)
+	} else return pointIDWithin_OD = null;
 }
-var fhldLayer, fhldDrawControl;
+const CalculateCenterPoint_OD = () => {
+	if (NewODRegionfeature) {
+		var centroid = turf.centroid(NewODRegionfeature);
+		CenterPoint_OD = centroid.geometry.coordinates;
+	} else return CenterPoint_OD = null;
+
+}
+var fhldLayer;
 const drawFhld = (doublersData) => {
 	stopDrawToolbar();
 
 	fhldLayer = new L.FeatureGroup();
 	map.addLayer(fhldLayer);
-	fhldDrawControl = new L.Control.Draw({
+	drawControl = new L.Control.Draw({
 		edit: {
 			featureGroup: fhldLayer,
 			//remove: false
@@ -645,7 +655,7 @@ const drawFhld = (doublersData) => {
 		},
 		position: 'topright'
 	});
-	map.addControl(fhldDrawControl);
+	map.addControl(drawControl);
 	var latlngs = [],
 		coords = null;
 	var bufferSelection = () => {
@@ -653,14 +663,6 @@ const drawFhld = (doublersData) => {
 
 	}
 	map.on('draw:created', function(e) {
-		//console.log(drawnItemsLayer);
-		/*	if (Object.getOwnPropertyNames(drawnItemsLayer._layers).length > 0) {
-			drawnItemsLayer = null;
-			drawnItemsLayer = new L.FeatureGroup();
-			map.addLayer(drawnItemsLayer);
-		}
-*/
-
 		var type = e.layerType,
 			layer = e.layer;
 		layer._latlngs.map((item) => {
@@ -669,7 +671,6 @@ const drawFhld = (doublersData) => {
 		});
 		NewFhldfeature = turf.lineString(latlngs);
 		fhldLayer.addLayer(layer);
-		console.log(123)
 		if (NewFhldfeature) {
 			var bufferedFhld = turf.buffer(NewFhldfeature, 50, 'meters')
 			var bufferFC = {
@@ -683,18 +684,12 @@ const drawFhld = (doublersData) => {
 					};
 				}
 			}).addTo(map);
-			// console.log(bufferFC);
-			// console.log(doublersData)
 			var features = [];
 			doublersData.features.map(
 				(oneLine) => {
 					var theID = oneLine.properties.id;
 					var theName = oneLine.properties.name;
 					if (oneLine.geometry) {
-						//console.log(oneLine.geometry.coordinates);
-						/*if (oneLine.geometry.coordinates == undefined) {
-							console.log('没有geometry的id',oneLine.properties.id)
-						}*/
 						oneLine.geometry.coordinates.map((oneCoords) => {
 							var onePoint = {
 								"type": "Feature",
@@ -715,9 +710,6 @@ const drawFhld = (doublersData) => {
 
 			var fc_Points_FromRoad = turf.featureCollection(features);
 			var pointsWithin_fhld = turf.within(fc_Points_FromRoad, bufferFC);
-			//console.log(pointsWithin_fhld)
-			//提取出所有的id
-			//doublerIds = [];
 			var doublersID_all = [];
 			pointsWithin_fhld.features.map((p1) => {
 				doublersID_all.push({
@@ -725,7 +717,6 @@ const drawFhld = (doublersData) => {
 					'name': p1.properties.name
 				});
 			});
-			//console.log(1, doublersID_all);
 			//doublersID_all现在是带重复的,去重复
 			var hash = {};
 			for (var i = 0; i < doublersID_all.length; i++) {
@@ -744,7 +735,8 @@ const drawFhld = (doublersData) => {
 			});
 			console.log('fhld_ok sent to screen 1', doublerIds);
 		}
-		map.removeControl(fhldDrawControl);
+		map.removeControl(drawControl);
+		map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
 
@@ -756,6 +748,7 @@ const drawFhld = (doublersData) => {
 			});
 		}
 		bufferSelection();
+		map.removeEventListener('draw:edited');
 	});
 	map.on('draw:deleted', function(e) {
 		if (fhldLayer) {
@@ -764,6 +757,7 @@ const drawFhld = (doublersData) => {
 		}
 		NewFhldfeature = null;
 		doublerIds = ['id': '', 'name': ''];
+		map.removeEventListener('draw:deleted');
 	});
 
 
@@ -774,11 +768,11 @@ export const DrawHoliday = {
 	drawRegion: () => {
 		drawHolidayRegion();
 	},
-	selectRoad: () => {
-
+	selectRoad: (data) => {
+		holiday_selectRoad(data);
 	},
-	selectCross: () => {
-
+	selectCross: (data) => {
+		holiday_selectCross(data);
 	}
 
 }
@@ -786,10 +780,8 @@ export const DrawHoliday = {
 const drawHolidayRegion = () => {
 	newHolidayRegion = null;
 	drawnItemsLayer = null;
-
-
 	stopDrawToolbar();
-	var drawHolidayRegionLayer = new L.FeatureGroup();
+	drawHolidayRegionLayer = new L.FeatureGroup();
 	map.addLayer(drawHolidayRegionLayer);
 	drawControl = new L.Control.Draw({
 		edit: {
@@ -850,7 +842,206 @@ const drawHolidayRegion = () => {
 		}
 		console.log('newHolidayRegion send to HBjj', newHolidayRegion);
 		map.removeControl(drawControl);
-
+		map.removeEventListener('draw:created');
 	});
 
+}
+
+
+const holiday_selectRoad = (roadData) => {
+	var fhldData = roadData;
+	holidayRoadSelectRegion = null;
+	drawnItemsLayer = null;
+	stopDrawToolbar();
+	drawHolidayRegionLayer = new L.FeatureGroup();
+	map.addLayer(drawHolidayRegionLayer);
+	drawControl = new L.Control.Draw({
+		edit: {
+			featureGroup: drawHolidayRegionLayer,
+			//remove: false
+		},
+		draw: {
+			polyline: false,
+			polygon: {
+				metric: true,
+				allowIntersection: false,
+				drawError: {
+					color: '#b00b00',
+					timeout: 1000,
+					message: '<strong>STOP<strong>重叠了亲'
+				},
+				shapeOptions: {
+					color: '#00f6ff',
+					stroke: true,
+					weight: '6',
+					fill: '#00f6ff'
+				}
+				//showArea: true
+			},
+			rectangle: {
+				shapeOptions: {
+					color: '#f50'
+				},
+				showArea: true
+			},
+			marker: false,
+			circle: false
+		},
+		position: 'topright'
+	});
+	map.addControl(drawControl);
+	var latlngs = [],
+		coords = null;
+	map.on('draw:created', function(e) {
+		var type = e.layerType,
+			layer = e.layer;
+
+		drawHolidayRegionLayer.addLayer(layer);
+		layer._latlngs[0].map((item) => {
+			coords = [item.lng, item.lat];
+			latlngs.push(coords);
+		});
+		//第一个点和最后一个点要保持一致，要不turf解析不了。
+		latlngs.push(latlngs[0])
+		holidayRoadSelectRegion = turf.polygon([latlngs]);
+		var fc_holidayRoadSelectRegion = {
+			"type": "FeatureCollection",
+			"features": [holidayRoadSelectRegion]
+		};
+		var features = [];
+		fhldData.features.map(
+			(oneLine) => {
+				var theID = oneLine.properties.id;
+				var theName = oneLine.properties.name;
+				if (oneLine.geometry) {
+
+					oneLine.geometry.coordinates.map((singleLine) => {
+						singleLine.map((oneCoords) => {
+							var onePoint = {
+								"type": "Feature",
+								"properties": {
+									'id': theID,
+									'name': theName
+								},
+								"geometry": {
+									"type": "Point",
+									"coordinates": oneCoords
+								}
+							};
+							features.push(onePoint);
+						});
+
+
+					});
+				}
+
+			});
+		var fc_Points_FromRoad = turf.featureCollection(features);
+		var pointsWithin_fhld = turf.within(fc_Points_FromRoad, fc_holidayRoadSelectRegion);
+		//提取出所有的id
+		//doublerIds = [];
+		var idnameAll = [];
+		pointsWithin_fhld.features.map((p1) => {
+			idnameAll.push({
+				'id': p1.properties.id,
+				'name': p1.properties.name
+			});
+		});
+		var hash = {};
+		for (var i = 0; i < idnameAll.length; i++) {
+			if (!hash[idnameAll[i].id]) {
+				hash[idnameAll[i].id] = true;
+				holidayRoadSelectIds.push({
+					'id': idnameAll[i].id,
+					'name': idnameAll[i].name
+				});
+			}
+		};
+		lmsg.send('hbjjrB', {
+			type: 3,
+			params: holidayRoadSelectIds
+		});
+		console.log('newHolidayRegion send to HBjj', holidayRoadSelectIds);
+		map.removeControl(drawControl);
+		map.removeEventListener('draw:created');
+	});
+}
+
+const holiday_selectCross = (crossData) => {
+	var crossData_fc = crossData;
+	holidayRoadSelectRegion = null;
+	drawnItemsLayer = null;
+	stopDrawToolbar();
+	drawHolidayRegionLayer = new L.FeatureGroup();
+	map.addLayer(drawHolidayRegionLayer);
+	drawControl = new L.Control.Draw({
+		edit: {
+			featureGroup: drawHolidayRegionLayer,
+			//remove: false
+		},
+		draw: {
+			polyline: false,
+			polygon: {
+				metric: true,
+				allowIntersection: false,
+				drawError: {
+					color: '#b00b00',
+					timeout: 1000,
+					message: '<strong>STOP<strong>重叠了亲'
+				},
+				shapeOptions: {
+					color: '#00f6ff',
+					stroke: true,
+					weight: '6',
+					fill: '#00f6ff'
+				}
+				//showArea: true
+			},
+			rectangle: {
+				shapeOptions: {
+					color: '#f50'
+				},
+				showArea: true
+			},
+			marker: false,
+			circle: false
+		},
+		position: 'topright'
+	});
+	map.addControl(drawControl);
+	var latlngs = [],
+		coords = null;
+
+	map.on('draw:created', function(e) {
+		var type = e.layerType,
+			layer = e.layer;
+
+		drawHolidayRegionLayer.addLayer(layer);
+		layer._latlngs[0].map((item) => {
+			coords = [item.lng, item.lat];
+			latlngs.push(coords);
+		});
+		//第一个点和最后一个点要保持一致，要不turf解析不了。
+		latlngs.push(latlngs[0])
+		holidayRoadSelectRegion = turf.polygon([latlngs]);
+		var fc_holidayRoadSelectRegion = {
+			"type": "FeatureCollection",
+			"features": [holidayRoadSelectRegion]
+		};
+		var pointsWithin_Region = turf.within(crossData_fc, fc_holidayRoadSelectRegion);
+		var holidayCrossWithin = [];
+		pointsWithin_Region.features.map((p1) => {
+			holidayCrossWithin.push({
+				id: p1.properties.id,
+				name: p1.properties.name
+			});
+		});
+		lmsg.send('hbjjrB', {
+			type: 2,
+			params: holidayCrossWithin
+		});
+		console.log('holidayCrossWithin send to HBjj', holidayCrossWithin);
+		map.removeControl(drawControl);
+		map.removeEventListener('draw:created');
+	});
 }

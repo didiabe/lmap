@@ -28,7 +28,7 @@ class updateIndex extends React.Component {
     constructor() {
         super();
         this.state = {
-            active: false
+            active: null
         }
     }
     mountTrafficConditions() {
@@ -48,6 +48,23 @@ class updateIndex extends React.Component {
             });
             ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"))
         }
+        this.props.callbackParent({
+            status1: !this.state.active,
+            status2: this.state.active,
+            status3: !this.state.active,
+            status4: !this.state.active,
+            status5: !this.state.active,
+        });
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            active: nextProps.isActive.active_Update
+        })
+    }
+    componentWillMount() {
+        this.setState({
+            active: this.props.isActive.active_Update
+        });
     }
     render() {
         return (
@@ -62,10 +79,8 @@ class updateIndex extends React.Component {
         )
     }
     componentDidMount() {
-
         //监听单个指数更新
         lmsg.subscribe('openModal_updIdx', (data) => {
-            console.log('openModal_updIdx', data)
             showModal_updIdx(data);
         });
         localStorage.removeItem('openModal_updIdx');
@@ -149,12 +164,9 @@ class UpdateIndexPanel extends React.Component {
             type: this.state.craType,
             level: this.state.ConLevel
         };
-        console.log(param);
         Ds.DataService("/trafficindex_map/zsLevel.json", param,
             (resp) => {
-                //console.log(resp.aaData);
                 let data4Table = [];
-
                 if (resp.aaData.length < 1) {
                     alert("没有查到符合数据");
                     this.setState({
@@ -205,12 +217,11 @@ class UpdateIndexPanel extends React.Component {
 
         Ds.DataService('/trafficindex_map/zsUpdate.json', zsUpdate,
             (resp) => {
-                console.log(resp.aaData);
                 this.setState({
                     selectedRowKeys: [],
                     loading: false,
                 });
-                if (resp.errorCode == 0) {
+                if (resp.errorCode == 'success') {
                     alert('保存成功！');
                 } else {
                     alert('保存失败', resp.errorText);
@@ -224,14 +235,11 @@ class UpdateIndexPanel extends React.Component {
     }
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
-        //selectedRowKeys = ['2', '3', '5'];
         let list = this.state.dataList;
         let selectID = [];
         selectedRowKeys.map((item) => {
             selectID.push(list[item].id)
         });
-
-        console.log(selectID);
         this.setState({
             selectIDs: selectID
         });
@@ -241,7 +249,6 @@ class UpdateIndexPanel extends React.Component {
     }
 
     getStartTime(value, dateString) {
-        console.log(dateString);
         let d = new Date();
         var month = d.getMonth() + 1;
         var today = d.getFullYear() + "-" + month + "-" + d.getDate();
@@ -252,7 +259,6 @@ class UpdateIndexPanel extends React.Component {
 
     }
     getEndTime(value, dateString) {
-        console.log(dateString);
         let d = new Date();
         var month = d.getMonth() + 1;
         var today = d.getFullYear() + "-" + month + "-" + d.getDate();
@@ -262,13 +268,11 @@ class UpdateIndexPanel extends React.Component {
         })
     }
     updateMins(val) {
-        console.log(val);
         this.setState({
             updateMins: val
         });
     }
     switchRadio(e) {
-        //console.log(e.target.value);
         this.setState({
             T3Checked: true,
             StartTime: null,
@@ -292,7 +296,6 @@ class UpdateIndexPanel extends React.Component {
 
     }
     getIndex(val) {
-        console.log(val);
         this.setState({
             newIndex: val
         })
@@ -469,13 +472,11 @@ var showModal_updIdx = (data) => {
     Modal.confirm({
         title: '更新指数信息',
         content: (<div id="signal_update">
-                    {'输入您翔更新的指数,当前的指数为：'+ data.index+ '  '}<br/>
+                    {'请输入更新的指数, 当前的指数为：'+ data.index+ '  '}<br/>
                     {'更新的分钟： '}<Slider id="timeLong" min={1} max={20} step={1} onChange={onSliderTimeChange}/>
                     {'更新的指数： '}<InputNumber id="newIndexVal" defaultValue={data.index} min={1} max={10} step={0.1}/>  
                   </div>),
         onOk() {
-            //console.log('ok');
-            //console.log(document.getElementById('newIndexVal').value);
             var sendNewIndParam = {
                 ids: data.id,
                 zs: document.getElementById('newIndexVal').value,
@@ -484,29 +485,15 @@ var showModal_updIdx = (data) => {
                 start: null,
                 end: null
             };
-            console.log(sendNewIndParam);
             Ds.DataService('/trafficindex_map/zsUpdate.json', sendNewIndParam, (resp) => {
-                if (resp.errorCode == 0) alert('保存成功');
+                if (resp.errorCode == 'success') alert('保存成功');
                 else alert('保存失败');
             }, (e) => {
                 alert('保存失败');
             });
         },
-        onCancel() {
-            console.log('取消')
-        }
+        onCancel() {}
     });
 }
 
-
 export default updateIndex
-/*const disabledDate = (current) => {
-            return current && current.getTime() < Date.now();
-        }*/
-/*<RangePicker disabledDate={disabledDate} showTime format="yyyy-MM-dd HH:mm:ss" onChange={this.getTimeRange} getCalendarContainer={() => document.getElementById('updateDetails')}></RangePicker>*/
-
-
-
-/*<div>
-        
-      </div> */

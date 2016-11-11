@@ -16,11 +16,15 @@ class CraResults extends React.Component {
         super();
         this.state = {
             tableContent: [],
-            t: undefined
+            t: undefined,
+            pageNumber: 1
         }
         this.pagination = this.pagination.bind(this);
     }
     pagination(page) {
+        this.setState({
+            pageNumber: page
+        });
         let rboxkey1 = this.props.children;
         let self = this;
         var sendParam2;
@@ -69,7 +73,6 @@ class CraResults extends React.Component {
         });
     }
     componentDidMount() {
-        //console.log('this.props', this.props);
         let self = this;
         this.setState({
             tableContent: JtzsList.jtzsList
@@ -82,20 +85,12 @@ class CraResults extends React.Component {
         });
     }
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps', nextProps);
         this.setState({
-            tableContent: nextProps.jtzsPage.jtzsList
+            tableContent: nextProps.jtzsPage.jtzsList,
+            pageNumber: 1
         });
     }
-    componentDidUpdate() {
-        /*不能在这里setstate，会重复执行
-        this.setState({
-            tableContent: JtzsList.jtzsList
-        });*/
-    }
-
     render() {
-        console.log(this.props)
         children_rboxkey = this.props.children;
         JtzsList = this.props.jtzsPage;
         if (!JtzsList) alert("错误");
@@ -132,7 +127,7 @@ class CraResults extends React.Component {
                 </div><br/>
                 <div id='table' className={styles.table}>
                     <div>
-                        <p>拥堵路口排名</p>
+                        <p>拥堵<b><u>{children_rboxkey == 'cross' ? '路口' : children_rboxkey == 'road' ? '路段': children_rboxkey == 'area' ? '区域':null}</u></b>排名</p>
                         <span className={styles.smooth_jam_rank}>排名</span>
                         <span className={styles.smooth_jam_num_name}>名称</span>
                         <span className={styles.smooth_jam_num_index}>拥堵指数</span>
@@ -144,7 +139,7 @@ class CraResults extends React.Component {
                         }) }
                     </ul>
                     <div className={styles.pager}>
-                <Pagination simple defaultCurrent={1} total={JtzsList.total} onChange={this.pagination}/>
+                <Pagination simple current={this.state.pageNumber} total={JtzsList.total} onChange={this.pagination}/>
            
                 </div>
                 </div>
@@ -160,7 +155,6 @@ class TableRow extends React.Component {
         this.onClickRow = this.onClickRow.bind(this);
     }
     onClickRow(ref) {
-        //console.log(this.props)
         var ID2screen1 = this.props.item.id;
         var Name2screen1 = this.props.item.name;
         var iscra = null;
@@ -182,6 +176,7 @@ class TableRow extends React.Component {
             'ID': ID2screen1,
             'name': Name2screen1
         });
+        console.log('lmsg.send-->success', 'name', Name2screen1);
     }
     componentDidMount() {}
     render() {

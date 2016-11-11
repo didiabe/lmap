@@ -8,14 +8,11 @@ import styles from './_rbox.css';
 import * as CI from '../../scripts/CongestionIndex';
 import SearchResults from './menu/SearchResults';
 import CraResults from './menu/CraResults';
-//import Pager from './menu/Pager';
 import * as lmsg from '../../libs/lmsg';
 import * as Ds from '../../libs/DataService';
 import {
     Table
 } from 'antd';
-
-
 
 class Rbox extends React.Component {
     constructor() {
@@ -37,22 +34,21 @@ class Rbox extends React.Component {
     renderList() {
         let rboxkey = this.props.search.rboxKey;
         let dataRec = null;
-        //console.log('renderList', this.props.cra.cralist)
         switch (rboxkey) {
             case 'search':
                 dataRec = this.props.search.list;
                 return React.createElement(SearchResults, dataRec, rboxkey);
             case 'cross':
                 dataRec = this.props.cra.cralist;
-                CI.addGracLayer(cross, dataRec);
+                CI.addGracLayer(rboxkey, dataRec);
                 return React.createElement(CraResults, dataRec, rboxkey);
             case 'road':
                 dataRec = this.props.cra.cralist;
-                CI.addGracLayer(road, dataRec);
+                CI.addGracLayer(rboxkey, dataRec);
                 return React.createElement(CraResults, dataRec, rboxkey);
             case 'area':
                 dataRec = this.props.cra.cralist;
-                CI.addGracLayer(area, dataRec);
+                CI.addGracLayer(rboxkey, dataRec);
                 return React.createElement(CraResults, dataRec, rboxkey);
             default:
                 break;
@@ -92,7 +88,7 @@ class Rbox extends React.Component {
             }];
 
         const sectionPanel = this.state.initCraResults ? [
-            <section key={"rboxPanels"} id="rboxPanels" className={styles.rboxPanels}>
+            <section key={"rboxPanels1"} id="rboxPanels" className={styles.rboxPanels}>
                         <ul id='nav' className={styles.nav}>
                             <li id='cross' ref='cross' className={styles.craLi} onClick={() => {this.crsBtnClick('cross')} }>
                                 <span className={styles.navTxt}>路口</span>
@@ -112,7 +108,7 @@ class Rbox extends React.Component {
             <section key={'rboxPanels2'} id="rboxPanels2" className={styles.rboxPanel2}>
                 <Table columns={cfydTableContent} dataSource={this.state.cfydTabledata} size='middle' pagination={false}/>
             </section>
-        ] : null;
+        ] : [<section key={"rboxPanels3"} id="rboxPanels" className={styles.rboxPanels}></section>];
         return (
             <div id="rbox" className={styles.rbox}>
         <div id="navBody" className={this.state.contraction ? styles.navBody_none : styles.navBody_display}>
@@ -194,7 +190,6 @@ class Rbox extends React.Component {
             } else if (data.isCross == 2) {
                 //路段
                 Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, (resp) => {
-                    console.log(resp.aaData);
                     var cfydTabledata = [];
                     if (!resp.aaData) alert('没有相应信息');
                     else {
@@ -255,13 +250,13 @@ class Rbox extends React.Component {
             });
             localStorage.removeItem('peizhi');
         });
-        lmsg.subscribe('hbjjr_init', (data) => {
+        lmsg.subscribe('hbjjrToMap', (data) => {
             self.setState({
                 contraction: true,
                 initCraResults: false,
                 isCFYDpanel: false
             });
-            localStorage.removeItem('hbjjr_init');
+            localStorage.removeItem('hbjjrToMap');
         });
     }
 

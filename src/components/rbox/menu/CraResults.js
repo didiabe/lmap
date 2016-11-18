@@ -127,7 +127,7 @@ class CraResults extends React.Component {
                 </div><br/>
                 <div id='table' className={styles.table}>
                     <div>
-                        <p>拥堵<b><u>{children_rboxkey == 'cross' ? '路口' : children_rboxkey == 'road' ? '路段': children_rboxkey == 'area' ? '区域':null}</u></b>排名</p>
+                        <p>拥堵{children_rboxkey == 'cross' ? '路口' : children_rboxkey == 'road' ? '路段': children_rboxkey == 'area' ? '区域':null}排名</p>
                         <span className={styles.smooth_jam_rank}>排名</span>
                         <span className={styles.smooth_jam_num_name}>名称</span>
                         <span className={styles.smooth_jam_num_index}>拥堵指数</span>

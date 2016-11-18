@@ -263,7 +263,7 @@ const drawCreated = (e) => {
 		});
 	}
 	drawnItemsLayer.addLayer(layer);
-	map.removeEventListener();
+	map.removeEventListener('draw:created');
 }
 
 const stopDrawToolbar = () => {
@@ -271,7 +271,9 @@ const stopDrawToolbar = () => {
 	if (drawControl) map.removeControl(drawControl);
 	drawnItemsLayer = null;
 	drawControl = null;
-	map.removeEventListener();
+	map.removeEventListener('draw:created');
+	map.removeEventListener('draw:edited');
+	map.removeEventListener('draw:deleted');
 }
 
 export const DrawConfigLayer = {
@@ -625,15 +627,15 @@ const CalculateCenterPoint_OD = () => {
 	} else return CenterPoint_OD = null;
 
 }
-var fhldLayer;
+
 const drawFhld = (doublersData) => {
 	stopDrawToolbar();
-
-	fhldLayer = new L.FeatureGroup();
-	map.addLayer(fhldLayer);
+	drawnItemsLayer = null;
+	drawnItemsLayer = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: fhldLayer,
+			featureGroup: drawnItemsLayer,
 			//remove: false
 		},
 		draw: {
@@ -658,10 +660,6 @@ const drawFhld = (doublersData) => {
 	map.addControl(drawControl);
 	var latlngs = [],
 		coords = null;
-	var bufferSelection = () => {
-
-
-	}
 	map.on('draw:created', function(e) {
 		var type = e.layerType,
 			layer = e.layer;
@@ -670,7 +668,7 @@ const drawFhld = (doublersData) => {
 			latlngs.push(coords);
 		});
 		NewFhldfeature = turf.lineString(latlngs);
-		fhldLayer.addLayer(layer);
+		drawnItemsLayer.addLayer(layer);
 		if (NewFhldfeature) {
 			var bufferedFhld = turf.buffer(NewFhldfeature, 50, 'meters')
 			var bufferFC = {
@@ -738,29 +736,6 @@ const drawFhld = (doublersData) => {
 		map.removeControl(drawControl);
 		map.removeEventListener('draw:created');
 	});
-	map.on('draw:edited', function(e) {
-
-		for (var item in e.layers._layers) {
-			e.layers._layers[item]._latlngs.map((item) => {
-				coords = [item.lng, item.lat];
-				latlngs.push(coords);
-				NewFhldfeature = turf.lineString(latlngs);
-			});
-		}
-		bufferSelection();
-		map.removeEventListener('draw:edited');
-	});
-	map.on('draw:deleted', function(e) {
-		if (fhldLayer) {
-			map.removeLayer(fhldLayer);
-			fhldLayer = null;
-		}
-		NewFhldfeature = null;
-		doublerIds = ['id': '', 'name': ''];
-		map.removeEventListener('draw:deleted');
-	});
-
-
 
 }
 var newHolidayRegion = null;

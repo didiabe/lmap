@@ -101,7 +101,11 @@ const crossLayer = function(data) {
         popupCross.appendChild(button1);
         popupCross.appendChild(button2);
         popupCross.appendChild(button3);
-        pointLayer.bindPopup(popupCross)
+        var customOptions = {
+            'maxWidth': '500',
+            'className': 'custom'
+        };
+        pointLayer.bindPopup(popupCross, customOptions)
             .addTo(map);
     };
 
@@ -431,6 +435,32 @@ export const playback = (a) => {
     return markerPlayBack;
 };
 
+const formatDateTime = (data, ref) => {
+    var formatedTime = null;
+    if (data) {
+        var d = new Date(data);
+        var year = d.getFullYear();
+        var day = d.getDate();
+        day = day < 10 ? '0' + day : day;
+        var month = d.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        var hour = d.getHours();
+        hour = hour < 10 ? '0' + hour : hour;
+        var minute = d.getMinutes();
+        minute = minute < 10 ? '0' + minute : minute;
+        var second = d.getSeconds();
+        second = second < 10 ? '0' + second : second;
+        if (ref == 0)
+            formatedTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        else if (ref == 1)
+            formatedTime = year + '-' + month + '-' + day;
+        else
+            formatedTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+    } else
+        formatedTime = null;
+    return formatedTime;
+}
+
 export const displayUniLayer = (ref, data) => {
     map.eachLayer((layer) => {
         if (layer.options.id !== "streetLayer") {
@@ -584,6 +614,7 @@ export const displayUniLayer = (ref, data) => {
             flag: data.flag,
             date: date2Java_date
         }
+
     } else if (ref == 'jiari_cross') {
         _APIpath = "/trafficindex_map/holiday.json";
         specialpointlayer = (feature, latlng) => {
@@ -642,7 +673,7 @@ export const displayUniLayer = (ref, data) => {
         if (!featurecollectiondata.features || featurecollectiondata.features.length == 0) message.error('没有查询到相应地图数据！');
     }, (e) => {
         console.log(e);
-        alert("后台传输错误");
+        message.error("后台传输错误", 3);
     });
 
     clickPanBound = (e) => {
@@ -655,17 +686,19 @@ export const displayUniLayer = (ref, data) => {
             Ds.DataService("/trafficindex_floatCargp/listGetFdcarByCarid.json", sendparamID, (resp) => {
                 popupData = resp.aaData;
             }, (e) => {
-                alert('后台传输错误');
+                message.error('后台传输错误', 3);
                 console.log(e)
             });
+
+            var floatcartype1 = popupData.floatcartype = 1 ? '公交车' : popupData.floatcartype = 2 ? '出租车' : '其他';
             specialpopup = L.popup().setContent(
                 "车牌照: " + popupData.carid + '<br/>' +
                 "车朝向: " + popupData.direction + '<br/>' +
-                "浮动车类型: " + popupData.floatcartype + '<br/>' +
-                "GPS时间: " + popupData.gpsDate + '<br/>' +
+                "浮动车类型: " + floatcartype1 + '<br/>' +
+                "GPS时间: " + formatDateTime(popupData.gpsDate, 0) + '<br/>' +
                 "经度: " + popupData.gpsJd + '<br/>' +
                 "纬度: " + popupData.gpsWd + '<br/>' +
-                "浮动车速度: " + popupData.velocity + '<br/>');
+                "浮动车速度: " + popupData.velocity + ' km/h' + '<br/>');
 
         } else if (ref == 'jiari_zone' || ref == 'jiari_cross' || ref == 'jiari_road') {
             specialpopup = L.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数:' + e.target.feature.properties.index)
@@ -704,53 +737,60 @@ export const displayUniLayer = (ref, data) => {
             Ds.DataService("/trafficindex_RoadConst/gotoBJtzsRoadconstruction.json", sendparamID, (resp) => {
                 popupData = resp.aaData;
             }, (e) => {
-                alert('后台传输错误');
-                console.log(e)
+                message.error('后台传输错误', 3);
+                console.log(e);
             });
+            var construType = popupData.objecttype == 0 ? '路口' : popupData.objecttype == 1 ? '路段' : '其他';
+            var construStatus = popupData.state == 0 ? '施工前' : popupData.state == 1 ? '施工中' : popupData.state == 2 ? '施工完成' : '其他';
             popup_spec = L.popup().setContent(
                 "施工单位: " + popupData.company + '<br/>' +
                 "联系人: " + popupData.contact + '<br/>' +
-                "施工类别: " + popupData.objecttype + '<br/>' +
+                "施工类别: " + construType + '<br/>' +
                 "位置描述: " + popupData.locationdesc + '<br/>' +
                 "施工名称: " + popupData.objectname + '<br/>' +
                 "施工原因: " + popupData.reason + '<br/>' +
-                "当前状态: " + popupData.state + '<br/>' +
-                "开始时间: " + popupData.startdate + '<br/>' +
-                "结束时间: " + popupData.enddate + '<br/>' +
+                "当前状态: " + construStatus + '<br/>' +
+                "开始时间: " + formatDateTime(popupData.startdate, 1) + '<br/>' +
+                "结束时间: " + formatDateTime(popupData.enddate, 1) + '<br/>' +
                 "联系电话: " + popupData.telephone + '<br/>');
         } else if (ref == "guanzhi") {
             Ds.DataService("/trafficindex_trafficControl/gotoBJtzsTrafficcontrol.json", sendparamID, (resp) => {
                 popupData = resp.aaData;
             }, (e) => {
-                alert('后台传输错误');
-                console.log(e)
+                message.error('后台传输错误', 3);
+                console.log(e);
             });
+            var controlStatus = popupData.state == 0 ? '未申请' : popupData.state == 1 ? '已申请' : popupData.state == 2 ? '申请中' : '其他';
+            var controlBelong = popupData.area == 0 ? '指挥中心' : popupData.area == 1 ? '管辖一区' : popupData.area == 2 ? '管辖二区' : '其他';
+            var controlType = popupData.type == 0 ? '中高考' : popupData.type == 1 ? '节假日' : popupData.type == 2 ? '大型活动' : popupData.type == 3 ? '禁货' : popupData.type == 4 ? '禁大客' : popupData.type == 5 ? '禁危险品车辆' : popupData.type == 6 ? '禁摩托车' : popupData.type == 7 ? '路口禁止转向' : popupData.type == 8 ? '单行道路' : popupData.type == 9 ? '其他' : '其他';
             popup_spec = L.popup().setContent(
-                "申请时间: " + popupData.applydate + '<br/>' +
-                "开始时间: " + popupData.startdate + '<br/>' +
-                "预计结束时间: " + popupData.planenddate + '<br/>' +
-                "实际结束时间: " + popupData.actualenddate + '<br/>' +
-                "当前状态: " + popupData.state + '<br/>' +
-                "所属辖区: " + popupData.area + '<br/>' +
+                "申请时间: " + formatDateTime(popupData.applydate, 1) + '<br/>' +
+                "开始时间: " + formatDateTime(popupData.startdate, 1) + '<br/>' +
+                "预计结束时间: " + formatDateTime(popupData.planenddate, 1) + '<br/>' +
+                "实际结束时间: " + formatDateTime(popupData.actualenddate, 1) + '<br/>' +
+                "当前状态: " + controlStatus + '<br/>' +
+                "所属辖区: " + controlBelong + '<br/>' +
                 "责任单位: " + popupData.liablecompany + '<br/>' +
                 "责任人: " + popupData.liableperson + '<br/>' +
                 "联系电话: " + popupData.telephone + '<br/>' +
                 "位置描述: " + popupData.locationdesc + '<br/>' +
                 "管制名称: " + popupData.objectname + '<br/>' +
-                "管制类型: " + popupData.type + '<br/>' +
+                "管制类型: " + controlType + '<br/>' +
                 "管制说明: " + popupData.remark + '<br/>');
         } else if (ref == "shigu") {
             Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsTrafficaccident.json", sendparamID, (resp) => {
                 popupData = resp.aaData;
             }, (e) => {
-                alert('后台传输错误');
-                console.log(e)
+                message.error('后台传输错误', 3);
+                console.log(e);
             });
+            var accidentType = popupData.accidenttype == -1 ? '全部' : popupData.accidenttype == 0 ? '酒后驾车' : popupData.accidenttype == 1 ? '逆行' : popupData.accidenttype == 2 ? '违法吊车' : popupData.accidenttype == 3 ? '违法变道' : popupData.accidenttype == 4 ? '违法超载' : popupData.accidenttype == 5 ? '无证驾驶' : popupData.accidenttype == 6 ? '违反交通信号' : popupData.accidenttype == 7 ? '超速' : popupData.accidenttype == 8 ? '其他' : '其他';
+            var accidentLevel = popupData.accidentlevel == -1 ? '全部' : popupData.accidentlevel == 0 ? '轻微事故' : popupData.accidentlevel == 1 ? '一般事故' : popupData.accidentlevel == 2 ? '重大事故' : popupData.accidentlevel == 3 ? '特大事故' : '其他';
             popup_spec = L.popup().setContent(
-                "事故等级: " + popupData.accidentlevel + '<br/>' +
-                "事故类型: " + popupData.accidenttype + '<br/>' +
+                "事故等级: " + accidentLevel + '<br/>' +
+                "事故类型: " + accidentType + '<br/>' +
                 "发生位置: " + popupData.locationdesc + '<br/>' +
-                "发生时间: " + popupData.occurrencedate + '<br/>' +
+                "发生时间: " + formatDateTime(popupData.occurrencedate, 1) + '<br/>' +
                 "接报人: " + popupData.recipientperson + '<br/>' +
                 "事故描述: " + popupData.remark + '<br/>' +
                 "上报人: " + popupData.reportperson + '<br/>' +
@@ -806,12 +846,13 @@ export const trackingTaxi = (params) => {
     if (params) {
         var sendtaxiparams = {
             id: params.id,
-            date: params.date
+            date: params.time
         };
-
+        var taxiInterval = null,
+            taxiRoute = null;
         taxiRoute = Ds.DataService('/trafficindex_map/track.json', sendtaxiparams, (resp) => {
-            if (!resp.aaData) {
-                alert('没有查询到浮动车信息');
+            if (!resp.aaData || !resp.aaData.feature || resp.aaData.feature.length == 0) {
+                message.warning('没有查询到浮动车信息', 3);
                 return;
             } else {
                 map.eachLayer((layer) => {
@@ -852,15 +893,15 @@ export const trackingTaxi = (params) => {
 
         }, (e) => {
             console.log(e);
-            alert("后台传输错误");
+            message.error("后台传输错误", 5);
         });
 
-        taxiInterval = setInterval(() => {
-            taxiRoute();
-        }, 61000);
+        /*  taxiInterval = setInterval(() => {
+              taxiRoute();
+          }, 61000);*/
+        return taxiRoute;
 
-
-    } else alert("无法追踪");
+    } else message.error("无法追踪", 3);
 }
 
 

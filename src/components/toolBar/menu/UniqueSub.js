@@ -20,6 +20,7 @@ import {
 } from 'antd';
 
 const ButtonGroup = Button.Group;
+var taxiInterval = null;
 class UniqueSub extends React.Component {
     constructor() {
         super();
@@ -84,13 +85,21 @@ class UniqueSub extends React.Component {
             )
         });
         lmsg.subscribe('tracktaxi', (data) => {
+            console.log('tracktaxi', data);
             message.success('您已进入追踪浮动车页面');
             if (data.startTracking) {
                 if (!data.params.id) {
-                    alert('没有选中的浮动车');
-                } else CI.trackingTaxi(data.params);
+                    message.warning('没有选中的浮动车', 5);
+                } else {
+                    var tracktaxi11 = CI.trackingTaxi(data.params);
+                    if (tracktaxi11) {
+                        taxiInterval = setInterval(() => {
+                            CI.trackingTaxi(data.params);
+                        }, 60005)
+                    } else taxiInterval = null;
+                }
             } else if (!data.startTracking) CI.stopTrackingTaxi();
-            else alert("追踪参数错误！");
+            else message.warning("追踪参数错误！", 5);
             localStorage.removeItem('tracktaxi');
         });
         lmsg.subscribe('cfxydBtnClick', (data) => {
@@ -155,12 +164,13 @@ class UniquePanel extends React.Component {
             var dataRecv = null;
             Ds.DataService('/trafficindex_bodcollisionflowresult/migrationMap.json', params, (resp) => {
                 dataRecv = resp.aaData;
+                return dataRecv;
             }, (e) => {
                 console.log(e);
-                alert('后台传输错误');
+                message.error('后台传输错误', 5);
             });
 
-            if (dataRecv && dataRecv.dataPoint.length > 0) {
+            if (dataRecv && dataRecv.dataLine.length > 0) {
                 CI.clearLayer();
                 var overlay = new lmap.echartsLayer('ODLayer', echarts);
                 var chartsContainer = overlay.getEchartsContainer();
@@ -259,7 +269,8 @@ class UniquePanel extends React.Component {
                 case 'shigong':
                     message.success('您已进入道路施工页面');
                     DR.drawFeatures.disable();
-                    self.refs.shigong.props.onClick();
+                    self.onClickButton("shigong");
+                    //self.refs.shigong.props.onClick();
                     break;
                 case 'shigong_start':
                     //self.refs.shigong.props.onClick();
@@ -269,7 +280,8 @@ class UniquePanel extends React.Component {
                 case 'guanzhi':
                     message.success('您已进入交通管制页面');
                     DR.drawFeatures.disable();
-                    self.refs.guanzhi.props.onClick();
+                    //self.refs.guanzhi.props.onClick();
+                    self.onClickButton("guanzhi");
                     break;
                 case 'guanzhi_start':
                     showModalWarning();
@@ -278,7 +290,8 @@ class UniquePanel extends React.Component {
                 case 'shigu':
                     message.success('您已进入交通事故页面');
                     DR.drawFeatures.disable();
-                    self.refs.shigu.props.onClick();
+                    self.onClickButton("shigu");
+                    //self.refs.shigu.props.onClick();
                     break;
                 case 'shigu_start':
                     showModalWarning();
@@ -286,7 +299,8 @@ class UniquePanel extends React.Component {
                     break;
                 case 'fdc':
                     message.success('您已进入浮动车页面');
-                    self.refs.fudongche.props.onClick();
+                    self.onClickButton("fudongche");
+                    //self.refs.fudongche.props.onClick();
                     break;
                 default:
                     return;
@@ -296,28 +310,30 @@ class UniquePanel extends React.Component {
 
         lmsg.subscribe('cfxydBtnClick', (data) => {
             console.log('cfxydBtnClick', data);
-            self.setState({
-                cfydData: null
-            });
-            message.success('您已進入常發擁堵頁面');
+            /* self.setState({
+                 cfydData: null
+             });*/
+            message.success('您已进入常发拥堵界面');
             if (data.isCross == 1) {
                 //路口
-                self.setState({
-                    cfydData: data.time
-                });
-                self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+                /* self.setState({
+                     cfydData: data.time
+                 });*/
+                self.onClickButton('yongdu_cross', data.time);
+                //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
             } else if (data.isCross == 2) {
                 //路段
-                self.setState({
-                    cfydData: data.time
-                });
-                self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
-            } else alert('双屏通讯错误');
+                /* self.setState({
+                     cfydData: data.time
+                 });*/
+                self.onClickButton('yongdu_road', data.time);
+                //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
+            } else message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
             localStorage.removeItem('cfxydBtnClick');
         });
         lmsg.subscribe('ODClick', (data) => {
             console.log('ODClick', data);
-            message.success('您已進入OD分析頁面');
+            message.success('您已进入OD分析页面');
             self.OD(data);
             localStorage.removeItem('ODClick');
         });
@@ -325,7 +341,7 @@ class UniquePanel extends React.Component {
             console.log('hbjjrToMap', data)
             localStorage.removeItem('hbjjrToMap');
             if (data.messageType == '0' || data.messageType == '1' || data.messageType == '2' || data.messageType == '3') {
-                message.success('您已進入節假日頁面');
+                message.success('您已进入节假日页面');
                 //清空图层
                 CI.clearLayer();
             } else if (data.messageType == '4') {
@@ -353,7 +369,7 @@ class UniquePanel extends React.Component {
                     DR.DrawHoliday.drawRegion();
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                 });
 
             } else if (data.messageType == '6') {
@@ -370,7 +386,7 @@ class UniquePanel extends React.Component {
                     DR.DrawHoliday.drawRegion();
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                 });
 
             } else if (data.messageType == '7') {
@@ -384,7 +400,7 @@ class UniquePanel extends React.Component {
                     DR.DrawHoliday.selectCross(resp.aaData);
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                 });
 
             } else if (data.messageType == '8') {
@@ -398,7 +414,7 @@ class UniquePanel extends React.Component {
                     DR.DrawHoliday.selectRoad(resp.aaData);
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                 });
             }
         });
@@ -406,6 +422,10 @@ class UniquePanel extends React.Component {
     }
     componentWillUnmount() {
         lmap.removeEchartsLayer();
+        CI.clearLayer();
+        if (taxiInterval) {
+            clearInterval(taxiInterval)
+        }
     }
     render() {
         const yongduButton = (
@@ -422,22 +442,22 @@ class UniquePanel extends React.Component {
                 </div>);
         return (
             <div className={UniqueStyles.boxpanel}  id="uniqueDetails">
-                <div className={UniqueStyles.panel_header}>
+                <div className={UniqueStyles.panel_header} style={{fontSize:'14px'}}>
                     专题信息
                 </div>
                 <div className={UniqueStyles.panel_body} id="uniquepanel_body">
-                    
-                    <Button id="shigong" ref="shigong" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.shigong.props.id)}>道路施工</Button>
-                    <Button id="guanzhi" ref="guanzhi" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.guanzhi.props.id)}>交通管制</Button>
-                    <Button id="shigu" ref="shigu" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.shigu.props.id)}>交通事故</Button>
-                    <Button id="fudongche" ref="fudongche" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.fudongche.props.id)}>浮动车</Button><br/>
+
+                    <Button id="shigong" ref="shigong" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.shigong.props.id)}>道路施工</Button>
+                    <Button id="guanzhi" ref="guanzhi" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.guanzhi.props.id)}>交通管制</Button>
+                    <Button id="shigu" ref="shigu" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.shigu.props.id)}>交通事故</Button>
+                    <Button id="fudongche" ref="fudongche" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled} onClick={()=>this.onClickButton(this.refs.fudongche.props.id)}>浮动车</Button><br/>
                     <Popover content={jiariButton} placement="bottom" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('uniqueDetails')}>
-                        <Button id="jiari" ref="jiari" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled}>节假专题</Button>
+                        <Button id="jiari" ref="jiari" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled}>节假专题</Button>
                     </Popover>
                     <Popover ref="yongduPop" content={yongduButton} placement="bottom" title="请选择" trigger="hover" getTooltipContainer={() => document.getElementById('uniqueDetails')}>
-                        <Button id="yongdu" ref="yongdu" className={UniqueStyles.button1} type="primary" size="small" disabled={this.state.disabled}>常发拥堵</Button>
+                        <Button id="yongdu" ref="yongdu" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled}>常发拥堵</Button>
                     </Popover>
-                    <Button id="OD" ref="OD" className={UniqueStyles.button1} type="primary" size="small" disabled={!this.state.disabled} onClick={()=>this.OD()}>O/D分析</Button>
+                    <Button id="OD" ref="OD" className={UniqueStyles.button_primary} type="primary" size="small" disabled={!this.state.disabled} onClick={()=>this.OD()}>O/D分析</Button>
                  </div>
 
             </div>
@@ -451,7 +471,7 @@ class UniquePanel extends React.Component {
 export default UniqueSub
 
 
-/*      var option = {
+/*   var option = {
           color: ['gold', 'aqua', 'lime'],
           tooltip: {
               trigger: 'item',

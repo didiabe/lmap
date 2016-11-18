@@ -8444,6 +8444,10 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
+	var _lmap = __webpack_require__(228);
+	
+	var lmap = _interopRequireWildcard(_lmap);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -8557,6 +8561,7 @@
 	                playback: false
 	            });
 	            _reactDom2.default.render(_react2.default.createElement(Forecast, null), document.getElementById('traffic_detailed'));
+	            CI.clearLayer();
 	        }
 	    }, {
 	        key: 'playback',
@@ -8566,6 +8571,13 @@
 	                playback: true
 	            });
 	            _reactDom2.default.render(_react2.default.createElement(Playback, null), document.getElementById('traffic_detailed'));
+	            CI.clearLayer();
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            //lmap.removeEchartsLayer();
+	            CI.clearLayer();
 	        }
 	    }, {
 	        key: 'render',
@@ -8644,6 +8656,7 @@
 	        _this5.onSliderChange = _this5.onSliderChange.bind(_this5);
 	        _this5.startForcast = _this5.startForcast.bind(_this5);
 	        _this5.getCheckOption = _this5.getCheckOption.bind(_this5);
+	        _this5.clearForcast = _this5.clearForcast.bind(_this5);
 	        _this5.state = {
 	            inputValue: 0,
 	            checked: false,
@@ -8698,13 +8711,14 @@
 	                time: this.state.inputValue
 	            };
 	            Ds.DataService('/trafficindex_map/forecast.json', param, function (resp) {
-	                if (markerPlayBack) markerPlayBack.clearLayer();
+	                if (markerPlayBack) CI.clearLayer();
 	                self.setState({
 	                    isLoading: false,
 	                    isLoaded: true
 	                });
 	                if (resp.aaData.features.length == 0) {
-	                    alert('没有查询到相应信息');
+	                    //alert('没有查询到相应信息');
+	                    _antd.message.error('没有查询到相应信息', 5);
 	                    self.setState({
 	                        isLoading: false,
 	                        isLoaded: false
@@ -8720,7 +8734,10 @@
 	    }, {
 	        key: 'clearForcast',
 	        value: function clearForcast() {
-	            markerPlayBack.clearLayer();
+	            CI.clearLayer();
+	            this.setState({
+	                isLoaded: false
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -8795,17 +8812,16 @@
 	                        { span: 6 },
 	                        _react2.default.createElement(
 	                            _antd.Button,
-	                            { type: 'primary', loading: this.state.isLoading, onClick: this.startForcast, disabled: !this.state.checked },
+	                            { type: 'primary', loading: this.state.isLoading, className: _traffic2.default.button_primary, onClick: this.startForcast, disabled: !this.state.checked },
 	                            this.state.isLoaded ? "加载完成！" : "加载数据"
 	                        )
 	                    ),
-	                    _react2.default.createElement(_antd.Col, { span: 1 }),
 	                    _react2.default.createElement(
 	                        _antd.Col,
 	                        { span: 6 },
 	                        _react2.default.createElement(
 	                            _antd.Button,
-	                            { type: 'ghost', onClick: this.clearForcast, disabled: !this.state.isLoaded },
+	                            { type: 'ghost', style: { borderRadius: '2px', marginLeft: '40px' }, onClick: this.clearForcast, disabled: !this.state.isLoaded },
 	                            "清空图层"
 	                        )
 	                    ),
@@ -8820,6 +8836,7 @@
 	
 	var RangePicker = _antd.DatePicker.RangePicker;
 	var CheckboxGroup = _antd.Checkbox.Group;
+	var progressInterval = null;
 	var CRA_options = [{
 	    label: "路口",
 	    value: "cross"
@@ -8889,7 +8906,7 @@
 	            });
 	
 	            var p = 0;
-	            var progressInterval = setInterval(function () {
+	            progressInterval = setInterval(function () {
 	                if (p < 100 && _this7.state.isPlaying) {
 	                    p = p + _this7.state.each_percent;
 	                    //console.log(p);
@@ -8902,6 +8919,7 @@
 	    }, {
 	        key: 'clear',
 	        value: function clear() {
+	
 	            markerPlayBack.clearLayer();
 	            this.setState({
 	                isPlaying: false,
@@ -8972,7 +8990,7 @@
 	        key: 'loadingData',
 	        value: function loadingData() {
 	            if (this.state.startTime == null || this.state.endTime == null || this.state.checkedOptions.length == 0) {
-	                alert("请选择信息后查询");
+	                _antd.message.warning("请选择信息后查询", 3); //alert("请选择信息后查询");
 	                return;
 	            }
 	            var self = this;
@@ -8994,7 +9012,8 @@
 	                            loading: false,
 	                            isLoaded: false
 	                        });
-	                        alert("没有相应信息");
+	                        //alert("没有相应信息");
+	                        _antd.message.error('没有查询到相应信息', 5);
 	                    } else {
 	                        self.setState({
 	                            loading: false,
@@ -9008,89 +9027,23 @@
 	                        markerPlayBack = CI.playback(geo_playback);
 	                    }
 	                }, function (e) {
-	                    alert('后台传输错误');
+	                    //alert('后台传输错误');
+	                    _antd.message.error('后台传输错误', 5);
 	                    console.log(e);
 	                });
 	            }, 1000);
-	
-	            /* this.setState({
-	                 loading: true,
-	                 percent: 0,
-	             });*/
-	
-	            /* var geo_playback = {
-	                 "type": "FeatureCollection",
-	                 "features": [{
-	                     "type": "Feature",
-	                     "geometry": {
-	                         "type": "Point",
-	                         "coordinates": [121.35, 28.491]
-	                     },
-	                     "properties": {
-	                         "index": [{
-	                             time: "08:22-13:00",
-	                             val: 5.1
-	                         }, {
-	                             time: "08:22-13:05",
-	                             val: 9.5
-	                         }, {
-	                             time: "08:22-13:10",
-	                             val: 3.9
-	                         }, {
-	                             time: "08:22-13:15",
-	                             val: 2.9
-	                         }, {
-	                             time: "08:22-13:20",
-	                             val: 7
-	                         }],
-	                         "name": "友谊路"
-	                     }
-	                 }, {
-	                     "type": "Feature",
-	                     "geometry": {
-	                         "type": "Point",
-	                         "coordinates": [121.35, 28.411]
-	                     },
-	                     "properties": {
-	                         "index": [{
-	                             time: "08:22-13:00",
-	                             val: 9
-	                         }, {
-	                             time: "08:22-13:05",
-	                             val: 5
-	                         }, {
-	                             time: "08:22-13:10",
-	                             val: 7
-	                         }, {
-	                             time: "08:22-13:15",
-	                             val: 3.5
-	                         }, {
-	                             time: "08:22-13:20",
-	                             val: 7.9
-	                         }],
-	                         "name": "延陵中路"
-	                     }
-	                 }]
-	             };*/
-	
-	            /*  var percent_length = geo_playback.features[0].properties.index.length;
-	              var each_percent = 100 / percent_length;*/
-	
-	            /* setTimeout(() => {
-	                 this.setState({
-	                     loading: false,
-	                     isLoaded: true,
-	                     each_percent: each_percent
-	                 });
-	                   markerPlayBack = CI.playback(geo_playback);
-	             }, 1000);*/
-	            //<Slider max={30} min={0} onChange={this.onSliderChange} value={this.state.inputValue}/>
 	        }
 	    }, {
 	        key: 'disabledDate',
 	        value: function disabledDate(current) {
 	            // can not select days after today
 	            return current && current.valueOf() > Date.now();
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            if (progressInterval) clearInterval(progressInterval);
+	            if (markerPlayBack) this.clear();
 	        }
 	    }, {
 	        key: 'render',
@@ -9121,34 +9074,38 @@
 	                    'div',
 	                    null,
 	                    _react2.default.createElement(
-	                        'ul',
-	                        null,
+	                        _antd.Spin,
+	                        { spinning: this.state.loading },
 	                        _react2.default.createElement(
-	                            'li',
-	                            null,
-	                            "时间区间: ",
-	                            _react2.default.createElement(RangePicker, { showTime: true, disabledDate: this.disabledDate, format: 'YYYY-MM-DD HH:mm:ss',
-	                                onChange: this.getTimeRange, getCalendarContainer: function getCalendarContainer(trigger) {
-	                                    return trigger.parentNode;
-	                                } })
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'li',
-	                            null,
-	                            _react2.default.createElement(CheckboxGroup, { className: _traffic2.default.checkboxes, options: CRA_options2, onChange: this.getCheckOption })
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            _antd.Button,
-	                            { className: _traffic2.default.loadingButton, type: 'primary', size: 'large', icon: 'cloud-upload',
-	                                loading: this.state.loading, onClick: this.loadingData, disabled: this.state.isLoaded },
-	                            this.state.isLoaded ? "加载完成!" : "加载数据"
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement('li', { className: _traffic2.default.splitline_H }),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement('li', { className: _traffic2.default.date, id: 'dateNow' })
+	                            'ul',
+	                            { id: 'ul1' },
+	                            _react2.default.createElement(
+	                                'li',
+	                                null,
+	                                "时间区间: ",
+	                                _react2.default.createElement(RangePicker, { showTime: true, disabledDate: this.disabledDate, format: 'YYYY-MM-DD HH:mm:ss',
+	                                    onChange: this.getTimeRange, getCalendarContainer: function getCalendarContainer(trigger) {
+	                                        return trigger.parentNode;
+	                                    } })
+	                            ),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(
+	                                'li',
+	                                null,
+	                                _react2.default.createElement(CheckboxGroup, { className: _traffic2.default.checkboxes, options: CRA_options2, onChange: this.getCheckOption })
+	                            ),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(
+	                                _antd.Button,
+	                                { className: _traffic2.default.button_primary, style: { marginLeft: '150px' }, type: 'primary', size: 'large', icon: 'cloud-upload',
+	                                    loading: this.state.loading, onClick: this.loadingData, disabled: this.state.isLoaded },
+	                                this.state.isLoaded ? "加载完成" : "加载数据"
+	                            ),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement('li', { className: _traffic2.default.splitline_H }),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement('li', { className: _traffic2.default.date, id: 'dateNow' })
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement('br', null),
@@ -13885,7 +13842,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"boxpanel":"_1VviI9DWdMBhq-zzZn-fTs","panel_header":"_2pfJyz26TyFQ1bLvDBF3Pa","panel_tab":"_3Y3vnjEF6Wd7Z4YlFF785s","panel_tab_li":"_1p7e05fcEeYuFZJc-LZYp9","panel_tab_li_active":"_1fYwbXooItHlI0o5ZBoJ9g _1p7e05fcEeYuFZJc-LZYp9","traffic_tag":"_3I7-Ck84qARJiJw9Dp4A0s","smooth_jam":"_3_sh-QP3iLgbmtUblDFsRK","traffic_level":"_3ct0QNlrNr0ixUPWPBMydD","traffic_level_li":"Rev_SSbORlsKmeSjSUFC0","traffic_level_1":"_2uuVTiFiKWtDqVvAZI7Nch Rev_SSbORlsKmeSjSUFC0","traffic_level_2":"_2lUzqsZ4DP3Ol5RWQDVMZh Rev_SSbORlsKmeSjSUFC0","traffic_level_3":"_1_VBmWDvNWulupFOKKPtxn Rev_SSbORlsKmeSjSUFC0","traffic_level_4":"QC4Fk9YwAMHWVmHGG4Ahy Rev_SSbORlsKmeSjSUFC0","traffic_level_5":"_32RPOJhISWw56zIcTSLiGY Rev_SSbORlsKmeSjSUFC0","panel_body":"_33fvMNli8JXbu5pl-iHWYN","time_lbl":"_2XJktDm2i8m6sQCD-W77Rr","date":"hCuwoSpWe4qZqkYMACEVV","checkboxes":"_1gzNdwZm_oUeOrearAHyBG","loadingButton":"NOUUUGNdaFN-kloHnHYIl","splitline_H":"_1AIENj9GcUdudOsiDkLK1A","hisPlayer_panel":"_3Q3Yded73d98uCW88kNuhz","hisPlayer_btnL":"_2vxO_ciU0VUSFxTkwrA9Rx","hisPlayer_btnR":"_2b74pl5i2hS5tpkPj2Jtka","hisPlayer_btn1":"SoOmzuaRoQ-8D5aGQ4DCF","hisPlayer_btn2":"_3NsRBZxnOGzZv5il63kjmu","QueContent":"gq5neQNIKievPvEZVAomg"};
+	module.exports = {"boxpanel":"_1VviI9DWdMBhq-zzZn-fTs","panel_header":"_2pfJyz26TyFQ1bLvDBF3Pa","panel_tab":"_3Y3vnjEF6Wd7Z4YlFF785s","panel_tab_li":"_1p7e05fcEeYuFZJc-LZYp9","panel_tab_li_active":"_1fYwbXooItHlI0o5ZBoJ9g _1p7e05fcEeYuFZJc-LZYp9","traffic_tag":"_3I7-Ck84qARJiJw9Dp4A0s","smooth_jam":"_3_sh-QP3iLgbmtUblDFsRK","traffic_level":"_3ct0QNlrNr0ixUPWPBMydD","traffic_level_li":"Rev_SSbORlsKmeSjSUFC0","traffic_level_1":"_2uuVTiFiKWtDqVvAZI7Nch Rev_SSbORlsKmeSjSUFC0","traffic_level_2":"_2lUzqsZ4DP3Ol5RWQDVMZh Rev_SSbORlsKmeSjSUFC0","traffic_level_3":"_1_VBmWDvNWulupFOKKPtxn Rev_SSbORlsKmeSjSUFC0","traffic_level_4":"QC4Fk9YwAMHWVmHGG4Ahy Rev_SSbORlsKmeSjSUFC0","traffic_level_5":"_32RPOJhISWw56zIcTSLiGY Rev_SSbORlsKmeSjSUFC0","panel_body":"_33fvMNli8JXbu5pl-iHWYN","time_lbl":"_2XJktDm2i8m6sQCD-W77Rr","date":"hCuwoSpWe4qZqkYMACEVV","checkboxes":"_1gzNdwZm_oUeOrearAHyBG","loadingButton":"NOUUUGNdaFN-kloHnHYIl","splitline_H":"_1AIENj9GcUdudOsiDkLK1A","hisPlayer_panel":"_3Q3Yded73d98uCW88kNuhz","hisPlayer_btnL":"_2vxO_ciU0VUSFxTkwrA9Rx","hisPlayer_btnR":"_2b74pl5i2hS5tpkPj2Jtka","hisPlayer_btn1":"SoOmzuaRoQ-8D5aGQ4DCF","hisPlayer_btn2":"_3NsRBZxnOGzZv5il63kjmu","QueContent":"gq5neQNIKievPvEZVAomg","button_primary":"HT3yIAWni_QdMyDBCaynO","active":"Tx6fEJMQ3KtwzUthwpBu3"};
 
 /***/ },
 /* 122 */,
@@ -14024,7 +13981,11 @@
 	        popupCross.appendChild(button1);
 	        popupCross.appendChild(button2);
 	        popupCross.appendChild(button3);
-	        pointLayer.bindPopup(popupCross).addTo(map);
+	        var customOptions = {
+	            'maxWidth': '500',
+	            'className': 'custom'
+	        };
+	        pointLayer.bindPopup(popupCross, customOptions).addTo(map);
 	    };
 	
 	    function highlightFeature(e) {
@@ -14327,6 +14288,26 @@
 	    return markerPlayBack;
 	};
 	
+	var formatDateTime = function formatDateTime(data, ref) {
+	    var formatedTime = null;
+	    if (data) {
+	        var d = new Date(data);
+	        var year = d.getFullYear();
+	        var day = d.getDate();
+	        day = day < 10 ? '0' + day : day;
+	        var month = d.getMonth() + 1;
+	        month = month < 10 ? '0' + month : month;
+	        var hour = d.getHours();
+	        hour = hour < 10 ? '0' + hour : hour;
+	        var minute = d.getMinutes();
+	        minute = minute < 10 ? '0' + minute : minute;
+	        var second = d.getSeconds();
+	        second = second < 10 ? '0' + second : second;
+	        if (ref == 0) formatedTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;else if (ref == 1) formatedTime = year + '-' + month + '-' + day;else formatedTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+	    } else formatedTime = null;
+	    return formatedTime;
+	};
+	
 	var displayUniLayer = exports.displayUniLayer = function displayUniLayer(ref, data) {
 	    map.eachLayer(function (layer) {
 	        if (layer.options.id !== "streetLayer") {
@@ -14536,7 +14517,7 @@
 	        if (!featurecollectiondata.features || featurecollectiondata.features.length == 0) _antd.message.error('没有查询到相应地图数据！');
 	    }, function (e) {
 	        console.log(e);
-	        alert("后台传输错误");
+	        _antd.message.error("后台传输错误", 3);
 	    });
 	
 	    clickPanBound = function clickPanBound(e) {
@@ -14549,10 +14530,12 @@
 	            Ds.DataService("/trafficindex_floatCargp/listGetFdcarByCarid.json", sendparamID, function (resp) {
 	                popupData = resp.aaData;
 	            }, function (e) {
-	                alert('后台传输错误');
+	                _antd.message.error('后台传输错误', 3);
 	                console.log(e);
 	            });
-	            specialpopup = _leaflet2.default.popup().setContent("车牌照: " + popupData.carid + '<br/>' + "车朝向: " + popupData.direction + '<br/>' + "浮动车类型: " + popupData.floatcartype + '<br/>' + "GPS时间: " + popupData.gpsDate + '<br/>' + "经度: " + popupData.gpsJd + '<br/>' + "纬度: " + popupData.gpsWd + '<br/>' + "浮动车速度: " + popupData.velocity + '<br/>');
+	
+	            var floatcartype1 = popupData.floatcartype = 1 ? '公交车' : popupData.floatcartype = 2 ? '出租车' : '其他';
+	            specialpopup = _leaflet2.default.popup().setContent("车牌照: " + popupData.carid + '<br/>' + "车朝向: " + popupData.direction + '<br/>' + "浮动车类型: " + floatcartype1 + '<br/>' + "GPS时间: " + formatDateTime(popupData.gpsDate, 0) + '<br/>' + "经度: " + popupData.gpsJd + '<br/>' + "纬度: " + popupData.gpsWd + '<br/>' + "浮动车速度: " + popupData.velocity + ' km/h' + '<br/>');
 	        } else if (ref == 'jiari_zone' || ref == 'jiari_cross' || ref == 'jiari_road') {
 	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数:' + e.target.feature.properties.index);
 	        }
@@ -14587,26 +14570,33 @@
 	            Ds.DataService("/trafficindex_RoadConst/gotoBJtzsRoadconstruction.json", sendparamID, function (resp) {
 	                popupData = resp.aaData;
 	            }, function (e) {
-	                alert('后台传输错误');
+	                _antd.message.error('后台传输错误', 3);
 	                console.log(e);
 	            });
-	            popup_spec = _leaflet2.default.popup().setContent("施工单位: " + popupData.company + '<br/>' + "联系人: " + popupData.contact + '<br/>' + "施工类别: " + popupData.objecttype + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "施工名称: " + popupData.objectname + '<br/>' + "施工原因: " + popupData.reason + '<br/>' + "当前状态: " + popupData.state + '<br/>' + "开始时间: " + popupData.startdate + '<br/>' + "结束时间: " + popupData.enddate + '<br/>' + "联系电话: " + popupData.telephone + '<br/>');
+	            var construType = popupData.objecttype == 0 ? '路口' : popupData.objecttype == 1 ? '路段' : '其他';
+	            var construStatus = popupData.state == 0 ? '施工前' : popupData.state == 1 ? '施工中' : popupData.state == 2 ? '施工完成' : '其他';
+	            popup_spec = _leaflet2.default.popup().setContent("施工单位: " + popupData.company + '<br/>' + "联系人: " + popupData.contact + '<br/>' + "施工类别: " + construType + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "施工名称: " + popupData.objectname + '<br/>' + "施工原因: " + popupData.reason + '<br/>' + "当前状态: " + construStatus + '<br/>' + "开始时间: " + formatDateTime(popupData.startdate, 1) + '<br/>' + "结束时间: " + formatDateTime(popupData.enddate, 1) + '<br/>' + "联系电话: " + popupData.telephone + '<br/>');
 	        } else if (ref == "guanzhi") {
 	            Ds.DataService("/trafficindex_trafficControl/gotoBJtzsTrafficcontrol.json", sendparamID, function (resp) {
 	                popupData = resp.aaData;
 	            }, function (e) {
-	                alert('后台传输错误');
+	                _antd.message.error('后台传输错误', 3);
 	                console.log(e);
 	            });
-	            popup_spec = _leaflet2.default.popup().setContent("申请时间: " + popupData.applydate + '<br/>' + "开始时间: " + popupData.startdate + '<br/>' + "预计结束时间: " + popupData.planenddate + '<br/>' + "实际结束时间: " + popupData.actualenddate + '<br/>' + "当前状态: " + popupData.state + '<br/>' + "所属辖区: " + popupData.area + '<br/>' + "责任单位: " + popupData.liablecompany + '<br/>' + "责任人: " + popupData.liableperson + '<br/>' + "联系电话: " + popupData.telephone + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "管制名称: " + popupData.objectname + '<br/>' + "管制类型: " + popupData.type + '<br/>' + "管制说明: " + popupData.remark + '<br/>');
+	            var controlStatus = popupData.state == 0 ? '未申请' : popupData.state == 1 ? '已申请' : popupData.state == 2 ? '申请中' : '其他';
+	            var controlBelong = popupData.area == 0 ? '指挥中心' : popupData.area == 1 ? '管辖一区' : popupData.area == 2 ? '管辖二区' : '其他';
+	            var controlType = popupData.type == 0 ? '中高考' : popupData.type == 1 ? '节假日' : popupData.type == 2 ? '大型活动' : popupData.type == 3 ? '禁货' : popupData.type == 4 ? '禁大客' : popupData.type == 5 ? '禁危险品车辆' : popupData.type == 6 ? '禁摩托车' : popupData.type == 7 ? '路口禁止转向' : popupData.type == 8 ? '单行道路' : popupData.type == 9 ? '其他' : '其他';
+	            popup_spec = _leaflet2.default.popup().setContent("申请时间: " + formatDateTime(popupData.applydate, 1) + '<br/>' + "开始时间: " + formatDateTime(popupData.startdate, 1) + '<br/>' + "预计结束时间: " + formatDateTime(popupData.planenddate, 1) + '<br/>' + "实际结束时间: " + formatDateTime(popupData.actualenddate, 1) + '<br/>' + "当前状态: " + controlStatus + '<br/>' + "所属辖区: " + controlBelong + '<br/>' + "责任单位: " + popupData.liablecompany + '<br/>' + "责任人: " + popupData.liableperson + '<br/>' + "联系电话: " + popupData.telephone + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "管制名称: " + popupData.objectname + '<br/>' + "管制类型: " + controlType + '<br/>' + "管制说明: " + popupData.remark + '<br/>');
 	        } else if (ref == "shigu") {
 	            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsTrafficaccident.json", sendparamID, function (resp) {
 	                popupData = resp.aaData;
 	            }, function (e) {
-	                alert('后台传输错误');
+	                _antd.message.error('后台传输错误', 3);
 	                console.log(e);
 	            });
-	            popup_spec = _leaflet2.default.popup().setContent("事故等级: " + popupData.accidentlevel + '<br/>' + "事故类型: " + popupData.accidenttype + '<br/>' + "发生位置: " + popupData.locationdesc + '<br/>' + "发生时间: " + popupData.occurrencedate + '<br/>' + "接报人: " + popupData.recipientperson + '<br/>' + "事故描述: " + popupData.remark + '<br/>' + "上报人: " + popupData.reportperson + '<br/>' + "上报人联系方式: " + popupData.reportpersoncontact + '<br/>');
+	            var accidentType = popupData.accidenttype == -1 ? '全部' : popupData.accidenttype == 0 ? '酒后驾车' : popupData.accidenttype == 1 ? '逆行' : popupData.accidenttype == 2 ? '违法吊车' : popupData.accidenttype == 3 ? '违法变道' : popupData.accidenttype == 4 ? '违法超载' : popupData.accidenttype == 5 ? '无证驾驶' : popupData.accidenttype == 6 ? '违反交通信号' : popupData.accidenttype == 7 ? '超速' : popupData.accidenttype == 8 ? '其他' : '其他';
+	            var accidentLevel = popupData.accidentlevel == -1 ? '全部' : popupData.accidentlevel == 0 ? '轻微事故' : popupData.accidentlevel == 1 ? '一般事故' : popupData.accidentlevel == 2 ? '重大事故' : popupData.accidentlevel == 3 ? '特大事故' : '其他';
+	            popup_spec = _leaflet2.default.popup().setContent("事故等级: " + accidentLevel + '<br/>' + "事故类型: " + accidentType + '<br/>' + "发生位置: " + popupData.locationdesc + '<br/>' + "发生时间: " + formatDateTime(popupData.occurrencedate, 1) + '<br/>' + "接报人: " + popupData.recipientperson + '<br/>' + "事故描述: " + popupData.remark + '<br/>' + "上报人: " + popupData.reportperson + '<br/>' + "上报人联系方式: " + popupData.reportpersoncontact + '<br/>');
 	        }
 	        if (map.getZoom() <= 15) {
 	            map.setZoomAround(e.target._latlng, 15);
@@ -14657,12 +14647,13 @@
 	    if (params) {
 	        var sendtaxiparams = {
 	            id: params.id,
-	            date: params.date
+	            date: params.time
 	        };
-	
+	        var taxiInterval = null,
+	            taxiRoute = null;
 	        taxiRoute = Ds.DataService('/trafficindex_map/track.json', sendtaxiparams, function (resp) {
-	            if (!resp.aaData) {
-	                alert('没有查询到浮动车信息');
+	            if (!resp.aaData || !resp.aaData.feature || resp.aaData.feature.length == 0) {
+	                _antd.message.warning('没有查询到浮动车信息', 3);
 	                return;
 	            } else {
 	                map.eachLayer(function (layer) {
@@ -14702,13 +14693,14 @@
 	            }
 	        }, function (e) {
 	            console.log(e);
-	            alert("后台传输错误");
+	            _antd.message.error("后台传输错误", 5);
 	        });
 	
-	        taxiInterval = setInterval(function () {
-	            taxiRoute();
-	        }, 61000);
-	    } else alert("无法追踪");
+	        /*  taxiInterval = setInterval(() => {
+	              taxiRoute();
+	          }, 61000);*/
+	        return taxiRoute;
+	    } else _antd.message.error("无法追踪", 3);
 	};
 	
 	var stopTrackingTaxi = exports.stopTrackingTaxi = function stopTrackingTaxi() {
@@ -26311,15 +26303,17 @@
 	            this._addMakers(this);
 	        },
 	        _addMakers: function _addMakers(self) {
-	            var lab = document.getElementById('dateNow');
-	            lab.innerHTML = this._geos[0].properties.index[0].time;
-	            for (var i = 0, len = this._geos.length; i < len; i++) {
-	                var marker = _leaflet2.default.marker([this._geos[i].geometry.coordinates[1], this._geos[i].geometry.coordinates[0]], {
-	                    icon: this._getColor(this._geos[i].properties.index[0].val)
-	                });
-	                this._makers.push(marker);
+	            if (document.getElementById('dateNow')) {
+	                var lab = document.getElementById('dateNow');
+	                lab.innerHTML = this._geos[0].properties.index[0].time;
+	                for (var i = 0, len = this._geos.length; i < len; i++) {
+	                    var marker = _leaflet2.default.marker([this._geos[i].geometry.coordinates[1], this._geos[i].geometry.coordinates[0]], {
+	                        icon: this._getColor(this._geos[i].properties.index[0].val)
+	                    });
+	                    this._makers.push(marker);
+	                }
+	                this._featureGroup = _leaflet2.default.featureGroup(this._makers).addTo(this._map);
 	            }
-	            this._featureGroup = _leaflet2.default.featureGroup(this._makers).addTo(this._map);
 	        },
 	        _getColor: function _getColor(index) {
 	            switch (true) {
@@ -26392,22 +26386,23 @@
 	            this._intervalID = window.setInterval(this._animation, this._duration, this);
 	        },
 	        _animation: function _animation(self) {
-	            var lab = document.getElementById('dateNow');
-	            if (self._chID >= self._geos[0].properties.index.length) {
-	                clearInterval(self._intervalID);
-	                return;
+	            if (document.getElementById('dateNow')) {
+	                var lab = document.getElementById('dateNow');
+	                if (self._chID >= self._geos[0].properties.index.length) {
+	                    clearInterval(self._intervalID);
+	                    return;
+	                }
+	                for (var i = 0, len = self._makers.length; i < len; i++) {
+	                    self._makers[i].setIcon(self._getColor(self._geos[i].properties.index[self._chID].val));
+	                    lab.innerHTML = self._geos[i].properties.index[self._chID].time;
+	                }
+	                self._chID++;
 	            }
-	            for (var i = 0, len = self._makers.length; i < len; i++) {
-	                self._makers[i].setIcon(self._getColor(self._geos[i].properties.index[self._chID].val));
-	                lab.innerHTML = self._geos[i].properties.index[self._chID].time;
-	            }
-	            self._chID++;
 	        },
 	
 	        _speedUp: function _speedUp() {
 	            this._duration = this._duration + 1000;
 	            //document.getElementById('speed').value = this._duration;
-	
 	            if (this._intervalID) {
 	                this.stop();
 	                this.start();
@@ -27056,6 +27051,12 @@
 	    }
 	
 	    _createClass(UpdateIndexPanel, [{
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            //lmap.removeEchartsLayer();
+	            CI.clearLayer();
+	        }
+	    }, {
 	        key: 'selectCongestion',
 	        value: function selectCongestion(e) {
 	            if (e) {
@@ -27095,7 +27096,7 @@
 	            Ds.DataService("/trafficindex_map/zsLevel.json", param, function (resp) {
 	                var data4Table = [];
 	                if (resp.aaData.length < 1) {
-	                    alert("没有查到符合数据");
+	                    _antd.message.error('没有查到符合数据', 5); //alert("没有查到符合数据"); 
 	                    _this4.setState({
 	                        loading: false,
 	                        isLoaded: false
@@ -27117,7 +27118,8 @@
 	                }
 	            }, function (e) {
 	                console.log(e);
-	                alert("加载失败");
+	                //alert("加载失败");
+	                _antd.message.error('加载失败', 5);
 	                _this4.setState({
 	                    loading: false,
 	                    isLoaded: false
@@ -27149,19 +27151,22 @@
 	                    loading: false
 	                });
 	                if (resp.errorCode == 'success') {
-	                    alert('保存成功！');
+	                    //alert('保存成功！');
+	                    _antd.message.success('保存成功！', 5);
 	                } else {
-	                    alert('保存失败', resp.errorText);
+	                    _antd.message.error('保存失败' + resp.errorText, 5);
+	                    //alert('保存失败', resp.errorText);
 	                }
 	            }, function (e) {
 	                console.log = e;
-	                alert("后台传输错误！");
+	                _antd.message.error('后台传输错误！', 5);
+	                //alert("后台传输错误！")
 	            });
 	        }
 	    }, {
 	        key: 'onSelectChange',
 	        value: function onSelectChange(selectedRowKeys) {
-	            console.log('selectedRowKeys changed: ', selectedRowKeys);
+	            //console.log('selectedRowKeys changed: ', selectedRowKeys);
 	            var list = this.state.dataList;
 	            var selectID = [];
 	            selectedRowKeys.map(function (item) {
@@ -27311,7 +27316,7 @@
 	                        _react2.default.createElement(_antd.InputNumber, { style: { marginTop: 3 }, min: 0, max: 10, defaultValue: 1, step: 0.1, onChange: this.getIndex }),
 	                        _react2.default.createElement(
 	                            _antd.Button,
-	                            { style: { marginLeft: 30 }, type: 'primary', onClick: this.updateIndexVal,
+	                            { className: _updateIndex2.default.button_primary, style: { marginLeft: 30 }, type: 'primary', onClick: this.updateIndexVal,
 	                                disabled: !hasSelected || !this.state.T1Checked || !this.state.T2Checked, loading: loading },
 	                            '更新'
 	                        )
@@ -27376,10 +27381,10 @@
 	                            _antd.Row,
 	                            null,
 	                            "更新指数: ",
-	                            _react2.default.createElement(_antd.InputNumber, { style: { marginTop: 3 }, min: 0, max: 10, defaultValue: 1, step: 0.1, onChange: this.getIndex }),
+	                            _react2.default.createElement(_antd.InputNumber, { style: { marginTop: 3, marginLeft: '10px' }, min: 0, max: 10, defaultValue: 1, step: 0.1, onChange: this.getIndex }),
 	                            _react2.default.createElement(
 	                                _antd.Button,
-	                                { style: { marginLeft: 30 }, type: 'primary', onClick: this.updateIndexVal,
+	                                { className: _updateIndex2.default.button_primary, style: { marginLeft: '48px' }, type: 'primary', onClick: this.updateIndexVal,
 	                                    disabled: !hasSelected || !this.state.T3Checked, loading: loading },
 	                                '更新'
 	                            )
@@ -27420,13 +27425,7 @@
 	                    _react2.default.createElement(
 	                        'span',
 	                        { className: _updateIndex2.default.tab1 },
-	                        '指数',
-	                        _react2.default.createElement(
-	                            'b',
-	                            null,
-	                            '批量'
-	                        ),
-	                        '更新'
+	                        '指数批量更新'
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -27515,7 +27514,7 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { className: _updateIndex2.default.loadingButton, type: 'primary', icon: 'cloud-upload',
+	                        { className: _updateIndex2.default.button_primary, type: 'primary', icon: 'cloud-upload',
 	                            loading: this.state.loading, onClick: this.loadData, disabled: !this.state.CbtnChecked || !this.state.RbtnChecked },
 	                        "加载数据"
 	                    ),
@@ -27568,9 +27567,11 @@
 	                end: null
 	            };
 	            Ds.DataService('/trafficindex_map/zsUpdate.json', sendNewIndParam, function (resp) {
-	                if (resp.errorCode == 'success') alert('保存成功');else alert('保存失败');
+	                if (resp.errorCode == 'success') _antd.message.success('保存成功', 5); //alert('保存成功');
+	                else _antd.message.error('保存失败', 5); //alert('保存失败');
 	            }, function (e) {
-	                alert('保存失败');
+	                _antd.message.error('保存失败', 5);
+	                //alert('保存失败');
 	            });
 	        },
 	        onCancel: function onCancel() {}
@@ -27584,7 +27585,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"boxpanel":"_24yt9N72LN4Qx6-UeE2ooH","panel_header":"_2D7ozc3gFeAOxjsnz3_FpT","tab1":"_3ihMGn_mwGtN1DTvpvG71g","panel_tab":"vxNXf4qXck4en6pbw8FUg","panel_tab_li":"_33U-kh2gDTElk71Vc143ud","panel_tab_li_active":"_2xNXqcRx0rYhrdOaRBirVG _33U-kh2gDTElk71Vc143ud","traffic_tag":"_3U6b0wQKXCgqaD6tQzkNxS","smooth_jam":"OhiXpH1ZWQWwpX4glxgNG","traffic_level":"_1zmvDALwkSGEcsBcfm9V18","traffic_level_li":"_3rWZMWii-Gdv4pIshwGrZn","traffic_level_1":"huBPfqObZEREqEL4ptcOW _3rWZMWii-Gdv4pIshwGrZn","traffic_level_2":"NJv6eBppuwjxXfIQ3iZFb _3rWZMWii-Gdv4pIshwGrZn","traffic_level_3":"BKdQyRlyn3r8x6jofPFcy _3rWZMWii-Gdv4pIshwGrZn","traffic_level_4":"_2CcvsemZYlgD-YyH1lHmPD _3rWZMWii-Gdv4pIshwGrZn","traffic_level_5":"_1aWd0_O21a1gjasQruUDWs _3rWZMWii-Gdv4pIshwGrZn","panel_body":"_20xJdzksmYcNv5P6m4_VCz","time_lbl":"MnoYENDmvDyVakHBtj7jP","date":"_3KK3cIy-YEiTKS_LlIwuvT","checkboxes":"_1yWPrPmSLqOiTDW66lyRhT","loadingButton":"_2Qt_A0LQzciPux1DvMtlkE","splitline_H":"_1eYOP9nsGvs1ORU4sX5qLu","hisPlayer_panel":"_1TEh-UIr6evqEamBx6iDBx","hisPlayer_btnL":"_2d8u1MMHSVNg2rubiVRsOo","hisPlayer_btnR":"_13lAsakV4k9DOvOKq-qPZg","hisPlayer_btn1":"_143zOHUvFaIcM3oeOWiXcD","hisPlayer_btn2":"_3w35kr9dmAsguT1Yr0k23s","QueContent":"_2kWH1TX60-11vHt0GWacZJ","radio_btnGroup":"_24MLrfVvi5b04uPHr5jwC-","selectCra":"_1CO7pW3aPJkkGPi7uRVuRW","radio_btnGroup2":"_2Vif2xy2gwHN9hI4GjKecm","ConListPanel":"_1hN2tPUz6_ECq-Xxzo-Qre","slider":"_35P-i1BHpO4WU6_GnwAxDc"};
+	module.exports = {"boxpanel":"_24yt9N72LN4Qx6-UeE2ooH","panel_header":"_2D7ozc3gFeAOxjsnz3_FpT","tab1":"_3ihMGn_mwGtN1DTvpvG71g","panel_tab":"vxNXf4qXck4en6pbw8FUg","panel_tab_li":"_33U-kh2gDTElk71Vc143ud","panel_tab_li_active":"_2xNXqcRx0rYhrdOaRBirVG _33U-kh2gDTElk71Vc143ud","traffic_tag":"_3U6b0wQKXCgqaD6tQzkNxS","smooth_jam":"OhiXpH1ZWQWwpX4glxgNG","traffic_level":"_1zmvDALwkSGEcsBcfm9V18","traffic_level_li":"_3rWZMWii-Gdv4pIshwGrZn","traffic_level_1":"huBPfqObZEREqEL4ptcOW _3rWZMWii-Gdv4pIshwGrZn","traffic_level_2":"NJv6eBppuwjxXfIQ3iZFb _3rWZMWii-Gdv4pIshwGrZn","traffic_level_3":"BKdQyRlyn3r8x6jofPFcy _3rWZMWii-Gdv4pIshwGrZn","traffic_level_4":"_2CcvsemZYlgD-YyH1lHmPD _3rWZMWii-Gdv4pIshwGrZn","traffic_level_5":"_1aWd0_O21a1gjasQruUDWs _3rWZMWii-Gdv4pIshwGrZn","panel_body":"_20xJdzksmYcNv5P6m4_VCz","time_lbl":"MnoYENDmvDyVakHBtj7jP","date":"_3KK3cIy-YEiTKS_LlIwuvT","checkboxes":"_1yWPrPmSLqOiTDW66lyRhT","splitline_H":"_1eYOP9nsGvs1ORU4sX5qLu","hisPlayer_panel":"_1TEh-UIr6evqEamBx6iDBx","hisPlayer_btnL":"_2d8u1MMHSVNg2rubiVRsOo","hisPlayer_btnR":"_13lAsakV4k9DOvOKq-qPZg","hisPlayer_btn1":"_143zOHUvFaIcM3oeOWiXcD","hisPlayer_btn2":"_3w35kr9dmAsguT1Yr0k23s","QueContent":"_2kWH1TX60-11vHt0GWacZJ","radio_btnGroup":"_24MLrfVvi5b04uPHr5jwC-","selectCra":"_1CO7pW3aPJkkGPi7uRVuRW","radio_btnGroup2":"_2Vif2xy2gwHN9hI4GjKecm","ConListPanel":"_1hN2tPUz6_ECq-Xxzo-Qre","slider":"_35P-i1BHpO4WU6_GnwAxDc","button_primary":"UdvejYJdlNQncxPc9plQn","active":"_2Jmwursy_6CEuhv4LnH6_l"};
 
 /***/ },
 /* 232 */,
@@ -27998,7 +27999,7 @@
 			});
 		}
 		drawnItemsLayer.addLayer(layer);
-		map.removeEventListener();
+		map.removeEventListener('draw:created');
 	};
 	
 	var stopDrawToolbar = function stopDrawToolbar() {
@@ -28006,7 +28007,9 @@
 		if (drawControl) map.removeControl(drawControl);
 		drawnItemsLayer = null;
 		drawControl = null;
-		map.removeEventListener();
+		map.removeEventListener('draw:created');
+		map.removeEventListener('draw:edited');
+		map.removeEventListener('draw:deleted');
 	};
 	
 	var DrawConfigLayer = exports.DrawConfigLayer = {
@@ -28352,15 +28355,15 @@
 			CenterPoint_OD = centroid.geometry.coordinates;
 		} else return CenterPoint_OD = null;
 	};
-	var fhldLayer;
+	
 	var drawFhld = function drawFhld(doublersData) {
 		stopDrawToolbar();
-	
-		fhldLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(fhldLayer);
+		drawnItemsLayer = null;
+		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: fhldLayer
+				featureGroup: drawnItemsLayer
 			},
 			draw: {
 				polyline: {
@@ -28384,7 +28387,6 @@
 		map.addControl(drawControl);
 		var latlngs = [],
 		    coords = null;
-		var bufferSelection = function bufferSelection() {};
 		map.on('draw:created', function (e) {
 			var type = e.layerType,
 			    layer = e.layer;
@@ -28393,7 +28395,7 @@
 				latlngs.push(coords);
 			});
 			NewFhldfeature = _turf2.default.lineString(latlngs);
-			fhldLayer.addLayer(layer);
+			drawnItemsLayer.addLayer(layer);
 			if (NewFhldfeature) {
 				var bufferedFhld = _turf2.default.buffer(NewFhldfeature, 50, 'meters');
 				var bufferFC = {
@@ -28458,27 +28460,6 @@
 			}
 			map.removeControl(drawControl);
 			map.removeEventListener('draw:created');
-		});
-		map.on('draw:edited', function (e) {
-	
-			for (var item in e.layers._layers) {
-				e.layers._layers[item]._latlngs.map(function (item) {
-					coords = [item.lng, item.lat];
-					latlngs.push(coords);
-					NewFhldfeature = _turf2.default.lineString(latlngs);
-				});
-			}
-			bufferSelection();
-			map.removeEventListener('draw:edited');
-		});
-		map.on('draw:deleted', function (e) {
-			if (fhldLayer) {
-				map.removeLayer(fhldLayer);
-				fhldLayer = null;
-			}
-			NewFhldfeature = null;
-			doublerIds = ['id', 'name'];
-			map.removeEventListener('draw:deleted');
 		});
 	};
 	var newHolidayRegion = null;
@@ -28824,6 +28805,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var ButtonGroup = _antd.Button.Group;
+	var taxiInterval = null;
 	
 	var UniqueSub = function (_React$Component) {
 	    _inherits(UniqueSub, _React$Component);
@@ -28913,12 +28895,20 @@
 	                _reactDom2.default.render(_react2.default.createElement(UniquePanel, null), document.getElementById("presetBox"));
 	            });
 	            lmsg.subscribe('tracktaxi', function (data) {
+	                console.log('tracktaxi', data);
 	                _antd.message.success('您已进入追踪浮动车页面');
 	                if (data.startTracking) {
 	                    if (!data.params.id) {
-	                        alert('没有选中的浮动车');
-	                    } else CI.trackingTaxi(data.params);
-	                } else if (!data.startTracking) CI.stopTrackingTaxi();else alert("追踪参数错误！");
+	                        _antd.message.warning('没有选中的浮动车', 5);
+	                    } else {
+	                        var tracktaxi11 = CI.trackingTaxi(data.params);
+	                        if (tracktaxi11) {
+	                            taxiInterval = setInterval(function () {
+	                                CI.trackingTaxi(data.params);
+	                            }, 60005);
+	                        } else taxiInterval = null;
+	                    }
+	                } else if (!data.startTracking) CI.stopTrackingTaxi();else _antd.message.warning("追踪参数错误！", 5);
 	                localStorage.removeItem('tracktaxi');
 	            });
 	            lmsg.subscribe('cfxydBtnClick', function (data) {
@@ -28988,12 +28978,13 @@
 	                var dataRecv = null;
 	                Ds.DataService('/trafficindex_bodcollisionflowresult/migrationMap.json', params, function (resp) {
 	                    dataRecv = resp.aaData;
+	                    return dataRecv;
 	                }, function (e) {
 	                    console.log(e);
-	                    alert('后台传输错误');
+	                    _antd.message.error('后台传输错误', 5);
 	                });
 	
-	                if (dataRecv && dataRecv.dataPoint.length > 0) {
+	                if (dataRecv && dataRecv.dataLine.length > 0) {
 	                    CI.clearLayer();
 	                    var overlay = new lmap.echartsLayer('ODLayer', echarts);
 	                    var chartsContainer = overlay.getEchartsContainer();
@@ -29094,7 +29085,8 @@
 	                    case 'shigong':
 	                        _antd.message.success('您已进入道路施工页面');
 	                        DR.drawFeatures.disable();
-	                        self.refs.shigong.props.onClick();
+	                        self.onClickButton("shigong");
+	                        //self.refs.shigong.props.onClick();
 	                        break;
 	                    case 'shigong_start':
 	                        //self.refs.shigong.props.onClick();
@@ -29104,7 +29096,8 @@
 	                    case 'guanzhi':
 	                        _antd.message.success('您已进入交通管制页面');
 	                        DR.drawFeatures.disable();
-	                        self.refs.guanzhi.props.onClick();
+	                        //self.refs.guanzhi.props.onClick();
+	                        self.onClickButton("guanzhi");
 	                        break;
 	                    case 'guanzhi_start':
 	                        showModalWarning();
@@ -29113,7 +29106,8 @@
 	                    case 'shigu':
 	                        _antd.message.success('您已进入交通事故页面');
 	                        DR.drawFeatures.disable();
-	                        self.refs.shigu.props.onClick();
+	                        self.onClickButton("shigu");
+	                        //self.refs.shigu.props.onClick();
 	                        break;
 	                    case 'shigu_start':
 	                        showModalWarning();
@@ -29121,7 +29115,8 @@
 	                        break;
 	                    case 'fdc':
 	                        _antd.message.success('您已进入浮动车页面');
-	                        self.refs.fudongche.props.onClick();
+	                        self.onClickButton("fudongche");
+	                        //self.refs.fudongche.props.onClick();
 	                        break;
 	                    default:
 	                        return;
@@ -29131,28 +29126,30 @@
 	
 	            lmsg.subscribe('cfxydBtnClick', function (data) {
 	                console.log('cfxydBtnClick', data);
-	                self.setState({
-	                    cfydData: null
-	                });
-	                _antd.message.success('您已進入常發擁堵頁面');
+	                /* self.setState({
+	                     cfydData: null
+	                 });*/
+	                _antd.message.success('您已进入常发拥堵界面');
 	                if (data.isCross == 1) {
 	                    //路口
-	                    self.setState({
-	                        cfydData: data.time
-	                    });
-	                    self.refs.yongduPop.props.content.props.children[1].props.onClick(); //路口yongdu_cross
+	                    /* self.setState({
+	                         cfydData: data.time
+	                     });*/
+	                    self.onClickButton('yongdu_cross', data.time);
+	                    //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
 	                } else if (data.isCross == 2) {
 	                    //路段
-	                    self.setState({
-	                        cfydData: data.time
-	                    });
-	                    self.refs.yongduPop.props.content.props.children[0].props.onClick(); //路口yongdu_road
-	                } else alert('双屏通讯错误');
+	                    /* self.setState({
+	                         cfydData: data.time
+	                     });*/
+	                    self.onClickButton('yongdu_road', data.time);
+	                    //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
+	                } else _antd.message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
 	                localStorage.removeItem('cfxydBtnClick');
 	            });
 	            lmsg.subscribe('ODClick', function (data) {
 	                console.log('ODClick', data);
-	                _antd.message.success('您已進入OD分析頁面');
+	                _antd.message.success('您已进入OD分析页面');
 	                self.OD(data);
 	                localStorage.removeItem('ODClick');
 	            });
@@ -29160,7 +29157,7 @@
 	                console.log('hbjjrToMap', data);
 	                localStorage.removeItem('hbjjrToMap');
 	                if (data.messageType == '0' || data.messageType == '1' || data.messageType == '2' || data.messageType == '3') {
-	                    _antd.message.success('您已進入節假日頁面');
+	                    _antd.message.success('您已进入节假日页面');
 	                    //清空图层
 	                    CI.clearLayer();
 	                } else if (data.messageType == '4') {
@@ -29188,7 +29185,7 @@
 	                        DR.DrawHoliday.drawRegion();
 	                    }, function (e) {
 	                        console.log(e);
-	                        alert('后台传输错误');
+	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                } else if (data.messageType == '6') {
 	                    //编辑区域
@@ -29204,7 +29201,7 @@
 	                        DR.DrawHoliday.drawRegion();
 	                    }, function (e) {
 	                        console.log(e);
-	                        alert('后台传输错误');
+	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                } else if (data.messageType == '7') {
 	                    _antd.Modal.success({
@@ -29217,7 +29214,7 @@
 	                        DR.DrawHoliday.selectCross(resp.aaData);
 	                    }, function (e) {
 	                        console.log(e);
-	                        alert('后台传输错误');
+	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                } else if (data.messageType == '8') {
 	                    _antd.Modal.success({
@@ -29230,7 +29227,7 @@
 	                        DR.DrawHoliday.selectRoad(resp.aaData);
 	                    }, function (e) {
 	                        console.log(e);
-	                        alert('后台传输错误');
+	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                }
 	            });
@@ -29239,6 +29236,10 @@
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
 	            lmap.removeEchartsLayer();
+	            CI.clearLayer();
+	            if (taxiInterval) {
+	                clearInterval(taxiInterval);
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -29293,7 +29294,7 @@
 	                { className: _UniqueSub2.default.boxpanel, id: 'uniqueDetails' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: _UniqueSub2.default.panel_header },
+	                    { className: _UniqueSub2.default.panel_header, style: { fontSize: '14px' } },
 	                    '专题信息'
 	                ),
 	                _react2.default.createElement(
@@ -29301,28 +29302,28 @@
 	                    { className: _UniqueSub2.default.panel_body, id: 'uniquepanel_body' },
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { id: 'shigong', ref: 'shigong', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
+	                        { id: 'shigong', ref: 'shigong', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
 	                                return _this4.onClickButton(_this4.refs.shigong.props.id);
 	                            } },
 	                        '道路施工'
 	                    ),
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { id: 'guanzhi', ref: 'guanzhi', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
+	                        { id: 'guanzhi', ref: 'guanzhi', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
 	                                return _this4.onClickButton(_this4.refs.guanzhi.props.id);
 	                            } },
 	                        '交通管制'
 	                    ),
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { id: 'shigu', ref: 'shigu', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
+	                        { id: 'shigu', ref: 'shigu', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
 	                                return _this4.onClickButton(_this4.refs.shigu.props.id);
 	                            } },
 	                        '交通事故'
 	                    ),
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { id: 'fudongche', ref: 'fudongche', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
+	                        { id: 'fudongche', ref: 'fudongche', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: this.state.disabled, onClick: function onClick() {
 	                                return _this4.onClickButton(_this4.refs.fudongche.props.id);
 	                            } },
 	                        '浮动车'
@@ -29335,7 +29336,7 @@
 	                            } },
 	                        _react2.default.createElement(
 	                            _antd.Button,
-	                            { id: 'jiari', ref: 'jiari', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: this.state.disabled },
+	                            { id: 'jiari', ref: 'jiari', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: this.state.disabled },
 	                            '节假专题'
 	                        )
 	                    ),
@@ -29346,13 +29347,13 @@
 	                            } },
 	                        _react2.default.createElement(
 	                            _antd.Button,
-	                            { id: 'yongdu', ref: 'yongdu', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: this.state.disabled },
+	                            { id: 'yongdu', ref: 'yongdu', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: this.state.disabled },
 	                            '常发拥堵'
 	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        _antd.Button,
-	                        { id: 'OD', ref: 'OD', className: _UniqueSub2.default.button1, type: 'primary', size: 'small', disabled: !this.state.disabled, onClick: function onClick() {
+	                        { id: 'OD', ref: 'OD', className: _UniqueSub2.default.button_primary, type: 'primary', size: 'small', disabled: !this.state.disabled, onClick: function onClick() {
 	                                return _this4.OD();
 	                            } },
 	                        'O/D分析'
@@ -29367,7 +29368,7 @@
 	
 	exports.default = UniqueSub;
 	
-	/*      var option = {
+	/*   var option = {
 	          color: ['gold', 'aqua', 'lime'],
 	          tooltip: {
 	              trigger: 'item',
@@ -29535,7 +29536,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"boxpanel":"_3oH5k6spmfYsE0JkTmEtvW","panel_header":"_2cBKd-l_R6FbyFxRMwYpoE","panel_body":"_2oD5wMOVt27qGzcZ0K3om7","button1":"_3z1AgA4NnpyFuRkyx__DdC","QueContent":"_1l_RjNtiLgd3xRgbjdam72","sub_panel":"_32i3-q7MoRrXH4Dt2UIcxm","colorpickerDiv":"_3pwsO30I_vRLm_qvdja6EP"};
+	module.exports = {"boxpanel":"_3oH5k6spmfYsE0JkTmEtvW","panel_header":"_2cBKd-l_R6FbyFxRMwYpoE","panel_body":"_2oD5wMOVt27qGzcZ0K3om7","button1":"_3z1AgA4NnpyFuRkyx__DdC","QueContent":"_1l_RjNtiLgd3xRgbjdam72","sub_panel":"_32i3-q7MoRrXH4Dt2UIcxm","colorpickerDiv":"_3pwsO30I_vRLm_qvdja6EP","button_primary":"_2u5lvrwngoPHafXcN_fsrT","active":"_2G-HxbRgzPPpFK8ziyf3Kv"};
 
 /***/ },
 /* 238 */,
@@ -29723,7 +29724,8 @@
 	            isloading3: false,
 	            isloaded1: false,
 	            isloaded2: false,
-	            isloaded3: false
+	            isloaded3: false,
+	            loading: false
 	        };
 	        _this3.onClickButton = _this3.onClickButton.bind(_this3);
 	        return _this3;
@@ -29733,138 +29735,112 @@
 	        key: 'onClickButton',
 	        value: function onClickButton(ref) {
 	            var self = this;
-	            this.setState({
-	                isloading1: false,
-	                isloading2: false,
-	                isloading3: false,
-	                isloaded1: false,
-	                isloaded2: false,
-	                isloaded3: false
-	            });
 	
-	            if (ref == 'roadConfig') {
-	                _antd.message.success('您已進入双向道路配置頁面');
-	                this.setState({
-	                    isloading1: true
-	                });
-	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                    self.setState({
-	                        isloading1: false,
-	                        isloaded1: true
+	            this.setState({
+	                loading: true
+	            }, function () {
+	                onRunning(ref);
+	            });
+	            var onRunning = function onRunning(ref) {
+	                if (ref == 'roadConfig') {
+	                    _antd.message.success('您已進入双向道路配置頁面');
+	
+	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	                        CI.displayConfigLayer_road(resp.aaData);
+	                        DR.DrawConfigLayer.DrawRoad.activate();
+	                        _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
+	                    }, function (e) {
+	                        console.log(e);
+	                        //alert('后台传输错误！');
+	                        _antd.message.error('后台传输错误！', 5);
 	                    });
-	                    CI.displayConfigLayer_road(resp.aaData);
-	                    DR.DrawConfigLayer.DrawRoad.activate();
-	                    _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
-	                }, function (e) {
-	                    console.log(e);
-	                    alert('后台传输错误！');
-	                    self.setState({
-	                        isloading1: false,
-	                        isloading2: false,
-	                        isloading3: false,
-	                        isloaded1: false,
-	                        isloaded2: false,
-	                        isloaded3: false
+	                } else if (ref == 'regionConfig') {
+	                    _antd.message.success('您已進入区域配置頁面');
+	
+	                    Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	                        CI.displayConfigLayer(resp.aaData);
+	                        DR.DrawConfigLayer.DrawRegion.activate();
+	                        DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+	                        _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
+	                    }, function (e) {
+	                        console.log(e);
+	                        _antd.message.error('后台传输错误！', 5);
 	                    });
-	                });
-	            } else if (ref == 'regionConfig') {
-	                _antd.message.success('您已進入区域配置頁面');
-	                this.setState({
-	                    isloading2: true
-	                });
-	                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
-	                    CI.displayConfigLayer(resp.aaData);
-	                    self.setState({
-	                        isloading2: false,
-	                        isloaded2: true
+	                } else if (ref == 'odConfig') {
+	                    _antd.message.success('您已進入OD区域配置頁面');
+	
+	                    Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	                        CI.displayConfigLayer(resp.aaData);
+	
+	                        DR.DrawConfigLayer.DrawOD.activate();
+	                        DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+	                        _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
+	                    }, function (e) {
+	                        console.log(e);
+	                        _antd.message.error('后台传输错误！', 5);
 	                    });
-	                    DR.DrawConfigLayer.DrawRegion.activate();
-	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-	                    _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
-	                }, function (e) {
-	                    console.log(e);
-	                    alert('后台传输错误！');
-	                    self.setState({
-	                        isloading1: false,
-	                        isloading2: false,
-	                        isloading3: false,
-	                        isloaded1: false,
-	                        isloaded2: false,
-	                        isloaded3: false
+	                } else if (ref == 'fhld') {
+	                    _antd.message.success('您已进入复合路段配制页面');
+	                    Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
+	                        CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
+	                        //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+	                    }, function (e) {
+	                        console.log(e);
 	                    });
-	                });
-	            } else if (ref == 'odConfig') {
-	                _antd.message.success('您已進入OD区域配置頁面');
+	                } else if (ref == 'fhld_locating') {
+	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	                        _antd.message.warning('开始绘制复合路段信息', 5);
+	                        DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+	                    }, function (e) {
+	                        _antd.message.error('后台传输错误！', 5);
+	                        console.log(e);
+	                    });
+	                } else _antd.message.error('加载地图图层错误', 5);
 	                self.setState({
-	                    isloading3: true
+	                    loading: false
 	                });
-	                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
-	                    CI.displayConfigLayer(resp.aaData);
-	                    self.setState({
-	                        isloading3: false,
-	                        isloaded3: true
-	                    });
-	                    DR.DrawConfigLayer.DrawOD.activate();
-	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-	                    _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
-	                }, function (e) {
-	                    console.log(e);
-	                    alert('后台传输错误！');
-	                    self.setState({
-	                        isloading1: false,
-	                        isloading2: false,
-	                        isloading3: false,
-	                        isloaded1: false,
-	                        isloaded2: false,
-	                        isloaded3: false
-	                    });
-	                });
-	            } else if (ref = 'fhld') {
-	                _antd.message.success('您已進入复合路段配置頁面');
-	                Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
-	                    CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
-	                    //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-	                }, function (e) {
-	                    console.log(e);
-	                });
-	            } else if (ref = 'fhld_locating') {
-	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                    _antd.message.warning('开始绘制复合路段信息', 5);
-	                    DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-	                }, function (e) {
-	                    console.log(e);
-	                });
-	            } else alert('加载地图图层错误');
+	            };
 	        }
 	    }, {
 	        key: 'ChangeConfig',
 	        value: function ChangeConfig(ref) {
+	            var self = this;
 	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	            DR.drawFeatures.disable();
-	            if (ref == 'regionConfig') {
-	                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.aaData.zone, ref);
-	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-	                }, function (e) {
-	                    console.log(e);
-	                    alert('后台传输错误！');
+	            this.setState({
+	                loading: true
+	            }, function () {
+	                onRunning(ref);
+	            });
+	            var onRunning = function onRunning(ref) {
+	                if (ref == 'regionConfig') {
+	                    Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	                        CI.changeConfigLayer(resp.aaData.zone, ref);
+	                        DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+	                    }, function (e) {
+	                        console.log(e);
+	                        _antd.message.error('后台传输错误！', 5);
+	                    });
+	                } else if (ref == 'odConfig') {
+	                    Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	                        CI.changeConfigLayer(resp.aaData.zone, ref);
+	                        DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+	                    }, function (e) {
+	                        console.log(e);
+	                        _antd.message.error('后台传输错误！', 5);
+	                    });
+	                } else if (ref == 'roadConfig') {
+	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	                        CI.changeConfigLayer(resp.aaData, ref);
+	                    }, function (e) {
+	                        console.log(e);
+	                        _antd.message.error('后台传输错误！', 5);
+	                    });
+	                }
+	                self.setState({
+	                    loading: false
 	                });
-	            } else if (ref == 'odConfig') {
-	                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.aaData.zone, ref);
-	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-	                }, function (e) {
-	                    console.log(e);
-	                    alert('后台传输错误！');
-	                });
-	            } else if (ref == 'roadConfig') {
-	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.aaData, ref);
-	                }, function (e) {
-	                    console.log(e);
-	                    alert('后台传输错误！');
-	                });
-	            }
+	            };
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -29943,6 +29919,12 @@
 	            });
 	        }
 	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            lmap.removeEchartsLayer();
+	            CI.clearLayer();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this4 = this;
@@ -29958,7 +29940,7 @@
 	                        className: _UniqueSub2.default.button1,
 	                        type: 'ghost',
 	                        size: 'small',
-	                        loading: this.state.isloading2,
+	
 	                        onClick: function onClick() {
 	                            return _this4.onClickButton("regionConfig");
 	                        } },
@@ -29972,7 +29954,7 @@
 	                        className: _UniqueSub2.default.button1,
 	                        type: 'ghost',
 	                        size: 'small',
-	                        loading: this.state.isloading2,
+	
 	                        onClick: function onClick() {
 	                            return _this4.ChangeConfig("regionConfig");
 	                        } },
@@ -29990,7 +29972,7 @@
 	                        className: _UniqueSub2.default.button1,
 	                        type: 'ghost',
 	                        size: 'small',
-	                        loading: this.state.isloading2,
+	
 	                        onClick: function onClick() {
 	                            return _this4.onClickButton("odConfig");
 	                        } },
@@ -30004,7 +29986,7 @@
 	                        className: _UniqueSub2.default.button1,
 	                        type: 'ghost',
 	                        size: 'small',
-	                        loading: this.state.isloading2,
+	
 	                        onClick: function onClick() {
 	                            return _this4.ChangeConfig("odConfig");
 	                        } },
@@ -30022,7 +30004,7 @@
 	                        className: _UniqueSub2.default.button1,
 	                        type: 'ghost',
 	                        size: 'small',
-	                        loading: this.state.isloading2,
+	
 	                        onClick: function onClick() {
 	                            return _this4.onClickButton("roadConfig");
 	                        } },
@@ -30036,7 +30018,7 @@
 	                        className: _UniqueSub2.default.button1,
 	                        type: 'ghost',
 	                        size: 'small',
-	                        loading: this.state.isloading2,
+	
 	                        onClick: function onClick() {
 	                            return _this4.ChangeConfig("roadConfig");
 	                        } },
@@ -30051,7 +30033,7 @@
 	                    id: 'configDetails' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: _UniqueSub2.default.panel_header },
+	                    { className: _UniqueSub2.default.panel_header, style: { fontSize: '14px' } },
 	                    '配置信息'
 	                ),
 	                _react2.default.createElement(
@@ -30060,86 +30042,89 @@
 	                        className: _UniqueSub2.default.panel_body,
 	                        id: 'Configpanel_body' },
 	                    _react2.default.createElement(
-	                        _antd.Button,
-	                        {
-	                            id: 'crossConfig',
-	                            ref: 'crossConfig',
-	                            className: _UniqueSub2.default.button1,
-	                            type: 'primary',
-	                            size: 'small',
-	                            disabled: false,
-	                            onClick: function onClick() {
-	                                return _this4.onClickButton('fhld');
-	                            } },
-	                        '复合路段'
-	                    ),
-	                    _react2.default.createElement(
-	                        _antd.Popover,
-	                        {
-	                            ref: 'roadConfig',
-	                            content: roadConfig,
-	                            placement: 'topLeft',
-	                            title: '请选择',
-	                            trigger: 'hover',
-	                            getTooltipContainer: function getTooltipContainer() {
-	                                return document.getElementById('configDetails');
-	                            } },
+	                        _antd.Spin,
+	                        { spinning: this.state.loading },
 	                        _react2.default.createElement(
 	                            _antd.Button,
 	                            {
-	                                id: 'roadConfig',
+	                                id: 'crossConfig',
+	                                ref: 'crossConfig',
+	                                className: _UniqueSub2.default.button_primary,
+	                                type: 'primary',
+	                                size: 'small',
+	                                disabled: false,
+	                                onClick: function onClick() {
+	                                    return _this4.onClickButton('fhld');
+	                                } },
+	                            '复合路段'
+	                        ),
+	                        _react2.default.createElement(
+	                            _antd.Popover,
+	                            {
 	                                ref: 'roadConfig',
-	                                className: _UniqueSub2.default.button1,
-	                                type: 'primary',
-	                                size: 'small',
-	                                loading: this.state.isloading1 },
-	                            '双向路段'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _antd.Popover,
-	                        {
-	                            ref: 'regionConfig',
-	                            content: regionConfig,
-	                            placement: 'top',
-	                            title: '请选择',
-	                            trigger: 'hover',
-	                            getTooltipContainer: function getTooltipContainer() {
-	                                return document.getElementById('configDetails');
-	                            } },
+	                                content: roadConfig,
+	                                placement: 'topLeft',
+	                                title: '请选择',
+	                                trigger: 'hover',
+	                                getTooltipContainer: function getTooltipContainer() {
+	                                    return document.getElementById('configDetails');
+	                                } },
+	                            _react2.default.createElement(
+	                                _antd.Button,
+	                                {
+	                                    id: 'roadConfig',
+	                                    ref: 'roadConfig',
+	                                    className: _UniqueSub2.default.button_primary,
+	                                    type: 'primary',
+	                                    size: 'small'
+	                                },
+	                                '双向路段'
+	                            )
+	                        ),
 	                        _react2.default.createElement(
-	                            _antd.Button,
+	                            _antd.Popover,
 	                            {
-	                                id: 'regionConfig',
 	                                ref: 'regionConfig',
-	                                className: _UniqueSub2.default.button1,
-	                                type: 'primary',
-	                                size: 'small',
-	                                loading: this.state.isloading2 },
-	                            '区域配置'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _antd.Popover,
-	                        {
-	                            ref: 'odConfig',
-	                            content: odConfig,
-	                            placement: 'topRight',
-	                            title: '请选择',
-	                            trigger: 'hover',
-	                            getTooltipContainer: function getTooltipContainer() {
-	                                return document.getElementById('configDetails');
-	                            } },
+	                                content: regionConfig,
+	                                placement: 'top',
+	                                title: '请选择',
+	                                trigger: 'hover',
+	                                getTooltipContainer: function getTooltipContainer() {
+	                                    return document.getElementById('configDetails');
+	                                } },
+	                            _react2.default.createElement(
+	                                _antd.Button,
+	                                {
+	                                    id: 'regionConfig',
+	                                    ref: 'regionConfig',
+	                                    className: _UniqueSub2.default.button_primary,
+	                                    type: 'primary',
+	                                    size: 'small'
+	                                },
+	                                '区域配置'
+	                            )
+	                        ),
 	                        _react2.default.createElement(
-	                            _antd.Button,
+	                            _antd.Popover,
 	                            {
-	                                id: 'odConfig',
 	                                ref: 'odConfig',
-	                                className: _UniqueSub2.default.button1,
-	                                type: 'primary',
-	                                size: 'small',
-	                                loading: this.state.isloading3 },
-	                            'OD区域'
+	                                content: odConfig,
+	                                placement: 'topRight',
+	                                title: '请选择',
+	                                trigger: 'hover',
+	                                getTooltipContainer: function getTooltipContainer() {
+	                                    return document.getElementById('configDetails');
+	                                } },
+	                            _react2.default.createElement(
+	                                _antd.Button,
+	                                {
+	                                    id: 'odConfig',
+	                                    ref: 'odConfig',
+	                                    className: _UniqueSub2.default.button_primary,
+	                                    type: 'primary',
+	                                    size: 'small' },
+	                                'OD区域'
+	                            )
 	                        )
 	                    )
 	                ),
@@ -30169,9 +30154,11 @@
 	        //console.log(this.props.form.getFieldsValue());
 	        this.props.form.validateFields(function (errors, values) {
 	            if (!!errors) {
-	                alert('请检查错误');
+	                //alert('请检查错误');
+	                _antd.message.warning('请检查错误', 3);
 	            } else if (DR.DrawConfigLayer.DrawRegion.getValue() == null) {
-	                alert('请先画图');
+	                //alert('请先画图')
+	                _antd.message.warning('请先画图', 3);
 	            } else {
 	                //console.log('传给后台的值', values);
 	                var sendParams_region = {
@@ -30186,7 +30173,8 @@
 	                Ds.DataService('/trafficindex_zoneConfig/add.json', sendParams_region, function (resp) {
 	                    console.log(resp);
 	                    if (resp.errorCode == 'success') {
-	                        alert('保存成功');
+	                        //alert('保存成功');
+	                        _antd.message.success('保存成功', 3);
 	                        DR.drawFeatures.disable();
 	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	                        lmsg.send('qypz', {
@@ -30197,7 +30185,8 @@
 	                    }
 	                }, function (e) {
 	                    console.log(e);
-	                    alert('后台传输错误！');
+	                    //alert('后台传输错误！')
+	                    _antd.message.error('后台传输错误！', 5);
 	                });
 	            }
 	        });
@@ -30393,12 +30382,10 @@
 	        this.props.form.validateFieldsAndScroll(function (errors, values) {
 	            //console.log(errors)
 	            var regionFeature = DR.DrawConfigLayer.DrawOD.getValue();
-	            var selectedIDs = DR.DrawConfigLayer.DrawOD.calculateWithin().toString();
-	
 	            if (!!errors) {
-	                alert('请检查错误');
-	            } else if (!regionFeature) {
-	                alert('请绘制图层');
+	                _antd.message.warning('请检查错误', 3);
+	            } else if (regionFeature == null) {
+	                _antd.message.warning('请绘制图层', 3);
 	            } else {
 	                //console.log('传给后台的值', values);
 	                var sendParams_od = {
@@ -30406,25 +30393,25 @@
 	                    qymc: values.odName,
 	                    qyfw: JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()),
 	                    ylzd1: _this6.state.sliderVal1 + ',' + _this6.state.sliderVal2 + ',' + _this6.state.sliderVal3 + ',' + _this6.state.sliderVal4,
-	                    crossId: selectedIDs,
+	                    crossId: DR.DrawConfigLayer.DrawOD.calculateWithin().toString(),
 	                    point: '[' + DR.DrawConfigLayer.DrawOD.calculateCenterPoint().toString() + ']'
 	
 	                };
 	                Ds.DataService('/trafficindex_bodregionconfig/add.json', sendParams_od, function (resp) {
 	                    console.log(resp);
 	                    if (resp.errorCode == 'success') {
-	                        alert('保存成功');
+	                        _antd.message.success('保存成功', 3);
 	                        DR.drawFeatures.disable();
 	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	                        lmsg.send('odpz', {
 	                            'data': 'success'
 	                        });
 	                    } else {
-	                        alert(resp.errorText);
+	                        _antd.message.error('保存失败' + resp.errorText, 5);
 	                    }
 	                }, function (e) {
 	                    console.log(e);
-	                    alert('后台传输错误！');
+	                    _antd.message.error('后台传输错误！', 5);
 	                });
 	            }
 	        });
@@ -30614,7 +30601,7 @@
 	        Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
 	            selectionOptions_road = resp.aaData;
 	        }, function (e) {
-	            alert('后台传输错误！');
+	            _antd.message.error('后台传输错误！', 5);
 	            console.log(e);
 	        });
 	    },
@@ -30622,9 +30609,9 @@
 	        e.preventDefault();
 	        this.props.form.validateFields(function (errors, values) {
 	            if (!!errors) {
-	                alert('有误，请检查错误');
+	                _antd.message.warning('有误，请检查错误', 3);
 	            } else if (DR.DrawConfigLayer.DrawRoad.getValue() == null) {
-	                alert('请画一条道路再保存');
+	                _antd.message.warning('请画一条道路再保存', 3);
 	            } else {
 	                var sendParam_road = {
 	                    xgla: values.startSelect,
@@ -30635,17 +30622,17 @@
 	                if (!sendParam_road.coordinates) alert('请画图先');
 	                Ds.DataService('/trafficindex_roadConfiguration/addDoubleSidedRoadInfo.json', sendParam_road, function (resp) {
 	                    if (resp.errorCode == 'success') {
-	                        alert('保存成功');
+	                        _antd.message.success('保存成功', 5);
 	                        DR.drawFeatures.disable();
 	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	                        lmsg.send('ldpz', {
 	                            'data': 'success'
 	                        });
 	                    } else {
-	                        alert(resp.errorText);
+	                        _antd.message.error('保存失败' + resp.errorText, 5);
 	                    }
 	                }, function (e) {
-	                    alert('后台传输错误！');
+	                    _antd.message.error('后台传输错误！', 5);
 	                    console.log(e);
 	                });
 	            }
@@ -30773,18 +30760,18 @@
 	            console.log('传给后台的值', sendParams_region);
 	            Ds.DataService('/trafficindex_zoneConfig/update.json', sendParams_region, function (resp) {
 	                if (resp.errorCode == 'success') {
-	                    alert('保存成功');
+	                    _antd.message.success('保存成功', 5);
 	                    DR.drawFeatures.disable();
 	                    _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	                    lmsg.send('qypz', {
 	                        'data': 'success'
 	                    });
 	                } else {
-	                    alert(resp.errorText);
+	                    _antd.message.error('保存失败' + resp.errorText, 5);
 	                }
 	            }, function (e) {
 	                console.log(e);
-	                alert('后台传输错误！');
+	                _antd.message.error('后台传输错误！', 5);
 	            });
 	        });
 	    },
@@ -30974,20 +30961,20 @@
 	            if (sendParams_od.qymc.length !== 0) {
 	                Ds.DataService('/trafficindex_bodregionconfig/update.json', sendParams_od, function (resp) {
 	                    if (resp.errorCode == 'success') {
-	                        alert('保存成功');
+	                        _antd.message.success('保存成功', 3);
 	                        DR.drawFeatures.disable();
 	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	                        lmsg.send('odpz', {
 	                            'data': 'success'
 	                        });
 	                    } else {
-	                        alert(resp.errorText);
+	                        _antd.message.error('保存失败' + resp.errorText, 5);
 	                    }
 	                }, function (e) {
 	                    console.log(e);
-	                    alert('后台传输错误！');
+	                    _antd.message.error('后台传输错误！', 5);
 	                });
-	            } else alert('区域名称不能为空');
+	            } else _antd.message.error('区域名称不能为空', 3);
 	        });
 	    },
 	    componentDidMount: function componentDidMount() {},
@@ -31157,7 +31144,7 @@
 	        Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
 	            selectionOptions_road = resp.aaData;
 	        }, function (e) {
-	            alert('后台传输错误！');
+	            _antd.message.error('后台传输错误！', 5);
 	            console.log(e);
 	        });
 	    },
@@ -31175,17 +31162,17 @@
 	                //if (!sendParam_road.coordinates) alert('请画图先');
 	                Ds.DataService('/trafficindex_roadConfiguration/updateRoadConfigInfoByComplexRoad.json', sendParam_road, function (resp) {
 	                    if (resp.errorCode == 'success') {
-	                        alert('保存成功');
+	                        _antd.message.success('保存成功', 5);
 	                        DR.drawFeatures.disable();
 	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	                        lmsg.send('ldpz', {
 	                            'data': 'success'
 	                        });
 	                    } else {
-	                        alert(resp.errorText);
+	                        _antd.message.error('保存失败' + resp.errorText, 5);
 	                    }
 	                }, function (e) {
-	                    alert('后台传输错误！');
+	                    _antd.message.error('后台传输错误！', 5);
 	                    console.log(e);
 	                });
 	            }
@@ -31534,7 +31521,7 @@
 	                    });
 	                }, function (e) {
 	                    console.log(e);
-	                    alert('后台传输错误');
+	                    _antd.message.error('后台传输错误', 5);
 	                });
 	                localStorage.removeItem('jrlzbbSend');
 	            });
@@ -31548,7 +31535,7 @@
 	                    //路口
 	                    Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
-	                        if (!resp.aaData) alert('没有相应信息');else {
+	                        if (!resp.aaData) _antd.message.warning('没有相应信息', 3);else {
 	
 	                            for (var i = 0; i < resp.aaData.length; i++) {
 	                                cfydTabledata.push(_defineProperty({
@@ -31567,13 +31554,13 @@
 	                        }
 	                    }, function (e) {
 	                        console.log(e);
-	                        alert('后台传输错误');
+	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                } else if (data.isCross == 2) {
 	                    //路段
 	                    Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
-	                        if (!resp.aaData) alert('没有相应信息');else {
+	                        if (!resp.aaData) _antd.message.warning('没有相应信息', 3);else {
 	
 	                            for (var i = 0; i < resp.aaData.length; i++) {
 	                                cfydTabledata.push(_defineProperty({
@@ -31592,9 +31579,9 @@
 	                        }
 	                    }, function (e) {
 	                        console.log(e);
-	                        alert('后台传输错误');
+	                        _antd.message.error('后台传输错误', 5);
 	                    });
-	                } else alert('双屏通讯错误');
+	                } else _antd.message.error('双屏通讯错误', 5);
 	                localStorage.removeItem('cfxydBtnClick');
 	            });
 	
@@ -32179,15 +32166,7 @@
 	                            'p',
 	                            null,
 	                            '拥堵',
-	                            _react2.default.createElement(
-	                                'b',
-	                                null,
-	                                _react2.default.createElement(
-	                                    'u',
-	                                    null,
-	                                    children_rboxkey == 'cross' ? '路口' : children_rboxkey == 'road' ? '路段' : children_rboxkey == 'area' ? '区域' : null
-	                                )
-	                            ),
+	                            children_rboxkey == 'cross' ? '路口' : children_rboxkey == 'road' ? '路段' : children_rboxkey == 'area' ? '区域' : null,
 	                            '排名'
 	                        ),
 	                        _react2.default.createElement(

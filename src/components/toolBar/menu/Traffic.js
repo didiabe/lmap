@@ -10,13 +10,16 @@ import {
     InputNumber,
     Row,
     Col,
-    TimePicker
+    TimePicker,
+    message,
+    Spin
 } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import styles from '../_toolBar.css';
 import trafficStyles from './_traffic.css'
 import * as CI from '../../../scripts/CongestionIndex';
 import * as Ds from '../../../libs/DataService';
+import * as lmap from '../../../libs/lmap';
 
 class Traffic extends React.Component {
     constructor() {
@@ -84,6 +87,7 @@ class TrafficConditions extends React.Component {
         ReactDOM.render(
             <Forecast/>, document.getElementById('traffic_detailed')
         )
+        CI.clearLayer();
     }
     playback() {
         this.setState({
@@ -93,6 +97,11 @@ class TrafficConditions extends React.Component {
         ReactDOM.render(
             <Playback/>, document.getElementById('traffic_detailed')
         )
+        CI.clearLayer();
+    }
+    componentWillUnmount() {
+        //lmap.removeEchartsLayer();
+        CI.clearLayer();
     }
     render() {
         return (
@@ -133,6 +142,7 @@ class Forecast extends React.Component {
         this.onSliderChange = this.onSliderChange.bind(this);
         this.startForcast = this.startForcast.bind(this);
         this.getCheckOption = this.getCheckOption.bind(this);
+        this.clearForcast = this.clearForcast.bind(this);
         this.state = {
             inputValue: 0,
             checked: false,
@@ -180,13 +190,14 @@ class Forecast extends React.Component {
         }
         Ds.DataService('/trafficindex_map/forecast.json', param,
             (resp) => {
-                if (markerPlayBack) markerPlayBack.clearLayer();
+                if (markerPlayBack) CI.clearLayer();
                 self.setState({
                     isLoading: false,
                     isLoaded: true
                 });
                 if (resp.aaData.features.length == 0) {
-                    alert('没有查询到相应信息');
+                    //alert('没有查询到相应信息');
+                    message.error('没有查询到相应信息', 5);
                     self.setState({
                         isLoading: false,
                         isLoaded: false
@@ -201,9 +212,11 @@ class Forecast extends React.Component {
             });
     }
     clearForcast() {
-        markerPlayBack.clearLayer();
+        CI.clearLayer();
+        this.setState({
+            isLoaded: false
+        });
     }
-
     render() {
         let b = new Date;
         let c = b.getFullYear();
@@ -238,13 +251,12 @@ class Forecast extends React.Component {
                     <Row>
                         <Col span={4}></Col>
                         <Col span={6}>
-                            <Button type="primary" loading={this.state.isLoading} onClick={this.startForcast} disabled={!this.state.checked}>
+                            <Button type="primary" loading={this.state.isLoading} className={trafficStyles.button_primary} onClick={this.startForcast} disabled={!this.state.checked}>
                               {this.state.isLoaded ? "加载完成！" :"加载数据" }
                             </Button>
                         </Col>
-                        <Col span={1}></Col>
                         <Col span={6}>
-                            <Button type="ghost" onClick={this.clearForcast} disabled={!this.state.isLoaded}>
+                            <Button type="ghost" style={{borderRadius: '2px', marginLeft:'40px'}} onClick={this.clearForcast} disabled={!this.state.isLoaded}>
                               {"清空图层"}
                             </Button>
                         </Col>
@@ -258,6 +270,7 @@ class Forecast extends React.Component {
 
 const RangePicker = DatePicker.RangePicker;
 const CheckboxGroup = Checkbox.Group;
+var progressInterval = null;
 const CRA_options = [{
     label: "路口",
     value: "cross"
@@ -316,7 +329,7 @@ class Playback extends React.Component {
         });
 
         var p = 0;
-        var progressInterval = setInterval(() => {
+        progressInterval = setInterval(() => {
             if (p < 100 && this.state.isPlaying) {
                 p = p + this.state.each_percent;
                 //console.log(p);
@@ -329,6 +342,7 @@ class Playback extends React.Component {
     }
 
     clear() {
+
         markerPlayBack.clearLayer();
         this.setState({
             isPlaying: false,
@@ -390,7 +404,7 @@ class Playback extends React.Component {
 
     loadingData() {
         if (this.state.startTime == null || this.state.endTime == null || this.state.checkedOptions.length == 0) {
-            alert("请选择信息后查询");
+            message.warning("请选择信息后查询", 3); //alert("请选择信息后查询");
             return;
         }
         let self = this;
@@ -413,7 +427,8 @@ class Playback extends React.Component {
                             loading: false,
                             isLoaded: false
                         });
-                        alert("没有相应信息")
+                        //alert("没有相应信息");
+                        message.error('没有查询到相应信息', 5);
                     } else {
                         self.setState({
                             loading: false,
@@ -427,93 +442,21 @@ class Playback extends React.Component {
                         markerPlayBack = CI.playback(geo_playback);
                     }
                 }, (e) => {
-                    alert('后台传输错误');
+                    //alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                     console.log(e);
                 });
-        }, 1000)
+        }, 1000);
 
-        /* this.setState({
-             loading: true,
-             percent: 0,
-         });*/
-
-
-        /* var geo_playback = {
-             "type": "FeatureCollection",
-             "features": [{
-                 "type": "Feature",
-                 "geometry": {
-                     "type": "Point",
-                     "coordinates": [121.35, 28.491]
-                 },
-                 "properties": {
-                     "index": [{
-                         time: "08:22-13:00",
-                         val: 5.1
-                     }, {
-                         time: "08:22-13:05",
-                         val: 9.5
-                     }, {
-                         time: "08:22-13:10",
-                         val: 3.9
-                     }, {
-                         time: "08:22-13:15",
-                         val: 2.9
-                     }, {
-                         time: "08:22-13:20",
-                         val: 7
-                     }],
-                     "name": "友谊路"
-                 }
-             }, {
-                 "type": "Feature",
-                 "geometry": {
-                     "type": "Point",
-                     "coordinates": [121.35, 28.411]
-                 },
-                 "properties": {
-                     "index": [{
-                         time: "08:22-13:00",
-                         val: 9
-                     }, {
-                         time: "08:22-13:05",
-                         val: 5
-                     }, {
-                         time: "08:22-13:10",
-                         val: 7
-                     }, {
-                         time: "08:22-13:15",
-                         val: 3.5
-                     }, {
-                         time: "08:22-13:20",
-                         val: 7.9
-                     }],
-                     "name": "延陵中路"
-                 }
-             }]
-         };*/
-
-        /*  var percent_length = geo_playback.features[0].properties.index.length;
-          var each_percent = 100 / percent_length;*/
-
-        /* setTimeout(() => {
-             this.setState({
-                 loading: false,
-                 isLoaded: true,
-                 each_percent: each_percent
-             });
-
-             markerPlayBack = CI.playback(geo_playback);
-         }, 1000);*/
-        //<Slider max={30} min={0} onChange={this.onSliderChange} value={this.state.inputValue}/>
     }
     disabledDate(current) {
         // can not select days after today
         return current && current.valueOf() > Date.now();
     }
-
-
-
+    componentWillUnmount() {
+        if (progressInterval) clearInterval(progressInterval);
+        if (markerPlayBack) this.clear();
+    }
     render() {
         const player_panel = this.state.isLoaded ? [
             <QueueAnim key='QueueAnim11' delay={500} className="queue-simple">
@@ -534,18 +477,20 @@ class Playback extends React.Component {
         return (
             <div className={trafficStyles.panel_body}>
                 <div>
-                <ul>
+                <Spin spinning={this.state.loading}>
+                <ul id="ul1">
                     <li>{"时间区间: "}<RangePicker showTime disabledDate={this.disabledDate} format="YYYY-MM-DD HH:mm:ss" 
                     onChange={this.getTimeRange} getCalendarContainer={trigger=>trigger.parentNode} />
                     </li><br/>
                    <li><CheckboxGroup className={trafficStyles.checkboxes} options={CRA_options2} onChange={this.getCheckOption} />
                     </li><br/>
-                     <Button className={trafficStyles.loadingButton} type="primary" size="large" icon="cloud-upload" 
-                     loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "加载完成!" : "加载数据"}</Button>
+                     <Button className={trafficStyles.button_primary} style={{marginLeft:'150px'}} type="primary" size="large" icon="cloud-upload" 
+                     loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "加载完成" : "加载数据"}</Button>
                     <br/>
                     <li className={trafficStyles.splitline_H}></li><br/>
                     <li className={trafficStyles.date} id='dateNow'></li>
                     </ul>
+                    </Spin>
                 </div>
                 <br/>
                     <div className={trafficStyles.QueContent}>

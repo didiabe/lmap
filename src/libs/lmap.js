@@ -83,15 +83,17 @@ export const geoTime = (geoJSON, options) => {
             this._addMakers(this);
         },
         _addMakers: function(self) {
-            var lab = document.getElementById('dateNow');
-            lab.innerHTML = this._geos[0].properties.index[0].time;
-            for (var i = 0, len = this._geos.length; i < len; i++) {
-                var marker = L.marker([this._geos[i].geometry.coordinates[1], this._geos[i].geometry.coordinates[0]], {
-                    icon: this._getColor(this._geos[i].properties.index[0].val),
-                });
-                this._makers.push(marker)
+            if (document.getElementById('dateNow')) {
+                var lab = document.getElementById('dateNow');
+                lab.innerHTML = this._geos[0].properties.index[0].time;
+                for (var i = 0, len = this._geos.length; i < len; i++) {
+                    var marker = L.marker([this._geos[i].geometry.coordinates[1], this._geos[i].geometry.coordinates[0]], {
+                        icon: this._getColor(this._geos[i].properties.index[0].val),
+                    });
+                    this._makers.push(marker)
+                }
+                this._featureGroup = L.featureGroup(this._makers).addTo(this._map);
             }
-            this._featureGroup = L.featureGroup(this._makers).addTo(this._map);
         },
         _getColor: function(index) {
             switch (true) {
@@ -172,22 +174,24 @@ export const geoTime = (geoJSON, options) => {
             );
         },
         _animation: function(self) {
-            var lab = document.getElementById('dateNow');
-            if (self._chID >= self._geos[0].properties.index.length) {
-                clearInterval(self._intervalID);
-                return;
+            if (document.getElementById('dateNow')) {
+                var lab = document.getElementById('dateNow');
+                if (self._chID >= self._geos[0].properties.index.length) {
+                    clearInterval(self._intervalID);
+                    return;
+                }
+                for (var i = 0, len = self._makers.length; i < len; i++) {
+                    self._makers[i].setIcon(self._getColor(self._geos[i].properties.index[self._chID].val));
+                    lab.innerHTML = self._geos[i].properties.index[self._chID].time;
+                }
+                self._chID++;
             }
-            for (var i = 0, len = self._makers.length; i < len; i++) {
-                self._makers[i].setIcon(self._getColor(self._geos[i].properties.index[self._chID].val));
-                lab.innerHTML = self._geos[i].properties.index[self._chID].time;
-            }
-            self._chID++;
+
         },
 
         _speedUp: function() {
             this._duration = this._duration + 1000;
             //document.getElementById('speed').value = this._duration;
-
             if (this._intervalID) {
                 this.stop();
                 this.start();

@@ -35,7 +35,7 @@
 .panel_tab_li_active {
     composes:panel_tab_li;
     color: rgb(255, 255, 255);
-    background: rgb(15, 137, 245);
+    background: #007edf;
 }
 .traffic_tag {
     float: right;
@@ -122,4 +122,51 @@ float:right;
 }
 .QueContent{
 background-color:#f4f5f6;
+}
+.button_primary{
+
+    color: #fff;
+  background-color: #007edf;
+  border-color: #007edf;
+  border-radius: 2px;
+}
+.button_primary:hover,
+.button_primary:focus {
+  color: #ffffff;
+  background-color: #4bbef2;
+  border-color: #4bbef2;
+}
+.button_primary:hover > a:only-child,
+.button_primary:focus > a:only-child {
+  color: currentColor;
+}
+.button_primary:hover > a:only-child:after,
+.button_primary:focus > a:only-child:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+}
+.button_primary:active,
+.button_primary.active {
+  color: #f2f2f2;
+  background-color: #4bbef2;
+  border-color: #4bbef2;
+}
+.button_primary:active > a:only-child,
+.button_primary.active > a:only-child {
+  color: currentColor;
+}
+.button_primary:active > a:only-child:after,
+.button_primary.active > a:only-child:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: transparent;
 }

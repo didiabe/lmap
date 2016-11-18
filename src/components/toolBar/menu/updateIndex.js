@@ -7,7 +7,6 @@ import {
     Checkbox,
     Table,
     Button,
-    Progress,
     DatePicker,
     Tooltip,
     Row,
@@ -15,7 +14,8 @@ import {
     Col,
     Icon,
     TimePicker,
-    Modal
+    Modal,
+    message
 } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import styles from '../_toolBar.css';
@@ -134,7 +134,10 @@ class UpdateIndexPanel extends React.Component {
         this.onSelectChange = this.onSelectChange.bind(this);
 
     }
-
+    componentWillUnmount() {
+        //lmap.removeEchartsLayer();
+        CI.clearLayer();
+    }
     selectCongestion(e) {
         if (e) {
             this.setState({
@@ -168,7 +171,7 @@ class UpdateIndexPanel extends React.Component {
             (resp) => {
                 let data4Table = [];
                 if (resp.aaData.length < 1) {
-                    alert("没有查到符合数据");
+                    message.error('没有查到符合数据', 5); //alert("没有查到符合数据"); 
                     this.setState({
                         loading: false,
                         isLoaded: false,
@@ -192,7 +195,8 @@ class UpdateIndexPanel extends React.Component {
             },
             (e) => {
                 console.log(e);
-                alert("加载失败");
+                //alert("加载失败");
+                message.error('加载失败', 5);
                 this.setState({
                     loading: false,
                     isLoaded: false,
@@ -222,19 +226,22 @@ class UpdateIndexPanel extends React.Component {
                     loading: false,
                 });
                 if (resp.errorCode == 'success') {
-                    alert('保存成功！');
+                    //alert('保存成功！');
+                    message.success('保存成功！', 5);
                 } else {
-                    alert('保存失败', resp.errorText);
+                    message.error('保存失败' + resp.errorText, 5);
+                    //alert('保存失败', resp.errorText);
                 }
             },
             (e) => {
                 console.log = (e);
-                alert("后台传输错误！")
+                message.error('后台传输错误！', 5);
+                //alert("后台传输错误！")
             });
 
     }
     onSelectChange(selectedRowKeys) {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        //console.log('selectedRowKeys changed: ', selectedRowKeys);
         let list = this.state.dataList;
         let selectID = [];
         selectedRowKeys.map((item) => {
@@ -342,7 +349,7 @@ class UpdateIndexPanel extends React.Component {
         <TimePicker disabledSeconds={()=>{return newArray(0, 60).filter(value => value % 5 !== 0);}} onChange={this.getEndTime} hideDisabledOptions getPopupContainer={() => document.getElementById('updateDetails')}/> < br / >
             {"更新指数: "}
             <InputNumber style={{marginTop: 3}} min={0} max={10} defaultValue={1} step={0.1} onChange={this.getIndex}></InputNumber>
-            <Button style={{marginLeft:30}} type="primary" onClick={this.updateIndexVal}
+            <Button className={UpdateIndexStyle.button_primary} style={{marginLeft:30}} type="primary" onClick={this.updateIndexVal}
                     disabled={!hasSelected || !this.state.T1Checked || !this.state.T2Checked} loading={loading}>更新</Button>
             </Col>
             </Row>
@@ -379,8 +386,8 @@ class UpdateIndexPanel extends React.Component {
             <Row>
            
             {"更新指数: "}
-            <InputNumber style={{marginTop: 3}} min={0} max={10} defaultValue={1} step={0.1} onChange={this.getIndex}></InputNumber> 
-            <Button style={{marginLeft:30}} type="primary" onClick={this.updateIndexVal}
+        <InputNumber style={{marginTop: 3, marginLeft:'10px'}} min={0} max={10} defaultValue={1} step={0.1} onChange={this.getIndex}></InputNumber>
+            <Button className={UpdateIndexStyle.button_primary} style={{marginLeft:'48px'}} type="primary" onClick={this.updateIndexVal}
                     disabled={!hasSelected || !this.state.T3Checked} loading={loading}>更新</Button>
               </Row>  
             </Col>
@@ -408,7 +415,7 @@ class UpdateIndexPanel extends React.Component {
             <div className={UpdateIndexStyle.boxpanel}  id="updateDetails">
                 <div className={UpdateIndexStyle.panel_header}>
                     
-                   <span className={UpdateIndexStyle.tab1}>指数<b>批量</b>更新</span>                       
+                   <span className={UpdateIndexStyle.tab1}>指数批量更新</span>                       
                     <div className={UpdateIndexStyle.traffic_tag}>
                         <span className={UpdateIndexStyle.smooth_jam}>畅通</span>
                         <ul className={UpdateIndexStyle.traffic_level}>
@@ -435,10 +442,10 @@ class UpdateIndexPanel extends React.Component {
                           <RadioButton key={'2'} value="2">基本</RadioButton>
                           <RadioButton key={'3'} value="3">一般</RadioButton>
                           <RadioButton key={'4'} value="4">拥堵</RadioButton>
-                          <RadioButton key={'5'} value="5">严重</RadioButton>
+        <RadioButton key={'5'} value="5">严重</RadioButton>
                         </RadioGroup>
                       </div>
-                    <Button className={UpdateIndexStyle.loadingButton} type="primary" icon="cloud-upload" 
+                    <Button className={UpdateIndexStyle.button_primary} type="primary" icon="cloud-upload" 
                      loading={this.state.loading} onClick={this.loadData} disabled = {!this.state.CbtnChecked || !this.state.RbtnChecked} > 
                      {"加载数据"}
                     </Button>
@@ -486,10 +493,11 @@ var showModal_updIdx = (data) => {
                 end: null
             };
             Ds.DataService('/trafficindex_map/zsUpdate.json', sendNewIndParam, (resp) => {
-                if (resp.errorCode == 'success') alert('保存成功');
-                else alert('保存失败');
+                if (resp.errorCode == 'success') message.success('保存成功', 5); //alert('保存成功');
+                else message.error('保存失败', 5); //alert('保存失败');
             }, (e) => {
-                alert('保存失败');
+                message.error('保存失败', 5);
+                //alert('保存失败');
             });
         },
         onCancel() {}

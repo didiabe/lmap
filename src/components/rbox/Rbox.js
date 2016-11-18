@@ -11,7 +11,8 @@ import CraResults from './menu/CraResults';
 import * as lmsg from '../../libs/lmsg';
 import * as Ds from '../../libs/DataService';
 import {
-    Table
+    Table,
+    message
 } from 'antd';
 
 class Rbox extends React.Component {
@@ -149,7 +150,7 @@ class Rbox extends React.Component {
                 });
             }, (e) => {
                 console.log(e);
-                alert('后台传输错误');
+                message.error('后台传输错误', 5);
             });
             localStorage.removeItem('jrlzbbSend');
         });
@@ -163,7 +164,7 @@ class Rbox extends React.Component {
                 //路口
                 Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
-                    if (!resp.aaData) alert('没有相应信息');
+                    if (!resp.aaData) message.warning('没有相应信息', 3);
                     else {
 
                         for (var i = 0; i < resp.aaData.length; i++) {
@@ -184,14 +185,14 @@ class Rbox extends React.Component {
                     }
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                 });
 
             } else if (data.isCross == 2) {
                 //路段
                 Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
-                    if (!resp.aaData) alert('没有相应信息');
+                    if (!resp.aaData) message.warning('没有相应信息', 3);
                     else {
 
                         for (var i = 0; i < resp.aaData.length; i++) {
@@ -212,9 +213,9 @@ class Rbox extends React.Component {
                     }
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误');
+                    message.error('后台传输错误', 5);
                 });
-            } else alert('双屏通讯错误');
+            } else message.error('双屏通讯错误', 5);
             localStorage.removeItem('cfxydBtnClick');
         });
 

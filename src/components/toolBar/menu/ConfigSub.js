@@ -19,7 +19,8 @@ import {
     InputNumber,
     Row,
     Col,
-    message
+    message,
+    Spin
 } from 'antd';
 
 const FormItem = Form.Item;
@@ -113,154 +114,132 @@ class ConfigSubPanel extends React.Component {
             isloaded1: false,
             isloaded2: false,
             isloaded3: false,
+            loading: false
         };
         this.onClickButton = this.onClickButton.bind(this);
     }
     onClickButton(ref) {
         let self = this;
+
         this.setState({
-            isloading1: false,
-            isloading2: false,
-            isloading3: false,
-            isloaded1: false,
-            isloaded2: false,
-            isloaded3: false,
+            loading: true
+        }, function() {
+            onRunning(ref);
         });
+        let onRunning = (ref) => {
+            if (ref == 'roadConfig') {
+                message.success('您已進入双向道路配置頁面');
 
-        if (ref == 'roadConfig') {
-            message.success('您已進入双向道路配置頁面');
-            this.setState({
-                isloading1: true,
-            });
-            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
-                self.setState({
-                    isloading1: false,
-                    isloaded1: true
+                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
+                    CI.displayConfigLayer_road(resp.aaData);
+                    DR.DrawConfigLayer.DrawRoad.activate();
+                    ReactDOM.render(
+                        <RoadConfigPanel/>, document.getElementById("configPanel")
+                    );
+                }, (e) => {
+                    console.log(e);
+                    //alert('后台传输错误！');
+                    message.error('后台传输错误！', 5);
                 });
-                CI.displayConfigLayer_road(resp.aaData);
-                DR.DrawConfigLayer.DrawRoad.activate();
-                ReactDOM.render(
-                    <RoadConfigPanel/>, document.getElementById("configPanel")
-                );
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误！');
-                self.setState({
-                    isloading1: false,
-                    isloading2: false,
-                    isloading3: false,
-                    isloaded1: false,
-                    isloaded2: false,
-                    isloaded3: false,
-                });
-            });
 
-        } else if (ref == 'regionConfig') {
-            message.success('您已進入区域配置頁面');
-            this.setState({
-                isloading2: true,
-            });
-            Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
-                CI.displayConfigLayer(resp.aaData);
-                self.setState({
-                    isloading2: false,
-                    isloaded2: true
-                });
-                DR.DrawConfigLayer.DrawRegion.activate();
-                DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-                ReactDOM.render(
-                    <RegionConfigPanel/>, document.getElementById("configPanel")
-                );
+            } else if (ref == 'regionConfig') {
+                message.success('您已進入区域配置頁面');
 
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误！');
-                self.setState({
-                    isloading1: false,
-                    isloading2: false,
-                    isloading3: false,
-                    isloaded1: false,
-                    isloaded2: false,
-                    isloaded3: false,
-                });
-            });
+                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
+                    CI.displayConfigLayer(resp.aaData);
+                    DR.DrawConfigLayer.DrawRegion.activate();
+                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+                    ReactDOM.render(
+                        <RegionConfigPanel/>, document.getElementById("configPanel")
+                    );
 
-        } else if (ref == 'odConfig') {
-            message.success('您已進入OD区域配置頁面');
+                }, (e) => {
+                    console.log(e);
+                    message.error('后台传输错误！', 5);
+
+                });
+
+            } else if (ref == 'odConfig') {
+                message.success('您已進入OD区域配置頁面');
+
+                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
+                    CI.displayConfigLayer(resp.aaData);
+
+                    DR.DrawConfigLayer.DrawOD.activate();
+                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+                    ReactDOM.render(
+                        <OdConfigPanel/>,
+                        document.getElementById("configPanel")
+                    );
+
+                }, (e) => {
+                    console.log(e);
+                    message.error('后台传输错误！', 5);
+                });
+
+            } else if (ref == 'fhld') {
+                message.success('您已进入复合路段配制页面');
+                Ds.DataService('/trafficindex_map/roadMap.json', null, (resp) => {
+                    CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
+                    //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+                }, (e) => {
+                    console.log(e);
+                });
+
+            } else if (ref == 'fhld_locating') {
+                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
+                    message.warning('开始绘制复合路段信息', 5);
+                    DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+                }, (e) => {
+                    message.error('后台传输错误！', 5);
+                    console.log(e);
+                });
+            } else message.error('加载地图图层错误', 5);
             self.setState({
-                isloading3: true,
+                loading: false
             });
-            Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
-                CI.displayConfigLayer(resp.aaData);
-                self.setState({
-                    isloading3: false,
-                    isloaded3: true
-                });
-                DR.DrawConfigLayer.DrawOD.activate();
-                DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-                ReactDOM.render(
-                    <OdConfigPanel/>,
-                    document.getElementById("configPanel")
-                );
+        };
 
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误！');
-                self.setState({
-                    isloading1: false,
-                    isloading2: false,
-                    isloading3: false,
-                    isloaded1: false,
-                    isloaded2: false,
-                    isloaded3: false,
-                });
-            });
-
-        } else if (ref = 'fhld') {
-            message.success('您已進入复合路段配置頁面');
-            Ds.DataService('/trafficindex_map/roadMap.json', null, (resp) => {
-                CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
-                //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-            }, (e) => {
-                console.log(e)
-            });
-
-        } else if (ref = 'fhld_locating') {
-            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
-                message.warning('开始绘制复合路段信息', 5);
-                DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-            }, (e) => {
-                console.log(e)
-            });
-        } else alert('加载地图图层错误');
     }
     ChangeConfig(ref) {
+        let self = this;
         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
         DR.drawFeatures.disable();
-        if (ref == 'regionConfig') {
-            Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
-                CI.changeConfigLayer(resp.aaData.zone, ref);
-                DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误！');
-            });
-        } else if (ref == 'odConfig') {
-            Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
-                CI.changeConfigLayer(resp.aaData.zone, ref);
-                DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误！');
-            });
-        } else if (ref == 'roadConfig') {
-            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
-                CI.changeConfigLayer(resp.aaData, ref);
-            }, (e) => {
-                console.log(e);
-                alert('后台传输错误！');
+        this.setState({
+            loading: true
+        }, function() {
+            onRunning(ref);
+        });
+        let onRunning = (ref) => {
+            if (ref == 'regionConfig') {
+                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
+                    CI.changeConfigLayer(resp.aaData.zone, ref);
+                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+                }, (e) => {
+                    console.log(e);
+                    message.error('后台传输错误！', 5);
+                });
+            } else if (ref == 'odConfig') {
+                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
+                    CI.changeConfigLayer(resp.aaData.zone, ref);
+                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+                }, (e) => {
+                    console.log(e);
+                    message.error('后台传输错误！', 5);
+                });
+            } else if (ref == 'roadConfig') {
+                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
+                    CI.changeConfigLayer(resp.aaData, ref);
+                }, (e) => {
+                    console.log(e);
+                    message.error('后台传输错误！', 5);
+                });
+            }
+            self.setState({
+                loading: false
             });
         }
+
 
     }
     componentDidMount() {
@@ -345,6 +324,10 @@ class ConfigSubPanel extends React.Component {
         });
 
     }
+    componentWillUnmount() {
+        lmap.removeEchartsLayer();
+        CI.clearLayer();
+    }
     render() {
         const regionConfig = (
             <div>
@@ -354,7 +337,7 @@ class ConfigSubPanel extends React.Component {
               className={ ConfigStyles.button1 }
               type="ghost"
               size="small"
-              loading={ this.state.isloading2 }
+              
               onClick={ () => this.onClickButton("regionConfig") }>
         新增
       </Button>
@@ -364,7 +347,7 @@ class ConfigSubPanel extends React.Component {
               className={ ConfigStyles.button1 }
               type="ghost"
               size="small"
-              loading={ this.state.isloading2 }
+              
               onClick={ () => this.ChangeConfig("regionConfig") }>
         修改
       </Button>
@@ -377,7 +360,7 @@ class ConfigSubPanel extends React.Component {
               className={ ConfigStyles.button1 }
               type="ghost"
               size="small"
-              loading={ this.state.isloading2 }
+              
               onClick={ () => this.onClickButton("odConfig") }>
         新增
       </Button>
@@ -387,7 +370,7 @@ class ConfigSubPanel extends React.Component {
               className={ ConfigStyles.button1 }
               type="ghost"
               size="small"
-              loading={ this.state.isloading2 }
+             
               onClick={ () => this.ChangeConfig("odConfig") }>
         修改
       </Button>
@@ -400,7 +383,7 @@ class ConfigSubPanel extends React.Component {
               className={ ConfigStyles.button1 }
               type="ghost"
               size="small"
-              loading={ this.state.isloading2 }
+            
               onClick={ () => this.onClickButton("roadConfig") }>
         新增
       </Button>
@@ -410,7 +393,7 @@ class ConfigSubPanel extends React.Component {
               className={ ConfigStyles.button1 }
               type="ghost"
               size="small"
-              loading={ this.state.isloading2 }
+ 
               onClick={ () => this.ChangeConfig("roadConfig") }>
         修改
       </Button>
@@ -420,16 +403,17 @@ class ConfigSubPanel extends React.Component {
             <div
            className={ ConfigStyles.boxpanel }
            id="configDetails">
-        <div className={ ConfigStyles.panel_header }>
+        <div className={ ConfigStyles.panel_header } style={{fontSize:'14px'}}>
           配置信息
         </div>
         <div
              className={ ConfigStyles.panel_body }
              id="Configpanel_body">
+             <Spin spinning={this.state.loading}>
           <Button
                   id="crossConfig"
                   ref="crossConfig"
-                  className={ ConfigStyles.button1 }
+                  className={ ConfigStyles.button_primary }
                   type="primary"
                   size="small"
                   disabled={ false }
@@ -446,10 +430,10 @@ class ConfigSubPanel extends React.Component {
             <Button
                     id="roadConfig"
                     ref="roadConfig"
-                    className={ ConfigStyles.button1 }
+                    className={ ConfigStyles.button_primary }
                     type="primary"
                     size="small"
-                    loading={ this.state.isloading1 }>
+                 >
               双向路段
             </Button>
           </Popover>
@@ -463,10 +447,10 @@ class ConfigSubPanel extends React.Component {
             <Button
                     id="regionConfig"
                     ref="regionConfig"
-                    className={ ConfigStyles.button1 }
+                    className={ ConfigStyles.button_primary }
                     type="primary"
                     size="small"
-                    loading={ this.state.isloading2 }>
+                   >
               区域配置
             </Button>
           </Popover>
@@ -480,13 +464,13 @@ class ConfigSubPanel extends React.Component {
             <Button
                     id="odConfig"
                     ref="odConfig"
-                    className={ ConfigStyles.button1 }
+                    className={ ConfigStyles.button_primary }
                     type="primary"
-                    size="small"
-                    loading={ this.state.isloading3 }>
+                    size="small">
               OD区域
             </Button>
           </Popover>
+          </Spin>
         </div>
         <br/>
         <div id='configPanel'></div>
@@ -511,9 +495,11 @@ let RegionConfigPanel = React.createClass({
         //console.log(this.props.form.getFieldsValue());
         this.props.form.validateFields((errors, values) => {
             if (!!errors) {
-                alert('请检查错误');
+                //alert('请检查错误');
+                message.warning('请检查错误', 3);
             } else if (DR.DrawConfigLayer.DrawRegion.getValue() == null) {
-                alert('请先画图')
+                //alert('请先画图')
+                message.warning('请先画图', 3);
             } else {
                 //console.log('传给后台的值', values);
                 var sendParams_region = {
@@ -528,7 +514,8 @@ let RegionConfigPanel = React.createClass({
                 Ds.DataService('/trafficindex_zoneConfig/add.json', sendParams_region, (resp) => {
                     console.log(resp);
                     if (resp.errorCode == 'success') {
-                        alert('保存成功');
+                        //alert('保存成功');
+                        message.success('保存成功', 3);
                         DR.drawFeatures.disable();
                         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
                         lmsg.send('qypz', {
@@ -539,7 +526,8 @@ let RegionConfigPanel = React.createClass({
                     }
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误！')
+                    //alert('后台传输错误！')
+                    message.error('后台传输错误！', 5);
                 });
 
 
@@ -686,13 +674,10 @@ let OdConfigPanel = React.createClass({
         this.props.form.validateFieldsAndScroll((errors, values) => {
             //console.log(errors)
             var regionFeature = DR.DrawConfigLayer.DrawOD.getValue();
-            var selectedIDs = DR.DrawConfigLayer.DrawOD.calculateWithin().toString();
-
             if (!!errors) {
-                alert('请检查错误');
-
-            } else if (!regionFeature) {
-                alert('请绘制图层');
+                message.warning('请检查错误', 3);
+            } else if (regionFeature == null) {
+                message.warning('请绘制图层', 3);
             } else {
                 //console.log('传给后台的值', values);
                 var sendParams_od = {
@@ -700,25 +685,25 @@ let OdConfigPanel = React.createClass({
                     qymc: values.odName,
                     qyfw: JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()),
                     ylzd1: this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4,
-                    crossId: selectedIDs,
+                    crossId: DR.DrawConfigLayer.DrawOD.calculateWithin().toString(),
                     point: '[' + DR.DrawConfigLayer.DrawOD.calculateCenterPoint().toString() + ']'
 
                 };
                 Ds.DataService('/trafficindex_bodregionconfig/add.json', sendParams_od, (resp) => {
                     console.log(resp);
                     if (resp.errorCode == 'success') {
-                        alert('保存成功');
+                        message.success('保存成功', 3);
                         DR.drawFeatures.disable();
                         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
                         lmsg.send('odpz', {
                             'data': 'success'
                         });
                     } else {
-                        alert(resp.errorText);
+                        message.error('保存失败' + resp.errorText, 5);
                     }
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误！')
+                    message.error('后台传输错误！', 5)
                 });
 
             }
@@ -859,7 +844,7 @@ let RoadConfigPanel = React.createClass({
         Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, (resp) => {
             selectionOptions_road = resp.aaData;
         }, (e) => {
-            alert('后台传输错误！');
+            message.error('后台传输错误！', 5);
             console.log(e);
         });
     },
@@ -867,9 +852,9 @@ let RoadConfigPanel = React.createClass({
         e.preventDefault();
         this.props.form.validateFields((errors, values) => {
             if (!!errors) {
-                alert('有误，请检查错误');
+                message.warning('有误，请检查错误', 3);
             } else if (DR.DrawConfigLayer.DrawRoad.getValue() == null) {
-                alert('请画一条道路再保存');
+                message.warning('请画一条道路再保存', 3);
             } else {
                 var sendParam_road = {
                     xgla: values.startSelect,
@@ -880,17 +865,17 @@ let RoadConfigPanel = React.createClass({
                 if (!sendParam_road.coordinates) alert('请画图先');
                 Ds.DataService('/trafficindex_roadConfiguration/addDoubleSidedRoadInfo.json', sendParam_road, (resp) => {
                     if (resp.errorCode == 'success') {
-                        alert('保存成功');
+                        message.success('保存成功', 5);
                         DR.drawFeatures.disable();
                         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
                         lmsg.send('ldpz', {
                             'data': 'success'
                         });
                     } else {
-                        alert(resp.errorText);
+                        message.error('保存失败' + resp.errorText, 5);
                     }
                 }, (e) => {
-                    alert('后台传输错误！');
+                    message.error('后台传输错误！', 5);
                     console.log(e);
                 });
             }
@@ -1004,18 +989,18 @@ let RegionConfigPanel_Modify = React.createClass({
             console.log('传给后台的值', sendParams_region);
             Ds.DataService('/trafficindex_zoneConfig/update.json', sendParams_region, (resp) => {
                 if (resp.errorCode == 'success') {
-                    alert('保存成功');
+                    message.success('保存成功', 5);
                     DR.drawFeatures.disable();
                     ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
                     lmsg.send('qypz', {
                         'data': 'success'
                     });
                 } else {
-                    alert(resp.errorText);
+                    message.error('保存失败' + resp.errorText, 5);
                 }
             }, (e) => {
                 console.log(e);
-                alert('后台传输错误！')
+                message.error('后台传输错误！', 5)
             });
 
         });
@@ -1150,20 +1135,20 @@ let OdConfigPanel_Modify = React.createClass({
             if (sendParams_od.qymc.length !== 0) {
                 Ds.DataService('/trafficindex_bodregionconfig/update.json', sendParams_od, (resp) => {
                     if (resp.errorCode == 'success') {
-                        alert('保存成功');
+                        message.success('保存成功', 3);
                         DR.drawFeatures.disable();
                         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
                         lmsg.send('odpz', {
                             'data': 'success'
                         });
                     } else {
-                        alert(resp.errorText);
+                        message.error('保存失败' + resp.errorText, 5);
                     }
                 }, (e) => {
                     console.log(e);
-                    alert('后台传输错误！')
+                    message.error('后台传输错误！', 5)
                 });
-            } else alert('区域名称不能为空');
+            } else message.error('区域名称不能为空', 3);
         });
     },
     componentDidMount() {},
@@ -1280,7 +1265,7 @@ let RoadConfigPanel_Modify = React.createClass({
         Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, (resp) => {
             selectionOptions_road = resp.aaData;
         }, (e) => {
-            alert('后台传输错误！');
+            message.error('后台传输错误！', 5);
             console.log(e);
         });
     },
@@ -1299,17 +1284,17 @@ let RoadConfigPanel_Modify = React.createClass({
                     //if (!sendParam_road.coordinates) alert('请画图先');
                 Ds.DataService('/trafficindex_roadConfiguration/updateRoadConfigInfoByComplexRoad.json', sendParam_road, (resp) => {
                     if (resp.errorCode == 'success') {
-                        alert('保存成功');
+                        message.success('保存成功', 5);
                         DR.drawFeatures.disable();
                         ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
                         lmsg.send('ldpz', {
                             'data': 'success'
                         });
                     } else {
-                        alert(resp.errorText);
+                        message.error('保存失败' + resp.errorText, 5);
                     }
                 }, (e) => {
-                    alert('后台传输错误！');
+                    message.error('后台传输错误！', 5);
                     console.log(e);
                 });
             }

@@ -138,8 +138,9 @@
 /* Draw toolbar
 /* ================================================================== */
 
+
 .leaflet-draw-toolbar .leaflet-draw-draw-polyline {
-	background-position: 0px -2px;
+	background-position: -2px 0px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polyline {
@@ -147,35 +148,35 @@
 }
 
 .leaflet-draw-toolbar .leaflet-draw-draw-polygon {
-	background-position: -31px -2px;
+	background-position: -31px 0px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polygon {
-	background-position: -29px -1px;
+	background-position: -29px 0px;
 }
 
 .leaflet-draw-toolbar .leaflet-draw-draw-rectangle {
-	background-position: -62px -2px;
+	background-position: -62px 0px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-rectangle {
-	background-position: -60px -1px;
+	background-position: -60px 0px;
 }
 
 .leaflet-draw-toolbar .leaflet-draw-draw-circle {
-	background-position: -92px -2px;
+	background-position: -92px 0px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circle {
-	background-position: -90px -1px;
+	background-position: -90px 0px;
 }
 
 .leaflet-draw-toolbar .leaflet-draw-draw-marker {
-	background-position: -122px -2px;
+	background-position: -122px 0px;
 }
 
 .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-marker {
-	background-position: -120px -1px;
+	background-position: -120px 0px;
 }
 
 /* ================================================================== */

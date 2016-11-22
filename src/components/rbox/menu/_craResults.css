@@ -88,7 +88,7 @@
     top: 20px;
     width: 33px;
     height: 6px;
-    background: rgb(54,174,76);
+    background: #277b04;
 }
 .traffic_level_2{
     position: absolute;
@@ -96,19 +96,19 @@
     top: 50px;
     width: 33px;
     height: 6px;
-    background: rgb(106,183,45);
+    background: #34b100;
 }
 .traffic_level_3{
     composes:traffic_level_li;
-    background: rgb(236,232,57);
+    background: #ffcb00;
 }
 .traffic_level_4{
     composes:traffic_level_li;
-    background: rgb(242,150,24);
+    background: #ff8800;
 }
 .traffic_level_5{
     composes:traffic_level_li;
-    background: rgb(228,26,22);
+    background: #df0000;
 }
 /*结果面板下面表格展示全部*/
 .table{

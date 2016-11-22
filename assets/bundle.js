@@ -66,11 +66,11 @@
 	
 	var _CongestionIndex2 = _interopRequireDefault(_CongestionIndex);
 	
-	var _TrafficGuidance = __webpack_require__(252);
+	var _TrafficGuidance = __webpack_require__(255);
 	
 	var _TrafficGuidance2 = _interopRequireDefault(_TrafficGuidance);
 	
-	var _index = __webpack_require__(253);
+	var _index = __webpack_require__(256);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -7772,15 +7772,15 @@
 	
 	var _ToolBar2 = _interopRequireDefault(_ToolBar);
 	
-	var _Rbox = __webpack_require__(240);
+	var _Rbox = __webpack_require__(243);
 	
 	var _Rbox2 = _interopRequireDefault(_Rbox);
 	
-	var _Map = __webpack_require__(250);
+	var _Map = __webpack_require__(253);
 	
 	var _Map2 = _interopRequireDefault(_Map);
 	
-	var _Emap = __webpack_require__(251);
+	var _Emap = __webpack_require__(254);
 	
 	var _Emap2 = _interopRequireDefault(_Emap);
 	
@@ -8196,19 +8196,19 @@
 	
 	var _Traffic2 = _interopRequireDefault(_Traffic);
 	
-	var _updateIndex = __webpack_require__(230);
+	var _updateIndex = __webpack_require__(229);
 	
 	var _updateIndex2 = _interopRequireDefault(_updateIndex);
 	
-	var _Drawsth = __webpack_require__(233);
+	var _Drawsth = __webpack_require__(232);
 	
 	var _Drawsth2 = _interopRequireDefault(_Drawsth);
 	
-	var _UniqueSub = __webpack_require__(236);
+	var _UniqueSub = __webpack_require__(235);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
-	var _ConfigSub = __webpack_require__(239);
+	var _ConfigSub = __webpack_require__(242);
 	
 	var _ConfigSub2 = _interopRequireDefault(_ConfigSub);
 	
@@ -8216,7 +8216,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
@@ -8432,11 +8432,11 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _traffic = __webpack_require__(121);
+	var _traffic = __webpack_require__(120);
 	
 	var _traffic2 = _interopRequireDefault(_traffic);
 	
-	var _CongestionIndex = __webpack_require__(123);
+	var _CongestionIndex = __webpack_require__(122);
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
@@ -8444,7 +8444,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _lmap = __webpack_require__(228);
+	var _lmap = __webpack_require__(227);
 	
 	var lmap = _interopRequireWildcard(_lmap);
 	
@@ -13832,21 +13832,20 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"layerboxIn":"_32CNRQLxBqZJFp3-oQtPW1","usel":"Sz_rZx9M9LZ-CzHzh31cS","layerbox":"_2ENMuusFmXerEnjeHqFOCf Sz_rZx9M9LZ-CzHzh31cS","layerItemSpan":"XqchKSuct7gJvVASxQCxB","traffic":"_3bPkOmLZQOJ6nLlzDSY8nY XqchKSuct7gJvVASxQCxB","traffic_active":"_2NAD5fUHGgkghRTyIg1qdH XqchKSuct7gJvVASxQCxB","satellite":"_2VjpcVg5Pcav28w683KJti XqchKSuct7gJvVASxQCxB","satellite_active":"_3avaOwHfedmV7wOM45vaFD XqchKSuct7gJvVASxQCxB","subway":"_3gpLic-vR-YlSCDMKawvmb XqchKSuct7gJvVASxQCxB","subway_active":"_2ZNmKd_Dmtf2EDf7HNPdP5 XqchKSuct7gJvVASxQCxB","toolItemSpan":"_3YZfpW3dcNRoATq4ovAR0h","ranging":"_1SBSe4HaU5kTvyRMRo3Aa3 _3YZfpW3dcNRoATq4ovAR0h","ranging_active":"_1imlujjBB7kFGAlUQnHsCT _3YZfpW3dcNRoATq4ovAR0h","fullscreen":"_3VAB4dBvLz8kQUt0_kWuUW _3YZfpW3dcNRoATq4ovAR0h","fullscreen_active":"_2k5BnYLRJJYXmGjK3EVAmE _3YZfpW3dcNRoATq4ovAR0h"};
+	module.exports = {"layerboxIn":"_32CNRQLxBqZJFp3-oQtPW1","usel":"Sz_rZx9M9LZ-CzHzh31cS","layerbox":"_2ENMuusFmXerEnjeHqFOCf Sz_rZx9M9LZ-CzHzh31cS","layerItemSpan":"XqchKSuct7gJvVASxQCxB","traffic":"_3bPkOmLZQOJ6nLlzDSY8nY XqchKSuct7gJvVASxQCxB","traffic_active":"_2NAD5fUHGgkghRTyIg1qdH XqchKSuct7gJvVASxQCxB","satellite":"_2VjpcVg5Pcav28w683KJti XqchKSuct7gJvVASxQCxB","satellite_active":"_3avaOwHfedmV7wOM45vaFD XqchKSuct7gJvVASxQCxB","subway":"_3gpLic-vR-YlSCDMKawvmb XqchKSuct7gJvVASxQCxB","subway_active":"_2ZNmKd_Dmtf2EDf7HNPdP5 XqchKSuct7gJvVASxQCxB","ranging":"_1SBSe4HaU5kTvyRMRo3Aa3 XqchKSuct7gJvVASxQCxB","ranging_active":"_1imlujjBB7kFGAlUQnHsCT XqchKSuct7gJvVASxQCxB","fullscreen":"_3VAB4dBvLz8kQUt0_kWuUW XqchKSuct7gJvVASxQCxB","fullscreen_active":"_2k5BnYLRJJYXmGjK3EVAmE XqchKSuct7gJvVASxQCxB"};
 
 /***/ },
 /* 118 */,
 /* 119 */,
-/* 120 */,
-/* 121 */
+/* 120 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"boxpanel":"_1VviI9DWdMBhq-zzZn-fTs","panel_header":"_2pfJyz26TyFQ1bLvDBF3Pa","panel_tab":"_3Y3vnjEF6Wd7Z4YlFF785s","panel_tab_li":"_1p7e05fcEeYuFZJc-LZYp9","panel_tab_li_active":"_1fYwbXooItHlI0o5ZBoJ9g _1p7e05fcEeYuFZJc-LZYp9","traffic_tag":"_3I7-Ck84qARJiJw9Dp4A0s","smooth_jam":"_3_sh-QP3iLgbmtUblDFsRK","traffic_level":"_3ct0QNlrNr0ixUPWPBMydD","traffic_level_li":"Rev_SSbORlsKmeSjSUFC0","traffic_level_1":"_2uuVTiFiKWtDqVvAZI7Nch Rev_SSbORlsKmeSjSUFC0","traffic_level_2":"_2lUzqsZ4DP3Ol5RWQDVMZh Rev_SSbORlsKmeSjSUFC0","traffic_level_3":"_1_VBmWDvNWulupFOKKPtxn Rev_SSbORlsKmeSjSUFC0","traffic_level_4":"QC4Fk9YwAMHWVmHGG4Ahy Rev_SSbORlsKmeSjSUFC0","traffic_level_5":"_32RPOJhISWw56zIcTSLiGY Rev_SSbORlsKmeSjSUFC0","panel_body":"_33fvMNli8JXbu5pl-iHWYN","time_lbl":"_2XJktDm2i8m6sQCD-W77Rr","date":"hCuwoSpWe4qZqkYMACEVV","checkboxes":"_1gzNdwZm_oUeOrearAHyBG","loadingButton":"NOUUUGNdaFN-kloHnHYIl","splitline_H":"_1AIENj9GcUdudOsiDkLK1A","hisPlayer_panel":"_3Q3Yded73d98uCW88kNuhz","hisPlayer_btnL":"_2vxO_ciU0VUSFxTkwrA9Rx","hisPlayer_btnR":"_2b74pl5i2hS5tpkPj2Jtka","hisPlayer_btn1":"SoOmzuaRoQ-8D5aGQ4DCF","hisPlayer_btn2":"_3NsRBZxnOGzZv5il63kjmu","QueContent":"gq5neQNIKievPvEZVAomg","button_primary":"HT3yIAWni_QdMyDBCaynO","active":"Tx6fEJMQ3KtwzUthwpBu3"};
 
 /***/ },
-/* 122 */,
-/* 123 */
+/* 121 */,
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13865,19 +13864,19 @@
 	
 	var _esriLeaflet2 = _interopRequireDefault(_esriLeaflet);
 	
-	var _turf = __webpack_require__(124);
+	var _turf = __webpack_require__(123);
 	
 	var turf = _interopRequireWildcard(_turf);
 	
-	var _meta = __webpack_require__(227);
+	var _meta = __webpack_require__(226);
 	
 	var meta = _interopRequireWildcard(_meta);
 	
-	var _lmap = __webpack_require__(228);
+	var _lmap = __webpack_require__(227);
 	
 	var lmap = _interopRequireWildcard(_lmap);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
@@ -13914,23 +13913,23 @@
 	    var GeoJsonPoints = data.geoJson;
 	    var greenMarker = lmap.icon({
 	        iconSize: [15, 15],
-	        color: 'rgb(54,174,76)'
+	        color: '#277b04'
 	    });
 	    var yellowMarker = lmap.icon({
 	        iconSize: [15, 15],
-	        color: 'rgb(106,183,45)'
+	        color: '#34b100'
 	    });
 	    var orangeMarker = lmap.icon({
 	        iconSize: [15, 15],
-	        color: 'rgb(236,232,57)'
+	        color: '#ffcb00'
 	    });
 	    var brownMarker = lmap.icon({
 	        iconSize: [15, 15],
-	        color: 'rgb(242,150,24)'
+	        color: '#ff8800'
 	    });
 	    var redMarker = lmap.icon({
 	        iconSize: [15, 15],
-	        color: 'rgb(228,26,22)'
+	        color: '#df0000'
 	    });
 	
 	    var pointMarkerOption = null;
@@ -14036,37 +14035,37 @@
 	    });
 	    var GeoJsonLines = data.geoJson;
 	    var greenLine = {
-	        'fillColor': "rgb(54,174,76)",
-	        "color": "rgb(54,174,76)",
+	        'fillColor': "#277b04",
+	        "color": "#277b04",
 	        "weight": 7,
 	        "opacity": 0.8,
 	        'fillOpacity': 1
 	    };
 	    var yellowLine = {
-	        'fillColor': "rgb(106,183,45)",
-	        "color": "rgb(106,183,45)",
+	        'fillColor': "#34b100",
+	        "color": "#34b100",
 	        "weight": 7,
 	        "opacity": 0.8,
 	        'fillOpacity': 1
 	    };
 	    var orangeLine = {
-	        'fillColor': "rgb(236,232,57)",
-	        "color": "rgb(236,232,57)",
+	        'fillColor': "#ffcb00",
+	        "color": "#ffcb00",
 	        "weight": 7,
 	        "opacity": 0.8,
 	        'fillOpacity': 1
 	    };
 	    var brownLine = {
-	        'fillColor': "rgb(242,150,24)",
-	        "color": "rgb(242,150,24)",
+	        'fillColor': "#ff8800",
+	        "color": "#ff8800",
 	        "weight": 7,
 	        "opacity": 0.8,
 	        'fillOpacity': 1
 	    };
 	
 	    var redLine = {
-	        'fillColor': "rgb(228,26,22)",
-	        "color": "rgb(228,26,22)",
+	        'fillColor': "#df0000",
+	        "color": "#df0000",
 	        "weight": 7,
 	        "opacity": 0.8,
 	        'fillOpacity': 1
@@ -14124,9 +14123,9 @@
 	        var l = e.target;
 	        l.setStyle({
 	            weight: 7,
-	            color: '#007D7D',
+	            color: '#007edf',
 	            dashArray: '',
-	            fillOpacity: 0.9
+	            fillOpacity: 1
 	        });
 	    };
 	
@@ -14161,40 +14160,40 @@
 	    var GeoJsonRegion = data.geoJson;
 	
 	    var greenRegion = {
-	        fillColor: "rgb(54,174,76)",
+	        fillColor: "#277b04",
 	        fillOpacity: 1,
-	        color: "rgb(54,174,76)",
+	        color: "#277b04",
 	        weight: 5,
 	        opacity: 0.8
 	    };
 	    var yellowRegion = {
-	        fillColor: "rgb(106,183,45)",
+	        fillColor: "#34b100",
 	        fillOpacity: 1,
-	        color: "rgb(106,183,45)",
+	        color: "#34b100",
 	        weight: 5,
 	        opacity: 0.8
 	
 	    };
 	    var orangeRegion = {
-	        fillColor: "rgb(236,232,57)",
+	        fillColor: "#ffcb00",
 	        fillOpacity: 1,
-	        color: "rgb(236,232,57)",
+	        color: "#ffcb00",
 	        weight: 5,
 	        opacity: 0.8
 	
 	    };
 	    var brownRegion = {
-	        fillColor: "rgb(242,150,24)",
+	        fillColor: "#ff8800",
 	        fillOpacity: 1,
-	        color: "rgb(242,150,24)",
+	        color: "#ff8800",
 	        weight: 5,
 	        opacity: 0.8
 	    };
 	
 	    var redRegion = {
-	        fillColor: "rgb(228,26,22)",
+	        fillColor: "#df0000",
 	        fillOpacity: 1,
-	        color: "rgb(228,26,22)",
+	        color: "#df0000",
 	        weight: 5,
 	        opacity: 0.8
 	
@@ -14251,9 +14250,9 @@
 	        var l = e.target;
 	        l.setStyle({
 	            weight: 5,
-	            color: '#007D7D',
+	            color: '#007edf',
 	            dashArray: '',
-	            fillOpacity: 0.9
+	            fillOpacity: 1
 	        });
 	    };
 	
@@ -14341,11 +14340,12 @@
 	        _APIpath = "/trafficindex_map/roadConstruction.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
-	                fillColor: '#007D7D',
-	                weight: 8,
+	                fillColor: '#007edf',
+	                weight: 4,
 	                opacity: 1,
-	                color: 'green',
-	                dashArray: '3',
+	                color: '#006bdf',
+	                dashArray: '20,15',
+	                lineJoin: 'round',
 	                fillOpacity: 0.7
 	            };
 	        };
@@ -14364,11 +14364,12 @@
 	        _APIpath = "/trafficindex_map/trafficControl.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
-	                fillColor: '#EEC900',
-	                weight: 8,
+	                fillColor: '#007edf',
+	                weight: 4,
 	                opacity: 1,
-	                color: 'red',
-	                dashArray: '3',
+	                color: '#006bdf',
+	                dashArray: '20,15',
+	                lineJoin: 'round',
 	                fillOpacity: 0.7
 	            };
 	        };
@@ -14387,11 +14388,12 @@
 	        _APIpath = "/trafficindex_map/trafficAccident.json";
 	        specialstyle = function specialstyle(feature) {
 	            return {
-	                fillColor: '#D2691E',
-	                weight: 2,
+	                fillColor: '#007edf',
+	                weight: 4,
 	                opacity: 1,
-	                color: 'yellow',
-	                dashArray: '3',
+	                color: '#006bdf',
+	                dashArray: '20,15',
+	                lineJoin: 'round',
 	                fillOpacity: 0.7
 	            };
 	        };
@@ -14434,6 +14436,7 @@
 	            flag: data.flag,
 	            date: date2Java_date
 	        };
+	        specialpopup = _leaflet2.default.popup().setContent('拥堵路口');
 	    } else if (ref == 'yongdu_road') {
 	        _APIpath = "/trafficindex_map/cfydRoad.json";
 	        specialstyle = function specialstyle(feature) {
@@ -14459,6 +14462,7 @@
 	            flag: data.flag,
 	            date: date2Java_date
 	        };
+	        specialpopup = _leaflet2.default.popup().setContent('拥堵路段');
 	    } else if (ref == 'jiari_cross') {
 	        _APIpath = "/trafficindex_map/holiday.json";
 	        specialpointlayer = function specialpointlayer(feature, latlng) {
@@ -14798,14 +14802,14 @@
 	            map.removeLayer(layer);
 	        }
 	    });
-	    var CrossMarker = lmap.icon({
-	        iconSize: [15, 15],
-	        color: 'rgba(243, 106, 90, 0.5)'
+	    var CrossMarker = _leaflet2.default.icon({
+	        iconUrl: _imagePath + '/transparent.png',
+	        iconSize: [0, 0]
 	    });
 	    var RoadLine = {
 	        "color": "#32c5d2",
 	        "weight": 8,
-	        "opacity": 0.5
+	        "opacity": 0
 	    };
 	
 	    if (Config_crossGeojson) {
@@ -14936,7 +14940,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*eslint global-require: 0*/
@@ -14948,56 +14952,56 @@
 	 * @module turf
 	 * @summary Geospatial analysis for JavaScript
 	 */
-	var helpers = __webpack_require__(125);
+	var helpers = __webpack_require__(124);
 	
 	module.exports = {
-	    isolines: __webpack_require__(126),
-	    convex: __webpack_require__(139),
-	    within: __webpack_require__(168),
-	    concave: __webpack_require__(169),
-	    difference: __webpack_require__(172),
-	    collect: __webpack_require__(174),
-	    flip: __webpack_require__(175),
-	    simplify: __webpack_require__(176),
-	    bezier: __webpack_require__(178),
-	    tag: __webpack_require__(180),
-	    sample: __webpack_require__(181),
-	    envelope: __webpack_require__(182),
-	    square: __webpack_require__(135),
-	    circle: __webpack_require__(184),
-	    midpoint: __webpack_require__(187),
-	    buffer: __webpack_require__(190),
-	    center: __webpack_require__(193),
-	    centerOfMass: __webpack_require__(194),
-	    centroid: __webpack_require__(195),
-	    combine: __webpack_require__(197),
-	    distance: __webpack_require__(136),
-	    explode: __webpack_require__(196),
-	    bbox: __webpack_require__(132),
-	    tesselate: __webpack_require__(198),
-	    bboxPolygon: __webpack_require__(183),
-	    inside: __webpack_require__(128),
-	    intersect: __webpack_require__(200),
-	    nearest: __webpack_require__(202),
-	    planepoint: __webpack_require__(134),
-	    random: __webpack_require__(203),
-	    tin: __webpack_require__(127),
-	    union: __webpack_require__(170),
-	    bearing: __webpack_require__(188),
-	    destination: __webpack_require__(185),
-	    kinks: __webpack_require__(205),
-	    pointOnSurface: __webpack_require__(206),
-	    area: __webpack_require__(207),
-	    along: __webpack_require__(210),
-	    lineDistance: __webpack_require__(211),
-	    lineSlice: __webpack_require__(212),
-	    lineSliceAlong: __webpack_require__(214),
-	    pointOnLine: __webpack_require__(213),
-	    pointGrid: __webpack_require__(222),
-	    squareGrid: __webpack_require__(223),
-	    triangleGrid: __webpack_require__(224),
-	    hexGrid: __webpack_require__(225),
-	    idw: __webpack_require__(226),
+	    isolines: __webpack_require__(125),
+	    convex: __webpack_require__(138),
+	    within: __webpack_require__(167),
+	    concave: __webpack_require__(168),
+	    difference: __webpack_require__(171),
+	    collect: __webpack_require__(173),
+	    flip: __webpack_require__(174),
+	    simplify: __webpack_require__(175),
+	    bezier: __webpack_require__(177),
+	    tag: __webpack_require__(179),
+	    sample: __webpack_require__(180),
+	    envelope: __webpack_require__(181),
+	    square: __webpack_require__(134),
+	    circle: __webpack_require__(183),
+	    midpoint: __webpack_require__(186),
+	    buffer: __webpack_require__(189),
+	    center: __webpack_require__(192),
+	    centerOfMass: __webpack_require__(193),
+	    centroid: __webpack_require__(194),
+	    combine: __webpack_require__(196),
+	    distance: __webpack_require__(135),
+	    explode: __webpack_require__(195),
+	    bbox: __webpack_require__(131),
+	    tesselate: __webpack_require__(197),
+	    bboxPolygon: __webpack_require__(182),
+	    inside: __webpack_require__(127),
+	    intersect: __webpack_require__(199),
+	    nearest: __webpack_require__(201),
+	    planepoint: __webpack_require__(133),
+	    random: __webpack_require__(202),
+	    tin: __webpack_require__(126),
+	    union: __webpack_require__(169),
+	    bearing: __webpack_require__(187),
+	    destination: __webpack_require__(184),
+	    kinks: __webpack_require__(204),
+	    pointOnSurface: __webpack_require__(205),
+	    area: __webpack_require__(206),
+	    along: __webpack_require__(209),
+	    lineDistance: __webpack_require__(210),
+	    lineSlice: __webpack_require__(211),
+	    lineSliceAlong: __webpack_require__(213),
+	    pointOnLine: __webpack_require__(212),
+	    pointGrid: __webpack_require__(221),
+	    squareGrid: __webpack_require__(222),
+	    triangleGrid: __webpack_require__(223),
+	    hexGrid: __webpack_require__(224),
+	    idw: __webpack_require__(225),
 	    point: helpers.point,
 	    polygon: helpers.polygon,
 	    lineString: helpers.lineString,
@@ -15011,7 +15015,7 @@
 
 
 /***/ },
-/* 125 */
+/* 124 */
 /***/ function(module, exports) {
 
 	/**
@@ -15340,20 +15344,20 @@
 
 
 /***/ },
-/* 126 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//https://github.com/jasondavies/conrec.js
 	//http://stackoverflow.com/questions/263305/drawing-a-topographical-map
-	var tin = __webpack_require__(127);
-	var inside = __webpack_require__(128);
-	var grid = __webpack_require__(130);
-	var bbox = __webpack_require__(132);
-	var planepoint = __webpack_require__(134);
-	var featurecollection = __webpack_require__(125).featureCollection;
-	var linestring = __webpack_require__(125).lineString;
-	var square = __webpack_require__(135);
-	var Conrec = __webpack_require__(138);
+	var tin = __webpack_require__(126);
+	var inside = __webpack_require__(127);
+	var grid = __webpack_require__(129);
+	var bbox = __webpack_require__(131);
+	var planepoint = __webpack_require__(133);
+	var featurecollection = __webpack_require__(124).featureCollection;
+	var linestring = __webpack_require__(124).lineString;
+	var square = __webpack_require__(134);
+	var Conrec = __webpack_require__(137);
 	
 	/**
 	 * Takes {@link Point|points} with z-values and an array of
@@ -15442,13 +15446,13 @@
 
 
 /***/ },
-/* 127 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//http://en.wikipedia.org/wiki/Delaunay_triangulation
 	//https://github.com/ironwallaby/delaunay
-	var polygon = __webpack_require__(125).polygon;
-	var featurecollection = __webpack_require__(125).featureCollection;
+	var polygon = __webpack_require__(124).polygon;
+	var featurecollection = __webpack_require__(124).featureCollection;
 	
 	/**
 	 * Takes a set of {@link Point|points} and the name of a z-value property and
@@ -15685,10 +15689,10 @@
 
 
 /***/ },
-/* 128 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var invariant = __webpack_require__(129);
+	var invariant = __webpack_require__(128);
 	
 	// http://en.wikipedia.org/wiki/Even%E2%80%93odd_rule
 	// modified from: https://github.com/substack/point-in-polygon/blob/master/index.js
@@ -15790,7 +15794,7 @@
 
 
 /***/ },
-/* 129 */
+/* 128 */
 /***/ function(module, exports) {
 
 	/**
@@ -15889,10 +15893,10 @@
 
 
 /***/ },
-/* 130 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var point = __webpack_require__(131);
+	var point = __webpack_require__(130);
 	
 	/**
 	 * Takes a bounding box and a cell depth and returns a {@link FeatureCollection} of {@link Point} features in a grid.
@@ -15932,7 +15936,7 @@
 
 
 /***/ },
-/* 131 */
+/* 130 */
 /***/ function(module, exports) {
 
 	/**
@@ -15968,10 +15972,10 @@
 
 
 /***/ },
-/* 132 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var each = __webpack_require__(133).coordEach;
+	var each = __webpack_require__(132).coordEach;
 	
 	/**
 	 * Takes a set of features, calculates the bbox of all input features, and returns a bounding box.
@@ -16041,7 +16045,7 @@
 
 
 /***/ },
-/* 133 */
+/* 132 */
 /***/ function(module, exports) {
 
 	/**
@@ -16226,7 +16230,7 @@
 
 
 /***/ },
-/* 134 */
+/* 133 */
 /***/ function(module, exports) {
 
 	/**
@@ -16304,10 +16308,10 @@
 
 
 /***/ },
-/* 135 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var distance = __webpack_require__(136);
+	var distance = __webpack_require__(135);
 	
 	/**
 	 * Takes a bounding box and calculates the minimum square bounding box that
@@ -16355,11 +16359,11 @@
 
 
 /***/ },
-/* 136 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getCoord = __webpack_require__(137).getCoord;
-	var radiansToDistance = __webpack_require__(125).radiansToDistance;
+	var getCoord = __webpack_require__(136).getCoord;
+	var radiansToDistance = __webpack_require__(124).radiansToDistance;
 	//http://en.wikipedia.org/wiki/Haversine_formula
 	//http://www.movable-type.co.uk/scripts/latlong.html
 	
@@ -16421,7 +16425,7 @@
 
 
 /***/ },
-/* 137 */
+/* 136 */
 /***/ function(module, exports) {
 
 	/**
@@ -16520,7 +16524,7 @@
 
 
 /***/ },
-/* 138 */
+/* 137 */
 /***/ function(module, exports) {
 
 	/* eslint-disable */
@@ -17043,12 +17047,12 @@
 
 
 /***/ },
-/* 139 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var each = __webpack_require__(133).coordEach,
-	    convexHull = __webpack_require__(140),
-	    polygon = __webpack_require__(125).polygon;
+	var each = __webpack_require__(132).coordEach,
+	    convexHull = __webpack_require__(139),
+	    polygon = __webpack_require__(124).polygon;
 	
 	/**
 	 * Takes a [feature](http://geojson.org/geojson-spec.html#feature-objects)
@@ -17146,14 +17150,14 @@
 
 
 /***/ },
-/* 140 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var convexHull1d = __webpack_require__(141)
-	var convexHull2d = __webpack_require__(142)
-	var convexHullnd = __webpack_require__(150)
+	var convexHull1d = __webpack_require__(140)
+	var convexHull2d = __webpack_require__(141)
+	var convexHullnd = __webpack_require__(149)
 	
 	module.exports = convexHull
 	
@@ -17176,7 +17180,7 @@
 	}
 
 /***/ },
-/* 141 */
+/* 140 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -17204,14 +17208,14 @@
 	}
 
 /***/ },
-/* 142 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
 	module.exports = convexHull2D
 	
-	var monotoneHull = __webpack_require__(143)
+	var monotoneHull = __webpack_require__(142)
 	
 	function convexHull2D(points) {
 	  var hull = monotoneHull(points)
@@ -17231,14 +17235,14 @@
 
 
 /***/ },
-/* 143 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
 	module.exports = monotoneConvexHull2D
 	
-	var orient = __webpack_require__(144)[3]
+	var orient = __webpack_require__(143)[3]
 	
 	function monotoneConvexHull2D(points) {
 	  var n = points.length
@@ -17317,15 +17321,15 @@
 	}
 
 /***/ },
-/* 144 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var twoProduct = __webpack_require__(145)
-	var robustSum = __webpack_require__(146)
-	var robustScale = __webpack_require__(147)
-	var robustSubtract = __webpack_require__(149)
+	var twoProduct = __webpack_require__(144)
+	var robustSum = __webpack_require__(145)
+	var robustScale = __webpack_require__(146)
+	var robustSubtract = __webpack_require__(148)
 	
 	var NUM_EXPAND = 5
 	
@@ -17512,7 +17516,7 @@
 	generateOrientationProc()
 
 /***/ },
-/* 145 */
+/* 144 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -17550,7 +17554,7 @@
 	}
 
 /***/ },
-/* 146 */
+/* 145 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -17711,13 +17715,13 @@
 	}
 
 /***/ },
-/* 147 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var twoProduct = __webpack_require__(145)
-	var twoSum = __webpack_require__(148)
+	var twoProduct = __webpack_require__(144)
+	var twoSum = __webpack_require__(147)
 	
 	module.exports = scaleLinearExpansion
 	
@@ -17766,7 +17770,7 @@
 	}
 
 /***/ },
-/* 148 */
+/* 147 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -17788,7 +17792,7 @@
 	}
 
 /***/ },
-/* 149 */
+/* 148 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -17949,15 +17953,15 @@
 	}
 
 /***/ },
-/* 150 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
 	module.exports = convexHullnD
 	
-	var ich = __webpack_require__(151)
-	var aff = __webpack_require__(161)
+	var ich = __webpack_require__(150)
+	var aff = __webpack_require__(160)
 	
 	function permute(points, front) {
 	  var n = points.length
@@ -18014,7 +18018,7 @@
 	}
 
 /***/ },
-/* 151 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
@@ -18025,8 +18029,8 @@
 	
 	module.exports = incrementalConvexHull
 	
-	var orient = __webpack_require__(152)
-	var compareCell = __webpack_require__(158).compareCells
+	var orient = __webpack_require__(151)
+	var compareCell = __webpack_require__(157).compareCells
 	
 	function compareInt(a, b) {
 	  return a - b
@@ -18465,15 +18469,15 @@
 	}
 
 /***/ },
-/* 152 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var twoProduct = __webpack_require__(153)
-	var robustSum = __webpack_require__(154)
-	var robustScale = __webpack_require__(155)
-	var robustSubtract = __webpack_require__(157)
+	var twoProduct = __webpack_require__(152)
+	var robustSum = __webpack_require__(153)
+	var robustScale = __webpack_require__(154)
+	var robustSubtract = __webpack_require__(156)
 	
 	var NUM_EXPAND = 5
 	
@@ -18660,7 +18664,7 @@
 	generateOrientationProc()
 
 /***/ },
-/* 153 */
+/* 152 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -18698,7 +18702,7 @@
 	}
 
 /***/ },
-/* 154 */
+/* 153 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -18859,13 +18863,13 @@
 	}
 
 /***/ },
-/* 155 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var twoProduct = __webpack_require__(153)
-	var twoSum = __webpack_require__(156)
+	var twoProduct = __webpack_require__(152)
+	var twoSum = __webpack_require__(155)
 	
 	module.exports = scaleLinearExpansion
 	
@@ -18914,7 +18918,7 @@
 	}
 
 /***/ },
-/* 156 */
+/* 155 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -18936,7 +18940,7 @@
 	}
 
 /***/ },
-/* 157 */
+/* 156 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -19097,13 +19101,13 @@
 	}
 
 /***/ },
-/* 158 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"; "use restrict";
 	
-	var bits      = __webpack_require__(159)
-	  , UnionFind = __webpack_require__(160)
+	var bits      = __webpack_require__(158)
+	  , UnionFind = __webpack_require__(159)
 	
 	//Returns the dimension of a cell complex
 	function dimension(cells) {
@@ -19445,7 +19449,7 @@
 
 
 /***/ },
-/* 159 */
+/* 158 */
 /***/ function(module, exports) {
 
 	/**
@@ -19655,7 +19659,7 @@
 
 
 /***/ },
-/* 160 */
+/* 159 */
 /***/ function(module, exports) {
 
 	"use strict"; "use restrict";
@@ -19722,14 +19726,14 @@
 	}
 
 /***/ },
-/* 161 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
 	
 	module.exports = affineHull
 	
-	var orient = __webpack_require__(162)
+	var orient = __webpack_require__(161)
 	
 	function linearlyIndependent(points, d) {
 	  var nhull = new Array(d+1)
@@ -19778,15 +19782,15 @@
 	}
 
 /***/ },
-/* 162 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var twoProduct = __webpack_require__(163)
-	var robustSum = __webpack_require__(164)
-	var robustScale = __webpack_require__(165)
-	var robustSubtract = __webpack_require__(167)
+	var twoProduct = __webpack_require__(162)
+	var robustSum = __webpack_require__(163)
+	var robustScale = __webpack_require__(164)
+	var robustSubtract = __webpack_require__(166)
 	
 	var NUM_EXPAND = 5
 	
@@ -19973,7 +19977,7 @@
 	generateOrientationProc()
 
 /***/ },
-/* 163 */
+/* 162 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -20011,7 +20015,7 @@
 	}
 
 /***/ },
-/* 164 */
+/* 163 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -20172,13 +20176,13 @@
 	}
 
 /***/ },
-/* 165 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict"
 	
-	var twoProduct = __webpack_require__(163)
-	var twoSum = __webpack_require__(166)
+	var twoProduct = __webpack_require__(162)
+	var twoSum = __webpack_require__(165)
 	
 	module.exports = scaleLinearExpansion
 	
@@ -20227,7 +20231,7 @@
 	}
 
 /***/ },
-/* 166 */
+/* 165 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -20249,7 +20253,7 @@
 	}
 
 /***/ },
-/* 167 */
+/* 166 */
 /***/ function(module, exports) {
 
 	"use strict"
@@ -20410,11 +20414,11 @@
 	}
 
 /***/ },
-/* 168 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var inside = __webpack_require__(128);
-	var featureCollection = __webpack_require__(125).featureCollection;
+	var inside = __webpack_require__(127);
+	var featureCollection = __webpack_require__(124).featureCollection;
 	
 	/**
 	 * Takes a set of {@link Point|points} and a set of {@link Polygon|polygons} and returns the points that fall within the polygons.
@@ -20510,7 +20514,7 @@
 
 
 /***/ },
-/* 169 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 1. run tin on points
@@ -20518,9 +20522,9 @@
 	// 3. remove triangles that fail the max length test
 	// 4. buffer the results slightly
 	// 5. merge the results
-	var tin = __webpack_require__(127);
-	var union = __webpack_require__(170);
-	var distance = __webpack_require__(136);
+	var tin = __webpack_require__(126);
+	var union = __webpack_require__(169);
+	var distance = __webpack_require__(135);
 	
 	/**
 	 * Takes a set of {@link Point|points} and returns a concave hull polygon.
@@ -20632,7 +20636,7 @@
 
 
 /***/ },
-/* 170 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// look here for help http://svn.osgeo.org/grass/grass/branches/releasebranch_6_4/vector/v.overlay/main.c
@@ -20640,7 +20644,7 @@
 	
 	// depend on jsts for now https://github.com/bjornharrtell/jsts/blob/master/examples/overlay.html
 	
-	var jsts = __webpack_require__(171);
+	var jsts = __webpack_require__(170);
 	
 	/**
 	 * Takes two or more {@link Polygon|polygons} and returns a combined polygon. If the input polygons are not contiguous, this function returns a {@link MultiPolygon} feature.
@@ -20712,7 +20716,7 @@
 
 
 /***/ },
-/* 171 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// JSTS. See https://github.com/bjornharrtell/jsts
@@ -20737,11 +20741,11 @@
 
 
 /***/ },
-/* 172 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// depend on jsts for now https://github.com/bjornharrtell/jsts/blob/master/examples/overlay.html
-	var jsts = __webpack_require__(173);
+	var jsts = __webpack_require__(172);
 	
 	/**
 	 * Finds the difference between two {@link Polygon|polygons} by clipping the second
@@ -20837,7 +20841,7 @@
 
 
 /***/ },
-/* 173 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// JSTS. See https://github.com/bjornharrtell/jsts
@@ -20862,10 +20866,10 @@
 
 
 /***/ },
-/* 174 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var inside = __webpack_require__(128);
+	var inside = __webpack_require__(127);
 	
 	/**
 	 * Merges a specified property from a FeatureCollection of points into a
@@ -20914,10 +20918,10 @@
 
 
 /***/ },
-/* 175 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var coordEach = __webpack_require__(133).coordEach;
+	var coordEach = __webpack_require__(132).coordEach;
 	
 	/**
 	 * Takes input features and flips all of their coordinates
@@ -20956,10 +20960,10 @@
 
 
 /***/ },
-/* 176 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var simplify = __webpack_require__(177);
+	var simplify = __webpack_require__(176);
 	
 	// supported GeoJSON geometries, used to check whether to wrap in simpleFeature()
 	var supportedTypes = ['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon'];
@@ -21143,7 +21147,7 @@
 
 
 /***/ },
-/* 177 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -21280,11 +21284,11 @@
 
 
 /***/ },
-/* 178 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var linestring = __webpack_require__(125).lineString;
-	var Spline = __webpack_require__(179);
+	var linestring = __webpack_require__(124).lineString;
+	var Spline = __webpack_require__(178);
 	
 	/**
 	 * Takes a {@link LineString|line} and returns a curved version
@@ -21352,7 +21356,7 @@
 
 
 /***/ },
-/* 179 */
+/* 178 */
 /***/ function(module, exports) {
 
 	/* eslint-disable */
@@ -21492,10 +21496,10 @@
 
 
 /***/ },
-/* 180 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var inside = __webpack_require__(128);
+	var inside = __webpack_require__(127);
 	
 	/**
 	 * Takes a set of {@link Point|points} and a set of {@link Polygon|polygons} and performs a spatial join.
@@ -21553,11 +21557,11 @@
 
 
 /***/ },
-/* 181 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// http://stackoverflow.com/questions/11935175/sampling-a-random-subset-from-an-array
-	var featureCollection = __webpack_require__(125).featureCollection;
+	var featureCollection = __webpack_require__(124).featureCollection;
 	
 	/**
 	 * Takes a {@link FeatureCollection} and returns a FeatureCollection with given number of {@link Feature|features} at random.
@@ -21593,11 +21597,11 @@
 
 
 /***/ },
-/* 182 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bbox = __webpack_require__(132);
-	var bboxPolygon = __webpack_require__(183);
+	var bbox = __webpack_require__(131);
+	var bboxPolygon = __webpack_require__(182);
 	
 	/**
 	 * Takes any number of features and returns a rectangular {@link Polygon} that encompasses all vertices.
@@ -21657,10 +21661,10 @@
 
 
 /***/ },
-/* 183 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var polygon = __webpack_require__(125).polygon;
+	var polygon = __webpack_require__(124).polygon;
 	
 	/**
 	 * Takes a bbox and returns an equivalent {@link Polygon|polygon}.
@@ -21693,11 +21697,11 @@
 
 
 /***/ },
-/* 184 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var destination = __webpack_require__(185);
-	var helpers = __webpack_require__(125);
+	var destination = __webpack_require__(184);
+	var helpers = __webpack_require__(124);
 	var polygon = helpers.polygon;
 	
 	
@@ -21749,13 +21753,13 @@
 
 
 /***/ },
-/* 185 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//http://en.wikipedia.org/wiki/Haversine_formula
 	//http://www.movable-type.co.uk/scripts/latlong.html
-	var getCoord = __webpack_require__(186).getCoord;
-	var helpers = __webpack_require__(125);
+	var getCoord = __webpack_require__(185).getCoord;
+	var helpers = __webpack_require__(124);
 	var point = helpers.point;
 	var distanceToRadians = helpers.distanceToRadians;
 	
@@ -21814,7 +21818,7 @@
 
 
 /***/ },
-/* 186 */
+/* 185 */
 /***/ function(module, exports) {
 
 	/**
@@ -21913,12 +21917,12 @@
 
 
 /***/ },
-/* 187 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bearing = __webpack_require__(188);
-	var destination = __webpack_require__(185);
-	var distance = __webpack_require__(136);
+	var bearing = __webpack_require__(187);
+	var destination = __webpack_require__(184);
+	var distance = __webpack_require__(135);
 	
 	/**
 	 * Takes two {@link Point|points} and returns a point midway between them.
@@ -21967,10 +21971,10 @@
 
 
 /***/ },
-/* 188 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getCoord = __webpack_require__(189).getCoord;
+	var getCoord = __webpack_require__(188).getCoord;
 	//http://en.wikipedia.org/wiki/Haversine_formula
 	//http://www.movable-type.co.uk/scripts/latlong.html
 	
@@ -22035,7 +22039,7 @@
 
 
 /***/ },
-/* 189 */
+/* 188 */
 /***/ function(module, exports) {
 
 	/**
@@ -22134,17 +22138,17 @@
 
 
 /***/ },
-/* 190 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// http://stackoverflow.com/questions/839899/how-do-i-calculate-a-point-on-a-circles-circumference
 	// radians = degrees * (pi/180)
 	// https://github.com/bjornharrtell/jsts/blob/master/examples/buffer.html
 	
-	var helpers = __webpack_require__(125);
+	var helpers = __webpack_require__(124);
 	var featureCollection = helpers.featureCollection;
-	var jsts = __webpack_require__(191);
-	var normalize = __webpack_require__(192);
+	var jsts = __webpack_require__(190);
+	var normalize = __webpack_require__(191);
 	
 	/**
 	 * Calculates a buffer for input features for a given radius. Units supported are miles, kilometers, and degrees.
@@ -22200,7 +22204,7 @@
 
 
 /***/ },
-/* 191 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// JSTS. See https://github.com/bjornharrtell/jsts
@@ -22225,7 +22229,7 @@
 
 
 /***/ },
-/* 192 */
+/* 191 */
 /***/ function(module, exports) {
 
 	module.exports = normalize;
@@ -22274,11 +22278,11 @@
 
 
 /***/ },
-/* 193 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bbox = __webpack_require__(132),
-	    point = __webpack_require__(125).point;
+	var bbox = __webpack_require__(131),
+	    point = __webpack_require__(124).point;
 	
 	/**
 	 * Takes a {@link FeatureCollection} and returns the absolute center point of all features.
@@ -22401,14 +22405,14 @@
 
 
 /***/ },
-/* 194 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var each = __webpack_require__(133).coordEach,
-	    centroid = __webpack_require__(195),
-	    convex = __webpack_require__(139),
-	    explode = __webpack_require__(196),
-	    point = __webpack_require__(125).point;
+	var each = __webpack_require__(132).coordEach,
+	    centroid = __webpack_require__(194),
+	    convex = __webpack_require__(138),
+	    explode = __webpack_require__(195),
+	    point = __webpack_require__(124).point;
 	
 	/**
 	 * Takes a [feature](http://geojson.org/geojson-spec.html#feature-objects)
@@ -22591,11 +22595,11 @@
 
 
 /***/ },
-/* 195 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var each = __webpack_require__(133).coordEach;
-	var point = __webpack_require__(125).point;
+	var each = __webpack_require__(132).coordEach;
+	var point = __webpack_require__(124).point;
 	
 	/**
 	 * Takes one or more features and calculates the centroid using
@@ -22643,12 +22647,12 @@
 
 
 /***/ },
-/* 196 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var featureCollection = __webpack_require__(125).featureCollection;
-	var each = __webpack_require__(133).coordEach;
-	var point = __webpack_require__(125).point;
+	var featureCollection = __webpack_require__(124).featureCollection;
+	var each = __webpack_require__(132).coordEach;
+	var point = __webpack_require__(124).point;
 	
 	/**
 	 * Takes a feature or set of features and returns all positions as
@@ -22692,10 +22696,10 @@
 
 
 /***/ },
-/* 197 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var meta = __webpack_require__(133);
+	var meta = __webpack_require__(132);
 	
 	/**
 	 * Combines a {@link FeatureCollection} of {@link Point},
@@ -22787,11 +22791,11 @@
 
 
 /***/ },
-/* 198 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var polygon = __webpack_require__(125).polygon;
-	var earcut = __webpack_require__(199);
+	var polygon = __webpack_require__(124).polygon;
+	var earcut = __webpack_require__(198);
 	
 	/**
 	 * Tesselates a {@link Feature<Polygon>} into a {@link FeatureCollection<Polygon>} of triangles
@@ -22868,7 +22872,7 @@
 
 
 /***/ },
-/* 199 */
+/* 198 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23518,11 +23522,11 @@
 
 
 /***/ },
-/* 200 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// depend on jsts for now https://github.com/bjornharrtell/jsts/blob/master/examples/overlay.html
-	var jsts = __webpack_require__(201);
+	var jsts = __webpack_require__(200);
 	
 	/**
 	 * Takes two {@link Polygon|polygons} and finds their intersection. If they share a border, returns the border; if they don't intersect, returns undefined.
@@ -23606,7 +23610,7 @@
 
 
 /***/ },
-/* 201 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// JSTS. See https://github.com/bjornharrtell/jsts
@@ -23631,10 +23635,10 @@
 
 
 /***/ },
-/* 202 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var distance = __webpack_require__(136);
+	var distance = __webpack_require__(135);
 	
 	/**
 	 * Takes a reference {@link Point|point} and a FeatureCollection of Features
@@ -23710,10 +23714,10 @@
 
 
 /***/ },
-/* 203 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var random = __webpack_require__(204);
+	var random = __webpack_require__(203);
 	
 	/**
 	 * Generates random {@link GeoJSON} data, including {@link Point|Points} and {@link Polygon|Polygons}, for testing
@@ -23767,7 +23771,7 @@
 
 
 /***/ },
-/* 204 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = function() {
@@ -23876,7 +23880,7 @@
 
 
 /***/ },
-/* 205 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23912,7 +23916,7 @@
 	 * //=result
 	 */
 	
-	var point = __webpack_require__(125).point;
+	var point = __webpack_require__(124).point;
 	
 	module.exports = function (polyIn) {
 	    var poly;
@@ -23994,14 +23998,14 @@
 
 
 /***/ },
-/* 206 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var featureCollection = __webpack_require__(125).featureCollection;
-	var centroid = __webpack_require__(193);
-	var distance = __webpack_require__(136);
-	var inside = __webpack_require__(128);
-	var explode = __webpack_require__(196);
+	var featureCollection = __webpack_require__(124).featureCollection;
+	var centroid = __webpack_require__(192);
+	var distance = __webpack_require__(135);
+	var inside = __webpack_require__(127);
+	var explode = __webpack_require__(195);
 	
 	/**
 	 * Takes a feature and returns a {@link Point} guaranteed to be on the surface of the feature.
@@ -24148,10 +24152,10 @@
 
 
 /***/ },
-/* 207 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var geometryArea = __webpack_require__(208).geometry;
+	var geometryArea = __webpack_require__(207).geometry;
 	
 	/**
 	 * Takes one or more features and returns their area
@@ -24215,10 +24219,10 @@
 
 
 /***/ },
-/* 208 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var wgs84 = __webpack_require__(209);
+	var wgs84 = __webpack_require__(208);
 	
 	module.exports.geometry = geometry;
 	module.exports.ring = ringArea;
@@ -24309,7 +24313,7 @@
 	}
 
 /***/ },
-/* 209 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports.RADIUS = 6378137;
@@ -24318,13 +24322,13 @@
 
 
 /***/ },
-/* 210 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var measureDistance = __webpack_require__(136);
-	var point = __webpack_require__(125).point;
-	var bearing = __webpack_require__(188);
-	var destination = __webpack_require__(185);
+	var measureDistance = __webpack_require__(135);
+	var point = __webpack_require__(124).point;
+	var bearing = __webpack_require__(187);
+	var destination = __webpack_require__(184);
 	
 	/**
 	 * Takes a {@link LineString|line} and returns a {@link Point|point} at a specified distance along the line.
@@ -24386,11 +24390,11 @@
 
 
 /***/ },
-/* 211 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var distance = __webpack_require__(136);
-	var point = __webpack_require__(125).point;
+	var distance = __webpack_require__(135);
+	var point = __webpack_require__(124).point;
 	
 	/**
 	 * Takes a {@link LineString|line} and measures its length in the specified units.
@@ -24473,11 +24477,11 @@
 
 
 /***/ },
-/* 212 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var linestring = __webpack_require__(125).lineString;
-	var pointOnLine = __webpack_require__(213);
+	var linestring = __webpack_require__(124).lineString;
+	var pointOnLine = __webpack_require__(212);
 	
 	/**
 	 * Takes a {@link LineString|line}, a start {@link Point}, and a stop point
@@ -24559,13 +24563,13 @@
 
 
 /***/ },
-/* 213 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var distance = __webpack_require__(136);
-	var point = __webpack_require__(125).point;
-	var bearing = __webpack_require__(188);
-	var destination = __webpack_require__(185);
+	var distance = __webpack_require__(135);
+	var point = __webpack_require__(124).point;
+	var bearing = __webpack_require__(187);
+	var destination = __webpack_require__(184);
 	
 	/**
 	 * Takes a {@link Point} and a {@link LineString} and calculates the closest Point on the LineString.
@@ -24720,13 +24724,13 @@
 
 
 /***/ },
-/* 214 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bearing = __webpack_require__(215);
-	var distance = __webpack_require__(217);
-	var destination = __webpack_require__(220);
-	var lineString = __webpack_require__(219).lineString;
+	var bearing = __webpack_require__(214);
+	var distance = __webpack_require__(216);
+	var destination = __webpack_require__(219);
+	var lineString = __webpack_require__(218).lineString;
 	
 	
 	/**
@@ -24812,10 +24816,10 @@
 
 
 /***/ },
-/* 215 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getCoord = __webpack_require__(216).getCoord;
+	var getCoord = __webpack_require__(215).getCoord;
 	//http://en.wikipedia.org/wiki/Haversine_formula
 	//http://www.movable-type.co.uk/scripts/latlong.html
 	
@@ -24880,7 +24884,7 @@
 
 
 /***/ },
-/* 216 */
+/* 215 */
 /***/ function(module, exports) {
 
 	/**
@@ -24979,11 +24983,11 @@
 
 
 /***/ },
-/* 217 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getCoord = __webpack_require__(218).getCoord;
-	var radiansToDistance = __webpack_require__(219).radiansToDistance;
+	var getCoord = __webpack_require__(217).getCoord;
+	var radiansToDistance = __webpack_require__(218).radiansToDistance;
 	//http://en.wikipedia.org/wiki/Haversine_formula
 	//http://www.movable-type.co.uk/scripts/latlong.html
 	
@@ -25045,7 +25049,7 @@
 
 
 /***/ },
-/* 218 */
+/* 217 */
 /***/ function(module, exports) {
 
 	/**
@@ -25144,7 +25148,7 @@
 
 
 /***/ },
-/* 219 */
+/* 218 */
 /***/ function(module, exports) {
 
 	/**
@@ -25473,13 +25477,13 @@
 
 
 /***/ },
-/* 220 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//http://en.wikipedia.org/wiki/Haversine_formula
 	//http://www.movable-type.co.uk/scripts/latlong.html
-	var getCoord = __webpack_require__(221).getCoord;
-	var helpers = __webpack_require__(219);
+	var getCoord = __webpack_require__(220).getCoord;
+	var helpers = __webpack_require__(218);
 	var point = helpers.point;
 	var distanceToRadians = helpers.distanceToRadians;
 	
@@ -25538,7 +25542,7 @@
 
 
 /***/ },
-/* 221 */
+/* 220 */
 /***/ function(module, exports) {
 
 	/**
@@ -25637,12 +25641,12 @@
 
 
 /***/ },
-/* 222 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var point = __webpack_require__(125).point;
-	var featurecollection = __webpack_require__(125).featureCollection;
-	var distance = __webpack_require__(136);
+	var point = __webpack_require__(124).point;
+	var featurecollection = __webpack_require__(124).featureCollection;
+	var distance = __webpack_require__(135);
 	/**
 	 * Takes a bounding box and a cell depth and returns a set of {@link Point|points} in a grid.
 	 *
@@ -25683,13 +25687,13 @@
 
 
 /***/ },
-/* 223 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var featurecollection = __webpack_require__(125).featureCollection;
-	var point = __webpack_require__(125).point;
-	var polygon = __webpack_require__(125).polygon;
-	var distance = __webpack_require__(136);
+	var featurecollection = __webpack_require__(124).featureCollection;
+	var point = __webpack_require__(124).point;
+	var polygon = __webpack_require__(124).polygon;
+	var distance = __webpack_require__(135);
 	
 	/**
 	 * Takes a bounding box and a cell depth and returns a set of square {@link Polygon|polygons} in a grid.
@@ -25738,12 +25742,12 @@
 
 
 /***/ },
-/* 224 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var featurecollection = __webpack_require__(125).featureCollection;
-	var polygon = __webpack_require__(125).polygon;
-	var distance = __webpack_require__(136);
+	var featurecollection = __webpack_require__(124).featureCollection;
+	var polygon = __webpack_require__(124).polygon;
+	var distance = __webpack_require__(135);
 	
 	/**
 	 * Takes a bounding box and a cell depth and returns a set of triangular {@link Polygon|polygons} in a grid.
@@ -25836,13 +25840,13 @@
 
 
 /***/ },
-/* 225 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var point = __webpack_require__(125).point;
-	var polygon = __webpack_require__(125).polygon;
-	var distance = __webpack_require__(136);
-	var featurecollection = __webpack_require__(125).featureCollection;
+	var point = __webpack_require__(124).point;
+	var polygon = __webpack_require__(124).polygon;
+	var distance = __webpack_require__(135);
+	var featurecollection = __webpack_require__(124).featureCollection;
 	
 	//Precompute cosines and sines of angles used in hexagon creation
 	// for performance gain
@@ -25972,13 +25976,13 @@
 
 
 /***/ },
-/* 226 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var distance = __webpack_require__(136);
-	var squareGrid = __webpack_require__(223);
-	var centroid = __webpack_require__(195);
-	var bbox = __webpack_require__(132);
+	var distance = __webpack_require__(135);
+	var squareGrid = __webpack_require__(222);
+	var centroid = __webpack_require__(194);
+	var bbox = __webpack_require__(131);
 	
 	/**
 	 *
@@ -26029,7 +26033,7 @@
 
 
 /***/ },
-/* 227 */
+/* 226 */
 /***/ function(module, exports) {
 
 	/**
@@ -26214,7 +26218,7 @@
 
 
 /***/ },
-/* 228 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26789,7 +26793,7 @@
 	};
 
 /***/ },
-/* 229 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
@@ -26849,7 +26853,7 @@
 	});
 
 /***/ },
-/* 230 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26878,11 +26882,11 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _updateIndex = __webpack_require__(231);
+	var _updateIndex = __webpack_require__(230);
 	
 	var _updateIndex2 = _interopRequireDefault(_updateIndex);
 	
-	var _CongestionIndex = __webpack_require__(123);
+	var _CongestionIndex = __webpack_require__(122);
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
@@ -26890,7 +26894,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
@@ -27581,15 +27585,15 @@
 	exports.default = updateIndex;
 
 /***/ },
-/* 231 */
+/* 230 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"boxpanel":"_24yt9N72LN4Qx6-UeE2ooH","panel_header":"_2D7ozc3gFeAOxjsnz3_FpT","tab1":"_3ihMGn_mwGtN1DTvpvG71g","panel_tab":"vxNXf4qXck4en6pbw8FUg","panel_tab_li":"_33U-kh2gDTElk71Vc143ud","panel_tab_li_active":"_2xNXqcRx0rYhrdOaRBirVG _33U-kh2gDTElk71Vc143ud","traffic_tag":"_3U6b0wQKXCgqaD6tQzkNxS","smooth_jam":"OhiXpH1ZWQWwpX4glxgNG","traffic_level":"_1zmvDALwkSGEcsBcfm9V18","traffic_level_li":"_3rWZMWii-Gdv4pIshwGrZn","traffic_level_1":"huBPfqObZEREqEL4ptcOW _3rWZMWii-Gdv4pIshwGrZn","traffic_level_2":"NJv6eBppuwjxXfIQ3iZFb _3rWZMWii-Gdv4pIshwGrZn","traffic_level_3":"BKdQyRlyn3r8x6jofPFcy _3rWZMWii-Gdv4pIshwGrZn","traffic_level_4":"_2CcvsemZYlgD-YyH1lHmPD _3rWZMWii-Gdv4pIshwGrZn","traffic_level_5":"_1aWd0_O21a1gjasQruUDWs _3rWZMWii-Gdv4pIshwGrZn","panel_body":"_20xJdzksmYcNv5P6m4_VCz","time_lbl":"MnoYENDmvDyVakHBtj7jP","date":"_3KK3cIy-YEiTKS_LlIwuvT","checkboxes":"_1yWPrPmSLqOiTDW66lyRhT","splitline_H":"_1eYOP9nsGvs1ORU4sX5qLu","hisPlayer_panel":"_1TEh-UIr6evqEamBx6iDBx","hisPlayer_btnL":"_2d8u1MMHSVNg2rubiVRsOo","hisPlayer_btnR":"_13lAsakV4k9DOvOKq-qPZg","hisPlayer_btn1":"_143zOHUvFaIcM3oeOWiXcD","hisPlayer_btn2":"_3w35kr9dmAsguT1Yr0k23s","QueContent":"_2kWH1TX60-11vHt0GWacZJ","radio_btnGroup":"_24MLrfVvi5b04uPHr5jwC-","selectCra":"_1CO7pW3aPJkkGPi7uRVuRW","radio_btnGroup2":"_2Vif2xy2gwHN9hI4GjKecm","ConListPanel":"_1hN2tPUz6_ECq-Xxzo-Qre","slider":"_35P-i1BHpO4WU6_GnwAxDc","button_primary":"UdvejYJdlNQncxPc9plQn","active":"_2Jmwursy_6CEuhv4LnH6_l"};
 
 /***/ },
-/* 232 */,
-/* 233 */
+/* 231 */,
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27608,11 +27612,11 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _drawFeatures = __webpack_require__(234);
+	var _drawFeatures = __webpack_require__(233);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
-	var _CongestionIndex = __webpack_require__(123);
+	var _CongestionIndex = __webpack_require__(122);
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
@@ -27712,7 +27716,7 @@
 	exports.default = Drawsth;
 
 /***/ },
-/* 234 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27726,15 +27730,15 @@
 	
 	var _leaflet2 = _interopRequireDefault(_leaflet);
 	
-	var _turf = __webpack_require__(124);
+	var _turf = __webpack_require__(123);
 	
 	var _turf2 = _interopRequireDefault(_turf);
 	
-	var _leafletDraw = __webpack_require__(235);
+	var _leafletDraw = __webpack_require__(234);
 	
 	var _leafletDraw2 = _interopRequireDefault(_leafletDraw);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
@@ -28737,13 +28741,13 @@
 	};
 
 /***/ },
-/* 235 */
+/* 234 */
 /***/ function(module, exports) {
 
 	module.exports = L.draw;
 
 /***/ },
-/* 236 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28766,23 +28770,23 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _UniqueSub = __webpack_require__(237);
+	var _UniqueSub = __webpack_require__(236);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
-	var _CongestionIndex = __webpack_require__(123);
+	var _CongestionIndex = __webpack_require__(122);
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _drawFeatures = __webpack_require__(234);
+	var _drawFeatures = __webpack_require__(233);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
-	var _lmap = __webpack_require__(228);
+	var _lmap = __webpack_require__(227);
 	
 	var lmap = _interopRequireWildcard(_lmap);
 	
@@ -29532,15 +29536,19 @@
 	      };*/
 
 /***/ },
-/* 237 */
+/* 236 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"boxpanel":"_3oH5k6spmfYsE0JkTmEtvW","panel_header":"_2cBKd-l_R6FbyFxRMwYpoE","panel_body":"_2oD5wMOVt27qGzcZ0K3om7","button1":"_3z1AgA4NnpyFuRkyx__DdC","QueContent":"_1l_RjNtiLgd3xRgbjdam72","sub_panel":"_32i3-q7MoRrXH4Dt2UIcxm","colorpickerDiv":"_3pwsO30I_vRLm_qvdja6EP","button_primary":"_2u5lvrwngoPHafXcN_fsrT","active":"_2G-HxbRgzPPpFK8ziyf3Kv"};
+	module.exports = {"boxpanel":"_3oH5k6spmfYsE0JkTmEtvW","panel_header":"_2cBKd-l_R6FbyFxRMwYpoE","panel_body":"_2oD5wMOVt27qGzcZ0K3om7","button1":"_3z1AgA4NnpyFuRkyx__DdC","QueContent":"_1l_RjNtiLgd3xRgbjdam72","sub_panel":"_32i3-q7MoRrXH4Dt2UIcxm","colorpickerDiv":"_3pwsO30I_vRLm_qvdja6EP","button_primary":"_2u5lvrwngoPHafXcN_fsrT","active":"_2G-HxbRgzPPpFK8ziyf3Kv","button_add":"_35cL_XO-7_rHyCoZKuDuvg","button_modify":"_3dVPSBw4-xAePERe8SmDue"};
 
 /***/ },
+/* 237 */,
 /* 238 */,
-/* 239 */
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29563,23 +29571,23 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _UniqueSub = __webpack_require__(237);
+	var _UniqueSub = __webpack_require__(236);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
-	var _CongestionIndex = __webpack_require__(123);
+	var _CongestionIndex = __webpack_require__(122);
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _drawFeatures = __webpack_require__(234);
+	var _drawFeatures = __webpack_require__(233);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
-	var _lmap = __webpack_require__(228);
+	var _lmap = __webpack_require__(227);
 	
 	var lmap = _interopRequireWildcard(_lmap);
 	
@@ -29743,7 +29751,7 @@
 	            });
 	            var onRunning = function onRunning(ref) {
 	                if (ref == 'roadConfig') {
-	                    _antd.message.success('您已進入双向道路配置頁面');
+	                    _antd.message.success('您已进入双向道路配置页面');
 	
 	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
 	                        CI.displayConfigLayer_road(resp.aaData);
@@ -29755,7 +29763,7 @@
 	                        _antd.message.error('后台传输错误！', 5);
 	                    });
 	                } else if (ref == 'regionConfig') {
-	                    _antd.message.success('您已進入区域配置頁面');
+	                    _antd.message.success('您已进入区域配置页面');
 	
 	                    Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
 	                        CI.displayConfigLayer(resp.aaData);
@@ -29767,7 +29775,7 @@
 	                        _antd.message.error('后台传输错误！', 5);
 	                    });
 	                } else if (ref == 'odConfig') {
-	                    _antd.message.success('您已進入OD区域配置頁面');
+	                    _antd.message.success('您已进入OD区域配置页面');
 	
 	                    Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
 	                        CI.displayConfigLayer(resp.aaData);
@@ -29780,7 +29788,7 @@
 	                        _antd.message.error('后台传输错误！', 5);
 	                    });
 	                } else if (ref == 'fhld') {
-	                    _antd.message.success('您已进入复合路段配制页面');
+	                    _antd.message.success('您已进入复合路段配置页面');
 	                    Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
 	                        CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
 	                        //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
@@ -29933,96 +29941,90 @@
 	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    _antd.Button,
-	                    {
+	                    _antd.Tooltip,
+	                    { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	                            return document.getElementById('configDetails');
+	                        } },
+	                    _react2.default.createElement(_antd.Button, {
 	                        id: 'regionConfig_add',
 	                        ref: 'regionConfig_add',
-	                        className: _UniqueSub2.default.button1,
-	                        type: 'ghost',
-	                        size: 'small',
-	
+	                        className: _UniqueSub2.default.button_add,
 	                        onClick: function onClick() {
 	                            return _this4.onClickButton("regionConfig");
-	                        } },
-	                    '新增'
+	                        } })
 	                ),
 	                _react2.default.createElement(
-	                    _antd.Button,
-	                    {
+	                    _antd.Tooltip,
+	                    { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	                            return document.getElementById('configDetails');
+	                        } },
+	                    _react2.default.createElement(_antd.Button, {
 	                        id: 'regionConfig_fix',
 	                        ref: 'regionConfig_fix',
-	                        className: _UniqueSub2.default.button1,
-	                        type: 'ghost',
-	                        size: 'small',
-	
+	                        className: _UniqueSub2.default.button_modify,
 	                        onClick: function onClick() {
 	                            return _this4.ChangeConfig("regionConfig");
-	                        } },
-	                    '修改'
+	                        } })
 	                )
 	            );
 	            var odConfig = _react2.default.createElement(
 	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    _antd.Button,
-	                    {
+	                    _antd.Tooltip,
+	                    { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	                            return document.getElementById('configDetails');
+	                        } },
+	                    _react2.default.createElement(_antd.Button, {
 	                        id: 'odConfig_add',
 	                        ref: 'odConfig_add',
-	                        className: _UniqueSub2.default.button1,
-	                        type: 'ghost',
-	                        size: 'small',
-	
+	                        className: _UniqueSub2.default.button_add,
 	                        onClick: function onClick() {
 	                            return _this4.onClickButton("odConfig");
-	                        } },
-	                    '新增'
+	                        } })
 	                ),
 	                _react2.default.createElement(
-	                    _antd.Button,
-	                    {
+	                    _antd.Tooltip,
+	                    { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	                            return document.getElementById('configDetails');
+	                        } },
+	                    _react2.default.createElement(_antd.Button, {
 	                        id: 'odConfig_fix',
 	                        ref: 'odConfig_fix',
-	                        className: _UniqueSub2.default.button1,
-	                        type: 'ghost',
-	                        size: 'small',
-	
+	                        className: _UniqueSub2.default.button_modify,
 	                        onClick: function onClick() {
 	                            return _this4.ChangeConfig("odConfig");
-	                        } },
-	                    '修改'
+	                        } })
 	                )
 	            );
 	            var roadConfig = _react2.default.createElement(
 	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    _antd.Button,
-	                    {
+	                    _antd.Tooltip,
+	                    { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	                            return document.getElementById('configDetails');
+	                        } },
+	                    _react2.default.createElement(_antd.Button, {
 	                        id: 'roadConfig_add',
 	                        ref: 'roadConfig_add',
-	                        className: _UniqueSub2.default.button1,
-	                        type: 'ghost',
-	                        size: 'small',
-	
+	                        className: _UniqueSub2.default.button_add,
 	                        onClick: function onClick() {
 	                            return _this4.onClickButton("roadConfig");
-	                        } },
-	                    '新增'
+	                        } })
 	                ),
 	                _react2.default.createElement(
-	                    _antd.Button,
-	                    {
+	                    _antd.Tooltip,
+	                    { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	                            return document.getElementById('configDetails');
+	                        } },
+	                    _react2.default.createElement(_antd.Button, {
 	                        id: 'roadConfig_fix',
 	                        ref: 'roadConfig_fix',
-	                        className: _UniqueSub2.default.button1,
-	                        type: 'ghost',
-	                        size: 'small',
-	
+	                        className: _UniqueSub2.default.button_modify,
 	                        onClick: function onClick() {
 	                            return _this4.ChangeConfig("roadConfig");
-	                        } },
-	                    '修改'
+	                        } })
 	                )
 	            );
 	
@@ -30063,8 +30065,7 @@
 	                            {
 	                                ref: 'roadConfig',
 	                                content: roadConfig,
-	                                placement: 'topLeft',
-	                                title: '请选择',
+	                                placement: 'bottom',
 	                                trigger: 'hover',
 	                                getTooltipContainer: function getTooltipContainer() {
 	                                    return document.getElementById('configDetails');
@@ -30086,8 +30087,7 @@
 	                            {
 	                                ref: 'regionConfig',
 	                                content: regionConfig,
-	                                placement: 'top',
-	                                title: '请选择',
+	                                placement: 'bottom',
 	                                trigger: 'hover',
 	                                getTooltipContainer: function getTooltipContainer() {
 	                                    return document.getElementById('configDetails');
@@ -30109,8 +30109,7 @@
 	                            {
 	                                ref: 'odConfig',
 	                                content: odConfig,
-	                                placement: 'topRight',
-	                                title: '请选择',
+	                                placement: 'bottom',
 	                                trigger: 'hover',
 	                                getTooltipContainer: function getTooltipContainer() {
 	                                    return document.getElementById('configDetails');
@@ -31275,7 +31274,7 @@
 	exports.default = ConfigSub;
 
 /***/ },
-/* 240 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31300,23 +31299,23 @@
 	
 	var action = _interopRequireWildcard(_searchAction);
 	
-	var _rbox = __webpack_require__(241);
+	var _rbox = __webpack_require__(244);
 	
 	var _rbox2 = _interopRequireDefault(_rbox);
 	
-	var _CongestionIndex = __webpack_require__(123);
+	var _CongestionIndex = __webpack_require__(122);
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _SearchResults = __webpack_require__(244);
+	var _SearchResults = __webpack_require__(247);
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
-	var _CraResults = __webpack_require__(247);
+	var _CraResults = __webpack_require__(250);
 	
 	var _CraResults2 = _interopRequireDefault(_CraResults);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
@@ -31640,16 +31639,16 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, action)(Rbox);
 
 /***/ },
-/* 241 */
+/* 244 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"rbox":"_2llNwVAGqDnhF4R1h3Zbm0","rboxSearchPanCtrl":"sFUUVXbHaLALSm4q7vCq-","rboxSearchPanCtrl_none":"_33d8lw-jW4ai9FG64eZ9ww sFUUVXbHaLALSm4q7vCq-","rboxSearchPanCtrl_display":"IPeljpTu3qd4XLKM1pLzg sFUUVXbHaLALSm4q7vCq-","navBody_display":"_1R_Edmj22xLahYtwnxPeN0","navBody_none":"_2W-ZMEGCJKS84iLfLfVom0","rboxPanels":"_3o_YCjzp4mJXJgrCZNRvnH","rboxPanCtrl":"_1gvDLBF1Z5F0zGrYEZvlGi","fa":"sd4QPqnJs3x-nNxJwTPlR","faChevronUp":"_3D8FssioAMIXT4EmtHhofX","nav":"_3JBIUlb5GasfGhTK5GMe9Y","navLi":"_3lvCjyESKb74vmNE1uFE5S","craLi":"_1wSq2-NcWDmN0AZ03ocdG4 _3lvCjyESKb74vmNE1uFE5S","navTxt":"_1ofkmpDkq-90qIuuGxSEPK","resultPanel":"tc4cTEpC8yn8zHWBwGt9L","rboxPanel2":"_3nnZ53mW6wLdGl31YWBkQB"};
 
 /***/ },
-/* 242 */,
-/* 243 */,
-/* 244 */
+/* 245 */,
+/* 246 */,
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31664,7 +31663,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _SearchResults = __webpack_require__(245);
+	var _SearchResults = __webpack_require__(248);
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
@@ -31926,15 +31925,15 @@
 	exports.default = SearchResults;
 
 /***/ },
-/* 245 */
+/* 248 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"drop_button":"_3xAJYEmGKcooe-b84qX1C","buttonPulse":"_1RUgxiOWYEdorZxWfY8l0S","content":"dVixhqaCII1FYUUdJRcq6","content_header":"_35QXSfwsZUjx1jkwG4OhNZ","content_split_line":"_2kN5CyRridIuYRNOT-iGA8","bordered":"gN5dCjVJyKcSddELwoVNI","highlight":"_3BIq6b4JLGi3kQmdnx2JTg","font_color1":"_7OR1cc3D4C2MDLZQw6R2s","font_color2":"_1-7MKJtxt23zsyLuLBwFBj","font_color3":"_1ftUlVuGQWZAKjV6VkokJ4","font_color4":"_1s0wX0nMG7GzWnOiKo_Q7G","font_color5":"_3ZaaJ9t-UDCU90xfHf29rV"};
 
 /***/ },
-/* 246 */,
-/* 247 */
+/* 249 */,
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31949,11 +31948,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _craResults = __webpack_require__(248);
+	var _craResults = __webpack_require__(251);
 	
 	var _craResults2 = _interopRequireDefault(_craResults);
 	
-	var _lmsg = __webpack_require__(229);
+	var _lmsg = __webpack_require__(228);
 	
 	var lmsg = _interopRequireWildcard(_lmsg);
 	
@@ -32262,7 +32261,7 @@
 	            switch (this.props.item.yddj) {
 	                case '畅通':
 	                    hierarchyStyle = {
-	                        color: '#36AE4C',
+	                        color: '#277b04',
 	                        float: 'left',
 	                        width: '60px',
 	                        height: '20px',
@@ -32271,7 +32270,7 @@
 	                    break;
 	                case '基本畅通':
 	                    hierarchyStyle = {
-	                        color: '#6AB72D',
+	                        color: '#34b100',
 	                        float: 'left',
 	                        width: '60px',
 	                        height: '20px',
@@ -32280,7 +32279,7 @@
 	                    break;
 	                case '轻度拥堵':
 	                    hierarchyStyle = {
-	                        color: '#ECE839',
+	                        color: '#ffcb00',
 	                        float: 'left',
 	                        width: '60px',
 	                        height: '20px',
@@ -32289,7 +32288,7 @@
 	                    break;
 	                case '中度拥堵':
 	                    hierarchyStyle = {
-	                        color: '#F29618',
+	                        color: '#ff8800',
 	                        float: 'left',
 	                        width: '60px',
 	                        height: '20px',
@@ -32298,7 +32297,7 @@
 	                    break;
 	                case '严重拥堵':
 	                    hierarchyStyle = {
-	                        color: '#E41A16',
+	                        color: '#df0000',
 	                        float: 'left',
 	                        width: '60px',
 	                        height: '20px',
@@ -32351,15 +32350,15 @@
 	exports.default = CraResults;
 
 /***/ },
-/* 248 */
+/* 251 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"traffic_tag":"_2QJnB2jDtlx59N8rYhJQDp","smooth_jam":"_3UQw6znoq4z3hf_bujtVol","smooth_jam1":"_3zAIgTfi8UfrmGM4R3aP0l","smooth_jam2":"Gb742l6idHSLTzBs0NEi1","separator":"_1vnoXI7SYPJGHe59VgO5pl","separator_LV0":"_1wQmKz2VoDC9RlW7JOAq9N _1vnoXI7SYPJGHe59VgO5pl","separator_LV1":"_3H-rd-gbiQ1LyC2FVCtpAI _1vnoXI7SYPJGHe59VgO5pl","separator_LV2":"_3rPkbBz3J6OrSlgIOWvBYq _1vnoXI7SYPJGHe59VgO5pl","separator_LV3":"_1auAliDqRNL4-AXamKQH58 _1vnoXI7SYPJGHe59VgO5pl","separator_LV4":"_36HpZPni8e1S5mFFlk6S6f _1vnoXI7SYPJGHe59VgO5pl","separator_LV5":"_31MmFVuVPDDfvye5OUW5VU _1vnoXI7SYPJGHe59VgO5pl","smooth_jam_num":"_134rXSuFrb4OYv56FuxPwA","smooth_jam_num2":"X7lzYQQ-O5i15gDzdDX3H","smooth_jam_num3":"_2k0MLw45uibr10eS_dLCTL","smooth_jam_num4":"_3-fRQBRu4UuMkTjtpbRiEM","traffic_level_li":"aqLdrHJj6cVGxytDPdSDE","traffic_level_1":"_3ZBO6tWqT7ZT_nJgPRsI7r","traffic_level_2":"scQFseyUg8d9RrX68H19Q","traffic_level_3":"jxIFuPMZwGEFdf8sCzBpr aqLdrHJj6cVGxytDPdSDE","traffic_level_4":"_2s7XNHzKSz0WRfATTpzQML aqLdrHJj6cVGxytDPdSDE","traffic_level_5":"_2GnY7zN8lv0KqcKZUWzuSE aqLdrHJj6cVGxytDPdSDE","table":"_1q3WE4u-kmR7C5mX_-gzHm","smooth_jam_rank":"qToumJB2gXsDBeUzyHlYr","smooth_jam_num_name":"_1ESFhCXVWVXYbQiOOOFVH_","smooth_jam_num_index":"_3kePYNBcBMqLCkhEY-hUMx","smooth_jam_num_hierarchy":"_1edwuPGtcyoo02IbZVrk8V","table_rows":"_2_Kny_cVYENe6CjUCyMRyx","row":"_3Lmq-mhslhkjqMavWHlbZ_","rank":"_1TSHcWSZHyZzFV1STuXfqt","name":"_2NPYSAwgx8m1UihCw0GybB","index":"v3CkNskKlV1o9UNGwr-lc","hierarchy":"_3uabfAoG7Rqgug4ki9iYQS","pager":"_2hpJLn6FTwtQ6EDixh_OQv"};
 
 /***/ },
-/* 249 */,
-/* 250 */
+/* 252 */,
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32382,7 +32381,7 @@
 	
 	var _esriLeaflet2 = _interopRequireDefault(_esriLeaflet);
 	
-	var _leafletDraw = __webpack_require__(235);
+	var _leafletDraw = __webpack_require__(234);
 	
 	var LDraw = _interopRequireWildcard(_leafletDraw);
 	
@@ -32448,7 +32447,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 251 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32519,7 +32518,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 252 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32568,7 +32567,7 @@
 	exports.default = TrafficGuidance;
 
 /***/ },
-/* 253 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32579,11 +32578,11 @@
 	
 	var _redux = __webpack_require__(74);
 	
-	var _reduxThunk = __webpack_require__(254);
+	var _reduxThunk = __webpack_require__(257);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _index = __webpack_require__(255);
+	var _index = __webpack_require__(258);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -32599,7 +32598,7 @@
 	exports.default = initStore;
 
 /***/ },
-/* 254 */
+/* 257 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32627,7 +32626,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 255 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32638,11 +32637,11 @@
 	
 	var _redux = __webpack_require__(74);
 	
-	var _search = __webpack_require__(256);
+	var _search = __webpack_require__(259);
 	
 	var _search2 = _interopRequireDefault(_search);
 	
-	var _cra = __webpack_require__(257);
+	var _cra = __webpack_require__(260);
 	
 	var _cra2 = _interopRequireDefault(_cra);
 	
@@ -32656,7 +32655,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 256 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32697,7 +32696,7 @@
 	});
 
 /***/ },
-/* 257 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32710,7 +32709,7 @@
 	
 	var _util = __webpack_require__(106);
 	
-	var _craAction = __webpack_require__(258);
+	var _craAction = __webpack_require__(261);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -32723,7 +32722,7 @@
 	});
 
 /***/ },
-/* 258 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

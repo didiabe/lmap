@@ -184,7 +184,7 @@ class TableRow extends React.Component {
         switch (this.props.item.yddj) {
             case '畅通':
                 hierarchyStyle = {
-                    color: '#36AE4C',
+                    color: '#277b04',
                     float: 'left',
                     width: '60px',
                     height: '20px',
@@ -193,7 +193,7 @@ class TableRow extends React.Component {
                 break;
             case '基本畅通':
                 hierarchyStyle = {
-                    color: '#6AB72D',
+                    color: '#34b100',
                     float: 'left',
                     width: '60px',
                     height: '20px',
@@ -202,7 +202,7 @@ class TableRow extends React.Component {
                 break;
             case '轻度拥堵':
                 hierarchyStyle = {
-                    color: '#ECE839',
+                    color: '#ffcb00',
                     float: 'left',
                     width: '60px',
                     height: '20px',
@@ -211,7 +211,7 @@ class TableRow extends React.Component {
                 break;
             case '中度拥堵':
                 hierarchyStyle = {
-                    color: '#F29618',
+                    color: '#ff8800',
                     float: 'left',
                     width: '60px',
                     height: '20px',
@@ -220,7 +220,7 @@ class TableRow extends React.Component {
                 break;
             case '严重拥堵':
                 hierarchyStyle = {
-                    color: '#E41A16',
+                    color: '#df0000',
                     float: 'left',
                     width: '60px',
                     height: '20px',

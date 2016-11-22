@@ -34,23 +34,23 @@ const crossLayer = function(data) {
     var GeoJsonPoints = data.geoJson;
     var greenMarker = lmap.icon({
         iconSize: [15, 15],
-        color: 'rgb(54,174,76)'
+        color: '#277b04'
     });
     var yellowMarker = lmap.icon({
         iconSize: [15, 15],
-        color: 'rgb(106,183,45)'
+        color: '#34b100'
     });
     var orangeMarker = lmap.icon({
         iconSize: [15, 15],
-        color: 'rgb(236,232,57)'
+        color: '#ffcb00'
     });
     var brownMarker = lmap.icon({
         iconSize: [15, 15],
-        color: 'rgb(242,150,24)'
+        color: '#ff8800'
     });
     var redMarker = lmap.icon({
         iconSize: [15, 15],
-        color: 'rgb(228,26,22)'
+        color: '#df0000'
     });
 
     var pointMarkerOption = null;
@@ -168,37 +168,37 @@ const roadLayer = function(data) {
     });
     var GeoJsonLines = data.geoJson;
     var greenLine = {
-        'fillColor': "rgb(54,174,76)",
-        "color": "rgb(54,174,76)",
+        'fillColor': "#277b04",
+        "color": "#277b04",
         "weight": 7,
         "opacity": 0.8,
         'fillOpacity': 1
     };
     var yellowLine = {
-        'fillColor': "rgb(106,183,45)",
-        "color": "rgb(106,183,45)",
+        'fillColor': "#34b100",
+        "color": "#34b100",
         "weight": 7,
         "opacity": 0.8,
         'fillOpacity': 1
     };
     var orangeLine = {
-        'fillColor': "rgb(236,232,57)",
-        "color": "rgb(236,232,57)",
+        'fillColor': "#ffcb00",
+        "color": "#ffcb00",
         "weight": 7,
         "opacity": 0.8,
         'fillOpacity': 1
     };
     var brownLine = {
-        'fillColor': "rgb(242,150,24)",
-        "color": "rgb(242,150,24)",
+        'fillColor': "#ff8800",
+        "color": "#ff8800",
         "weight": 7,
         "opacity": 0.8,
         'fillOpacity': 1
     };
 
     var redLine = {
-        'fillColor': "rgb(228,26,22)",
-        "color": "rgb(228,26,22)",
+        'fillColor': "#df0000",
+        "color": "#df0000",
         "weight": 7,
         "opacity": 0.8,
         'fillOpacity': 1
@@ -257,9 +257,9 @@ const roadLayer = function(data) {
         var l = e.target;
         l.setStyle({
             weight: 7,
-            color: '#007D7D',
+            color: '#007edf',
             dashArray: '',
-            fillOpacity: 0.9
+            fillOpacity: 1
         });
     };
 
@@ -300,40 +300,40 @@ const areaLayer = function(data) {
     var GeoJsonRegion = data.geoJson;
 
     var greenRegion = {
-        fillColor: "rgb(54,174,76)",
+        fillColor: "#277b04",
         fillOpacity: 1,
-        color: "rgb(54,174,76)",
+        color: "#277b04",
         weight: 5,
         opacity: 0.8
     };
     var yellowRegion = {
-        fillColor: "rgb(106,183,45)",
+        fillColor: "#34b100",
         fillOpacity: 1,
-        color: "rgb(106,183,45)",
+        color: "#34b100",
         weight: 5,
         opacity: 0.8
 
     };
     var orangeRegion = {
-        fillColor: "rgb(236,232,57)",
+        fillColor: "#ffcb00",
         fillOpacity: 1,
-        color: "rgb(236,232,57)",
+        color: "#ffcb00",
         weight: 5,
         opacity: 0.8
 
     };
     var brownRegion = {
-        fillColor: "rgb(242,150,24)",
+        fillColor: "#ff8800",
         fillOpacity: 1,
-        color: "rgb(242,150,24)",
+        color: "#ff8800",
         weight: 5,
         opacity: 0.8
     };
 
     var redRegion = {
-        fillColor: "rgb(228,26,22)",
+        fillColor: "#df0000",
         fillOpacity: 1,
-        color: "rgb(228,26,22)",
+        color: "#df0000",
         weight: 5,
         opacity: 0.8
 
@@ -391,9 +391,9 @@ const areaLayer = function(data) {
         var l = e.target;
         l.setStyle({
             weight: 5,
-            color: '#007D7D',
+            color: '#007edf',
             dashArray: '',
-            fillOpacity: 0.9
+            fillOpacity: 1
         });
     };
 
@@ -495,11 +495,12 @@ export const displayUniLayer = (ref, data) => {
         _APIpath = "/trafficindex_map/roadConstruction.json";
         specialstyle = (feature) => {
             return {
-                fillColor: '#007D7D',
-                weight: 8,
+                fillColor: '#007edf',
+                weight: 4,
                 opacity: 1,
-                color: 'green',
-                dashArray: '3',
+                color: '#006bdf',
+                dashArray: '20,15',
+                lineJoin: 'round',
                 fillOpacity: 0.7
             };
         }
@@ -519,11 +520,12 @@ export const displayUniLayer = (ref, data) => {
         _APIpath = "/trafficindex_map/trafficControl.json";
         specialstyle = (feature) => {
             return {
-                fillColor: '#EEC900',
-                weight: 8,
+                fillColor: '#007edf',
+                weight: 4,
                 opacity: 1,
-                color: 'red',
-                dashArray: '3',
+                color: '#006bdf',
+                dashArray: '20,15',
+                lineJoin: 'round',
                 fillOpacity: 0.7
             };
         }
@@ -542,11 +544,12 @@ export const displayUniLayer = (ref, data) => {
         _APIpath = "/trafficindex_map/trafficAccident.json";
         specialstyle = (feature) => {
             return {
-                fillColor: '#D2691E',
-                weight: 2,
+                fillColor: '#007edf',
+                weight: 4,
                 opacity: 1,
-                color: 'yellow',
-                dashArray: '3',
+                color: '#006bdf',
+                dashArray: '20,15',
+                lineJoin: 'round',
                 fillOpacity: 0.7
             };
         }
@@ -589,6 +592,7 @@ export const displayUniLayer = (ref, data) => {
             flag: data.flag,
             date: date2Java_date
         }
+        specialpopup = L.popup().setContent('拥堵路口');
     } else if (ref == 'yongdu_road') {
         _APIpath = "/trafficindex_map/cfydRoad.json";
         specialstyle = (feature) => {
@@ -614,7 +618,7 @@ export const displayUniLayer = (ref, data) => {
             flag: data.flag,
             date: date2Java_date
         }
-
+        specialpopup = L.popup().setContent('拥堵路段');
     } else if (ref == 'jiari_cross') {
         _APIpath = "/trafficindex_map/holiday.json";
         specialpointlayer = (feature, latlng) => {
@@ -1010,14 +1014,14 @@ export const displayConfigLayer = (data) => {
             map.removeLayer(layer);
         }
     });
-    var CrossMarker = lmap.icon({
-        iconSize: [15, 15],
-        color: 'rgba(243, 106, 90, 0.5)'
+    var CrossMarker = L.icon({
+        iconUrl: _imagePath + '/transparent.png',
+        iconSize: [0, 0],
     });
     var RoadLine = {
         "color": "#32c5d2",
         "weight": 8,
-        "opacity": 0.5
+        "opacity": 0
     };
 
     if (Config_crossGeojson) {

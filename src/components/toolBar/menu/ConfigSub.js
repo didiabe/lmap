@@ -20,7 +20,8 @@ import {
     Row,
     Col,
     message,
-    Spin
+    Spin,
+    Tooltip
 } from 'antd';
 
 const FormItem = Form.Item;
@@ -128,7 +129,7 @@ class ConfigSubPanel extends React.Component {
         });
         let onRunning = (ref) => {
             if (ref == 'roadConfig') {
-                message.success('您已進入双向道路配置頁面');
+                message.success('您已进入双向道路配置页面');
 
                 Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, (resp) => {
                     CI.displayConfigLayer_road(resp.aaData);
@@ -143,7 +144,7 @@ class ConfigSubPanel extends React.Component {
                 });
 
             } else if (ref == 'regionConfig') {
-                message.success('您已進入区域配置頁面');
+                message.success('您已进入区域配置页面');
 
                 Ds.DataService('/trafficindex_map/ListZoneMap.json', null, (resp) => {
                     CI.displayConfigLayer(resp.aaData);
@@ -160,7 +161,7 @@ class ConfigSubPanel extends React.Component {
                 });
 
             } else if (ref == 'odConfig') {
-                message.success('您已進入OD区域配置頁面');
+                message.success('您已进入OD区域配置页面');
 
                 Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, (resp) => {
                     CI.displayConfigLayer(resp.aaData);
@@ -178,7 +179,7 @@ class ConfigSubPanel extends React.Component {
                 });
 
             } else if (ref == 'fhld') {
-                message.success('您已进入复合路段配制页面');
+                message.success('您已进入复合路段配置页面');
                 Ds.DataService('/trafficindex_map/roadMap.json', null, (resp) => {
                     CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
                     //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
@@ -331,72 +332,62 @@ class ConfigSubPanel extends React.Component {
     render() {
         const regionConfig = (
             <div>
+            <Tooltip title="新增" placement="top" getTooltipContainer={ () => document.getElementById('configDetails') }>
       <Button
               id="regionConfig_add"
               ref="regionConfig_add"
-              className={ ConfigStyles.button1 }
-              type="ghost"
-              size="small"
-              
+              className={ ConfigStyles.button_add} 
               onClick={ () => this.onClickButton("regionConfig") }>
-        新增
+      
       </Button>
+      </Tooltip>
+      <Tooltip title="修改" placement="top" getTooltipContainer={ () => document.getElementById('configDetails') }>
       <Button
               id="regionConfig_fix"
               ref="regionConfig_fix"
-              className={ ConfigStyles.button1 }
-              type="ghost"
-              size="small"
-              
+className={ ConfigStyles.button_modify}
               onClick={ () => this.ChangeConfig("regionConfig") }>
-        修改
       </Button>
+      </Tooltip>
     </div>);
         const odConfig = (
             <div>
+            <Tooltip title="新增" placement="top" getTooltipContainer={ () => document.getElementById('configDetails') }>
       <Button
               id="odConfig_add"
               ref="odConfig_add"
-              className={ ConfigStyles.button1 }
-              type="ghost"
-              size="small"
-              
+              className={ ConfigStyles.button_add}     
               onClick={ () => this.onClickButton("odConfig") }>
-        新增
+        
       </Button>
+      </Tooltip>
+      <Tooltip title="修改" placement="top" getTooltipContainer={ () => document.getElementById('configDetails') }>
       <Button
               id="odConfig_fix"
               ref="odConfig_fix"
-              className={ ConfigStyles.button1 }
-              type="ghost"
-              size="small"
-             
+         className={ ConfigStyles.button_modify}
               onClick={ () => this.ChangeConfig("odConfig") }>
-        修改
       </Button>
+      </Tooltip>
     </div>);
         const roadConfig = (
             <div>
+            <Tooltip title="新增" placement="top" getTooltipContainer={ () => document.getElementById('configDetails') }>
       <Button
               id="roadConfig_add"
               ref="roadConfig_add"
-              className={ ConfigStyles.button1 }
-              type="ghost"
-              size="small"
-            
+              className={ ConfigStyles.button_add}           
               onClick={ () => this.onClickButton("roadConfig") }>
-        新增
       </Button>
+      </Tooltip>
+      <Tooltip title="修改" placement="top" getTooltipContainer={ () => document.getElementById('configDetails') }>
       <Button
               id="roadConfig_fix"
               ref="roadConfig_fix"
-              className={ ConfigStyles.button1 }
-              type="ghost"
-              size="small"
- 
+              className={ ConfigStyles.button_modify}
               onClick={ () => this.ChangeConfig("roadConfig") }>
-        修改
       </Button>
+      </Tooltip>
     </div>);
 
         return (
@@ -423,8 +414,7 @@ class ConfigSubPanel extends React.Component {
           <Popover
                    ref="roadConfig"
                    content={ roadConfig }
-                   placement="topLeft"
-                   title="请选择"
+                   placement="bottom"
                    trigger="hover"
                    getTooltipContainer={ () => document.getElementById('configDetails') }>
             <Button
@@ -440,8 +430,7 @@ class ConfigSubPanel extends React.Component {
           <Popover
                    ref="regionConfig"
                    content={ regionConfig }
-                   placement="top"
-                   title="请选择"
+                   placement="bottom"
                    trigger="hover"
                    getTooltipContainer={ () => document.getElementById('configDetails') }>
             <Button
@@ -457,8 +446,7 @@ class ConfigSubPanel extends React.Component {
           <Popover
                    ref="odConfig"
                    content={ odConfig }
-                   placement="topRight"
-                   title="请选择"
+                   placement="bottom"
                    trigger="hover"
                    getTooltipContainer={ () => document.getElementById('configDetails') }>
             <Button

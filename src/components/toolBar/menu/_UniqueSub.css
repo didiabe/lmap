@@ -39,16 +39,16 @@ background-color:#f4f5f6;
 .button_primary{
     margin-left: 5px;
     margin-top:10px;
-    color: #fff;
-  background-color: #007edf;
+    color: #007edf;
+  background-color: #fff;
   border-color: #007edf;
   border-radius: 2px;
 }
 .button_primary:hover,
 .button_primary:focus {
-  color: #ffffff;
-  background-color: #4bbef2;
-  border-color: #4bbef2;
+  color: #fff;
+  background-color: #007edf;
+  border-color: #007edf;
 }
 .button_primary:hover > a:only-child,
 .button_primary:focus > a:only-child {
@@ -66,9 +66,9 @@ background-color:#f4f5f6;
 }
 .button_primary:active,
 .button_primary.active {
-  color: #f2f2f2;
-  background-color: #4bbef2;
-  border-color: #4bbef2;
+  color: #fff;
+  background-color: #007edf;
+  border-color: #007edf;
 }
 .button_primary:active > a:only-child,
 .button_primary.active > a:only-child {
@@ -83,4 +83,34 @@ background-color:#f4f5f6;
   bottom: 0;
   right: 0;
   background: transparent;
+}
+.button_add {
+  height:12px;
+  border-color:rgba(0,0,0,0);
+  line-height: 1.5;
+  border-radius: 2px;
+  margin-left: 5px;
+  background:url(../../../images/addDefault.png) no-repeat;
+  background-position: 10px 0;
+  background-size: 10px;
+}
+.button_add:hover{
+background:url(../../../images/addHover.png) no-repeat;
+  background-position: 10px 0;
+  background-size: 10px;
+}
+.button_modify{
+  height:12px;
+  border-color:rgba(0,0,0,0);
+  line-height: 1.5;
+  border-radius: 2px;
+  margin-left: 5px;
+  background:url(../../../images/modifyDefault.png) no-repeat;
+  background-position: 9px -2px;
+  background-size: 13px;
+}
+.button_modify:hover{
+background:url(../../../images/modifyHover.png) no-repeat;
+  background-position: 9px -2px;
+  background-size: 13px;
 }

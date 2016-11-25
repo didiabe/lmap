@@ -25,13 +25,21 @@ class Rbox extends React.Component {
             cfydTabledata: []
         }
         this.crsBtnClick = this.crsBtnClick.bind(this);
+        this.renderList = this.renderList.bind(this);
     }
     contractionBtnClick() {
         this.setState({
             contraction: !this.state.contraction
         });
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.search.keyword) {
+            this.setState({
+                contraction: false,
+                initCraResults: true
+            });
+        }
+    }
     renderList() {
         let rboxkey = this.props.search.rboxKey;
         let dataRec = null;

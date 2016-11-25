@@ -3,7 +3,10 @@ import styles from './_craResults.css';
 import * as lmsg from '../../../libs/lmsg';
 import * as Ds from '../../../libs/DataService';
 import {
-    Pagination
+    Pagination,
+    InputNumber,
+    Col,
+    Row
 } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 var children_rboxkey = null,
@@ -22,55 +25,63 @@ class CraResults extends React.Component {
         this.pagination = this.pagination.bind(this);
     }
     pagination(page) {
-        this.setState({
-            pageNumber: page
-        });
         let rboxkey1 = this.props.children;
         let self = this;
-        var sendParam2;
-        if (this.state.t == undefined) {
-            let myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-            if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
-            else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
-            else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-            sendParam2 = {
-                queryTime: myday,
-                pageIndex: page,
-                pageSize: 10,
-                isFirst: false
-            };
-        } else if (this.state.t && (this.state.t.flags == null)) {
-            if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
-            else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
-            else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-            sendParam2 = {
-                queryTime: this.state.t.sj,
-                pageIndex: page,
-                pageSize: 10,
-                isFirst: false
-            };
-        } else {
-            let myday = this.state.t.sj;
-            let YWD = this.state.t.flags;
-            sendParam2 = {
-                date: myday,
-                flag: YWD,
-                pageIndex: page,
-                pageSize: 10,
-                isFirst: false
-            };
-            if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';
-            else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';
-            else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
-        }
+        var sendParam2 = null;
+        this.setState({
+                pageNumber: page
+            }
+            /*, () => {
+                        onSetNumber();
+                    }*/
+        );
+        var onSetNumber = () => {
+            if (this.state.t == undefined) {
+                let myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+                else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+                else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+                sendParam2 = {
+                    queryTime: myday,
+                    pageIndex: page,
+                    pageSize: 10,
+                    isFirst: false
+                };
+            } else if (this.state.t && (this.state.t.flags == null)) {
+                if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+                else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+                else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+                sendParam2 = {
+                    queryTime: this.state.t.sj,
+                    pageIndex: page,
+                    pageSize: 10,
+                    isFirst: false
+                };
+            } else {
+                let myday = this.state.t.sj;
+                let YWD = this.state.t.flags;
+                sendParam2 = {
+                    date: myday,
+                    flag: YWD,
+                    pageIndex: page,
+                    pageSize: 10,
+                    isFirst: false
+                };
+                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';
+                else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';
+                else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
+            }
 
-        Ds.DataService(last_Path, sendParam2, (resp) => {
-            self.setState({
-                tableContent: resp.aaData.jtzsPage.jtzsList
+            Ds.DataService(last_Path, sendParam2, (resp) => {
+                self.setState({
+                    tableContent: resp.aaData.jtzsPage.jtzsList
+                });
+            }, (e) => {
+                console.log(e);
             });
-        }, (e) => {
-            console.log(e);
-        });
+        };
+        onSetNumber();
+
     }
     componentDidMount() {
         let self = this;
@@ -139,8 +150,21 @@ class CraResults extends React.Component {
                         }) }
                     </ul>
                     <div className={styles.pager}>
+                    <Row>
+                     <Col span={4}>
+                </Col>
+                    <Col span={12}>
                 <Pagination simple current={this.state.pageNumber} total={JtzsList.total} onChange={this.pagination}/>
-           
+                </Col>
+                <Col span={2}>
+               {'跳至:   '}
+                </Col>
+                <Col span={1}>
+                </Col>
+                <Col span={2}>
+        <InputNumber style={{width:'50px'}} size="small" min={1} max={JtzsList.total} defaultValue={this.state.pageNumber} value={this.state.pageNumber} onChange={this.pagination} />
+                </Col>
+                </Row>
                 </div>
                 </div>
                 

@@ -57,7 +57,6 @@ export const geoTime = (geoJSON, options) => {
         initialize: function(geoJSON, options) {
 
             L.setOptions(this, options);
-
             this._map = this.options.map || {};
             this._duration = this.options.duration || {};
             this._geos = this._geos || [];

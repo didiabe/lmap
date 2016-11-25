@@ -7,11 +7,15 @@ import {
     connect
 } from 'react-redux';
 import * as action from '../../actions/searchAction';
-//import { browserHistory } from 'react-router';
+import {
+    message
+} from 'antd';
 
 class Search extends React.Component {
     constructor() {
         super();
+        this.update = this.update.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     update() {
@@ -19,7 +23,12 @@ class Search extends React.Component {
         if (keyword && keyword != '')
             this.props.fetchSearchList(keyword, 'search');
         else
-            alert('请输入有效的搜索内容！')
+            message.warning('请输入有效的搜索内容！')
+    }
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.update();
+        }
     }
     render() {
         return (
@@ -27,7 +36,7 @@ class Search extends React.Component {
                 <header className={styles.searchbox}>
                     <img className={styles.logo} src={logoSrc} draggable="false"/>
                     <div className={styles.iptbox}>
-                        <input type="text" ref="searchVal" id="searchipt"  placeholder="搜索位置、公交站、地铁站" className={styles.searchipt}/>
+                        <input type="text" ref="searchVal" id="searchipt" onKeyDown={this.onKeyDown} placeholder="搜索位置、公交站、地铁站" className={styles.searchipt}/>
                     </div>
                     <span id="separator" className={styles.separator}></span>
                     <div className={styles.direntry} id="searchbtn" title="搜索" onClick={()=>this.update()}>

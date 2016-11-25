@@ -602,7 +602,8 @@ const CalculateWithin_Region = () => {
 			roadIds: roadIDWithin_Region,
 			crossIds: pointIDWithin_Region
 		};
-	} else totalIdWithin_Region = null;
+	} else
+		totalIdWithin_Region = null;
 
 }
 

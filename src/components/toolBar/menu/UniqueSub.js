@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styles from '../_toolBar.css';
 import UniqueStyles from './_UniqueSub.css'
 import * as CI from '../../../scripts/CongestionIndex';
+/*import * as gb from '../../../scripts/mapGetBound';*/
 import * as DR from '../../../scripts/drawFeatures';
 import * as lmsg from '../../../libs/lmsg';
 import * as lmap from '../../../libs/lmap';
@@ -83,6 +84,7 @@ class UniqueSub extends React.Component {
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             )
+            localStorage.removeItem('locating');
         });
         lmsg.subscribe('tracktaxi', (data) => {
             console.log('tracktaxi', data);
@@ -150,7 +152,7 @@ class UniquePanel extends React.Component {
         CI.displayUniLayer(ref, data);
     }
     OD(data) {
-        /*let params = {
+        /*var data = {
             qssj: '2016-09-05',
             sd: '00:00-10:00',
             fx: '1'
@@ -170,7 +172,10 @@ class UniquePanel extends React.Component {
                 message.error('后台传输错误', 5);
             });
 
-            if (dataRecv && dataRecv.dataLine.length > 0) {
+            if (!dataRecv || !dataRecv.dataLine || dataRecv.dataLine.length == 0) {
+                message.warning('没有相应地图数据');
+                CI.clearLayer();
+            } else {
                 CI.clearLayer();
                 var overlay = new lmap.echartsLayer('ODLayer', echarts);
                 var chartsContainer = overlay.getEchartsContainer();
@@ -258,7 +263,7 @@ class UniquePanel extends React.Component {
                 };
                 overlay.setOption(option);
                 map.setView(map.getCenter());
-            } else message.warning('没有相应地图数据');
+            }
         } else return;
     }
     componentDidMount() {

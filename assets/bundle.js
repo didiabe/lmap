@@ -7768,7 +7768,7 @@
 	
 	var _Search2 = _interopRequireDefault(_Search);
 	
-	var _ToolBar = __webpack_require__(108);
+	var _ToolBar = __webpack_require__(109);
 	
 	var _ToolBar2 = _interopRequireDefault(_ToolBar);
 	
@@ -7896,6 +7896,8 @@
 	
 	var action = _interopRequireWildcard(_searchAction);
 	
+	var _antd = __webpack_require__(108);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -7906,22 +7908,31 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	//import { browserHistory } from 'react-router';
-	
 	var Search = function (_React$Component) {
 	    _inherits(Search, _React$Component);
 	
 	    function Search() {
 	        _classCallCheck(this, Search);
 	
-	        return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
+	        var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
+	
+	        _this.update = _this.update.bind(_this);
+	        _this.onKeyDown = _this.onKeyDown.bind(_this);
+	        return _this;
 	    }
 	
 	    _createClass(Search, [{
 	        key: 'update',
 	        value: function update() {
 	            var keyword = this.refs.searchVal.value;
-	            if (keyword && keyword != '') this.props.fetchSearchList(keyword, 'search');else alert('请输入有效的搜索内容！');
+	            if (keyword && keyword != '') this.props.fetchSearchList(keyword, 'search');else _antd.message.warning('请输入有效的搜索内容！');
+	        }
+	    }, {
+	        key: 'onKeyDown',
+	        value: function onKeyDown(e) {
+	            if (e.keyCode == 13) {
+	                this.update();
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -7938,7 +7949,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: _search2.default.iptbox },
-	                        _react2.default.createElement('input', { type: 'text', ref: 'searchVal', id: 'searchipt', placeholder: '搜索位置、公交站、地铁站', className: _search2.default.searchipt })
+	                        _react2.default.createElement('input', { type: 'text', ref: 'searchVal', id: 'searchipt', onKeyDown: this.onKeyDown, placeholder: '搜索位置、公交站、地铁站', className: _search2.default.searchipt })
 	                    ),
 	                    _react2.default.createElement('span', { id: 'separator', className: _search2.default.separator }),
 	                    _react2.default.createElement(
@@ -8174,6 +8185,12 @@
 
 /***/ },
 /* 108 */
+/***/ function(module, exports) {
+
+	module.exports = antd;
+
+/***/ },
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8192,7 +8209,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _Traffic = __webpack_require__(109);
+	var _Traffic = __webpack_require__(110);
 	
 	var _Traffic2 = _interopRequireDefault(_Traffic);
 	
@@ -8403,7 +8420,7 @@
 	exports.default = ToolBar;
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8422,7 +8439,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	var _rcQueueAnim = __webpack_require__(111);
 	
@@ -9125,12 +9142,6 @@
 	}(_react2.default.Component);
 	
 	exports.default = Traffic;
-
-/***/ },
-/* 110 */
-/***/ function(module, exports) {
-
-	module.exports = antd;
 
 /***/ },
 /* 111 */
@@ -13884,7 +13895,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -26872,7 +26883,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	var _rcQueueAnim = __webpack_require__(111);
 	
@@ -28796,7 +28807,7 @@
 	
 	var _reactRedux = __webpack_require__(67);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -28807,6 +28818,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	/*import * as gb from '../../../scripts/mapGetBound';*/
+	
 	
 	var ButtonGroup = _antd.Button.Group;
 	var taxiInterval = null;
@@ -28897,6 +28910,7 @@
 	
 	            lmsg.subscribe('locating', function (data) {
 	                _reactDom2.default.render(_react2.default.createElement(UniquePanel, null), document.getElementById("presetBox"));
+	                localStorage.removeItem('locating');
 	            });
 	            lmsg.subscribe('tracktaxi', function (data) {
 	                console.log('tracktaxi', data);
@@ -28968,7 +28982,7 @@
 	    }, {
 	        key: 'OD',
 	        value: function OD(data) {
-	            /*let params = {
+	            /*var data = {
 	                qssj: '2016-09-05',
 	                sd: '00:00-10:00',
 	                fx: '1'
@@ -28988,7 +29002,10 @@
 	                    _antd.message.error('后台传输错误', 5);
 	                });
 	
-	                if (dataRecv && dataRecv.dataLine.length > 0) {
+	                if (!dataRecv || !dataRecv.dataLine || dataRecv.dataLine.length == 0) {
+	                    _antd.message.warning('没有相应地图数据');
+	                    CI.clearLayer();
+	                } else {
 	                    CI.clearLayer();
 	                    var overlay = new lmap.echartsLayer('ODLayer', echarts);
 	                    var chartsContainer = overlay.getEchartsContainer();
@@ -29076,7 +29093,7 @@
 	                    };
 	                    overlay.setOption(option);
 	                    map.setView(map.getCenter());
-	                } else _antd.message.warning('没有相应地图数据');
+	                }
 	            } else return;
 	        }
 	    }, {
@@ -29595,7 +29612,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -29711,6 +29728,7 @@
 	        value: function componentDidMount() {
 	            lmsg.subscribe('peizhi', function (data) {
 	                _reactDom2.default.render(_react2.default.createElement(ConfigSubPanel, null), document.getElementById("presetBox"));
+	                localStorage.removeItem('peizhi');
 	            });
 	        }
 	    }]);
@@ -29732,8 +29750,7 @@
 	            isloading3: false,
 	            isloaded1: false,
 	            isloaded2: false,
-	            isloaded3: false,
-	            loading: false
+	            isloaded3: false
 	        };
 	        _this3.onClickButton = _this3.onClickButton.bind(_this3);
 	        return _this3;
@@ -29742,113 +29759,92 @@
 	    _createClass(ConfigSubPanel, [{
 	        key: 'onClickButton',
 	        value: function onClickButton(ref) {
-	            var self = this;
+	            if (ref == 'roadConfig') {
+	                _antd.message.success('您已进入双向道路配置页面');
 	
-	            this.setState({
-	                loading: true
-	            }, function () {
-	                onRunning(ref);
-	            });
-	            var onRunning = function onRunning(ref) {
-	                if (ref == 'roadConfig') {
-	                    _antd.message.success('您已进入双向道路配置页面');
-	
-	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                        CI.displayConfigLayer_road(resp.aaData);
-	                        DR.DrawConfigLayer.DrawRoad.activate();
-	                        _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
-	                    }, function (e) {
-	                        console.log(e);
-	                        //alert('后台传输错误！');
-	                        _antd.message.error('后台传输错误！', 5);
-	                    });
-	                } else if (ref == 'regionConfig') {
-	                    _antd.message.success('您已进入区域配置页面');
-	
-	                    Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
-	                        CI.displayConfigLayer(resp.aaData);
-	                        DR.DrawConfigLayer.DrawRegion.activate();
-	                        DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-	                        _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
-	                    }, function (e) {
-	                        console.log(e);
-	                        _antd.message.error('后台传输错误！', 5);
-	                    });
-	                } else if (ref == 'odConfig') {
-	                    _antd.message.success('您已进入OD区域配置页面');
-	
-	                    Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
-	                        CI.displayConfigLayer(resp.aaData);
-	
-	                        DR.DrawConfigLayer.DrawOD.activate();
-	                        DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-	                        _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
-	                    }, function (e) {
-	                        console.log(e);
-	                        _antd.message.error('后台传输错误！', 5);
-	                    });
-	                } else if (ref == 'fhld') {
-	                    _antd.message.success('您已进入复合路段配置页面');
-	                    Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
-	                        CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
-	                        //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-	                    }, function (e) {
-	                        console.log(e);
-	                    });
-	                } else if (ref == 'fhld_locating') {
-	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                        _antd.message.warning('开始绘制复合路段信息', 5);
-	                        DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-	                    }, function (e) {
-	                        _antd.message.error('后台传输错误！', 5);
-	                        console.log(e);
-	                    });
-	                } else _antd.message.error('加载地图图层错误', 5);
-	                self.setState({
-	                    loading: false
+	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	                    CI.displayConfigLayer_road(resp.aaData);
+	                    DR.DrawConfigLayer.DrawRoad.activate();
+	                    _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
+	                }, function (e) {
+	                    console.log(e);
+	                    //alert('后台传输错误！');
+	                    _antd.message.error('后台传输错误！', 5);
 	                });
-	            };
+	            } else if (ref == 'regionConfig') {
+	                _antd.message.success('您已进入区域配置页面');
+	
+	                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	                    CI.displayConfigLayer(resp.aaData);
+	                    DR.DrawConfigLayer.DrawRegion.activate();
+	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+	                    _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
+	                }, function (e) {
+	                    console.log(e);
+	                    _antd.message.error('后台传输错误！', 5);
+	                });
+	            } else if (ref == 'odConfig') {
+	                _antd.message.success('您已进入OD区域配置页面');
+	
+	                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	                    CI.displayConfigLayer(resp.aaData);
+	
+	                    DR.DrawConfigLayer.DrawOD.activate();
+	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+	                    _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
+	                }, function (e) {
+	                    console.log(e);
+	                    _antd.message.error('后台传输错误！', 5);
+	                });
+	            } else if (ref == 'fhld') {
+	                _antd.message.success('您已进入复合路段配置页面');
+	                Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
+	                    CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
+	                    //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+	                }, function (e) {
+	                    console.log(e);
+	                });
+	            } else if (ref == 'fhld_locating') {
+	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	                    _antd.message.warning('开始绘制复合路段信息', 5);
+	                    DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+	                }, function (e) {
+	                    _antd.message.error('后台传输错误！', 5);
+	                    console.log(e);
+	                });
+	            } else _antd.message.error('加载地图图层错误', 5);
 	        }
 	    }, {
 	        key: 'ChangeConfig',
 	        value: function ChangeConfig(ref) {
-	            var self = this;
+	
 	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
 	            DR.drawFeatures.disable();
-	            this.setState({
-	                loading: true
-	            }, function () {
-	                onRunning(ref);
-	            });
-	            var onRunning = function onRunning(ref) {
-	                if (ref == 'regionConfig') {
-	                    Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
-	                        CI.changeConfigLayer(resp.aaData.zone, ref);
-	                        DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-	                    }, function (e) {
-	                        console.log(e);
-	                        _antd.message.error('后台传输错误！', 5);
-	                    });
-	                } else if (ref == 'odConfig') {
-	                    Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
-	                        CI.changeConfigLayer(resp.aaData.zone, ref);
-	                        DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-	                    }, function (e) {
-	                        console.log(e);
-	                        _antd.message.error('后台传输错误！', 5);
-	                    });
-	                } else if (ref == 'roadConfig') {
-	                    Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                        CI.changeConfigLayer(resp.aaData, ref);
-	                    }, function (e) {
-	                        console.log(e);
-	                        _antd.message.error('后台传输错误！', 5);
-	                    });
-	                }
-	                self.setState({
-	                    loading: false
+	
+	            if (ref == 'regionConfig') {
+	                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	                    CI.changeConfigLayer(resp.aaData.zone, ref);
+	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+	                }, function (e) {
+	                    console.log(e);
+	                    _antd.message.error('后台传输错误！', 5);
 	                });
-	            };
+	            } else if (ref == 'odConfig') {
+	                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	                    CI.changeConfigLayer(resp.aaData.zone, ref);
+	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+	                }, function (e) {
+	                    console.log(e);
+	                    _antd.message.error('后台传输错误！', 5);
+	                });
+	            } else if (ref == 'roadConfig') {
+	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	                    CI.changeConfigLayer(resp.aaData, ref);
+	                }, function (e) {
+	                    console.log(e);
+	                    _antd.message.error('后台传输错误！', 5);
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -29861,18 +29857,30 @@
 	                localStorage.removeItem('peizhi');
 	                switch (data.params) {
 	                    case 'odqypz':
+	                        _antd.Modal.success({
+	                            title: 'OD区域配置',
+	                            content: '您已进入OD区域配置页面'
+	                        });
 	                        self.onClickButton("odConfig");
 	                        break;
 	                    case 'ldpz':
+	                        _antd.Modal.success({
+	                            title: '路段配置',
+	                            content: '您已进入符合路段配置页面'
+	                        });
 	                        self.onClickButton("roadConfig");
 	                        break;
 	                    case 'qypz':
+	                        _antd.Modal.success({
+	                            title: '区域配置',
+	                            content: '您已进入符合区域配置页面'
+	                        });
 	                        self.onClickButton("regionConfig");
 	                        break;
 	                    case 'fhld_init':
 	                        _antd.Modal.success({
 	                            title: '路段配置',
-	                            content: '您已进入符合路段配置页面'
+	                            content: '您已进入复合路段配置页面'
 	                        });
 	                        self.onClickButton("fhld");
 	                        break;
@@ -30044,86 +30052,82 @@
 	                        className: _UniqueSub2.default.panel_body,
 	                        id: 'Configpanel_body' },
 	                    _react2.default.createElement(
-	                        _antd.Spin,
-	                        { spinning: this.state.loading },
+	                        _antd.Button,
+	                        {
+	                            id: 'crossConfig',
+	                            ref: 'crossConfig',
+	                            className: _UniqueSub2.default.button_primary,
+	                            type: 'primary',
+	                            size: 'small',
+	                            disabled: false,
+	                            onClick: function onClick() {
+	                                return _this4.onClickButton('fhld');
+	                            } },
+	                        '复合路段'
+	                    ),
+	                    _react2.default.createElement(
+	                        _antd.Popover,
+	                        {
+	                            ref: 'roadConfig',
+	                            content: roadConfig,
+	                            placement: 'bottom',
+	                            trigger: 'hover',
+	                            getTooltipContainer: function getTooltipContainer() {
+	                                return document.getElementById('configDetails');
+	                            } },
 	                        _react2.default.createElement(
 	                            _antd.Button,
 	                            {
-	                                id: 'crossConfig',
-	                                ref: 'crossConfig',
+	                                id: 'roadConfig',
+	                                ref: 'roadConfig',
 	                                className: _UniqueSub2.default.button_primary,
 	                                type: 'primary',
-	                                size: 'small',
-	                                disabled: false,
-	                                onClick: function onClick() {
-	                                    return _this4.onClickButton('fhld');
-	                                } },
-	                            '复合路段'
-	                        ),
+	                                size: 'small'
+	                            },
+	                            '双向路段'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        _antd.Popover,
+	                        {
+	                            ref: 'regionConfig',
+	                            content: regionConfig,
+	                            placement: 'bottom',
+	                            trigger: 'hover',
+	                            getTooltipContainer: function getTooltipContainer() {
+	                                return document.getElementById('configDetails');
+	                            } },
 	                        _react2.default.createElement(
-	                            _antd.Popover,
+	                            _antd.Button,
 	                            {
-	                                ref: 'roadConfig',
-	                                content: roadConfig,
-	                                placement: 'bottom',
-	                                trigger: 'hover',
-	                                getTooltipContainer: function getTooltipContainer() {
-	                                    return document.getElementById('configDetails');
-	                                } },
-	                            _react2.default.createElement(
-	                                _antd.Button,
-	                                {
-	                                    id: 'roadConfig',
-	                                    ref: 'roadConfig',
-	                                    className: _UniqueSub2.default.button_primary,
-	                                    type: 'primary',
-	                                    size: 'small'
-	                                },
-	                                '双向路段'
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            _antd.Popover,
-	                            {
+	                                id: 'regionConfig',
 	                                ref: 'regionConfig',
-	                                content: regionConfig,
-	                                placement: 'bottom',
-	                                trigger: 'hover',
-	                                getTooltipContainer: function getTooltipContainer() {
-	                                    return document.getElementById('configDetails');
-	                                } },
-	                            _react2.default.createElement(
-	                                _antd.Button,
-	                                {
-	                                    id: 'regionConfig',
-	                                    ref: 'regionConfig',
-	                                    className: _UniqueSub2.default.button_primary,
-	                                    type: 'primary',
-	                                    size: 'small'
-	                                },
-	                                '区域配置'
-	                            )
-	                        ),
+	                                className: _UniqueSub2.default.button_primary,
+	                                type: 'primary',
+	                                size: 'small'
+	                            },
+	                            '区域配置'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        _antd.Popover,
+	                        {
+	                            ref: 'odConfig',
+	                            content: odConfig,
+	                            placement: 'bottom',
+	                            trigger: 'hover',
+	                            getTooltipContainer: function getTooltipContainer() {
+	                                return document.getElementById('configDetails');
+	                            } },
 	                        _react2.default.createElement(
-	                            _antd.Popover,
+	                            _antd.Button,
 	                            {
+	                                id: 'odConfig',
 	                                ref: 'odConfig',
-	                                content: odConfig,
-	                                placement: 'bottom',
-	                                trigger: 'hover',
-	                                getTooltipContainer: function getTooltipContainer() {
-	                                    return document.getElementById('configDetails');
-	                                } },
-	                            _react2.default.createElement(
-	                                _antd.Button,
-	                                {
-	                                    id: 'odConfig',
-	                                    ref: 'odConfig',
-	                                    className: _UniqueSub2.default.button_primary,
-	                                    type: 'primary',
-	                                    size: 'small' },
-	                                'OD区域'
-	                            )
+	                                className: _UniqueSub2.default.button_primary,
+	                                type: 'primary',
+	                                size: 'small' },
+	                            'OD区域'
 	                        )
 	                    )
 	                ),
@@ -30673,7 +30677,7 @@
 	            ),
 	            _react2.default.createElement(
 	                FormItem,
-	                { label: '开始路口' },
+	                { label: '开始路口', style: { marginLeft: '10px' } },
 	                getFieldDecorator('startSelect', {
 	                    rules: [{
 	                        required: false,
@@ -30696,7 +30700,7 @@
 	            ),
 	            _react2.default.createElement(
 	                FormItem,
-	                { label: '结束路口' },
+	                { label: '结束路口', style: { marginLeft: '10px' } },
 	                getFieldDecorator('endSelect', {
 	                    rules: [{
 	                        required: false,
@@ -31214,7 +31218,7 @@
 	            ),
 	            _react2.default.createElement(
 	                FormItem,
-	                { label: '开始路口' },
+	                { label: '开始路口', style: { marginLeft: '10px' } },
 	                getFieldDecorator('startSelect', {
 	                    rules: [{
 	                        required: false,
@@ -31237,7 +31241,7 @@
 	            ),
 	            _react2.default.createElement(
 	                FormItem,
-	                { label: '结束路口' },
+	                { label: '结束路口', style: { marginLeft: '10px' } },
 	                getFieldDecorator('endSelect', {
 	                    rules: [{
 	                        required: false,
@@ -31323,7 +31327,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -31352,6 +31356,7 @@
 	            cfydTabledata: []
 	        };
 	        _this.crsBtnClick = _this.crsBtnClick.bind(_this);
+	        _this.renderList = _this.renderList.bind(_this);
 	        return _this;
 	    }
 	
@@ -31361,6 +31366,16 @@
 	            this.setState({
 	                contraction: !this.state.contraction
 	            });
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+	            if (nextProps.search.keyword) {
+	                this.setState({
+	                    contraction: false,
+	                    initCraResults: true
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'renderList',
@@ -31667,7 +31682,7 @@
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31960,7 +31975,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _antd = __webpack_require__(110);
+	var _antd = __webpack_require__(108);
 	
 	var _rcQueueAnim = __webpack_require__(111);
 	
@@ -32002,49 +32017,58 @@
 	    _createClass(CraResults, [{
 	        key: 'pagination',
 	        value: function pagination(page) {
-	            this.setState({
-	                pageNumber: page
-	            });
+	            var _this2 = this;
+	
 	            var rboxkey1 = this.props.children;
 	            var self = this;
-	            var sendParam2;
-	            if (this.state.t == undefined) {
-	                var myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-	                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-	                sendParam2 = {
-	                    queryTime: myday,
-	                    pageIndex: page,
-	                    pageSize: 10,
-	                    isFirst: false
-	                };
-	            } else if (this.state.t && this.state.t.flags == null) {
-	                if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-	                sendParam2 = {
-	                    queryTime: this.state.t.sj,
-	                    pageIndex: page,
-	                    pageSize: 10,
-	                    isFirst: false
-	                };
-	            } else {
-	                var _myday = this.state.t.sj;
-	                var YWD = this.state.t.flags;
-	                sendParam2 = {
-	                    date: _myday,
-	                    flag: YWD,
-	                    pageIndex: page,
-	                    pageSize: 10,
-	                    isFirst: false
-	                };
-	                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
+	            var sendParam2 = null;
+	            this.setState({
+	                pageNumber: page
 	            }
+	            /*, () => {
+	                        onSetNumber();
+	                    }*/
+	            );
+	            var onSetNumber = function onSetNumber() {
+	                if (_this2.state.t == undefined) {
+	                    var myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+	                    if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+	                    sendParam2 = {
+	                        queryTime: myday,
+	                        pageIndex: page,
+	                        pageSize: 10,
+	                        isFirst: false
+	                    };
+	                } else if (_this2.state.t && _this2.state.t.flags == null) {
+	                    if (_this2.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (_this2.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (_this2.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+	                    sendParam2 = {
+	                        queryTime: _this2.state.t.sj,
+	                        pageIndex: page,
+	                        pageSize: 10,
+	                        isFirst: false
+	                    };
+	                } else {
+	                    var _myday = _this2.state.t.sj;
+	                    var YWD = _this2.state.t.flags;
+	                    sendParam2 = {
+	                        date: _myday,
+	                        flag: YWD,
+	                        pageIndex: page,
+	                        pageSize: 10,
+	                        isFirst: false
+	                    };
+	                    if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
+	                }
 	
-	            Ds.DataService(last_Path, sendParam2, function (resp) {
-	                self.setState({
-	                    tableContent: resp.aaData.jtzsPage.jtzsList
+	                Ds.DataService(last_Path, sendParam2, function (resp) {
+	                    self.setState({
+	                        tableContent: resp.aaData.jtzsPage.jtzsList
+	                    });
+	                }, function (e) {
+	                    console.log(e);
 	                });
-	            }, function (e) {
-	                console.log(e);
-	            });
+	            };
+	            onSetNumber();
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -32203,7 +32227,27 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: _craResults2.default.pager },
-	                        _react2.default.createElement(_antd.Pagination, { simple: true, current: this.state.pageNumber, total: JtzsList.total, onChange: this.pagination })
+	                        _react2.default.createElement(
+	                            _antd.Row,
+	                            null,
+	                            _react2.default.createElement(_antd.Col, { span: 4 }),
+	                            _react2.default.createElement(
+	                                _antd.Col,
+	                                { span: 12 },
+	                                _react2.default.createElement(_antd.Pagination, { simple: true, current: this.state.pageNumber, total: JtzsList.total, onChange: this.pagination })
+	                            ),
+	                            _react2.default.createElement(
+	                                _antd.Col,
+	                                { span: 2 },
+	                                '跳至:   '
+	                            ),
+	                            _react2.default.createElement(_antd.Col, { span: 1 }),
+	                            _react2.default.createElement(
+	                                _antd.Col,
+	                                { span: 2 },
+	                                _react2.default.createElement(_antd.InputNumber, { style: { width: '50px' }, size: 'small', min: 1, max: JtzsList.total, defaultValue: this.state.pageNumber, value: this.state.pageNumber, onChange: this.pagination })
+	                            )
+	                        )
 	                    )
 	                )
 	            );
@@ -32219,10 +32263,10 @@
 	    function TableRow() {
 	        _classCallCheck(this, TableRow);
 	
-	        var _this2 = _possibleConstructorReturn(this, (TableRow.__proto__ || Object.getPrototypeOf(TableRow)).call(this));
+	        var _this3 = _possibleConstructorReturn(this, (TableRow.__proto__ || Object.getPrototypeOf(TableRow)).call(this));
 	
-	        _this2.onClickRow = _this2.onClickRow.bind(_this2);
-	        return _this2;
+	        _this3.onClickRow = _this3.onClickRow.bind(_this3);
+	        return _this3;
 	    }
 	
 	    _createClass(TableRow, [{

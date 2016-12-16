@@ -27,8 +27,10 @@ class Drawsth extends React.Component {
         this.setState({
             active: !this.state.active
         });
-        if (this.state.active) DR.drawFeatures.disable();
-        else DR.drawFeatures.activate();
+        if (this.state.active) {
+            DR.drawFeatures.disable();
+            CI.clearLayer();
+        } else DR.drawFeatures.activate();
 
         this.props.callbackParent({
             status1: !this.state.active,

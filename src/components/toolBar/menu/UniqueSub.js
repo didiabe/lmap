@@ -77,14 +77,15 @@ class UniqueSub extends React.Component {
         )
     }
     componentDidMount() {
-
         let self = this;
-
-        lmsg.subscribe('locating', (data) => {
+        lmsg.subscribe('locating_start', (data) => {
+            if (document.getElementById("presetBox").children.length > 0) {
+                ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
+            }
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             )
-            localStorage.removeItem('locating');
+            localStorage.removeItem('locating_start');
         });
         lmsg.subscribe('tracktaxi', (data) => {
             console.log('tracktaxi', data);
@@ -104,23 +105,32 @@ class UniqueSub extends React.Component {
             else message.warning("追踪参数错误！", 5);
             localStorage.removeItem('tracktaxi');
         });
-        lmsg.subscribe('cfxydBtnClick', (data) => {
+        lmsg.subscribe('cfxydBtnClick_start', (data) => {
+            if (document.getElementById("presetBox").children.length > 0) {
+                ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
+            }
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             )
-            localStorage.removeItem('cfxydBtnClick');
+            localStorage.removeItem('cfxydBtnClick_start');
         });
-        lmsg.subscribe('ODClick', (data) => {
+        lmsg.subscribe('ODClick_start', (data) => {
+            if (document.getElementById("presetBox").children.length > 0) {
+                ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
+            }
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             );
-            localStorage.removeItem('ODClick')
+            localStorage.removeItem('ODClick_start')
         });
-        lmsg.subscribe('hbjjrToMap', (data) => {
+        lmsg.subscribe('hbjjrToMap_start', (data) => {
+            if (document.getElementById("presetBox").children.length > 0) {
+                ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
+            }
             ReactDOM.render(
                 <UniquePanel/>, document.getElementById("presetBox")
             );
-            localStorage.removeItem('hbjjrToMap');
+            localStorage.removeItem('hbjjrToMap_start');
         });
 
     }
@@ -133,7 +143,7 @@ var _APIpath = null;
 var showModalWarning = () => {
     Modal.warning({
         title: '定位已经启动',
-        content: '请点击屏幕右上角画图工具定位地图信息',
+        content: '请点击屏幕右侧画图工具定位地图信息',
     });
 }
 
@@ -143,7 +153,7 @@ class UniquePanel extends React.Component {
         this.onClickButton = this.onClickButton.bind(this);
         this.state = {
             disabled: false,
-            cfydData: null,
+            cfydData: null
         };
 
     }
@@ -268,6 +278,7 @@ class UniquePanel extends React.Component {
     }
     componentDidMount() {
         let self = this;
+
         lmsg.subscribe('locating', (data) => {
             console.log('locating', data);
             switch (data.params) {
@@ -310,27 +321,20 @@ class UniquePanel extends React.Component {
                 default:
                     return;
             }
+
             localStorage.removeItem('locating');
         });
 
+
         lmsg.subscribe('cfxydBtnClick', (data) => {
             console.log('cfxydBtnClick', data);
-            /* self.setState({
-                 cfydData: null
-             });*/
-            message.success('您已进入常发拥堵界面');
+            //message.success('您已进入常发拥堵界面');
             if (data.isCross == 1) {
                 //路口
-                /* self.setState({
-                     cfydData: data.time
-                 });*/
                 self.onClickButton('yongdu_cross', data.time);
                 //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
             } else if (data.isCross == 2) {
                 //路段
-                /* self.setState({
-                     cfydData: data.time
-                 });*/
                 self.onClickButton('yongdu_road', data.time);
                 //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
             } else message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
@@ -364,11 +368,14 @@ class UniquePanel extends React.Component {
 
 
             } else if (data.messageType == '5') {
+
                 //新增区域
+                DR.drawFeatures.disable();
                 Modal.success({
                     title: '定位已经启动',
-                    content: '请点击屏幕右上角画图工具定位区域信息',
+                    content: '请点击屏幕右侧画图工具定位区域信息',
                 });
+
                 Ds.DataService('/trafficindex_map/listHolidayMap.json', null, (resp) => {
                     CI.displayCommonLayer(resp.aaData);
                     DR.DrawHoliday.drawRegion();
@@ -379,9 +386,10 @@ class UniquePanel extends React.Component {
 
             } else if (data.messageType == '6') {
                 //编辑区域
+                DR.drawFeatures.disable();
                 Modal.success({
                     title: '定位已经启动',
-                    content: '请点击屏幕右上角画图工具定位区域信息',
+                    content: '请点击屏幕右侧画图工具定位区域信息',
                 });
                 var params = {
                     id: data.messageData.qybh
@@ -395,9 +403,10 @@ class UniquePanel extends React.Component {
                 });
 
             } else if (data.messageType == '7') {
+                DR.drawFeatures.disable();
                 Modal.success({
                     title: '定位已经启动',
-                    content: '请点击屏幕右上角画图工具圈选包含的道路路口',
+                    content: '请点击屏幕右侧画图工具圈选包含的道路路口',
                 });
                 //新增路口
                 Ds.DataService('/trafficindex_map/listCrossMap.json', null, (resp) => {
@@ -409,9 +418,10 @@ class UniquePanel extends React.Component {
                 });
 
             } else if (data.messageType == '8') {
+                DR.drawFeatures.disable();
                 Modal.success({
                     title: '定位已经启动',
-                    content: '请点击屏幕右上角画图工具圈选包含的道路',
+                    content: '请点击屏幕右侧画图工具圈选包含的道路',
                 });
                 //新增路段
                 Ds.DataService('/trafficindex_map/roadMap.json', null, (resp) => {
@@ -425,12 +435,23 @@ class UniquePanel extends React.Component {
         });
 
     }
+    componentWillMount() {
+
+    }
+    PrintMap() {
+        lmap.printMap('#rbox,#search,#toolBar')
+    }
     componentWillUnmount() {
         lmap.removeEchartsLayer();
         CI.clearLayer();
+        DR.drawFeatures.disable();
         if (taxiInterval) {
             clearInterval(taxiInterval)
         }
+        lmsg.unsubscribe('locating');
+        lmsg.unsubscribe('ODClick');
+        lmsg.unsubscribe('hbjjrToMap');
+        //.lmsg.unsubscribe('cfxydBtnClick');
     }
     render() {
         const yongduButton = (
@@ -463,6 +484,7 @@ class UniquePanel extends React.Component {
                         <Button id="yongdu" ref="yongdu" className={UniqueStyles.button_primary} type="primary" size="small" disabled={this.state.disabled}>常发拥堵</Button>
                     </Popover>
                     <Button id="OD" ref="OD" className={UniqueStyles.button_primary} type="primary" size="small" disabled={!this.state.disabled} onClick={()=>this.OD()}>O/D分析</Button>
+        { /*<Button id="print" ref="print" className={UniqueStyles.button_primary} type="ghost" size="small" onClick={()=>this.PrintMap()}>Print!!</Button>*/ }
                  </div>
 
             </div>

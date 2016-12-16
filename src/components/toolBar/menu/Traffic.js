@@ -158,7 +158,6 @@ class Forecast extends React.Component {
         });
     }
     getCheckOption(value) {
-        //console.log(value);
         let CheckOptions = '';
         switch (value.length) {
             case 0:
@@ -244,15 +243,17 @@ class Forecast extends React.Component {
                         <Col span={14}>
                             <Slider min={0} max={30} onChange={this.onSliderChange} step={5} value={this.state.inputValue} />
                         </Col>
-                        <Col span={2}>
-                            <InputNumber min={0} max={30} value={this.state.inputValue} step={5} onChange={this.onSliderChange}/>
+                        <Col span={6}>
+                            <InputNumber style={{width:'60px'}} min={0} max={30} value={this.state.inputValue} step={5} onChange={this.onSliderChange}/>
+                            {' 分钟'}
                         </Col>
+                       
                     </Row>
                     <Row>
                         <Col span={4}></Col>
                         <Col span={6}>
                             <Button type="primary" loading={this.state.isLoading} className={trafficStyles.button_primary} onClick={this.startForcast} disabled={!this.state.checked}>
-                              {this.state.isLoaded ? "加载完成！" :"加载数据" }
+                              {this.state.isLoaded ? "加载数据" :"加载数据" }
                             </Button>
                         </Col>
                         <Col span={6}>
@@ -332,7 +333,6 @@ class Playback extends React.Component {
         progressInterval = setInterval(() => {
             if (p < 100 && this.state.isPlaying) {
                 p = p + this.state.each_percent;
-                //console.log(p);
                 this.setState({
                     percent: p
                 });
@@ -485,7 +485,7 @@ class Playback extends React.Component {
                    <li><CheckboxGroup className={trafficStyles.checkboxes} options={CRA_options2} onChange={this.getCheckOption} />
                     </li><br/>
                      <Button className={trafficStyles.button_primary} style={{marginLeft:'150px'}} type="primary" size="large" icon="cloud-upload" 
-                     loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "加载完成" : "加载数据"}</Button>
+                     loading={this.state.loading} onClick={this.loadingData} disabled={this.state.isLoaded}>{this.state.isLoaded ? "加载数据" : "加载数据"}</Button>
                     <br/>
                     <li className={trafficStyles.splitline_H}></li><br/>
                     <li className={trafficStyles.date} id='dateNow'></li>

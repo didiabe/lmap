@@ -66,11 +66,11 @@
 	
 	var _CongestionIndex2 = _interopRequireDefault(_CongestionIndex);
 	
-	var _TrafficGuidance = __webpack_require__(255);
+	var _TrafficGuidance = __webpack_require__(262);
 	
 	var _TrafficGuidance2 = _interopRequireDefault(_TrafficGuidance);
 	
-	var _index = __webpack_require__(256);
+	var _index = __webpack_require__(263);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -7772,15 +7772,15 @@
 	
 	var _ToolBar2 = _interopRequireDefault(_ToolBar);
 	
-	var _Rbox = __webpack_require__(243);
+	var _Rbox = __webpack_require__(250);
 	
 	var _Rbox2 = _interopRequireDefault(_Rbox);
 	
-	var _Map = __webpack_require__(253);
+	var _Map = __webpack_require__(260);
 	
 	var _Map2 = _interopRequireDefault(_Map);
 	
-	var _Emap = __webpack_require__(254);
+	var _Emap = __webpack_require__(261);
 	
 	var _Emap2 = _interopRequireDefault(_Emap);
 	
@@ -7949,7 +7949,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: _search2.default.iptbox },
-	                        _react2.default.createElement('input', { type: 'text', ref: 'searchVal', id: 'searchipt', onKeyDown: this.onKeyDown, placeholder: '搜索位置、公交站、地铁站', className: _search2.default.searchipt })
+	                        _react2.default.createElement('input', { type: 'text', ref: 'searchVal', id: 'searchipt', onKeyDown: this.onKeyDown, placeholder: '搜索相关路口，路段，区域指数', className: _search2.default.searchipt })
 	                    ),
 	                    _react2.default.createElement('span', { id: 'separator', className: _search2.default.separator }),
 	                    _react2.default.createElement(
@@ -8213,19 +8213,19 @@
 	
 	var _Traffic2 = _interopRequireDefault(_Traffic);
 	
-	var _updateIndex = __webpack_require__(229);
+	var _updateIndex = __webpack_require__(236);
 	
 	var _updateIndex2 = _interopRequireDefault(_updateIndex);
 	
-	var _Drawsth = __webpack_require__(232);
+	var _Drawsth = __webpack_require__(239);
 	
 	var _Drawsth2 = _interopRequireDefault(_Drawsth);
 	
-	var _UniqueSub = __webpack_require__(235);
+	var _UniqueSub = __webpack_require__(242);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
-	var _ConfigSub = __webpack_require__(242);
+	var _ConfigSub = __webpack_require__(249);
 	
 	var _ConfigSub2 = _interopRequireDefault(_ConfigSub);
 	
@@ -8695,7 +8695,6 @@
 	    }, {
 	        key: 'getCheckOption',
 	        value: function getCheckOption(value) {
-	            //console.log(value);
 	            var CheckOptions = '';
 	            switch (value.length) {
 	                case 0:
@@ -8816,8 +8815,9 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        _antd.Col,
-	                        { span: 2 },
-	                        _react2.default.createElement(_antd.InputNumber, { min: 0, max: 30, value: this.state.inputValue, step: 5, onChange: this.onSliderChange })
+	                        { span: 6 },
+	                        _react2.default.createElement(_antd.InputNumber, { style: { width: '60px' }, min: 0, max: 30, value: this.state.inputValue, step: 5, onChange: this.onSliderChange }),
+	                        ' 分钟'
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -8830,7 +8830,7 @@
 	                        _react2.default.createElement(
 	                            _antd.Button,
 	                            { type: 'primary', loading: this.state.isLoading, className: _traffic2.default.button_primary, onClick: this.startForcast, disabled: !this.state.checked },
-	                            this.state.isLoaded ? "加载完成！" : "加载数据"
+	                            this.state.isLoaded ? "加载数据" : "加载数据"
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -8926,7 +8926,6 @@
 	            progressInterval = setInterval(function () {
 	                if (p < 100 && _this7.state.isPlaying) {
 	                    p = p + _this7.state.each_percent;
-	                    //console.log(p);
 	                    _this7.setState({
 	                        percent: p
 	                    });
@@ -9116,7 +9115,7 @@
 	                                _antd.Button,
 	                                { className: _traffic2.default.button_primary, style: { marginLeft: '150px' }, type: 'primary', size: 'large', icon: 'cloud-upload',
 	                                    loading: this.state.loading, onClick: this.loadingData, disabled: this.state.isLoaded },
-	                                this.state.isLoaded ? "加载完成" : "加载数据"
+	                                this.state.isLoaded ? "加载数据" : "加载数据"
 	                            ),
 	                            _react2.default.createElement('br', null),
 	                            _react2.default.createElement('li', { className: _traffic2.default.splitline_H }),
@@ -13864,7 +13863,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.clearLayer = exports.displayCommonLayer = exports.displayConfigLayer_road = exports.displayConfigLayer = exports.changeConfigLayer = exports.stopTrackingTaxi = exports.trackingTaxi = exports.displayUniLayer = exports.playback = undefined;
+	exports.initMapLayer = exports.selectCarparkById = exports.displayCarParkLayer = exports.clearLayer = exports.displayCommonLayer = exports.displayConfigLayer_road = exports.displayConfigLayer = exports.changeConfigLayer = exports.stopTrackingTaxi = exports.trackingTaxi = exports.displayUniLayer = exports.playback = undefined;
 	exports.addGracLayer = addGracLayer;
 	
 	var _leaflet = __webpack_require__(98);
@@ -13895,6 +13894,34 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
+	var _parking = __webpack_require__(229);
+	
+	var _parking2 = _interopRequireDefault(_parking);
+	
+	var _parking3 = __webpack_require__(230);
+	
+	var _parking4 = _interopRequireDefault(_parking3);
+	
+	var _parking5 = __webpack_require__(231);
+	
+	var _parking6 = _interopRequireDefault(_parking5);
+	
+	var _parking7 = __webpack_require__(232);
+	
+	var _parking8 = _interopRequireDefault(_parking7);
+	
+	var _location = __webpack_require__(233);
+	
+	var _location2 = _interopRequireDefault(_location);
+	
+	var _connect = __webpack_require__(234);
+	
+	var _connect2 = _interopRequireDefault(_connect);
+	
+	var _disconnect = __webpack_require__(235);
+	
+	var _disconnect2 = _interopRequireDefault(_disconnect);
+	
 	var _antd = __webpack_require__(108);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -13918,376 +13945,428 @@
 	}
 	
 	var crossLayer = function crossLayer(data) {
+	
 	    map.eachLayer(function (layer) {
-	        if (layer.options.id != 'crossLayer' && layer.options.id != 'streetLayer') map.removeLayer(layer);
+	        if (layer.options.id != 'streetLayer') map.removeLayer(layer);
 	    });
-	    var GeoJsonPoints = data.geoJson;
-	    var greenMarker = lmap.icon({
-	        iconSize: [15, 15],
-	        color: '#277b04'
-	    });
-	    var yellowMarker = lmap.icon({
-	        iconSize: [15, 15],
-	        color: '#34b100'
-	    });
-	    var orangeMarker = lmap.icon({
-	        iconSize: [15, 15],
-	        color: '#ffcb00'
-	    });
-	    var brownMarker = lmap.icon({
-	        iconSize: [15, 15],
-	        color: '#ff8800'
-	    });
-	    var redMarker = lmap.icon({
-	        iconSize: [15, 15],
-	        color: '#df0000'
-	    });
+	    if (!data.geoJson || data.geoJson.features.length == 0) {} else {
+	        var GeoJsonPoints;
+	        var greenMarker;
+	        var yellowMarker;
+	        var orangeMarker;
+	        var brownMarker;
+	        var redMarker;
+	        var pointLayer;
 	
-	    var pointMarkerOption = null;
-	    var pointLayer;
+	        (function () {
+	            var panTotarget = function panTotarget(e) {
+	                if (map.getZoom() <= _mapConfig.panToZoomLevel - 1) {
+	                    map.setZoomAround(e.target._latlng, _mapConfig.panToZoomLevel);
+	                } else map.panTo(e.target._latlng);
+	                var popupCross = document.createElement('div');
+	                var p = document.createElement('p');
+	                p.innerHTML = '路口名称:' + e.target.feature.properties.name;
+	                var button1 = document.createElement('button');
+	                button1.classList.add('green_button');
+	                button1.innerHTML = '更新';
+	                button1.onclick = function () {
+	                    lmsg.send('openModal_updIdx', {
+	                        id: e.target.feature.properties.id,
+	                        index: e.target.feature.properties.index,
+	                        type: 3 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	                    });
+	                };
+	                var button2 = document.createElement('button');
+	                button2.classList.add('green_button');
+	                button2.innerHTML = '实时';
+	                button2.onclick = function () {
+	                    lmsg.send('lksszs', {
+	                        params: 'cross',
+	                        isTime: '1',
+	                        ID: e.target.feature.properties.id,
+	                        name: e.target.feature.properties.name
+	                    });
+	                    console.log('传送成功-实时');
+	                };
+	                var button3 = document.createElement('button');
+	                button3.classList.add('green_button');
+	                button3.innerHTML = '档案';
+	                button3.onclick = function () {
+	                    lmsg.send('lkjt', {
+	                        params: 'cross',
+	                        isTime: '2',
+	                        ID: e.target.feature.properties.id,
+	                        name: e.target.feature.properties.name
+	                    });
+	                    console.log('传送成功-档案');
+	                };
+	                popupCross.appendChild(p);
+	                popupCross.appendChild(button1);
+	                popupCross.appendChild(button2);
+	                popupCross.appendChild(button3);
+	                var customOptions = {
+	                    'maxWidth': '500',
+	                    'className': 'custom'
+	                };
+	                pointLayer.bindPopup(popupCross, customOptions).addTo(map);
+	            };
 	
-	    function panTotarget(e) {
-	        if (map.getZoom() <= 16) {
-	            map.setZoomAround(e.target._latlng, 17);
-	        } else map.panTo(e.target._latlng);
-	        var popupCross = document.createElement('div');
-	        var p = document.createElement('p');
-	        p.innerHTML = '路口名称:' + e.target.feature.properties.name;
-	        var button1 = document.createElement('button');
-	        button1.classList.add('green_button');
-	        button1.innerHTML = '更新';
-	        button1.onclick = function () {
-	            lmsg.send('openModal_updIdx', {
-	                id: e.target.feature.properties.id,
-	                index: e.target.feature.properties.index,
-	                type: 3 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	            var highlightFeature = function highlightFeature(e) {
+	                var highlighticon = lmap.icon({
+	                    iconSize: [25, 25],
+	                    color: e.target.defaultOptions.icon.options.color
+	                });
+	                e.target.setIcon(highlighticon);
+	                /*L.popup({
+	                    offset: [0, -8],
+	                    closeButton: false
+	                }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);*/
+	            };
+	
+	            var resetFeature = function resetFeature(e) {
+	                var reseticon = lmap.icon({
+	                    iconSize: [15, 15],
+	                    color: e.target.defaultOptions.icon.options.color
+	                });
+	                e.target.setIcon(reseticon);
+	                //map.closePopup();
+	            };
+	
+	            var eachPointFeature = function eachPointFeature(feature, layer) {
+	                layer.on({
+	                    click: panTotarget,
+	                    mouseover: highlightFeature,
+	                    mouseout: resetFeature
+	                });
+	            };
+	
+	            GeoJsonPoints = data.geoJson;
+	            greenMarker = lmap.icon({
+	                iconSize: [15, 15],
+	                color: '#277b04'
 	            });
-	        };
-	        var button2 = document.createElement('button');
-	        button2.classList.add('green_button');
-	        button2.innerHTML = '实时';
-	        button2.onclick = function () {
-	            lmsg.send('lksszs', {
-	                params: 'cross',
-	                isTime: '1',
-	                ID: e.target.feature.properties.id,
-	                name: e.target.feature.properties.name
+	            yellowMarker = lmap.icon({
+	                iconSize: [15, 15],
+	                color: '#34b100'
 	            });
-	            console.log('传送成功-实时');
-	        };
-	        var button3 = document.createElement('button');
-	        button3.classList.add('green_button');
-	        button3.innerHTML = '档案';
-	        button3.onclick = function () {
-	            lmsg.send('lkjt', {
-	                params: 'cross',
-	                isTime: '2',
-	                ID: e.target.feature.properties.id,
-	                name: e.target.feature.properties.name
+	            orangeMarker = lmap.icon({
+	                iconSize: [15, 15],
+	                color: '#ffcb00'
 	            });
-	            console.log('传送成功-档案');
-	        };
-	        popupCross.appendChild(p);
-	        popupCross.appendChild(button1);
-	        popupCross.appendChild(button2);
-	        popupCross.appendChild(button3);
-	        var customOptions = {
-	            'maxWidth': '500',
-	            'className': 'custom'
-	        };
-	        pointLayer.bindPopup(popupCross, customOptions).addTo(map);
-	    };
-	
-	    function highlightFeature(e) {
-	        var highlighticon = lmap.icon({
-	            iconSize: [25, 25],
-	            color: e.target.defaultOptions.icon.options.color
-	        });
-	        e.target.setIcon(highlighticon);
-	        /*L.popup({
-	            offset: [0, -8],
-	            closeButton: false
-	        }).setLatLng(e.target._latlng).setContent(e.target.feature.properties.name).openOn(map);*/
-	    };
-	
-	    function resetFeature(e) {
-	        var reseticon = lmap.icon({
-	            iconSize: [15, 15],
-	            color: e.target.defaultOptions.icon.options.color
-	        });
-	        e.target.setIcon(reseticon);
-	        //map.closePopup();
-	    };
-	
-	    function eachPointFeature(feature, layer) {
-	        layer.on({
-	            click: panTotarget,
-	            mouseover: highlightFeature,
-	            mouseout: resetFeature
-	        });
-	    };
-	    pointLayer = _leaflet2.default.geoJson(GeoJsonPoints, {
-	        pointToLayer: function pointToLayer(feature, latlng) {
-	            var indexVal = feature.properties.index;
-	            if (indexVal > 0 && indexVal <= 2) pointMarkerOption = greenMarker;else if (indexVal > 2 && indexVal <= 4) pointMarkerOption = yellowMarker;else if (indexVal > 4 && indexVal <= 6) pointMarkerOption = orangeMarker;else if (indexVal > 6 && indexVal <= 8) pointMarkerOption = brownMarker;else if (indexVal > 8) pointMarkerOption = redMarker;
-	
-	            return _leaflet2.default.marker(latlng, {
-	                icon: pointMarkerOption
+	            brownMarker = lmap.icon({
+	                iconSize: [15, 15],
+	                color: '#ff8800'
 	            });
-	        },
-	        onEachFeature: eachPointFeature
+	            redMarker = lmap.icon({
+	                iconSize: [15, 15],
+	                color: '#df0000'
+	            });
+	            ;
 	
-	    }).addTo(map);
+	            ;
+	
+	            ;
+	
+	            ;
+	            pointLayer = _leaflet2.default.geoJson(GeoJsonPoints, {
+	                pointToLayer: function pointToLayer(feature, latlng) {
+	                    var indexVal = feature.properties.index;
+	                    var pointMarkerOption;
+	                    if (indexVal >= 0 && indexVal < 2) pointMarkerOption = greenMarker;else if (indexVal >= 2 && indexVal < 4) pointMarkerOption = yellowMarker;else if (indexVal >= 4 && indexVal < 6) pointMarkerOption = orangeMarker;else if (indexVal >= 6 && indexVal < 8) pointMarkerOption = brownMarker;else if (indexVal >= 8) pointMarkerOption = redMarker;
+	                    return _leaflet2.default.marker(latlng, {
+	                        icon: pointMarkerOption
+	                    });
+	                },
+	                onEachFeature: eachPointFeature
+	
+	            }).addTo(map);
+	        })();
+	    }
 	};
 	
 	var roadLayer = function roadLayer(data) {
 	    map.eachLayer(function (layer) {
-	        if (layer.options.id != 'roadLayer' && layer.options.id != 'streetLayer') map.removeLayer(layer);
+	        if (layer.options.id != 'streetLayer') map.removeLayer(layer);
 	    });
-	    var GeoJsonLines = data.geoJson;
-	    var greenLine = {
-	        'fillColor': "#277b04",
-	        "color": "#277b04",
-	        "weight": 7,
-	        "opacity": 0.8,
-	        'fillOpacity': 1
-	    };
-	    var yellowLine = {
-	        'fillColor': "#34b100",
-	        "color": "#34b100",
-	        "weight": 7,
-	        "opacity": 0.8,
-	        'fillOpacity': 1
-	    };
-	    var orangeLine = {
-	        'fillColor': "#ffcb00",
-	        "color": "#ffcb00",
-	        "weight": 7,
-	        "opacity": 0.8,
-	        'fillOpacity': 1
-	    };
-	    var brownLine = {
-	        'fillColor': "#ff8800",
-	        "color": "#ff8800",
-	        "weight": 7,
-	        "opacity": 0.8,
-	        'fillOpacity': 1
-	    };
+	    if (!data.geoJson || data.geoJson.features.length == 0) {} else {
+	        var GeoJsonLines;
+	        var greenLine;
+	        var yellowLine;
+	        var orangeLine;
+	        var brownLine;
+	        var redLine;
+	        var lineLayer;
 	
-	    var redLine = {
-	        'fillColor': "#df0000",
-	        "color": "#df0000",
-	        "weight": 7,
-	        "opacity": 0.8,
-	        'fillOpacity': 1
-	    };
-	    var lineLayer;
+	        (function () {
+	            var panToBound = function panToBound(e) {
 	
-	    function panToBound(e) {
+	                map.fitBounds(e.target.getBounds());
+	                var popupRoad = document.createElement('div');
+	                var p = document.createElement('p');
+	                p.innerHTML = '路段名称:' + e.target.feature.properties.name;
+	                var button1 = document.createElement('button');
+	                button1.classList.add('green_button');
+	                button1.innerHTML = '更新';
+	                button1.onclick = function () {
+	                    lmsg.send('openModal_updIdx', {
+	                        id: e.target.feature.properties.id,
+	                        index: e.target.feature.properties.index,
+	                        type: 2 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	                    });
+	                };
+	                var button2 = document.createElement('button');
+	                button2.classList.add('green_button');
+	                button2.innerHTML = '实时';
+	                button2.onclick = function () {
+	                    lmsg.send('ldsszs', {
+	                        params: 'road',
+	                        isTime: '1',
+	                        ID: e.target.feature.properties.id,
+	                        name: e.target.feature.properties.name
+	                    });
+	                    console.log('传送成功-实时');
+	                };
+	                var button3 = document.createElement('button');
+	                button3.classList.add('green_button');
+	                button3.innerHTML = '档案';
+	                button3.onclick = function () {
+	                    lmsg.send('ldjt', {
+	                        params: 'road',
+	                        isTime: '2',
+	                        ID: e.target.feature.properties.id,
+	                        name: e.target.feature.properties.name
+	                    });
+	                    console.log('传送成功-档案');
+	                };
+	                popupRoad.appendChild(p);
+	                popupRoad.appendChild(button1);
+	                popupRoad.appendChild(button2);
+	                popupRoad.appendChild(button3);
+	                lineLayer.bindPopup(popupRoad).addTo(map);
+	            };
 	
-	        map.fitBounds(e.target.getBounds());
-	        var popupRoad = document.createElement('div');
-	        var p = document.createElement('p');
-	        p.innerHTML = '路段名称:' + e.target.feature.properties.name;
-	        var button1 = document.createElement('button');
-	        button1.classList.add('green_button');
-	        button1.innerHTML = '更新';
-	        button1.onclick = function () {
-	            lmsg.send('openModal_updIdx', {
-	                id: e.target.feature.properties.id,
-	                index: e.target.feature.properties.index,
-	                type: 2 //（1区域(region) 2 路段(road) 3 路口(cross)）
-	            });
-	        };
-	        var button2 = document.createElement('button');
-	        button2.classList.add('green_button');
-	        button2.innerHTML = '实时';
-	        button2.onclick = function () {
-	            lmsg.send('ldsszs', {
-	                params: 'road',
-	                isTime: '1',
-	                ID: e.target.feature.properties.id,
-	                name: e.target.feature.properties.name
-	            });
-	            console.log('传送成功-实时');
-	        };
-	        var button3 = document.createElement('button');
-	        button3.classList.add('green_button');
-	        button3.innerHTML = '档案';
-	        button3.onclick = function () {
-	            lmsg.send('ldjt', {
-	                params: 'road',
-	                isTime: '2',
-	                ID: e.target.feature.properties.id,
-	                name: e.target.feature.properties.name
-	            });
-	            console.log('传送成功-档案');
-	        };
-	        popupRoad.appendChild(p);
-	        popupRoad.appendChild(button1);
-	        popupRoad.appendChild(button2);
-	        popupRoad.appendChild(button3);
-	        lineLayer.bindPopup(popupRoad).addTo(map);
-	    };
+	            var highlightFeature = function highlightFeature(e) {
+	                var l = e.target;
+	                l.setStyle({
+	                    weight: 7,
+	                    color: '#007edf',
+	                    dashArray: '',
+	                    fillOpacity: 1
+	                });
+	            };
 	
-	    function highlightFeature(e) {
-	        var l = e.target;
-	        l.setStyle({
-	            weight: 7,
-	            color: '#007edf',
-	            dashArray: '',
-	            fillOpacity: 1
-	        });
-	    };
+	            var resetFeature = function resetFeature(e) {
+	                lineLayer.resetStyle(e.target);
+	            };
 	
-	    function resetFeature(e) {
-	        lineLayer.resetStyle(e.target);
-	    };
+	            var eachLineFeature = function eachLineFeature(feature, layer) {
+	                layer.on({
+	                    click: panToBound,
+	                    mouseover: highlightFeature,
+	                    mouseout: resetFeature
+	                });
+	            };
 	
-	    function eachLineFeature(feature, layer) {
-	        layer.on({
-	            click: panToBound,
-	            mouseover: highlightFeature,
-	            mouseout: resetFeature
-	        });
-	    };
+	            GeoJsonLines = data.geoJson;
+	            greenLine = {
+	                'fillColor': "#277b04",
+	                "color": "#277b04",
+	                "weight": 7,
+	                "opacity": 0.8,
+	                'fillOpacity': 1
+	            };
+	            yellowLine = {
+	                'fillColor': "#34b100",
+	                "color": "#34b100",
+	                "weight": 7,
+	                "opacity": 0.8,
+	                'fillOpacity': 1
+	            };
+	            orangeLine = {
+	                'fillColor': "#ffcb00",
+	                "color": "#ffcb00",
+	                "weight": 7,
+	                "opacity": 0.8,
+	                'fillOpacity': 1
+	            };
+	            brownLine = {
+	                'fillColor': "#ff8800",
+	                "color": "#ff8800",
+	                "weight": 7,
+	                "opacity": 0.8,
+	                'fillOpacity': 1
+	            };
+	            redLine = {
+	                'fillColor': "#df0000",
+	                "color": "#df0000",
+	                "weight": 7,
+	                "opacity": 0.8,
+	                'fillOpacity': 1
+	            };
+	            ;
 	
-	    lineLayer = _leaflet2.default.geoJson(GeoJsonLines, {
-	        style: function style(feature) {
-	            var indexVal = feature.properties.index;
-	            if (indexVal <= 2) return greenLine;else if (indexVal > 2 && indexVal <= 4) return yellowLine;else if (indexVal > 4 && indexVal <= 6) return orangeLine;else if (indexVal > 6 && indexVal <= 8) return brownLine;else if (indexVal > 8) return redLine;
-	        },
-	        onEachFeature: eachLineFeature
-	    }).addTo(map);
+	            ;
 	
-	    /* var popup2 = L.popup().setContent('<button  >1</button');
-	     lineLayer.bindPopup(popup2).addTo(map);*/
+	            ;
+	
+	            ;
+	
+	            lineLayer = _leaflet2.default.geoJson(GeoJsonLines, {
+	                style: function style(feature) {
+	                    var indexVal = feature.properties.index;
+	                    if (indexVal >= 0 && indexVal < 2) return greenLine;else if (indexVal >= 2 && indexVal < 4) return yellowLine;else if (indexVal >= 4 && indexVal < 6) return orangeLine;else if (indexVal >= 6 && indexVal < 8) return brownLine;else if (indexVal >= 8) return redLine;
+	                },
+	                onEachFeature: eachLineFeature
+	            }).addTo(map);
+	
+	            /* var popup2 = L.popup().setContent('<button  >1</button');
+	             lineLayer.bindPopup(popup2).addTo(map);*/
+	        })();
+	    }
 	};
 	
 	var areaLayer = function areaLayer(data) {
 	    map.eachLayer(function (layer) {
-	        if (layer.options.id != 'areaLayer' && layer.options.id != 'streetLayer') map.removeLayer(layer);
+	        if (layer.options.id != 'streetLayer') map.removeLayer(layer);
 	    });
-	    var GeoJsonRegion = data.geoJson;
+	    if (!data.geoJson || data.geoJson.features.length == 0) {} else {
+	        var GeoJsonRegion;
+	        var greenRegion;
+	        var yellowRegion;
+	        var orangeRegion;
+	        var brownRegion;
+	        var redRegion;
+	        var regionLayer;
+	        var popup3;
 	
-	    var greenRegion = {
-	        fillColor: "#277b04",
-	        fillOpacity: 1,
-	        color: "#277b04",
-	        weight: 5,
-	        opacity: 0.8
-	    };
-	    var yellowRegion = {
-	        fillColor: "#34b100",
-	        fillOpacity: 1,
-	        color: "#34b100",
-	        weight: 5,
-	        opacity: 0.8
+	        (function () {
+	            var panToBound = function panToBound(e) {
+	                map.fitBounds(e.target.getBounds());
+	                var popupArea = document.createElement('div');
+	                var p = document.createElement('p');
+	                p.innerHTML = '路段名称:' + e.target.feature.properties.name;
+	                var button1 = document.createElement('button');
+	                button1.classList.add('green_button');
+	                button1.innerHTML = '更新';
+	                button1.onclick = function () {
+	                    lmsg.send('openModal_updIdx', {
+	                        id: e.target.feature.properties.id,
+	                        index: e.target.feature.properties.index,
+	                        type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	                    });
+	                };
+	                var button2 = document.createElement('button');
+	                button2.classList.add('green_button');
+	                button2.innerHTML = '实时';
+	                button2.onclick = function () {
+	                    lmsg.send('qysszs', {
+	                        params: 'area',
+	                        isTime: '1',
+	                        ID: e.target.feature.properties.id,
+	                        name: e.target.feature.properties.name
+	                    });
+	                    console.log('传送成功-实时');
+	                };
+	                var button3 = document.createElement('button');
+	                button3.classList.add('green_button');
+	                button3.innerHTML = '档案';
+	                button3.onclick = function () {
+	                    lmsg.send('qyjt', {
+	                        params: 'area',
+	                        isTime: '2',
+	                        ID: e.target.feature.properties.id,
+	                        name: e.target.feature.properties.name
+	                    });
+	                    console.log('传送成功-档案');
+	                };
+	                popupArea.appendChild(p);
+	                popupArea.appendChild(button1);
+	                popupArea.appendChild(button2);
+	                popupArea.appendChild(button3);
+	                regionLayer.bindPopup(popupArea).addTo(map);
+	            };
 	
-	    };
-	    var orangeRegion = {
-	        fillColor: "#ffcb00",
-	        fillOpacity: 1,
-	        color: "#ffcb00",
-	        weight: 5,
-	        opacity: 0.8
+	            var highlightFeature = function highlightFeature(e) {
+	                var l = e.target;
+	                l.setStyle({
+	                    weight: 5,
+	                    color: '#007edf',
+	                    dashArray: '',
+	                    fillOpacity: 1
+	                });
+	            };
 	
-	    };
-	    var brownRegion = {
-	        fillColor: "#ff8800",
-	        fillOpacity: 1,
-	        color: "#ff8800",
-	        weight: 5,
-	        opacity: 0.8
-	    };
+	            var resetFeature = function resetFeature(e) {
+	                regionLayer.resetStyle(e.target);
+	            };
 	
-	    var redRegion = {
-	        fillColor: "#df0000",
-	        fillOpacity: 1,
-	        color: "#df0000",
-	        weight: 5,
-	        opacity: 0.8
+	            var eachRegionFeature = function eachRegionFeature(feature, layer) {
+	                layer.on({
+	                    click: panToBound,
+	                    mouseover: highlightFeature,
+	                    mouseout: resetFeature
+	                });
+	            };
 	
-	    };
-	    var regionLayer;
+	            GeoJsonRegion = data.geoJson;
+	            greenRegion = {
+	                fillColor: "#277b04",
+	                fillOpacity: 0.5,
+	                color: "#277b04",
+	                weight: 5,
+	                opacity: 0.8
+	            };
+	            yellowRegion = {
+	                fillColor: "#34b100",
+	                fillOpacity: 0.5,
+	                color: "#34b100",
+	                weight: 5,
+	                opacity: 0.8
 	
-	    function panToBound(e) {
-	        map.fitBounds(e.target.getBounds());
-	        var popupArea = document.createElement('div');
-	        var p = document.createElement('p');
-	        p.innerHTML = '路段名称:' + e.target.feature.properties.name;
-	        var button1 = document.createElement('button');
-	        button1.classList.add('green_button');
-	        button1.innerHTML = '更新';
-	        button1.onclick = function () {
-	            lmsg.send('openModal_updIdx', {
-	                id: e.target.feature.properties.id,
-	                index: e.target.feature.properties.index,
-	                type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	            };
+	            orangeRegion = {
+	                fillColor: "#ffcb00",
+	                fillOpacity: 0.5,
+	                color: "#ffcb00",
+	                weight: 5,
+	                opacity: 0.8
+	
+	            };
+	            brownRegion = {
+	                fillColor: "#ff8800",
+	                fillOpacity: 0.5,
+	                color: "#ff8800",
+	                weight: 5,
+	                opacity: 0.8
+	            };
+	            redRegion = {
+	                fillColor: "#df0000",
+	                fillOpacity: 0.5,
+	                color: "#df0000",
+	                weight: 5,
+	                opacity: 0.8
+	
+	            };
+	            ;
+	
+	            ;
+	
+	            ;
+	
+	            ;
+	
+	            regionLayer = _leaflet2.default.geoJson(GeoJsonRegion, {
+	                style: function style(feature) {
+	                    var indexVal = feature.properties.index;
+	                    if (indexVal <= 2) return greenRegion;else if (indexVal > 2 && indexVal <= 4) return yellowRegion;else if (indexVal > 4 && indexVal <= 6) return orangeRegion;else if (indexVal > 6 && indexVal <= 8) return brownRegion;else if (indexVal > 8) return redRegion;
+	                },
+	                onEachFeature: eachRegionFeature
 	            });
-	        };
-	        var button2 = document.createElement('button');
-	        button2.classList.add('green_button');
-	        button2.innerHTML = '实时';
-	        button2.onclick = function () {
-	            lmsg.send('qysszs', {
-	                params: 'area',
-	                isTime: '1',
-	                ID: e.target.feature.properties.id,
-	                name: e.target.feature.properties.name
-	            });
-	            console.log('传送成功-实时');
-	        };
-	        var button3 = document.createElement('button');
-	        button3.classList.add('green_button');
-	        button3.innerHTML = '档案';
-	        button3.onclick = function () {
-	            lmsg.send('qyjt', {
-	                params: 'area',
-	                isTime: '2',
-	                ID: e.target.feature.properties.id,
-	                name: e.target.feature.properties.name
-	            });
-	            console.log('传送成功-档案');
-	        };
-	        popupArea.appendChild(p);
-	        popupArea.appendChild(button1);
-	        popupArea.appendChild(button2);
-	        popupArea.appendChild(button3);
-	        regionLayer.bindPopup(popupArea).addTo(map);
-	    };
+	            popup3 = _leaflet2.default.popup().setContent("hello, this is a popup REGION");
 	
-	    function highlightFeature(e) {
-	        var l = e.target;
-	        l.setStyle({
-	            weight: 5,
-	            color: '#007edf',
-	            dashArray: '',
-	            fillOpacity: 1
-	        });
-	    };
-	
-	    function resetFeature(e) {
-	        regionLayer.resetStyle(e.target);
-	    };
-	
-	    function eachRegionFeature(feature, layer) {
-	        layer.on({
-	            click: panToBound,
-	            mouseover: highlightFeature,
-	            mouseout: resetFeature
-	        });
-	    };
-	
-	    regionLayer = _leaflet2.default.geoJson(GeoJsonRegion, {
-	        style: function style(feature) {
-	            var indexVal = feature.properties.index;
-	            if (indexVal <= 2) return greenRegion;else if (indexVal > 2 && indexVal <= 4) return yellowRegion;else if (indexVal > 4 && indexVal <= 6) return orangeRegion;else if (indexVal > 6 && indexVal <= 8) return brownRegion;else if (indexVal > 8) return redRegion;
-	        },
-	        onEachFeature: eachRegionFeature
-	    });
-	    var popup3 = _leaflet2.default.popup().setContent("hello, this is a popup REGION");
-	    regionLayer.bindPopup(popup3).addTo(map);
+	            regionLayer.bindPopup(popup3).addTo(map);
+	        })();
+	    }
 	};
 	
 	var playback = exports.playback = function playback(a) {
@@ -14337,7 +14416,7 @@
 	        _APIpath = "/trafficindex_map/floatCar.json";
 	        var fudongcheIcon = _leaflet2.default.icon({
 	            iconUrl: _imagePath + '/local_taxi.png',
-	            iconSize: [20, 20],
+	            iconSize: [25, 25],
 	            iconAnchor: [0, 0],
 	            popupAnchor: [20, 0]
 	        });
@@ -14447,7 +14526,7 @@
 	            flag: data.flag,
 	            date: date2Java_date
 	        };
-	        specialpopup = _leaflet2.default.popup().setContent('拥堵路口');
+	        //specialpopup = L.popup().setContent('拥堵路口');
 	    } else if (ref == 'yongdu_road') {
 	        _APIpath = "/trafficindex_map/cfydRoad.json";
 	        specialstyle = function specialstyle(feature) {
@@ -14473,7 +14552,7 @@
 	            flag: data.flag,
 	            date: date2Java_date
 	        };
-	        specialpopup = _leaflet2.default.popup().setContent('拥堵路段');
+	        //specialpopup = L.popup().setContent('拥堵路段');
 	    } else if (ref == 'jiari_cross') {
 	        _APIpath = "/trafficindex_map/holiday.json";
 	        specialpointlayer = function specialpointlayer(feature, latlng) {
@@ -14553,12 +14632,14 @@
 	            specialpopup = _leaflet2.default.popup().setContent("车牌照: " + popupData.carid + '<br/>' + "车朝向: " + popupData.direction + '<br/>' + "浮动车类型: " + floatcartype1 + '<br/>' + "GPS时间: " + formatDateTime(popupData.gpsDate, 0) + '<br/>' + "经度: " + popupData.gpsJd + '<br/>' + "纬度: " + popupData.gpsWd + '<br/>' + "浮动车速度: " + popupData.velocity + ' km/h' + '<br/>');
 	        } else if (ref == 'jiari_zone' || ref == 'jiari_cross' || ref == 'jiari_road') {
 	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数:' + e.target.feature.properties.index);
+	        } else if (ref == 'yongdu_cross' || ref == 'yongdu_road') {
+	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '时间' + e.target.feature.properties.index);
 	        }
 	        SpecificLayer.bindPopup(specialpopup).addTo(map);
 	
 	        if (specialpointlayer) {
-	            if (map.getZoom() <= 16) {
-	                map.setZoomAround(e.target._latlng, 17);
+	            if (map.getZoom() <= _mapConfig.panToZoomLevel - 1) {
+	                map.setZoomAround(e.target._latlng, _mapConfig.panToZoomLevel);
 	            } else map.panTo(e.target._latlng);
 	        } else map.fitBounds(e.target.getBounds());
 	    };
@@ -14590,7 +14671,7 @@
 	            });
 	            var construType = popupData.objecttype == 0 ? '路口' : popupData.objecttype == 1 ? '路段' : '其他';
 	            var construStatus = popupData.state == 0 ? '施工前' : popupData.state == 1 ? '施工中' : popupData.state == 2 ? '施工完成' : '其他';
-	            popup_spec = _leaflet2.default.popup().setContent("施工单位: " + popupData.company + '<br/>' + "联系人: " + popupData.contact + '<br/>' + "施工类别: " + construType + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "施工名称: " + popupData.objectname + '<br/>' + "施工原因: " + popupData.reason + '<br/>' + "当前状态: " + construStatus + '<br/>' + "开始时间: " + formatDateTime(popupData.startdate, 1) + '<br/>' + "结束时间: " + formatDateTime(popupData.enddate, 1) + '<br/>' + "联系电话: " + popupData.telephone + '<br/>');
+	            popup_spec = _leaflet2.default.popup().setContent("施工单位: " + (popupData.company || '') + '<br/>' + "联系人: " + (popupData.contact || '') + '<br/>' + "施工类别: " + construType + '<br/>' + "位置描述: " + (popupData.locationdesc || '') + '<br/>' + "施工名称: " + (popupData.objectname || '') + '<br/>' + "施工原因: " + (popupData.reason || '') + '<br/>' + "当前状态: " + construStatus + '<br/>' + "开始时间: " + (formatDateTime(popupData.startdate, 1) || '') + '<br/>' + "结束时间: " + (formatDateTime(popupData.enddate, 1) || '') + '<br/>' + "联系电话: " + (popupData.telephone || '') + '<br/>');
 	        } else if (ref == "guanzhi") {
 	            Ds.DataService("/trafficindex_trafficControl/gotoBJtzsTrafficcontrol.json", sendparamID, function (resp) {
 	                popupData = resp.aaData;
@@ -14601,7 +14682,7 @@
 	            var controlStatus = popupData.state == 0 ? '未申请' : popupData.state == 1 ? '已申请' : popupData.state == 2 ? '申请中' : '其他';
 	            var controlBelong = popupData.area == 0 ? '指挥中心' : popupData.area == 1 ? '管辖一区' : popupData.area == 2 ? '管辖二区' : '其他';
 	            var controlType = popupData.type == 0 ? '中高考' : popupData.type == 1 ? '节假日' : popupData.type == 2 ? '大型活动' : popupData.type == 3 ? '禁货' : popupData.type == 4 ? '禁大客' : popupData.type == 5 ? '禁危险品车辆' : popupData.type == 6 ? '禁摩托车' : popupData.type == 7 ? '路口禁止转向' : popupData.type == 8 ? '单行道路' : popupData.type == 9 ? '其他' : '其他';
-	            popup_spec = _leaflet2.default.popup().setContent("申请时间: " + formatDateTime(popupData.applydate, 1) + '<br/>' + "开始时间: " + formatDateTime(popupData.startdate, 1) + '<br/>' + "预计结束时间: " + formatDateTime(popupData.planenddate, 1) + '<br/>' + "实际结束时间: " + formatDateTime(popupData.actualenddate, 1) + '<br/>' + "当前状态: " + controlStatus + '<br/>' + "所属辖区: " + controlBelong + '<br/>' + "责任单位: " + popupData.liablecompany + '<br/>' + "责任人: " + popupData.liableperson + '<br/>' + "联系电话: " + popupData.telephone + '<br/>' + "位置描述: " + popupData.locationdesc + '<br/>' + "管制名称: " + popupData.objectname + '<br/>' + "管制类型: " + controlType + '<br/>' + "管制说明: " + popupData.remark + '<br/>');
+	            popup_spec = _leaflet2.default.popup().setContent("申请时间: " + (formatDateTime(popupData.applydate, 1) || '') + '<br/>' + "开始时间: " + (formatDateTime(popupData.startdate, 1) || '') + '<br/>' + "预计结束时间: " + (formatDateTime(popupData.planenddate, 1) || '') + '<br/>' + "实际结束时间: " + (formatDateTime(popupData.actualenddate, 1) || '') + '<br/>' + "当前状态: " + controlStatus + '<br/>' + "所属辖区: " + controlBelong + '<br/>' + "责任单位: " + (popupData.liablecompany || '') + '<br/>' + "责任人: " + (popupData.liableperson || '') + '<br/>' + "联系电话: " + (popupData.telephone || '') + '<br/>' + "位置描述: " + (popupData.locationdesc || '') + '<br/>' + "管制名称: " + (popupData.objectname || '') + '<br/>' + "管制类型: " + controlType + '<br/>' + "管制说明: " + (popupData.remark || '') + '<br/>');
 	        } else if (ref == "shigu") {
 	            Ds.DataService("/trafficindex_trafficAccident/gotoBJtzsTrafficaccident.json", sendparamID, function (resp) {
 	                popupData = resp.aaData;
@@ -14611,10 +14692,10 @@
 	            });
 	            var accidentType = popupData.accidenttype == -1 ? '全部' : popupData.accidenttype == 0 ? '酒后驾车' : popupData.accidenttype == 1 ? '逆行' : popupData.accidenttype == 2 ? '违法吊车' : popupData.accidenttype == 3 ? '违法变道' : popupData.accidenttype == 4 ? '违法超载' : popupData.accidenttype == 5 ? '无证驾驶' : popupData.accidenttype == 6 ? '违反交通信号' : popupData.accidenttype == 7 ? '超速' : popupData.accidenttype == 8 ? '其他' : '其他';
 	            var accidentLevel = popupData.accidentlevel == -1 ? '全部' : popupData.accidentlevel == 0 ? '轻微事故' : popupData.accidentlevel == 1 ? '一般事故' : popupData.accidentlevel == 2 ? '重大事故' : popupData.accidentlevel == 3 ? '特大事故' : '其他';
-	            popup_spec = _leaflet2.default.popup().setContent("事故等级: " + accidentLevel + '<br/>' + "事故类型: " + accidentType + '<br/>' + "发生位置: " + popupData.locationdesc + '<br/>' + "发生时间: " + formatDateTime(popupData.occurrencedate, 1) + '<br/>' + "接报人: " + popupData.recipientperson + '<br/>' + "事故描述: " + popupData.remark + '<br/>' + "上报人: " + popupData.reportperson + '<br/>' + "上报人联系方式: " + popupData.reportpersoncontact + '<br/>');
+	            popup_spec = _leaflet2.default.popup().setContent("事故等级: " + accidentLevel + '<br/>' + "事故类型: " + accidentType + '<br/>' + "发生位置: " + (popupData.locationdesc || '') + '<br/>' + "发生时间: " + (formatDateTime(popupData.occurrencedate, 1) || '') + '<br/>' + "接报人: " + (popupData.recipientperson || '') + '<br/>' + "事故描述: " + (popupData.remark || '') + '<br/>' + "上报人: " + (popupData.reportperson || '') + '<br/>' + "上报人联系方式: " + (popupData.reportpersoncontact || '') + '<br/>');
 	        }
-	        if (map.getZoom() <= 15) {
-	            map.setZoomAround(e.target._latlng, 15);
+	        if (map.getZoom() <= _mapConfig.panToZoomLevel - 1) {
+	            map.setZoomAround(e.target._latlng, _mapConfig.panToZoomLevel);
 	        } else map.panTo(e.target._latlng);
 	
 	        centerPointLayer.bindPopup(popup_spec).addTo(map);
@@ -14948,6 +15029,256 @@
 	        if (layer.options.id != 'streetLayer') map.removeLayer(layer);
 	    });
 	    lmap.removeEchartsLayer();
+	};
+	
+	var displayCarParkLayer = exports.displayCarParkLayer = function displayCarParkLayer() {
+	
+	    map.eachLayer(function (layer) {
+	        if (layer.options.id != 'streetLayer') map.removeLayer(layer);
+	    });
+	
+	    var carParkData = null;
+	    Ds.DataService('/parking_map/listParking.json', null, function (resp) {
+	        carParkData = resp.aaData;
+	    });
+	
+	    var defaultMarker = _leaflet2.default.icon({
+	        iconUrl: _parking2.default,
+	        iconSize: [30, 30],
+	        iconAnchor: [15, 0],
+	        popupAnchor: [0, 0]
+	    });
+	    var hightlightMarker = _leaflet2.default.icon({
+	        iconUrl: _parking4.default,
+	        iconSize: [30, 30],
+	        iconAnchor: [15, 0],
+	        popupAnchor: [0, 0]
+	    });
+	    var defaultMarker_free = _leaflet2.default.icon({
+	        iconUrl: _parking6.default,
+	        iconSize: [30, 30],
+	        iconAnchor: [15, 0],
+	        popupAnchor: [0, 0]
+	    });
+	    var hightlightMarker_free = _leaflet2.default.icon({
+	        iconUrl: _parking8.default,
+	        iconSize: [30, 30],
+	        iconAnchor: [15, 0],
+	        popupAnchor: [0, 0]
+	    });
+	
+	    var highlightFeature = function highlightFeature(e) {
+	        if (e.target.feature.properties.type !== 1) {
+	            e.target.setIcon(hightlightMarker);
+	        } else e.target.setIcon(hightlightMarker_free);
+	    };
+	    var resetFeature = function resetFeature(e) {
+	        if (e.target.feature.properties.index !== 1) {
+	            e.target.setIcon(defaultMarker);
+	        } else e.target.setIcon(defaultMarker_free);
+	    };
+	    var eachParkFeature = function eachParkFeature(feature, layer) {
+	        layer.on({
+	            click: onclicklayer,
+	            mouseover: highlightFeature,
+	            mouseout: resetFeature
+	        });
+	        //弹出框内容
+	        var popupContent = carparkPopupContent(feature);
+	
+	        var carParkPop = _leaflet2.default.popup({
+	            closeOnClick: false,
+	            className: 'carParkPopup'
+	        }).setContent(popupContent);
+	        map.addLayer(carParkPop.setLatLng([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]));
+	    };
+	
+	    var onclicklayer = function onclicklayer(e) {
+	        var popupContent = carparkPopupContent(e.target.feature);
+	        var clickPop = _leaflet2.default.popup({
+	            closeOnClick: false,
+	            className: 'carParkPopup'
+	        }).setContent(popupContent);
+	        map.eachLayer(function (layer) {
+	            if (layer._content && layer._content.id == e.target.feature.properties.id && map.hasLayer(layer)) {
+	                map.removeLayer(layer);
+	            } else return;
+	        });
+	        map.addLayer(clickPop.setLatLng([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]]));
+	    };
+	    var CarParkLayer = _leaflet2.default.geoJson(carParkData, {
+	        pointToLayer: function pointToLayer(feature, latlng) {
+	            var icon = null;
+	            if (feature.properties.type == 1) {
+	                icon = defaultMarker_free;
+	            } else {
+	                icon = defaultMarker;
+	            }
+	            return _leaflet2.default.marker(latlng, {
+	                icon: icon
+	            });
+	        },
+	        onEachFeature: eachParkFeature
+	    }).addTo(map);
+	};
+	
+	var carparkPopupContent = function carparkPopupContent(feature) {
+	    if (feature) {
+	        var popupContent = document.createElement('div');
+	        popupContent.setAttribute('id', feature.properties.id);
+	        var img1 = document.createElement('img');
+	        img1.src = _location2.default;
+	        img1.classList.add('parking_logoImg');
+	        img1.style.marginRight = '15px';
+	        var name = document.createElement('font');
+	        name.innerHTML = feature.properties.name;
+	        name.style.color = '#333333';
+	        name.style.fontSize = '18px';
+	        name.style.fontWeight = 'bold';
+	        var span1 = document.createElement('div');
+	        span1.appendChild(img1);
+	        span1.appendChild(name);
+	        var br = document.createElement('br');
+	        span1.appendChild(br);
+	        var connImg = document.createElement('img');
+	        connImg.src = feature.properties.isOffLine ? _disconnect2.default : _connect2.default;
+	        connImg.classList.add('parking_logoImg');
+	        connImg.style.margin = '8px 15px 0 15px';
+	        var font1 = document.createElement('font');
+	        font1.innerHTML = feature.properties.cw == -1 ? 'N/A' : feature.properties.cw;
+	        font1.style.color = '#09ad05';
+	        font1.style.fontSize = '24px';
+	        font1.style.fontWeight = 'bold';
+	        var font2 = document.createElement('font');
+	        font2.innerHTML = '/' + feature.properties.totalCw;
+	        font2.style.color = '#007edf';
+	        font2.style.fontSize = '24px';
+	        font2.style.fontWeight = 'bold';
+	        var font3 = document.createElement('font');
+	        font3.innerHTML = '(空余/总车)';
+	        font3.style.fontSize = '18px';
+	        font3.style.color = '#333333';
+	        var span2 = document.createElement('div');
+	        span2.style.marginTop = '15px';
+	        span2.style.minWidth = '270px';
+	        span2.appendChild(connImg);
+	        span2.appendChild(font1);
+	        span2.appendChild(font2);
+	        span2.appendChild(font3);
+	        popupContent.appendChild(span1);
+	        popupContent.appendChild(span2);
+	        return popupContent;
+	    }
+	};
+	var selectCarparkById = exports.selectCarparkById = function selectCarparkById(id) {
+	    displayCarParkLayer();
+	    map.eachLayer(function (layer) {
+	        if (layer._content) {
+	            if (layer._content.id == id) {
+	                layer._content.parentNode.parentNode.style.borderStyle = 'solid';
+	                layer._content.parentNode.parentNode.style.borderColor = '#f26687';
+	            }
+	        }
+	        if (layer.feature) {
+	            if (layer.feature.geometry.type == 'Point' && layer.feature.properties.id == id) {
+	                if (layer.feature.properties.type !== 1) {
+	                    layer.setIcon(_leaflet2.default.icon({
+	                        iconUrl: _parking4.default,
+	                        iconSize: [30, 30],
+	                        iconAnchor: [15, 0],
+	                        popupAnchor: [0, 0]
+	                    }));
+	                } else layer.setIcon(_leaflet2.default.icon({
+	                    iconUrl: _parking8.default,
+	                    iconSize: [30, 30],
+	                    iconAnchor: [15, 0],
+	                    popupAnchor: [0, 0]
+	                }));
+	            }
+	        }
+	    });
+	};
+	
+	var initMapLayer = exports.initMapLayer = function initMapLayer(data) {
+	    map.eachLayer(function (layer) {
+	        if (layer.options.id != 'streetLayer') map.removeLayer(layer);
+	    });
+	    var GeoJson = data;
+	
+	    var greenMarker = lmap.icon({
+	        iconSize: [15, 15],
+	        color: '#277b04'
+	    });
+	    var yellowMarker = lmap.icon({
+	        iconSize: [15, 15],
+	        color: '#34b100'
+	    });
+	    var orangeMarker = lmap.icon({
+	        iconSize: [15, 15],
+	        color: '#ffcb00'
+	    });
+	    var brownMarker = lmap.icon({
+	        iconSize: [15, 15],
+	        color: '#ff8800'
+	    });
+	    var redMarker = lmap.icon({
+	        iconSize: [15, 15],
+	        color: '#df0000'
+	    });
+	    var greenLine = {
+	        'fillColor': "#277b04",
+	        "color": "#277b04",
+	        "weight": 7,
+	        "opacity": 0.8,
+	        'fillOpacity': 1
+	    };
+	    var yellowLine = {
+	        'fillColor': "#34b100",
+	        "color": "#34b100",
+	        "weight": 7,
+	        "opacity": 0.8,
+	        'fillOpacity': 1
+	    };
+	    var orangeLine = {
+	        'fillColor': "#ffcb00",
+	        "color": "#ffcb00",
+	        "weight": 7,
+	        "opacity": 0.8,
+	        'fillOpacity': 1
+	    };
+	    var brownLine = {
+	        'fillColor': "#ff8800",
+	        "color": "#ff8800",
+	        "weight": 7,
+	        "opacity": 0.8,
+	        'fillOpacity': 1
+	    };
+	
+	    var redLine = {
+	        'fillColor': "#df0000",
+	        "color": "#df0000",
+	        "weight": 7,
+	        "opacity": 0.8,
+	        'fillOpacity': 1
+	    };
+	    var CommonLayer;
+	
+	    CommonLayer = _leaflet2.default.geoJson(GeoJson, {
+	        style: function style(feature) {
+	            var indexVal = feature.properties.index;
+	            if (indexVal >= 0 && indexVal < 2) return greenLine;else if (indexVal >= 2 && indexVal < 4) return yellowLine;else if (indexVal >= 4 && indexVal < 6) return orangeLine;else if (indexVal >= 6 && indexVal < 8) return brownLine;else if (indexVal >= 8) return redLine;
+	        },
+	        pointToLayer: function pointToLayer(feature, latlng) {
+	            var indexVal = feature.properties.index;
+	            var pointMarkerOption = null;
+	            if (indexVal >= 0 && indexVal < 2) pointMarkerOption = greenMarker;else if (indexVal >= 2 && indexVal < 4) pointMarkerOption = yellowMarker;else if (indexVal >= 4 && indexVal < 6) pointMarkerOption = orangeMarker;else if (indexVal >= 6 && indexVal < 8) pointMarkerOption = brownMarker;else if (indexVal >= 8) pointMarkerOption = redMarker;
+	            return _leaflet2.default.marker(latlng, {
+	                icon: pointMarkerOption
+	            });
+	        }
+	        //onEachFeature: eachLineFeature
+	    }).addTo(map);
+	    //lineLayer.bindPopup(popup2).addTo(map);
 	};
 
 /***/ },
@@ -26237,7 +26568,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.echartsLayer = exports.removeEchartsLayer = exports.geoTime = exports.icon = undefined;
+	exports.printMap = exports.echartsLayer = exports.removeEchartsLayer = exports.geoTime = exports.icon = undefined;
 	
 	var _leaflet = __webpack_require__(98);
 	
@@ -26334,38 +26665,38 @@
 	            switch (true) {
 	                case index < 2:
 	                    return icon({
-	                        iconSize: [index * 2, index * 2],
-	                        color: '#36AE4C',
+	                        iconSize: [15, 15],
+	                        color: '#277b04',
 	                        heartbeat: 1
 	                    });
 	                case index < 4:
 	                    return icon({
-	                        iconSize: [index * 2, index * 2],
-	                        color: '#6AB72D',
+	                        iconSize: [15, 15],
+	                        color: '#34b100',
 	                        heartbeat: 1
 	                    });
 	                case index < 6:
 	                    return icon({
-	                        iconSize: [index * 2, index * 2],
-	                        color: '#ECE839',
+	                        iconSize: [15, 15],
+	                        color: '#ffcb00',
 	                        heartbeat: 1
 	                    });
 	                case index < 8:
 	                    return icon({
-	                        iconSize: [index * 2, index * 2],
-	                        color: '#F29618',
+	                        iconSize: [15, 15],
+	                        color: '#ff8800',
 	                        heartbeat: 1
 	                    });
 	                case index < 10:
 	                    return icon({
-	                        iconSize: [index * 2, index * 2],
-	                        color: '#E41A16',
+	                        iconSize: [15, 15],
+	                        color: '#df0000',
 	                        heartbeat: 1
 	                    });
 	                default:
 	                    return icon({
-	                        iconSize: [index * 2, index * 2],
-	                        color: '#36AE4C',
+	                        iconSize: [15, 15],
+	                        color: '#277b04',
 	                        heartbeat: 1
 	                    });
 	
@@ -26802,6 +27133,23 @@
 	    });
 	    return new _leaflet2.default.EchartsLayer(id, ec);
 	};
+	
+	var printMap = exports.printMap = function printMap(elementsToHide) {
+	    if (elementsToHide) {
+	        var htmlElementsToHide = document.querySelectorAll(elementsToHide);
+	        for (var i = 0; i < htmlElementsToHide.length; i++) {
+	            htmlElementsToHide[i].className = htmlElementsToHide[i].className + ' _epHidden';
+	        }
+	    }
+	    window.print();
+	    //console.log(document.querySelectorAll(elementsToHide))
+	    if (elementsToHide) {
+	        var htmlElementsToHide = document.querySelectorAll(elementsToHide);
+	        for (var i = 0; i < htmlElementsToHide.length; i++) {
+	            htmlElementsToHide[i].className = htmlElementsToHide[i].className.replace(' _epHidden', '');
+	        }
+	    }
+	};
 
 /***/ },
 /* 228 */
@@ -26824,38 +27172,40 @@
 			}
 		}(), e.isLSAvailable) {
 			var t = 100,
-			    r = 1e3,
+			    r = 200,
 			    o = localStorage,
 			    n = {},
 			    i = !1,
-			    f = {},
-			    u = function u() {
+			    u = {},
+			    f = function f() {
 				for (var e in n) {
 					var i = o.getItem(e);
-					if (i && f[e] && -1 === f[e].indexOf(i)) {
-						f[e].push(i);
+					if (i && u[e] && -1 === u[e].indexOf(i)) {
+						u[e].push(i);
 						try {
-							var a = JSON.parse(i);
-							a && (i = a);
-						} catch (c) {}
-						for (var s = 0; s < n[e].length; s++) {
-							n[e][s](i);
+							var c = JSON.parse(i);
+							c && (i = c);
+						} catch (s) {}
+						for (var a = 0; a < n[e].length; a++) {
+							n[e][a](i);
 						}o.getItem(e + "-removeit") || (o.setItem(e + "-removeit", "1"), function (t) {
 							setTimeout(function () {
-								o.removeItem(t), o.removeItem(t + "-removeit"), f[e] = [];
+								o.removeItem(t), o.removeItem(t + "-removeit"), u[e] = [];
 							}, r);
 						}(e));
-					} else i || (f[e] = []);
+					} else i || (u[e] = []);
 				}
-				return setTimeout(u, t), !0;
+				return setTimeout(f, t), !0;
 			};
 			e.send = function (e, t) {
 				var r = "";
 				"function" == typeof t && (t = t()), r = "object" == (typeof t === "undefined" ? "undefined" : _typeof(t)) ? JSON.stringify(t) : t, o.setItem(e, r);
 			}, e.subscribe = function (e, t) {
-				n[e] || (n[e] = [], f[e] = []), n[e].push(t), i || (i = u());
+				n[e] || (n[e] = [], u[e] = []), n[e].push(t), i || (i = f());
+			}, e.unsubscribe = function (e) {
+				n[e] && (n[e] = []), u[e] && (u[e] = []);
 			}, e.getBuffer = function () {
-				return f;
+				return u;
 			};
 		} else e.send = e.subscribe = function () {
 			throw new Error("localStorage not supported.");
@@ -26865,6 +27215,48 @@
 
 /***/ },
 /* 229 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA2CAYAAACIsLrgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QTk3OUNDRTRCQUJDMTFFNjhEN0Q5MzU0MThDQkJENTUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QTk3OUNDRTNCQUJDMTFFNjhEN0Q5MzU0MThDQkJENTUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOmYxZWRhMjk1LTFlNDYtNGI0Ny04ZDMzLTAyNjIwMGI3ODMwNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpmMWVkYTI5NS0xZTQ2LTRiNDctOGQzMy0wMjYyMDBiNzgzMDQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4eTDTjAAAGFUlEQVR42uxaXWwUVRS+s9SmKVCahmIjaOsTNWK24JrgU3fBB00wFAWkxlj6ojFB3L43oSS+t1oTH+v60tKo9EGCD8quCYm/0JZAhCcKgtZS1qUCaSrteL7pvXU6zN17ZnbbbRpOcjLTZubc893ze8+sNTg4WClWEZURzz4CtMIB2cUQ9G22NpIafyr6wLbic7YVpX9tJcGb6bqWeAPxHeJ7lhA36XolYtkXyiw73VZ3ffSlmltzxQJkUQxZhQhovRTbMWtbbXT7BvGmECImiE+ssexU/7O/ni8ZIAKSICCddJsoosekCdiHBCxdkMsdvPhCkHfqiXuJX12CEMAmJUifr+n+CPE17ouD235xrpGACx4gvrBEYNy0R65zMLDL2bYtrGNjpufWEHcTv1+CxAVv6DBlY/t4A9tC5cQDJQIj5LoDUg9WDJks8znx/jCaNNWViw0VEVFdMb9vuek5cYd4ZHwmqKj9sry0mixlAtQt0zGLoPjexkoRb6gQLc9ULgDxEoAN/XZfZMamRWrkbpD4HSc+GjaGEJAnuKsd3r5OHItXi4bq//fIzxrKaorGcg9EVzoXBNghP71UDOkAbSG+RFxlkg4AJ1s3OYqCrpGCPT9OiczVaa1r4dn40xUiubNK1MsNwLP7+iccgAaaIt5G/HsQQF8Qv86JkXR7neNaANKVyYnPhu8GCg5YtuflGsdqcMVE3zgnxr70xnU+QHFUbA6Y4feecO5HSYE4KQKFwhA2JEMbE5VW3v7pHxxQ6FAynLTdyXEzWAYE328iBcKCUUkCMlQcQbY7FjXUyclyMeLdJklDFDPYVVjm8MlJ32eQ6fzaeLimLk4gC5aHpRCXsFQegp7PE5/LB+htjs9jQSgGN9N2mdKCfoR03XE66+tWkDnWscUBhrUMMdnmBRTx3B8y+TpSMwgJgONm35PyikclAFgPgFVm9Lpf8pusc6/WMqTwiM5CTcS1+d5GsYRvwzrcbOa1IjYFLttMoLpfqXGympcgu0vWtBYq1EOX7+vE10q9z/tZyHiuwc6CUGcKSQAt/ROL5PmRWgObyMh2vi63w/QmdsuJASqahZDbVXXZTK2xt9EIKKYD1MhpNEM2lw/Jcrc+fqTWgIv6xZqLtuoAbTYlBPdCYQlW7tu3caGGmRKKe20NPa5LCjUcQEFJVXAvIeMlT2fZnUQeWq+z0GPLcVqDy35EAc9plTLSQoaGdb3OQv/mAxW2tWEc77WEYwXYQP/oLJTlZKZoXblYYaQFdDPfW0gGcBdG1glMqEcf7KxalAUZXYKiv3SArhibUlmxcTgrJiVfrBI91DX0tWxcOGN1JarzFl6d3m5Aw6Y3VZC6d7MYhDiB9dGM4owFL0BKV+sZaFgH6KzpTfRY6ONQ3bF4UcCQJdDT/e1JOvXyzMU4F53VAfqZeNKoQCa30AmHrU0PzRfItbyK439gwxq3iH/Spe1ZOdA7YrIShhtR6eu6Q1giz1nJ71DnNKRkKcjtoOPDyJ8zTmY1dCYD3jmdF36K1b5QtwyfhyIIZF28cWIASqtnVWkAGPzNaLNSnLncd8S7ggxJsHAixJAEcdjWtG6RTLgY5ClZuLaTFX1kn3GPCwqe+igFMK1RIyj0ZgEGhs67zYzUjM3ysfYut56muRzmXq9xlEIw4wSqOgj0XT0/TDmdssllvEXaG0PecuGir7xzQxOgJ4kvcianbvfBsbnela3cQY0D2/FMjmUxjUXck9PniK/7AdLlRIxZ3wkSD8h+Dd03RPvQpON2qk1S6Rf1hnuSNcTiu14wpqTgpo9FAd+FVJCD4YpcF8xjnU90+igLmcowvpxhwHYgDKCgp1uVwjWEuE6aZJhKPYrWW2J+eF9KwvpvCsaPRDi9y4wc6PWWCEyvXJ9lbm4zhp3Bl7NWmWWWg6akVY6KAD/fCdpdDshJ5aklBnNKrtMf9MUw7fJVMf87gt3cjiIApaXcPXIdsRyA3L0U2o+YTKe3Q8q5Ld+PSXlnCtmRsiLs6jnJSekmzfKKSSy+1a6VHQdi4h7xDeLLGM2J+S9wI6KIP3FzCutqoohYZfQI0Eqn/wQYAIx8v+3Pu193AAAAAElFTkSuQmCC"
+
+/***/ },
+/* 230 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA2CAYAAACIsLrgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEJEODM4RjFCQUJDMTFFNkIxQ0JCMTUwRjRDMUYzOUMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEJEODM4RjBCQUJDMTFFNkIxQ0JCMTUwRjRDMUYzOUMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOmYxZWRhMjk1LTFlNDYtNGI0Ny04ZDMzLTAyNjIwMGI3ODMwNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpmMWVkYTI5NS0xZTQ2LTRiNDctOGQzMy0wMjYyMDBiNzgzMDQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4jC6QsAAAGSElEQVR42uxaS2hdRRie+8gbG1CbikkUlKYFkYSaLNSCTW9AsemmqWlTxOjG2lJL1I1Ido3iRruIWFRQ48KmwXZjIwpN4qKt+Oh7YRNRMWnAPiI0kndujv83d+bmeHLmzMy5Nw9Cf/i5t+mZf+ab//2fG+nq6ipkq4jixMk7gFY4ICcbgsqHR6MbB25VRufYFhJZGXHYBvpzKXERcTHxbeIx4mEnwvoZi1yei7K+qxX3XhoqXTOXTUAZCXu6549NEcdppq+7iEsCHi0WfD+BrcE9xsg2Hvn15g3iY04k0vFd4qHzmQKKUFCIhARSS0Ba6WttFi2mj4C1EbC+jEzumVO/26x5kLidePsiuAAuqZbOc5K+HyD+y3Tht3UP88+o5YbPEV9eJDBuqhf7NFqbnOM47N+97+qeixEfJn51GQIXrOE1XTS+66M3jTWUS9y5TGCY2LdTnMPIh3Sa+YJ4Z5iTRMvXsUhBHmeQMzHFeW7ouq2onSK9NOk0pQN0WIRjM/stzGfxyvUsVvEAi1et5//2I2d8ks1e/I0lBwbZzA9XbPz3b+KDYQE12phZzhOPstz6zSx6T/H8wX20wbVGQPE8X7N9M5v++rQpMJznDPExW0BlxJ8YmRUBKNi3gx8UNDdym830/MJm6fZVpoVn46TFnEQ1X5//4jaWS98njpzg6zX0MfFZ4iGbKPcVcYOJjxS+3sRvHAeZPkk3ffaKlXNAS3mNddzPYIrj7x818bHjXr8OinJbTMEUtb6UAnPtBhtv+8waDAhrxt46wmVAFmRKbQdQgzjnwnP5/K3VxMygGX4gsv2xQ5/y2w1LWAsZ0o8g2+2LCmo18aFq4oROUsH+hrRmJj/v9o/35CO+hyfTVPkJZMVIO9GyEu6XY6T1AMI5HyM+FwToBRObx4Y41Ph7XyqfK3xjj/L/EK4nu3p8fQUyi97Zx80Oe2nMuNkLKOr5vluXZxCaQQgAJmaGw0uGRqX2uFn5+ApkTnWdSpUoYq8A2u11G7eGqojXBiYtSpawbR6aDQOAV4u4FJgTQOU3Jny1DNkyp8WrKigJD6jErxXnPu+nIW1fI/0CeSaTAIB8E+Rn7j1wibqWQ2Vym7SFH90WCEkzE3KbqiqayT1QSmmoWgVoo0mhGbK4XCBLkiriyT1gopq8tEEFqDQwIIiKOVMw0HJB87PpHKYLKO69FbROFRTu1kW4MCRLkgUaoIg3RaHbtIoP2kIFKGcpujWYLKKYSdiHhhA4NAWrEtBMEKiwpY1Be6+kKWorwLotVD70j+5m+YKyErbCSAloOGgVggFAGUQda4JZoR9yR0GDKkHSdRWgft1KmbHjAQkxDOXW1fCeKL95W7rHyqNONma2T78K0AWTuoxHj0R1VgHBT6B9FKOyx0JIT5ol8AsqQFrvQ3RCxEF2x+bZIGgCNZ036PCeiyp2g77otArQT8S3dKsRbmUlHDY3easGmJb34PgbN7ngPW4S/6gK20kx0Dug01JuooZHO9i6qgkL6pW8TZ2MnPm76vh3JNykCEKayqTTO6fztuAdJoeY+PA43wy3C0cO6oNMClX5rDQ7gEkGTI2CzuvtWFGz9xJvDQzholuFA8OXYuUlfFpjm3z5bO7xeV9Mawo+JfIeZE52fOMnu9fbraqGJIdMDoPbg7lJTRW9/cr/DmcEiJ6XvgKWPin9KjWBrVAl8zabuRzmXjuMB437G9KbpgaNP1M/M6Q1GZ6kXYf1+pA3XbjohHfUJotg1eS0hbiOeI1WUwQAIyj3KBhJMk+Yi5wjzPYPpiOk13+89aL0IQWNstTrFatRMMasL4soYjwwBHOfEqYCDchsj08vIFW9KD8VtJd40BYQCAPxJ5nleyEJjLHu+dcpYlRsGsIDTPUD3SXrXqdAtfex1KsMa7Ltbr0m6OPXLVqf1pVvxM+z1PB+OQn772EGPxIxeSU5LQZ67csEpl3sP20UdQ2F4mbw5qxJRJmloFGhlYPM4uc7tq/1O8WksnuRwXSLfY5aF7shNvuTpX5HgOl/X5aB9Am59WIfthSA3LXUVjG5RDgdCSlnRKyvFvJ6M5r7ZeFWzwluEWbylPjEJBbvaotExQGfwK+xrhFfJb5E/D3xRZbFn7jxWm41UZStMroDaKXTfwIMAJsCpwPZ1d8TAAAAAElFTkSuQmCC"
+
+/***/ },
+/* 231 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA2CAYAAACIsLrgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QTk3OUNDRThCQUJDMTFFNjhEN0Q5MzU0MThDQkJENTUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QTk3OUNDRTdCQUJDMTFFNjhEN0Q5MzU0MThDQkJENTUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOmYxZWRhMjk1LTFlNDYtNGI0Ny04ZDMzLTAyNjIwMGI3ODMwNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpmMWVkYTI5NS0xZTQ2LTRiNDctOGQzMy0wMjYyMDBiNzgzMDQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6Mfr+yAAAG50lEQVR42uxaaWxUVRT+3pulnXa6Uyj7vgglLC3EBWzZBE3BBGhZRCuoQCJgyx8TAyUQY/SHoqIksvyokVBaAVFqMaZbrAmgbUEoUBAKpVC70nXaWZ/nvj6gjjOd96Yz7YRwkpOZTmfOvd89557znTPDZWZmDsETJGpSy5MGyPzUQz4OyPoUkAO5btDzn90dO63Nqn7RKnDTbAI3nl4eJgAB9BhC2swBBnqs4jnhhooT/tKrLIXbh9+8OCGgzeYpQBxlOXVvDCRfmTnDKPDJBCCR/hzoholaApjlx9nS0yeXlHoCkMqdD75WFhNvEfgd5IF4j50uUKDmbB8emVJc0JuQsykEMtIs8F/S06Wejn92OGQ7PunyrNMazraVgN1RaoNX8ubVZbGJtOBFb4CxkwS2Dq2X5I6HBDoRV+9jYbmXdGsfJqxgupcZtLcX6Hmqq+SVGf2HbA9pSTP6GEx32Sqtr5V1DwVBALfrdk+eOUK6ygdKTBbpGmeeEnaPkuWhvT4ChkmitB+3k0JSP4ZZT+G3yh1Aw0gP+ii7OUA6vKcs50g+Z1nGqeuiA5EWF4oQfw50BR1fTqqSZ6uM2PxTAxoMNk8CCpZCb6VcQKzyr+jJ4kcLwlB834gfrhnQahRglVARBvipOfiTqngOB5dFYMEYAzIvt3vaSyukfRbIAbTDlbUADYefb3Tg6KV2bIwNwogQtQiirt2Kk1cNuN7Q1WKlxYVAq+K8FXo75ACKJV3gypKNHKKSbt9O2nSUXoXSahPGR2iwKz4U0V/fw60HFvAcC0nBW4DYPmNIi3tKCm/Itabhu07eStcj91YnZh+oxrT996Ej7y2fHNhXCSK5pyzHnq9WatFCgCICeMwe6oc1U7uA3Go0d0sOnDcBrbZ3SveQm04aqdSiwWxDzGA//P52FExUw/efb8WpcsOjTOen8qqHIqV9lzgCNM+tHOrH47fKTrx+vB5tJhsaO2zoY5nnDNBMhb2LKJ0WQawzlc39NmuJdRZyk2T3HHyXMlmYXgOzTXBYWNl7eO/eISYTnQEaKtfCmb878PHCMKQ+Fwyz9fHm/5Nt6MWBgSqUVBu9DWiQM0Dhci28m92AY1T9AzU8hZ7zOlNeb8HlWpO3AQU5A6SRa6HdJCCHmIKs46OiOzpUjXAdj2ajDXebraghRmG0CF4HZFYCqicJ8efxwdwQLJsUgMgAlcgqGAXSET1ivI9lwhNXDEjLbxLpUi+l1RmgRvt4dEfeiQkS6Q/Lel+cbUHRHSOq2yxiAT6wNALf/NmK9TP02DwrCK9M0GFPQRMOl7R5BdC93gCKHqgVk8SS8Tqk5DQiq+z/DLup04a8ik5RK5osxANDcejVAUierqcaJmA3gTtXpTiJ1DgDVK6kFum1vHjCi8fq8PwIP0wa0BWt+bTZwUEq0QOM5zEWrtdy4mvzRvsjMykSYXSfInSPKcTckf7iYyC9b/3JepHYKpByZ4BKpSGESxlO7cIni8JE7sbIdFmdCRW0idFhanHTTO1lZ14TatttSJzymLhe/McExnGnDtKKxflH6q9Myq9UqTNARfLpDkcLCzh93YCduU3iiTdTOMWN8seni8NhX0sZ6JRng0UPMLlB/dKW7EaRZbAkwbzNmsH354SgqNKIqhZFHipyxrbPk9bLsbB2qh4Lx+iQmvMAR1ZGIu/NKJzfOARX68ziPXDEGhgjZ+FnMAtIprBaPjkAhRuiUPTWYLxM924dccEIyohBWkXD3DrSc84AWaWBnkthF/9QSSs2zNSLNSYpsw6/3OzAdysiceqaoefjJCIbSml9E3W62880Io1C8T3yHqNPNW1WJEzUKQGUYT+ns+9Y00m3uLJSct+IslozlozTicUy91YH9UNaMUF0UBidoDY8UOOYw/1KwFmIMim83Sl65WFbv6ewCZdqFDGLdDmT01zS+XKsLSIAOesGPWrHWd1hKVsOe8inMH0msiszXqDkMOdwtchAFEhe93HBw8mpI0BsmpIv1+pi8tJLBOzmA7NYIOVSmnHhGqo/gZQUgG8vtClN1ZAOPV8OICbHSZfDd+WE/ajN1Ww7hbTFR8GwfaU6+6czQHdJN/oooE2klUoBMTlGus/HwHzlqrS4qmLMtVk+Aua4dBXQG0CsaK0j/b6fwbD110LGbyrk8AyTNNDrr/DbJ60vq+LKJU7sZLZJbLyvsl+L5JVtUPBrF17hIhnSpDLby2CypXWOKv0g78ZiFaQJEu3I9zCQfMlugrQO+gJQdy41X5pcsnTa4KadBunzsZK9vN6ciNoDp1osaYoUJnHSI5vEsu9qWYsaLN0JNmioIr3GGlZ0fWF1AR78iRvnxS+k+kV4PGHyrwADAFOJYBEbkaLdAAAAAElFTkSuQmCC"
+
+/***/ },
+/* 232 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA2CAYAAACIsLrgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEJEODM4RjVCQUJDMTFFNkIxQ0JCMTUwRjRDMUYzOUMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEJEODM4RjRCQUJDMTFFNkIxQ0JCMTUwRjRDMUYzOUMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOmYxZWRhMjk1LTFlNDYtNGI0Ny04ZDMzLTAyNjIwMGI3ODMwNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpmMWVkYTI5NS0xZTQ2LTRiNDctOGQzMy0wMjYyMDBiNzgzMDQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7Q3VTqAAAGzUlEQVR42uxaa2wUVRQ+89jZ7RYoaMsbgSLyhgLFiCAulIgNJUHLS8LDxAQSIwTiD03khwkk+kcxQoyioo0PaotPSlQCpUqJQYFSArTl0VLaAuXRQkv3PXM9985Q69LZmdnubjcNJznpdLJz7v3mvL5zd7mCgoLB0INERA32NECBhx5KcEDyQ0CdSN+7Xj7jdOMUW0CewxOYwhEyGm8PRXWipqDeRXWj1hOOu6BwcDpgE/44NXlA+Z0UhxItQBxWObErBuaX1EwVZGUtR2Ap/ts/AhM3CAeFssDnHXSNLIsGICGSB58rrnbxCtmCl64oRkyJwnPbDsxLL+lKyCkWgQxHIB/i5aIYpAB9Sa7nD14qQmAbEFitVQO8lQ8vOHRpKS5YHiMwHSWHroPrLYvEQwTfiNHnaFhuR90Qx4LVB/MyH/c2C683GxWv3+aPMu0hCTU/zmA6ygZtfclUUSCEQOv6d8N55hvU5QnQYgpRX9LzVO9P3jTloe0JAobKUm0/EReFZd0YZuHCb3kkgGiH/zRB2c0u1GHhqlxn8gGtMroPZY4F+8LZwCXZaZHUS0+QaxrA+/XvQNo8Ua1+WugtMQuIdv7ccBbti12g1F6H4KnzQHx+bM1KOwiwCcCJaJbnwLE6G4RxlRA8XhltL+Vq+ywxE3JbDEujJELwzCUI/HMOuJReIIwaCsLYEcAPSQPl6i12P3DsLCjNrcAJQqxCb4sZD2WiZhmawlJPPcC8tXAWgkoG+Uoj8P37gX3RbGh7+zNQbt1B5Fwsc4nuczrqiXAeWmPanKA+SjDcghW14H4nD9xbd2PIiSBOGxOvArE2XMjR6xWWTSoEuF5JIIwYBOKM8eqtm3fiBWhFqFM6hlwGapplk/4ACI8NBOcbq4EEZQiUnIRg+fn2GgGiGEtAadq+T3YGaG5EJh0SyBfrwLt7H6t4pM0b7740Vw/QNEtm7rcf9Aq55wGlqaW7Gm2mXsiNNT9F8e1Fwb19D9JFpbO+qn6O52INaIweoCFmLQTPVoP9BRdIWTNUMPc3/z/QHPC9naBcuR5rQAP0AD1i1oJvzwHs/hU4oUhhqA9Wu+tN2GhvxhpQbz1ANtPp4wsgU6g2dwrTJxn41BTgnElAPD4gzS2gtLSx3Is1oIAVUGFBIGmVsmeCOGU0cBh2jDGIyPFsNtqJWSUMllWB75cjQFrdXV2uVQ9QU2g8RiK2ZzLAnjOLVT3/oeNY0uuB3L3HCKxjVTb4j5SB7enJYJszFYSJo8BfdBQCR8tjAqihK4D4wWkgzZ8B4oR08BYchOCJBxk28XhBrqxlSpDrScgDHWuywTZzIgtjf1EpjhxXrS7dqAeoykov4uwSCJPSQRyfjmx7CPADH2X35apa4JGBUw9QEsthqNHmy1j5mOGQtG4x5pOD0aV2Wjh6mGbTBt4v96vE1rxU6QEq0w4hjMH06wP2XBfYKHfDIqdcu8k2waf2ZZum+kBl/PlPzJc2EKf/1+6U+hssv+jYQYfAYPkFILLlYlGmB6jUfNJLrEoFT19kiU3fOGAFE54YBvYlWWpfCmEVNBw5Sa05yo1mVvpJIKiSW4eNDYPSgqdYzsnNrVYAleoB+hv1FmqqYeI/OQHEcSPA/d63kPRqLvCDUtnGPDsLwYd5QGeiUNbAJashRpDMer8owryZhGGZofJbLB6ez/eB8/WVLDwtCG1yx/TGB1k70DMehSaMhEBpOatWNMw8u36C4LlqcLyyiIVNOKEe4Jx2BsZXeIh5WMrKZIyDYH8SJz1uBVB+6DldKLfPQ33NcATC6VTGUZtWNNos5crL6jyEBYKOE7THqCyiE0AVNWqI0uvzdeg59RowHH1YwpUGS8wiz2gEP45ajDovnBXvV7+qF24vC51e729qDx2lsQk8H/9oyB6Ua7fB+dbL6guqawSlpoG9GAtSHDp+6536bDUC1E5SKy5j3hSAMH4km1JpGJqiThhano/2spdBG27grzOsD1mUbWaPsejR0A+oL5pj3jVMLU/utNJhKY9Q6P4OWzk5pTHUbRObgdB9bdZlLDr361DXJSig9ahXrAKi8h3qjgQDs9OotRh9nUJdW5ggYL7XUgG6Aog2rVWoe7sZDF1/JZj4TYWZryT92oFed4XfDm19v6kxxqRR+mY2amw8XtWvRfPKRrDwaxfe4iL52knl/hiD2a+ts8fyoBnBYrSL5oB6+n84ykAOa3ZztHUgHoA6cql52sklLae3I7RzW3s+U7NX3JU3Eo2T9BOabtLC5FntLx1N6Xe1yaB+jUhzog21HpUeOJRrNOsURPEnbux3Cj1JeOhh8q8AAwDw2Fsnv5m3bwAAAABJRU5ErkJggg=="
+
+/***/ },
+/* 233 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAYAAAArK+5dAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3M0MyQTBERUJBQjMxMUU2QUJDMjgzODZGREVGM0JGQSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3M0MyQTBERkJBQjMxMUU2QUJDMjgzODZGREVGM0JGQSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjczQzJBMERDQkFCMzExRTZBQkMyODM4NkZERUYzQkZBIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjczQzJBMEREQkFCMzExRTZBQkMyODM4NkZERUYzQkZBIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/N3BpQAAAqJJREFUeNq0lVuITVEYx8+ZzjBS7kwZjokHmdAQReQ6yoNLMi6lKCVe5oFcSzjkhSSXoqZEISkvUngYKZdyGRNzpIYwRozk0hw0GLP9vvqfWi1nn71frPp1ztp77e/+fSsZBEHif66Uu0nufl3ozFhYDrNgJHSDHbwBF6BFzxJBprK4Am+VwlaogyGm33k3HKbDOjgEx+FXpAfeOiIBYWdM4VA4CINgL3T6h0pCPq4rIPy7wvEcfnoytsEKQlwaR8EI2OgJvwm1MBdqYAHczsdecjZBRRwFiyDt7O/DSrgGb+ENfIR90OQoGQfj8SIVpaDKe34YPsAaOK/cmJe34LQTLsvJROgRleS+zn+zrhFGKYlpPXushGbhj3O+wje6kAed3nvrxElQDsfgJcyQcT298v3qhCzUg6y3tyZrgKvwEPor9r9hqfolvx74/VBIwRU1WLn2W2Sl1XubhPSBDCxzYm7l20g3d0UpeAHnVHa2+sFOJfCOQmblOgd6Od+dgXf/dKM77JxZlJalg50Yd4lAYUl5RtVgfWvcTm5TCJKet2Wy2vc8U8j6YgrMylNwPcZEtnBeVtJjK8iX62Z1b9ilYYndDx1hQkoirMuqwcLWLngW+8Jx1miYB8Pk+l2Y5p1p0PyphlbtW6IUlKk8TUEzXNKYfqIGq9I5a7QT8BQGwhRLNFV4z3JHNXWEKTip2bJHE3OqSrZJE9WS/l53RU4jxGq7Hi7CURgD68NyUCsBr+AbLFajfZZHs2EJPJIBlZpLOZW2ebuwWIh2wHYJPavhZl7M18c5GVWtcdGuy9/ysxpmwoFiCuo1LTeo9c2qT/BDZ/PTtVv0hlW6H8zDtSqIoqMipct8AkxWTM3aAfoN5MkX1X+z7gyjnQS790PirwADAHERuACFydwtAAAAAElFTkSuQmCC"
+
+/***/ },
+/* 234 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAZCAYAAAArK+5dAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3M0MyQTBFMkJBQjMxMUU2QUJDMjgzODZGREVGM0JGQSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3M0MyQTBFM0JBQjMxMUU2QUJDMjgzODZGREVGM0JGQSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjczQzJBMEUwQkFCMzExRTZBQkMyODM4NkZERUYzQkZBIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjczQzJBMEUxQkFCMzExRTZBQkMyODM4NkZERUYzQkZBIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+NaEllAAAAZlJREFUeNrcVtFxgzAMlRP+ywgwQdigdIKyQTJIG7g2C3SDdAOygbMBG5Bu4AESXEmYCw5uQuD4SHUHONg8SU9PugitNUxpM5jYJncgru6+lTGeiHD16vhyDxVI2ITS9WlDvdcjBB/vcReBg5P/vwaTO/Bu7Co4QsEFJdZt2/H+KAdHLrCCOawgCw8XCktwP8BVMUymJNH6RMCXhsaBb54K3ylW2We4HSbTWUuegqOl6+xIMHGHfhS9lysDoi21a/hhEGqodZnBR5gNK7KA5I+OJTcv41WkTcq3LCsjU3yX+YgoURCqn4ra/K/LFIN4xvlTZytg4Tj5jc5Ve4T0c6BZMVTMPRfaDU7ngms1kFzSrtXpNlOznrB31iArfTgx0A5dFB1eR42KGjzBbt0aMN+KnLqVRgJ17ibMzd4XBhI5aiUvOfAQIOLmqWBpATdNReOwQs5FixgNTwxm8x/z3bMZEHflW4+Pc4YeBkAB0riYs0NiI8J1rtNA9VeRPTq0yXKBYEt8V/DvE6TmfY5OY35SBg//t+VXgAEApxmIvZsVFQUAAAAASUVORK5CYII="
+
+/***/ },
+/* 235 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAhCAYAAAAlK6DZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3M0M4NDY0MUJBQjMxMUU2QUJDMjgzODZGREVGM0JGQSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3M0M4NDY0MkJBQjMxMUU2QUJDMjgzODZGREVGM0JGQSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjczQzJBMEU0QkFCMzExRTZBQkMyODM4NkZERUYzQkZBIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjczQzJBMEU1QkFCMzExRTZBQkMyODM4NkZERUYzQkZBIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+3m0nGQAAAwVJREFUeNrsVl1IU2EYfo4OvJDkTHPRTbgbf4iagRfiRZnXVoNl6lXWfSQJGbG2Sd5bAwVv1AuhQIIMugjU9Kbb1JtVOmeI4EXoRqYhurf3PT9uO87Z1igkP3i275zzfe/zvX/POQoR4W8P5YT0hPT4kmZ86o008opant1Is3MGcUyj1zmdbmsmZ2y/cSyVfxsPWtUOPJ2LpwX4B+P/IbUd8TSKXcxqRSNZTB3j2vO8k+5qRRRFIToQcC5bKtvNzyt4Npu/lpF20VdUaCCYpKrxH+V7Ua26nzpH8tcyBUmtomheCRLkihb05dw9fRLpMAyTpR+/aoZFBHyRAAUvBXKuoI0Ni6cK3IcojxBfzWDqNOMBo5lRadz7xHjDCDK+HR5eMsJ1VGg6P9YaBYaX7x5d9oQnHtrie8WWZS4D9xl3Ga+y71MJuy/i54NdYb118/Uzz9Lk+1uukh7bxQvFUNKctqgI6Ooq4dkYw5M9qVRpnHuV0CP5Lf+54Rqa8ENxlAMjXLiVHNVk4sJCoK+PFbvRTNAQw3EwvAqLNyFdnesCYL5NuJXuzb1Ayc4PYGBAXzHGzrS1AaEQu8F+BLjWHMzR2mraEI87GY8TpIGIij3N+DjTWptdtZ7i+tJM4kKIxcvRUaC9XSeqqwNaWoCtreRtzQlSndDNqjNiEKgpHorqiNyJAvU6X8ut8+vhPQnivrn+fmB7G5icBMJhwM2NsLlpPWtVIry72kt6mXN2O4XMFALJepwrUclQ2xLSsjIgFhMp4ibiLopG9Xli7OTW3CKN7PH6mXMRUlXSUFpKFAwSzc8TVVcTdXcTLS4SNTQQ2e20v05V50QaBdm92kQWC+D6cNb1WS8+dt7nA5qa9HyurQGDg8DwsJ7jqqrk3W9ThDkrqKrAwYiR308UChHV1CR7pMPrJVpYMK9j2h7DRvZfg3a7OfOgvn4MKysKVlfTr5UITE0JQYumSob2/gmpjJtG4586ZPV3xp19GcwTabLgXzPaQqr0i5HD5ymCnzPpcf3C/yXAABjzZf5p9ajQAAAAAElFTkSuQmCC"
+
+/***/ },
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26893,7 +27285,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _updateIndex = __webpack_require__(230);
+	var _updateIndex = __webpack_require__(237);
 	
 	var _updateIndex2 = _interopRequireDefault(_updateIndex);
 	
@@ -27048,7 +27440,8 @@
 	            StartTime: null,
 	            EndTime: null,
 	            dataList: null,
-	            selectIDs: null
+	            selectIDs: null,
+	            radioVal: 1
 	        };
 	        _this3.selectCongestion = _this3.selectCongestion.bind(_this3);
 	        _this3.selectCRA = _this3.selectCRA.bind(_this3);
@@ -27230,7 +27623,8 @@
 	                T3Checked: true,
 	                StartTime: null,
 	                EndTime: null,
-	                updateMins: null
+	                updateMins: null,
+	                radioVal: e.target.value
 	            });
 	            switch (e.target.value) {
 	                case 1:
@@ -27348,7 +27742,7 @@
 	                        { span: 4 },
 	                        _react2.default.createElement(
 	                            RadioGroup,
-	                            { onChange: this.switchRadio, defaultValue: 1 },
+	                            { onChange: this.switchRadio, value: this.state.radioVal, defaultValue: 1 },
 	                            _react2.default.createElement(
 	                                _antd.Radio,
 	                                { style: {
@@ -27596,15 +27990,15 @@
 	exports.default = updateIndex;
 
 /***/ },
-/* 230 */
+/* 237 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"boxpanel":"_24yt9N72LN4Qx6-UeE2ooH","panel_header":"_2D7ozc3gFeAOxjsnz3_FpT","tab1":"_3ihMGn_mwGtN1DTvpvG71g","panel_tab":"vxNXf4qXck4en6pbw8FUg","panel_tab_li":"_33U-kh2gDTElk71Vc143ud","panel_tab_li_active":"_2xNXqcRx0rYhrdOaRBirVG _33U-kh2gDTElk71Vc143ud","traffic_tag":"_3U6b0wQKXCgqaD6tQzkNxS","smooth_jam":"OhiXpH1ZWQWwpX4glxgNG","traffic_level":"_1zmvDALwkSGEcsBcfm9V18","traffic_level_li":"_3rWZMWii-Gdv4pIshwGrZn","traffic_level_1":"huBPfqObZEREqEL4ptcOW _3rWZMWii-Gdv4pIshwGrZn","traffic_level_2":"NJv6eBppuwjxXfIQ3iZFb _3rWZMWii-Gdv4pIshwGrZn","traffic_level_3":"BKdQyRlyn3r8x6jofPFcy _3rWZMWii-Gdv4pIshwGrZn","traffic_level_4":"_2CcvsemZYlgD-YyH1lHmPD _3rWZMWii-Gdv4pIshwGrZn","traffic_level_5":"_1aWd0_O21a1gjasQruUDWs _3rWZMWii-Gdv4pIshwGrZn","panel_body":"_20xJdzksmYcNv5P6m4_VCz","time_lbl":"MnoYENDmvDyVakHBtj7jP","date":"_3KK3cIy-YEiTKS_LlIwuvT","checkboxes":"_1yWPrPmSLqOiTDW66lyRhT","splitline_H":"_1eYOP9nsGvs1ORU4sX5qLu","hisPlayer_panel":"_1TEh-UIr6evqEamBx6iDBx","hisPlayer_btnL":"_2d8u1MMHSVNg2rubiVRsOo","hisPlayer_btnR":"_13lAsakV4k9DOvOKq-qPZg","hisPlayer_btn1":"_143zOHUvFaIcM3oeOWiXcD","hisPlayer_btn2":"_3w35kr9dmAsguT1Yr0k23s","QueContent":"_2kWH1TX60-11vHt0GWacZJ","radio_btnGroup":"_24MLrfVvi5b04uPHr5jwC-","selectCra":"_1CO7pW3aPJkkGPi7uRVuRW","radio_btnGroup2":"_2Vif2xy2gwHN9hI4GjKecm","ConListPanel":"_1hN2tPUz6_ECq-Xxzo-Qre","slider":"_35P-i1BHpO4WU6_GnwAxDc","button_primary":"UdvejYJdlNQncxPc9plQn","active":"_2Jmwursy_6CEuhv4LnH6_l"};
 
 /***/ },
-/* 231 */,
-/* 232 */
+/* 238 */,
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27623,7 +28017,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _drawFeatures = __webpack_require__(233);
+	var _drawFeatures = __webpack_require__(240);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -27681,7 +28075,10 @@
 	            this.setState({
 	                active: !this.state.active
 	            });
-	            if (this.state.active) DR.drawFeatures.disable();else DR.drawFeatures.activate();
+	            if (this.state.active) {
+	                DR.drawFeatures.disable();
+	                CI.clearLayer();
+	            } else DR.drawFeatures.activate();
 	
 	            this.props.callbackParent({
 	                status1: !this.state.active,
@@ -27727,7 +28124,7 @@
 	exports.default = Drawsth;
 
 /***/ },
-/* 233 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27735,7 +28132,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.DrawHoliday = exports.DrawConfigLayer = exports.drawFeatures = undefined;
+	exports.carParkLocating = exports.DrawHoliday = exports.DrawConfigLayer = exports.drawFeatures = undefined;
 	
 	var _leaflet = __webpack_require__(98);
 	
@@ -27745,7 +28142,7 @@
 	
 	var _turf2 = _interopRequireDefault(_turf);
 	
-	var _leafletDraw = __webpack_require__(234);
+	var _leafletDraw = __webpack_require__(241);
 	
 	var _leafletDraw2 = _interopRequireDefault(_leafletDraw);
 	
@@ -27766,7 +28163,11 @@
 		}
 	};
 	
-	var drawnItemsLayer = null,
+	var drawnItemsLayer1 = null,
+	    drawnItemsLayer2 = null,
+	    drawnItemsLayer3 = null,
+	    drawnItemsLayer4 = null,
+	    drawnItemsLayer5 = null,
 	    drawControl = null,
 	    NewRoadfeature = null,
 	    NewRegionfeature = null,
@@ -27783,6 +28184,8 @@
 	    totalIdWithin_Region = {},
 	    doublerIds = [],
 	    drawHolidayRegionLayer = null,
+	    drawHolidayRegionLayer2 = null,
+	    drawHolidayRegionLayer3 = null,
 	    holidayRoadSelectRegion = null,
 	    holidayRoadSelectIds = [],
 	    CenterPoint_OD = null;
@@ -27840,7 +28243,7 @@
 					}
 				},
 				polyline: {
-					error: '<strong>Error:</strong> 不能重叠，重叠了亲',
+					error: '<strong>Error:</strong> 不能重叠，重叠了',
 					tooltip: {
 						start: '点击开始绘制线',
 						cont: '继续点击，继续绘制',
@@ -27894,28 +28297,22 @@
 		}
 	};
 	var activateDrawToolbar = function activateDrawToolbar() {
+		drawnItemsLayer1 = null;
 	
-		if (drawnItemsLayer) {
-			map.removeLayer(drawnItemsLayer);
-			drawnItemsLayer = null;
-		}
-		if (drawControl) {
-			map.removeControl(drawControl);
-			drawControl = null;
-		}
-		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawnItemsLayer);
+		var drawnItemsLayer12 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer12);
 	
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawnItemsLayer
+				featureGroup: drawnItemsLayer12,
+				remove: true
 			},
 			draw: {
 				polyline: {
 					allowIntersection: false,
 					drawError: {
 						color: '#e1e100',
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#f357a1',
@@ -27928,15 +28325,15 @@
 					drawError: {
 						color: '#b00b00',
 						timeout: 1000,
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#00f6ff',
 						stroke: true,
 						weight: '6',
 						fill: '#00f6ff'
-					}
-					//showArea: true
+					},
+					showArea: true
 				},
 				rectangle: {
 					shapeOptions: {
@@ -27952,75 +28349,75 @@
 			position: 'topright'
 		});
 		map.addControl(drawControl);
-		map.on('draw:created', drawCreated);
-	};
+		map.on('draw:created', function (e) {
 	
-	var drawCreated = function drawCreated(e) {
-	
-		var type = e.layerType;
-		var layer = e.layer;
-		var latlngs = [],
-		    coords = null,
-		    featureDrawn = null,
-		    measurement = null;
-		if (type == 'polyline') {
-			layer._latlngs.map(function (item) {
-				coords = [item.lng, item.lat];
-				latlngs.push(coords);
-			});
-			featureDrawn = _turf2.default.lineString(latlngs);
-			measurement = _turf2.default.lineDistance(featureDrawn, "kilometers");
-		} else if (type == 'polygon' || type == 'rectangle') {
-			layer._latlngs[0].map(function (item) {
-				coords = [item.lng, item.lat];
-				latlngs.push(coords);
-			});
-			//第一个点和最后一个点要保持一致，要不turf解析不了。
-			latlngs.push(latlngs[0]);
-			featureDrawn = _turf2.default.polygon([latlngs]);
-			//面积是平方公里
-			measurement = _turf2.default.area(featureDrawn) / 1000000;
-		} else if (type == "circle") {} else if (type == "marker") {
-			latlngs = [layer._latlng.lng, layer._latlng.lat];
-			measurement = latlngs;
-			featureDrawn = _turf2.default.point(latlngs);
-		} else {
-			alert("创建图形失败");
-			return;
-		}
-		//传给1屏的,不包括后台
-		if (measurement && featureDrawn) {
-			console.log('transfer to screen 1');
-			lmsg.send('jtgz', {
-				finish: true,
-				params: {
-					geometry: featureDrawn,
-					measurement: measurement
-				}
-			});
-			lmsg.send('jtsg', {
-				finish: true,
-				params: {
-					geometry: featureDrawn,
-					measurement: measurement
-				}
-			});
-			lmsg.send('dlsg', {
-				finish: true,
-				params: {
-					geometry: featureDrawn,
-					measurement: measurement
-				}
-			});
-		}
-		drawnItemsLayer.addLayer(layer);
-		map.removeEventListener('draw:created');
+			var type = e.layerType;
+			var layer = e.layer;
+			var latlngs = [],
+			    coords = null,
+			    featureDrawn = null,
+			    measurement = null;
+			if (type == 'polyline') {
+				layer._latlngs.map(function (item) {
+					coords = [item.lng, item.lat];
+					latlngs.push(coords);
+				});
+				featureDrawn = _turf2.default.lineString(latlngs);
+				measurement = _turf2.default.lineDistance(featureDrawn, "kilometers");
+			} else if (type == 'polygon' || type == 'rectangle') {
+				layer._latlngs[0].map(function (item) {
+					coords = [item.lng, item.lat];
+					latlngs.push(coords);
+				});
+				//第一个点和最后一个点要保持一致，要不turf解析不了。
+				latlngs.push(latlngs[0]);
+				featureDrawn = _turf2.default.polygon([latlngs]);
+				//面积是平方公里
+				measurement = _turf2.default.area(featureDrawn) / 1000000;
+			} else if (type == "circle") {} else if (type == "marker") {
+				latlngs = [layer._latlng.lng, layer._latlng.lat];
+				measurement = latlngs;
+				featureDrawn = _turf2.default.point(latlngs);
+			} else {
+				alert("创建图形失败");
+				return;
+			}
+			//传给1屏的,不包括后台
+			if (measurement && featureDrawn) {
+				console.log('transfer to screen 1');
+				lmsg.send('jtgz', {
+					finish: true,
+					params: {
+						geometry: featureDrawn,
+						measurement: measurement
+					}
+				});
+				lmsg.send('jtsg', {
+					finish: true,
+					params: {
+						geometry: featureDrawn,
+						measurement: measurement
+					}
+				});
+				lmsg.send('dlsg', {
+					finish: true,
+					params: {
+						geometry: featureDrawn,
+						measurement: measurement
+					}
+				});
+			}
+			drawnItemsLayer12.addLayer(layer);
+			//map.removeEventListener('draw:created');
+		});
 	};
 	
 	var stopDrawToolbar = function stopDrawToolbar() {
-		if (drawnItemsLayer) map.removeLayer(drawnItemsLayer);
+		/*	map.eachLayer((layer) => {
+	 		if (layer.options.id != 'streetLayer')
+	 			map.removeLayer(layer);
+	 	});*/
 		if (drawControl) map.removeControl(drawControl);
-		drawnItemsLayer = null;
 		drawControl = null;
 		map.removeEventListener('draw:created');
 		map.removeEventListener('draw:edited');
@@ -28086,18 +28483,19 @@
 	var DrawConfigLayer_road = function DrawConfigLayer_road() {
 		NewFhldfeature = null;
 		stopDrawToolbar();
-		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawnItemsLayer);
+		drawnItemsLayer2 = null;
+		drawnItemsLayer2 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer2);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawnItemsLayer
+				featureGroup: drawnItemsLayer2
 			},
 			draw: {
 				polyline: {
 					allowIntersection: false,
 					drawError: {
 						color: '#e1e100',
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#f357a1',
@@ -28123,7 +28521,7 @@
 				latlngs.push(coords);
 			});
 			NewRoadfeature = _turf2.default.lineString(latlngs);
-			drawnItemsLayer.addLayer(layer);
+			drawnItemsLayer2.addLayer(layer);
 			map.removeEventListener('draw:created');
 		});
 		map.on('draw:edited', function (e) {
@@ -28137,10 +28535,6 @@
 			map.removeEventListener('draw:edited');
 		});
 		map.on('draw:deleted', function (e) {
-			if (drawnItemsLayer) {
-				map.removeLayer(drawnItemsLayer);
-				drawnItemsLayer = null;
-			}
 			NewRoadfeature = null;
 			map.removeEventListener('draw:deleted');
 		});
@@ -28149,11 +28543,12 @@
 	var DrawConfigLayer_region = function DrawConfigLayer_region() {
 		NewFhldfeature = null;
 		stopDrawToolbar();
-		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawnItemsLayer);
+		drawnItemsLayer3 = null;
+		drawnItemsLayer3 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer3);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawnItemsLayer
+				featureGroup: drawnItemsLayer3
 			},
 			draw: {
 				polyline: false,
@@ -28163,7 +28558,7 @@
 					drawError: {
 						color: '#b00b00',
 						timeout: 1000,
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#00f6ff',
@@ -28179,10 +28574,12 @@
 					},
 					showArea: true
 				},
-				marker: {
-					icon: new MyCustomMarker()
-				},
-				circle: false
+				marker: false
+				/*{
+	   				icon: new MyCustomMarker()
+	   			}*/
+	
+				, circle: false
 			},
 			position: 'topright'
 		});
@@ -28199,7 +28596,7 @@
 			//第一个点和最后一个点要保持一致，要不turf解析不了。
 			latlngs.push(latlngs[0]);
 			NewRegionfeature = _turf2.default.polygon([latlngs]);
-			drawnItemsLayer.addLayer(layer);
+			drawnItemsLayer3.addLayer(layer);
 			map.removeEventListener('draw:created');
 		});
 		map.on('draw:edited', function (e) {
@@ -28223,11 +28620,12 @@
 	var DrawConfigLayer_ODregion = function DrawConfigLayer_ODregion() {
 		NewFhldfeature = null;
 		stopDrawToolbar();
-		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawnItemsLayer);
+		drawnItemsLayer4 = null;
+		drawnItemsLayer4 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer4);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawnItemsLayer
+				featureGroup: drawnItemsLayer4
 			},
 			draw: {
 				polyline: false,
@@ -28237,7 +28635,7 @@
 					drawError: {
 						color: '#b00b00',
 						timeout: 1000,
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#00f6ff',
@@ -28253,10 +28651,12 @@
 					},
 					showArea: true
 				},
-				marker: {
-					icon: new MyCustomMarker()
-				},
-				circle: false
+				marker: false
+				/*{
+	   				icon: new MyCustomMarker()
+	   			}*/
+	
+				, circle: false
 			},
 			position: 'topright'
 		});
@@ -28273,8 +28673,8 @@
 			//第一个点和最后一个点要保持一致，要不turf解析不了。
 			latlngs.push(latlngs[0]);
 			NewODRegionfeature = _turf2.default.polygon([latlngs]);
-			drawnItemsLayer.addLayer(layer);
-			map.removeEventListener('draw:created');
+			drawnItemsLayer4.addLayer(layer);
+			//map.removeEventListener('draw:created');
 		});
 		map.on('draw:edited', function (e) {
 			for (var id in e.layers._layers) {
@@ -28286,11 +28686,11 @@
 			//第一个点和最后一个点要保持一致，要不turf解析不了。
 			latlngs.push(latlngs[0]);
 			NewODRegionfeature = _turf2.default.polygon([latlngs]);
-			map.removeEventListener('draw:edited');
+			//map.removeEventListener('draw:edited');
 		});
 		map.on('draw:deleted', function (e) {
 			NewODRegionfeature = null;
-			map.removeEventListener('draw:deleted');
+			//map.removeEventListener('draw:deleted');
 		});
 	};
 	
@@ -28373,19 +28773,19 @@
 	
 	var drawFhld = function drawFhld(doublersData) {
 		stopDrawToolbar();
-		drawnItemsLayer = null;
-		drawnItemsLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawnItemsLayer);
+		var drawnItemsLayer5 = null;
+		drawnItemsLayer5 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawnItemsLayer5);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawnItemsLayer
+				featureGroup: drawnItemsLayer5
 			},
 			draw: {
 				polyline: {
 					allowIntersection: false,
 					drawError: {
 						color: '#e1e100',
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#f357a1',
@@ -28410,7 +28810,7 @@
 				latlngs.push(coords);
 			});
 			NewFhldfeature = _turf2.default.lineString(latlngs);
-			drawnItemsLayer.addLayer(layer);
+			drawnItemsLayer5.addLayer(layer);
 			if (NewFhldfeature) {
 				var bufferedFhld = _turf2.default.buffer(NewFhldfeature, 50, 'meters');
 				var bufferFC = {
@@ -28466,10 +28866,16 @@
 						});
 					}
 				};
-	
+				var measurement = _turf2.default.lineDistance(NewFhldfeature, 'meters');
 				lmsg.send('fhld_ok', {
 					new_fhld: NewFhldfeature,
-					doublers: doublerIds
+					doublers: doublerIds,
+					measurement: measurement
+				});
+				console.log({
+					new_fhld: NewFhldfeature,
+					doublers: doublerIds,
+					measurement: measurement
 				});
 				console.log('fhld_ok sent to screen 1', doublerIds);
 			}
@@ -28493,8 +28899,9 @@
 	
 	var drawHolidayRegion = function drawHolidayRegion() {
 		newHolidayRegion = null;
-		drawnItemsLayer = null;
+		drawControl = null;
 		stopDrawToolbar();
+		var drawHolidayRegionLayer = null;
 		drawHolidayRegionLayer = new _leaflet2.default.FeatureGroup();
 		map.addLayer(drawHolidayRegionLayer);
 		drawControl = new _leaflet2.default.Control.Draw({
@@ -28509,7 +28916,7 @@
 					drawError: {
 						color: '#b00b00',
 						timeout: 1000,
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#00f6ff',
@@ -28562,13 +28969,14 @@
 	var holiday_selectRoad = function holiday_selectRoad(roadData) {
 		var fhldData = roadData;
 		holidayRoadSelectRegion = null;
-		drawnItemsLayer = null;
+		drawControl = null;
 		stopDrawToolbar();
-		drawHolidayRegionLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawHolidayRegionLayer);
+		var drawHolidayRegionLayer2 = null;
+		drawHolidayRegionLayer2 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawHolidayRegionLayer2);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawHolidayRegionLayer
+				featureGroup: drawHolidayRegionLayer2
 			},
 			draw: {
 				polyline: false,
@@ -28578,7 +28986,7 @@
 					drawError: {
 						color: '#b00b00',
 						timeout: 1000,
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#00f6ff',
@@ -28606,7 +29014,7 @@
 			var type = e.layerType,
 			    layer = e.layer;
 	
-			drawHolidayRegionLayer.addLayer(layer);
+			drawHolidayRegionLayer2.addLayer(layer);
 			layer._latlngs[0].map(function (item) {
 				coords = [item.lng, item.lat];
 				latlngs.push(coords);
@@ -28676,13 +29084,14 @@
 	var holiday_selectCross = function holiday_selectCross(crossData) {
 		var crossData_fc = crossData;
 		holidayRoadSelectRegion = null;
-		drawnItemsLayer = null;
+		drawControl = null;
 		stopDrawToolbar();
-		drawHolidayRegionLayer = new _leaflet2.default.FeatureGroup();
-		map.addLayer(drawHolidayRegionLayer);
+		var drawHolidayRegionLayer3 = null;
+		drawHolidayRegionLayer3 = new _leaflet2.default.FeatureGroup();
+		map.addLayer(drawHolidayRegionLayer3);
 		drawControl = new _leaflet2.default.Control.Draw({
 			edit: {
-				featureGroup: drawHolidayRegionLayer
+				featureGroup: drawHolidayRegionLayer3
 			},
 			draw: {
 				polyline: false,
@@ -28692,7 +29101,7 @@
 					drawError: {
 						color: '#b00b00',
 						timeout: 1000,
-						message: '<strong>STOP<strong>重叠了亲'
+						message: '<strong>STOP<strong>重叠了'
 					},
 					shapeOptions: {
 						color: '#00f6ff',
@@ -28721,7 +29130,7 @@
 			var type = e.layerType,
 			    layer = e.layer;
 	
-			drawHolidayRegionLayer.addLayer(layer);
+			drawHolidayRegionLayer3.addLayer(layer);
 			layer._latlngs[0].map(function (item) {
 				coords = [item.lng, item.lat];
 				latlngs.push(coords);
@@ -28750,15 +29159,49 @@
 			map.removeEventListener('draw:created');
 		});
 	};
+	
+	var carparkLocLayer = null,
+	    carParkCoords = null;
+	
+	var carParkLocating = exports.carParkLocating = function carParkLocating() {
+		carparkLocLayer = null;
+		carparkLocLayer = new _leaflet2.default.FeatureGroup();
+		map.addLayer(carparkLocLayer);
+	
+		drawControl = new _leaflet2.default.Control.Draw({
+			edit: false,
+			draw: {
+				polyline: false,
+				polygon: false,
+				rectangle: false,
+				marker: {
+					icon: new MyCustomMarker()
+				},
+				circle: false
+			},
+			position: 'topright'
+		});
+		map.addControl(drawControl);
+		map.on('draw:created', function (e) {
+			var layer = e.layer;
+			lmsg.send('carpark_end', {
+				coordinates: [e.layer._latlng.lng, e.layer._latlng.lat]
+			});
+			console.log('transfer to screen 1', [e.layer._latlng.lng, e.layer._latlng.lat]);
+			carparkLocLayer.addLayer(layer);
+			map.removeEventListener('draw:created');
+			map.removeControl(drawControl);
+		});
+	};
 
 /***/ },
-/* 234 */
+/* 241 */
 /***/ function(module, exports) {
 
 	module.exports = L.draw;
 
 /***/ },
-/* 235 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28781,7 +29224,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _UniqueSub = __webpack_require__(236);
+	var _UniqueSub = __webpack_require__(243);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
@@ -28789,7 +29232,7 @@
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _drawFeatures = __webpack_require__(233);
+	var _drawFeatures = __webpack_require__(240);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -28905,12 +29348,13 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	
 	            var self = this;
-	
-	            lmsg.subscribe('locating', function (data) {
+	            lmsg.subscribe('locating_start', function (data) {
+	                if (document.getElementById("presetBox").children.length > 0) {
+	                    _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
+	                }
 	                _reactDom2.default.render(_react2.default.createElement(UniquePanel, null), document.getElementById("presetBox"));
-	                localStorage.removeItem('locating');
+	                localStorage.removeItem('locating_start');
 	            });
 	            lmsg.subscribe('tracktaxi', function (data) {
 	                console.log('tracktaxi', data);
@@ -28929,17 +29373,26 @@
 	                } else if (!data.startTracking) CI.stopTrackingTaxi();else _antd.message.warning("追踪参数错误！", 5);
 	                localStorage.removeItem('tracktaxi');
 	            });
-	            lmsg.subscribe('cfxydBtnClick', function (data) {
+	            lmsg.subscribe('cfxydBtnClick_start', function (data) {
+	                if (document.getElementById("presetBox").children.length > 0) {
+	                    _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
+	                }
 	                _reactDom2.default.render(_react2.default.createElement(UniquePanel, null), document.getElementById("presetBox"));
-	                localStorage.removeItem('cfxydBtnClick');
+	                localStorage.removeItem('cfxydBtnClick_start');
 	            });
-	            lmsg.subscribe('ODClick', function (data) {
+	            lmsg.subscribe('ODClick_start', function (data) {
+	                if (document.getElementById("presetBox").children.length > 0) {
+	                    _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
+	                }
 	                _reactDom2.default.render(_react2.default.createElement(UniquePanel, null), document.getElementById("presetBox"));
-	                localStorage.removeItem('ODClick');
+	                localStorage.removeItem('ODClick_start');
 	            });
-	            lmsg.subscribe('hbjjrToMap', function (data) {
+	            lmsg.subscribe('hbjjrToMap_start', function (data) {
+	                if (document.getElementById("presetBox").children.length > 0) {
+	                    _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
+	                }
 	                _reactDom2.default.render(_react2.default.createElement(UniquePanel, null), document.getElementById("presetBox"));
-	                localStorage.removeItem('hbjjrToMap');
+	                localStorage.removeItem('hbjjrToMap_start');
 	            });
 	        }
 	    }]);
@@ -28952,7 +29405,7 @@
 	var showModalWarning = function showModalWarning() {
 	    _antd.Modal.warning({
 	        title: '定位已经启动',
-	        content: '请点击屏幕右上角画图工具定位地图信息'
+	        content: '请点击屏幕右侧画图工具定位地图信息'
 	    });
 	};
 	
@@ -29100,6 +29553,7 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var self = this;
+	
 	            lmsg.subscribe('locating', function (data) {
 	                console.log('locating', data);
 	                switch (data.params) {
@@ -29142,27 +29596,19 @@
 	                    default:
 	                        return;
 	                }
+	
 	                localStorage.removeItem('locating');
 	            });
 	
 	            lmsg.subscribe('cfxydBtnClick', function (data) {
 	                console.log('cfxydBtnClick', data);
-	                /* self.setState({
-	                     cfydData: null
-	                 });*/
-	                _antd.message.success('您已进入常发拥堵界面');
+	                //message.success('您已进入常发拥堵界面');
 	                if (data.isCross == 1) {
 	                    //路口
-	                    /* self.setState({
-	                         cfydData: data.time
-	                     });*/
 	                    self.onClickButton('yongdu_cross', data.time);
 	                    //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
 	                } else if (data.isCross == 2) {
 	                    //路段
-	                    /* self.setState({
-	                         cfydData: data.time
-	                     });*/
 	                    self.onClickButton('yongdu_road', data.time);
 	                    //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
 	                } else _antd.message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
@@ -29196,11 +29642,14 @@
 	                            break;
 	                    }
 	                } else if (data.messageType == '5') {
+	
 	                    //新增区域
+	                    DR.drawFeatures.disable();
 	                    _antd.Modal.success({
 	                        title: '定位已经启动',
-	                        content: '请点击屏幕右上角画图工具定位区域信息'
+	                        content: '请点击屏幕右侧画图工具定位区域信息'
 	                    });
+	
 	                    Ds.DataService('/trafficindex_map/listHolidayMap.json', null, function (resp) {
 	                        CI.displayCommonLayer(resp.aaData);
 	                        DR.DrawHoliday.drawRegion();
@@ -29210,9 +29659,10 @@
 	                    });
 	                } else if (data.messageType == '6') {
 	                    //编辑区域
+	                    DR.drawFeatures.disable();
 	                    _antd.Modal.success({
 	                        title: '定位已经启动',
-	                        content: '请点击屏幕右上角画图工具定位区域信息'
+	                        content: '请点击屏幕右侧画图工具定位区域信息'
 	                    });
 	                    var params = {
 	                        id: data.messageData.qybh
@@ -29225,9 +29675,10 @@
 	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                } else if (data.messageType == '7') {
+	                    DR.drawFeatures.disable();
 	                    _antd.Modal.success({
 	                        title: '定位已经启动',
-	                        content: '请点击屏幕右上角画图工具圈选包含的道路路口'
+	                        content: '请点击屏幕右侧画图工具圈选包含的道路路口'
 	                    });
 	                    //新增路口
 	                    Ds.DataService('/trafficindex_map/listCrossMap.json', null, function (resp) {
@@ -29238,9 +29689,10 @@
 	                        _antd.message.error('后台传输错误', 5);
 	                    });
 	                } else if (data.messageType == '8') {
+	                    DR.drawFeatures.disable();
 	                    _antd.Modal.success({
 	                        title: '定位已经启动',
-	                        content: '请点击屏幕右上角画图工具圈选包含的道路'
+	                        content: '请点击屏幕右侧画图工具圈选包含的道路'
 	                    });
 	                    //新增路段
 	                    Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
@@ -29254,13 +29706,26 @@
 	            });
 	        }
 	    }, {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {}
+	    }, {
+	        key: 'PrintMap',
+	        value: function PrintMap() {
+	            lmap.printMap('#rbox,#search,#toolBar');
+	        }
+	    }, {
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
 	            lmap.removeEchartsLayer();
 	            CI.clearLayer();
+	            DR.drawFeatures.disable();
 	            if (taxiInterval) {
 	                clearInterval(taxiInterval);
 	            }
+	            lmsg.unsubscribe('locating');
+	            lmsg.unsubscribe('ODClick');
+	            lmsg.unsubscribe('hbjjrToMap');
+	            //.lmsg.unsubscribe('cfxydBtnClick');
 	        }
 	    }, {
 	        key: 'render',
@@ -29553,25 +30018,25 @@
 	      };*/
 
 /***/ },
-/* 236 */
+/* 243 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"boxpanel":"_3oH5k6spmfYsE0JkTmEtvW","panel_header":"_2cBKd-l_R6FbyFxRMwYpoE","panel_body":"_2oD5wMOVt27qGzcZ0K3om7","button1":"_3z1AgA4NnpyFuRkyx__DdC","QueContent":"_1l_RjNtiLgd3xRgbjdam72","sub_panel":"_32i3-q7MoRrXH4Dt2UIcxm","colorpickerDiv":"_3pwsO30I_vRLm_qvdja6EP","button_primary":"_2u5lvrwngoPHafXcN_fsrT","active":"_2G-HxbRgzPPpFK8ziyf3Kv","button_add":"_35cL_XO-7_rHyCoZKuDuvg","button_modify":"_3dVPSBw4-xAePERe8SmDue"};
 
 /***/ },
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29588,7 +30053,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _UniqueSub = __webpack_require__(236);
+	var _UniqueSub = __webpack_require__(243);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
@@ -29596,7 +30061,7 @@
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _drawFeatures = __webpack_require__(233);
+	var _drawFeatures = __webpack_require__(240);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -29634,1651 +30099,1805 @@
 	    odConfigModify_color = null,
 	    roadConfigModify_id = null,
 	    roadConfigModify_name = null,
-	    selectionOptions_road = null;
+	    selectionOptions_road = null,
+	    regionModifyColor = {
+	  r: null,
+	  g: null,
+	  b: null,
+	  a: null
+	},
+	    odModifyColor = {
+	  r: null,
+	  g: null,
+	  b: null,
+	  a: null
+	};
 	
 	var ConfigSub = function (_React$Component) {
-	    _inherits(ConfigSub, _React$Component);
+	  _inherits(ConfigSub, _React$Component);
 	
-	    function ConfigSub() {
-	        _classCallCheck(this, ConfigSub);
+	  function ConfigSub() {
+	    _classCallCheck(this, ConfigSub);
 	
-	        var _this = _possibleConstructorReturn(this, (ConfigSub.__proto__ || Object.getPrototypeOf(ConfigSub)).call(this));
+	    var _this = _possibleConstructorReturn(this, (ConfigSub.__proto__ || Object.getPrototypeOf(ConfigSub)).call(this));
 	
-	        _this.state = {
-	            active: null
-	        };
-	        return _this;
+	    _this.state = {
+	      active: null
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(ConfigSub, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.setState({
+	        active: this.props.isActive.active_Config
+	      });
 	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.setState({
+	        active: nextProps.isActive.active_Config
+	      });
+	    }
+	  }, {
+	    key: 'mountTrafficConditions',
+	    value: function mountTrafficConditions() {
+	      this.setState({
+	        active: !this.state.active
+	      });
+	      if (!!!document.getElementById('configDetails')) {
+	        this.setState({
+	          active: !this.state.active
+	        });
 	
-	    _createClass(ConfigSub, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.setState({
-	                active: this.props.isActive.active_Config
-	            });
-	        }
-	    }, {
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	            this.setState({
-	                active: nextProps.isActive.active_Config
-	            });
-	        }
-	    }, {
-	        key: 'mountTrafficConditions',
-	        value: function mountTrafficConditions() {
-	            this.setState({
-	                active: !this.state.active
-	            });
-	            if (!document.getElementById('configDetails')) {
-	                this.setState({
-	                    active: !this.state.active
-	                });
-	                _reactDom2.default.render(_react2.default.createElement(ConfigSubPanel, null), document.getElementById("presetBox"));
-	            } else {
-	                this.setState({
-	                    active: !this.state.active
-	                });
-	                _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
-	            }
-	            this.props.callbackParent({
-	                status1: !this.state.active,
-	                status2: !this.state.active,
-	                status3: !this.state.active,
-	                status4: !this.state.active,
-	                status5: this.state.active
-	            });
-	        }
-	    }, {
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {
-	            lmap.removeEchartsLayer();
-	            DR.drawFeatures.disable();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
+	        _reactDom2.default.render(_react2.default.createElement(ConfigSubPanel, null), document.getElementById("presetBox"));
+	      } else {
+	        this.setState({
+	          active: !this.state.active
+	        });
+	        _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
+	        localStorage.clear();
+	      }
+	      this.props.callbackParent({
+	        status1: !this.state.active,
+	        status2: !this.state.active,
+	        status3: !this.state.active,
+	        status4: !this.state.active,
+	        status5: this.state.active
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
 	
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'li',
-	                    {
-	                        ref: 'startUnipanel',
-	                        id: 'trafficConditions',
-	                        onClick: function onClick() {
-	                            return _this2.mountTrafficConditions();
-	                        } },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { type: 'fullscreen' },
-	                        _react2.default.createElement(
-	                            'span',
-	                            { className: this.state.active ? _toolBar2.default.fullscreen_active : _toolBar2.default.fullscreen },
-	                            '配置'
-	                        )
-	                    )
-	                )
-	            );
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'li',
+	          {
+	            ref: 'startUnipanel',
+	            id: 'trafficConditions',
+	            onClick: function onClick() {
+	              return _this2.mountTrafficConditions();
+	            } },
+	          _react2.default.createElement(
+	            'div',
+	            { type: 'fullscreen' },
+	            _react2.default.createElement(
+	              'span',
+	              { className: this.state.active ? _toolBar2.default.fullscreen_active : _toolBar2.default.fullscreen },
+	              '配置'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      lmsg.subscribe('peizhi_start', function (data) {
+	        if (document.getElementById("presetBox").children.length > 0) {
+	          _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
 	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            lmsg.subscribe('peizhi', function (data) {
-	                _reactDom2.default.render(_react2.default.createElement(ConfigSubPanel, null), document.getElementById("presetBox"));
-	                localStorage.removeItem('peizhi');
-	            });
-	        }
-	    }]);
+	        _reactDom2.default.render(_react2.default.createElement(ConfigSubPanel, null), document.getElementById("presetBox"));
+	        localStorage.removeItem('peizhi_start');
+	      });
+	    }
+	  }]);
 	
-	    return ConfigSub;
+	  return ConfigSub;
 	}(_react2.default.Component);
 	
 	var ConfigSubPanel = function (_React$Component2) {
-	    _inherits(ConfigSubPanel, _React$Component2);
+	  _inherits(ConfigSubPanel, _React$Component2);
 	
-	    function ConfigSubPanel() {
-	        _classCallCheck(this, ConfigSubPanel);
+	  function ConfigSubPanel() {
+	    _classCallCheck(this, ConfigSubPanel);
 	
-	        var _this3 = _possibleConstructorReturn(this, (ConfigSubPanel.__proto__ || Object.getPrototypeOf(ConfigSubPanel)).call(this));
+	    var _this3 = _possibleConstructorReturn(this, (ConfigSubPanel.__proto__ || Object.getPrototypeOf(ConfigSubPanel)).call(this));
 	
-	        _this3.state = {
-	            isloading1: false,
-	            isloading2: false,
-	            isloading3: false,
-	            isloaded1: false,
-	            isloaded2: false,
-	            isloaded3: false
-	        };
-	        _this3.onClickButton = _this3.onClickButton.bind(_this3);
-	        return _this3;
+	    _this3.state = {
+	      isloading1: false,
+	      isloading2: false,
+	      isloading3: false,
+	      isloaded1: false,
+	      isloaded2: false,
+	      isloaded3: false
+	    };
+	    _this3.onClickButton = _this3.onClickButton.bind(_this3);
+	    return _this3;
+	  }
+	
+	  _createClass(ConfigSubPanel, [{
+	    key: 'onClickButton',
+	    value: function onClickButton(ref) {
+	      _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	      if (ref == 'roadConfig') {
+	        _antd.message.success('您已进入双向道路配置页面');
+	        Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	          CI.displayConfigLayer_road(resp.aaData);
+	          DR.DrawConfigLayer.DrawRoad.activate();
+	          _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
+	        }, function (e) {
+	          console.log(e);
+	          //alert('后台传输错误！');
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      } else if (ref == 'regionConfig') {
+	        _antd.message.success('您已进入区域配置页面');
+	        Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	          CI.displayConfigLayer(resp.aaData);
+	          DR.DrawConfigLayer.DrawRegion.activate();
+	          DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+	          _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      } else if (ref == 'odConfig') {
+	        _antd.message.success('您已进入OD区域配置页面');
+	        Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	          CI.displayConfigLayer(resp.aaData);
+	          DR.DrawConfigLayer.DrawOD.activate();
+	          DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+	          _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      } else if (ref == 'fhld') {
+	
+	        _antd.message.success('您已进入复合路段配置页面');
+	        //ReactDOM.unmountComponentAtNode(document.getElementById("configPanel"));
+	        //DR.drawFeatures.disable();
+	        Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
+	          CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
+	          //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+	        }, function (e) {
+	          console.log(e);
+	        });
+	      } else if (ref == 'fhld_locating') {
+	        Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	          _antd.message.warning('开始绘制复合路段信息', 3);
+	          DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
+	        }, function (e) {
+	          _antd.message.error('后台传输错误！', 5);
+	          console.log(e);
+	        });
+	      } else _antd.message.error('加载地图图层错误', 3);
 	    }
-	
-	    _createClass(ConfigSubPanel, [{
-	        key: 'onClickButton',
-	        value: function onClickButton(ref) {
-	            if (ref == 'roadConfig') {
-	                _antd.message.success('您已进入双向道路配置页面');
-	
-	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                    CI.displayConfigLayer_road(resp.aaData);
-	                    DR.DrawConfigLayer.DrawRoad.activate();
-	                    _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel, null), document.getElementById("configPanel"));
-	                }, function (e) {
-	                    console.log(e);
-	                    //alert('后台传输错误！');
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            } else if (ref == 'regionConfig') {
-	                _antd.message.success('您已进入区域配置页面');
-	
-	                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
-	                    CI.displayConfigLayer(resp.aaData);
-	                    DR.DrawConfigLayer.DrawRegion.activate();
-	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-	                    _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel, null), document.getElementById("configPanel"));
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            } else if (ref == 'odConfig') {
-	                _antd.message.success('您已进入OD区域配置页面');
-	
-	                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
-	                    CI.displayConfigLayer(resp.aaData);
-	
-	                    DR.DrawConfigLayer.DrawOD.activate();
-	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-	                    _reactDom2.default.render(_react2.default.createElement(OdConfigPanel, null), document.getElementById("configPanel"));
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            } else if (ref == 'fhld') {
-	                _antd.message.success('您已进入复合路段配置页面');
-	                Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
-	                    CI.displayConfigLayer_road(resp.aaData); //这个加载的应该是符合路段的data
-	                    //DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-	                }, function (e) {
-	                    console.log(e);
-	                });
-	            } else if (ref == 'fhld_locating') {
-	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                    _antd.message.warning('开始绘制复合路段信息', 5);
-	                    DR.DrawConfigLayer.DrawFhld.activate(resp.aaData); //这个data应该是双向路段的data
-	                }, function (e) {
-	                    _antd.message.error('后台传输错误！', 5);
-	                    console.log(e);
-	                });
-	            } else _antd.message.error('加载地图图层错误', 5);
-	        }
-	    }, {
-	        key: 'ChangeConfig',
-	        value: function ChangeConfig(ref) {
-	
-	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	            DR.drawFeatures.disable();
-	
-	            if (ref == 'regionConfig') {
-	                Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.aaData.zone, ref);
-	                    DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            } else if (ref == 'odConfig') {
-	                Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.aaData.zone, ref);
-	                    DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            } else if (ref == 'roadConfig') {
-	                Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
-	                    CI.changeConfigLayer(resp.aaData, ref);
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            }
-	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            //如果od在先remove
-	            lmap.removeEchartsLayer();
-	            var self = this;
-	            lmsg.subscribe('peizhi', function (data) {
-	                console.log('peizhi', data);
-	                localStorage.removeItem('peizhi');
-	                switch (data.params) {
-	                    case 'odqypz':
-	                        _antd.Modal.success({
-	                            title: 'OD区域配置',
-	                            content: '您已进入OD区域配置页面'
-	                        });
-	                        self.onClickButton("odConfig");
-	                        break;
-	                    case 'ldpz':
-	                        _antd.Modal.success({
-	                            title: '路段配置',
-	                            content: '您已进入符合路段配置页面'
-	                        });
-	                        self.onClickButton("roadConfig");
-	                        break;
-	                    case 'qypz':
-	                        _antd.Modal.success({
-	                            title: '区域配置',
-	                            content: '您已进入符合区域配置页面'
-	                        });
-	                        self.onClickButton("regionConfig");
-	                        break;
-	                    case 'fhld_init':
-	                        _antd.Modal.success({
-	                            title: '路段配置',
-	                            content: '您已进入复合路段配置页面'
-	                        });
-	                        self.onClickButton("fhld");
-	                        break;
-	                    case 'fhld_locating':
-	                        //self.onClickButton("fhld");
-	                        _antd.Modal.success({
-	                            title: '定位启动',
-	                            content: '请点击右上角绘图按钮开始绘制道路'
-	                        });
-	                        self.onClickButton("fhld_locating");
-	                        break;
-	                }
+	  }, {
+	    key: 'ChangeConfig',
+	    value: function ChangeConfig(ref) {
+	      _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	      DR.drawFeatures.disable();
+	      if (ref == 'regionConfig') {
+	        Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	          CI.changeConfigLayer(resp.aaData.zone, ref);
+	          DR.DrawConfigLayer.DrawRegion.dataRecv(resp.aaData);
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      } else if (ref == 'odConfig') {
+	        Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	          CI.changeConfigLayer(resp.aaData.zone, ref);
+	          DR.DrawConfigLayer.DrawOD.dataRecv(resp.aaData);
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      } else if (ref == 'roadConfig') {
+	        Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	          CI.changeConfigLayer(resp.aaData, ref);
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      //如果od在先remove
+	      lmap.removeEchartsLayer();
+	      var self = this;
+	      lmsg.subscribe('peizhi', function (data) {
+	        console.log('peizhi', data);
+	        localStorage.removeItem('peizhi');
+	        switch (data.params) {
+	          case 'odqypz':
+	            _antd.Modal.success({
+	              title: 'OD区域配置',
+	              content: '您已进入OD区域配置页面'
 	            });
-	            //lmsg.send('fhld_ok',{new_fhld:11, doublers:[{name:11, id:11},{name:11, id:11},{name:11, id:11}]})
-	            lmsg.subscribe('openChangeConfigPanel', function (data) {
-	
-	                _antd.Modal.confirm({
-	                    title: '您选择的道路/区域名称是：' + data.name,
-	                    content: '确认修改请重新绘制并填入相关信息。',
-	                    onOk: function onOk() {
-	                        if (data.ref == 'regionConfig') {
-	                            console.log(data.id);
-	                            regionConfigModify_id = data.id;
-	                            regionConfigModify_name = data.name;
-	                            regionConfigModify_color = data.color;
-	                            _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel_Modify, null), document.getElementById("configPanel"));
-	                            DR.DrawConfigLayer.DrawRegion.activate();
-	                        } else if (data.ref == 'odConfig') {
-	                            console.log(data.id);
-	                            odConfigModify_id = data.id;
-	                            odConfigModify_name = data.name;
-	                            odConfigModify_color = data.color;
-	                            _reactDom2.default.render(_react2.default.createElement(OdConfigPanel_Modify, null), document.getElementById("configPanel"));
-	                            DR.DrawConfigLayer.DrawOD.activate();
-	                        } else if (data.ref == 'roadConfig') {
-	                            console.log(data.id);
-	                            roadConfigModify_id = data.id;
-	                            roadConfigModify_name = data.name;
-	                            _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel_Modify, null), document.getElementById("configPanel"));
-	                            DR.DrawConfigLayer.DrawRoad.activate();
-	                        }
-	                        /*return new Promise((resolve, reject) => {
-	                            //setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-	                            setTimeout(resolve, 1000);
-	                        }).catch(() => console.log('Oops errors!'));*/
-	                    },
-	                    onCancel: function onCancel() {
-	                        self.ChangeConfig(data.ref);
-	                    }
-	                });
-	                localStorage.removeItem('openChangeConfigPanel');
+	            self.onClickButton("odConfig");
+	            break;
+	          case 'ldpz':
+	            _antd.Modal.success({
+	              title: '路段配置',
+	              content: '您已进入双向路段配置页面'
 	            });
-	        }
-	    }, {
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {
-	            lmap.removeEchartsLayer();
+	            self.onClickButton("roadConfig");
+	            break;
+	          case 'qypz':
+	            _antd.Modal.success({
+	              title: '区域配置',
+	              content: '您已进入区域配置页面'
+	            });
+	            self.onClickButton("regionConfig");
+	            break;
+	          case 'fhld_init':
+	            _antd.Modal.success({
+	              title: '路段配置',
+	              content: '您已进入复合路段配置页面'
+	            });
+	            self.onClickButton("fhld");
+	            break;
+	          case 'fhld_locating':
+	            //self.onClickButton("fhld");
+	            _antd.Modal.success({
+	              title: '定位启动',
+	              content: '请点击右侧绘图按钮开始绘制道路'
+	            });
+	            self.onClickButton("fhld_locating");
+	            break;
+	          case 'od_init':
 	            CI.clearLayer();
+	            break;
 	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this4 = this;
+	      });
+	      lmsg.subscribe('openChangeConfigPanel', function (data) {
+	        _antd.Modal.confirm({
+	          title: '您选择的道路/区域名称是：' + data.name,
+	          content: '确认修改请重新绘制并填入相关信息。',
+	          onOk: function onOk() {
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            if (data.ref == 'regionConfig') {
+	              regionConfigModify_id = data.id;
+	              regionConfigModify_name = data.name;
+	              regionConfigModify_color = data.color;
+	              regionModifyColor.r = regionConfigModify_color.split(',')[0] * 1;
+	              regionModifyColor.g = regionConfigModify_color.split(',')[1] * 1;
+	              regionModifyColor.b = regionConfigModify_color.split(',')[2] * 1;
+	              regionModifyColor.a = regionConfigModify_color.split(',')[3] * 1 > 1 ? regionConfigModify_color.split(',')[3] * 1 / 255 : regionConfigModify_color.split(',')[3] * 1;
+	              _reactDom2.default.render(_react2.default.createElement(RegionConfigPanel_Modify, null), document.getElementById("configPanel"));
+	              DR.DrawConfigLayer.DrawRegion.activate();
+	            } else if (data.ref == 'odConfig') {
+	              odConfigModify_id = data.id;
+	              odConfigModify_name = data.name;
+	              odConfigModify_color = data.color;
+	              odModifyColor.r = odConfigModify_color.split(',')[0] * 1;
+	              odModifyColor.g = odConfigModify_color.split(',')[1] * 1;
+	              odModifyColor.b = odConfigModify_color.split(',')[2] * 1;
+	              odModifyColor.a = odConfigModify_color.split(',')[3] * 1 > 1 ? odConfigModify_color.split(',')[3] * 1 / 255 : odConfigModify_color.split(',')[3] * 1;
 	
-	            var regionConfig = _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Tooltip,
-	                    { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
-	                            return document.getElementById('configDetails');
-	                        } },
-	                    _react2.default.createElement(_antd.Button, {
-	                        id: 'regionConfig_add',
-	                        ref: 'regionConfig_add',
-	                        className: _UniqueSub2.default.button_add,
-	                        onClick: function onClick() {
-	                            return _this4.onClickButton("regionConfig");
-	                        } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Tooltip,
-	                    { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
-	                            return document.getElementById('configDetails');
-	                        } },
-	                    _react2.default.createElement(_antd.Button, {
-	                        id: 'regionConfig_fix',
-	                        ref: 'regionConfig_fix',
-	                        className: _UniqueSub2.default.button_modify,
-	                        onClick: function onClick() {
-	                            return _this4.ChangeConfig("regionConfig");
-	                        } })
-	                )
-	            );
-	            var odConfig = _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Tooltip,
-	                    { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
-	                            return document.getElementById('configDetails');
-	                        } },
-	                    _react2.default.createElement(_antd.Button, {
-	                        id: 'odConfig_add',
-	                        ref: 'odConfig_add',
-	                        className: _UniqueSub2.default.button_add,
-	                        onClick: function onClick() {
-	                            return _this4.onClickButton("odConfig");
-	                        } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Tooltip,
-	                    { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
-	                            return document.getElementById('configDetails');
-	                        } },
-	                    _react2.default.createElement(_antd.Button, {
-	                        id: 'odConfig_fix',
-	                        ref: 'odConfig_fix',
-	                        className: _UniqueSub2.default.button_modify,
-	                        onClick: function onClick() {
-	                            return _this4.ChangeConfig("odConfig");
-	                        } })
-	                )
-	            );
-	            var roadConfig = _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Tooltip,
-	                    { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
-	                            return document.getElementById('configDetails');
-	                        } },
-	                    _react2.default.createElement(_antd.Button, {
-	                        id: 'roadConfig_add',
-	                        ref: 'roadConfig_add',
-	                        className: _UniqueSub2.default.button_add,
-	                        onClick: function onClick() {
-	                            return _this4.onClickButton("roadConfig");
-	                        } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Tooltip,
-	                    { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
-	                            return document.getElementById('configDetails');
-	                        } },
-	                    _react2.default.createElement(_antd.Button, {
-	                        id: 'roadConfig_fix',
-	                        ref: 'roadConfig_fix',
-	                        className: _UniqueSub2.default.button_modify,
-	                        onClick: function onClick() {
-	                            return _this4.ChangeConfig("roadConfig");
-	                        } })
-	                )
-	            );
+	              _reactDom2.default.render(_react2.default.createElement(OdConfigPanel_Modify, null), document.getElementById("configPanel"));
+	              DR.DrawConfigLayer.DrawOD.activate();
+	            } else if (data.ref == 'roadConfig') {
+	              roadConfigModify_id = data.id;
+	              roadConfigModify_name = data.name;
+	              _reactDom2.default.render(_react2.default.createElement(RoadConfigPanel_Modify, null), document.getElementById("configPanel"));
+	              DR.DrawConfigLayer.DrawRoad.activate();
+	            }
+	            /*return new Promise((resolve, reject) => {
+	                //setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+	                setTimeout(resolve, 1000);
+	            }).catch(() => console.log('Oops errors!'));*/
+	          },
+	          onCancel: function onCancel() {
+	            self.ChangeConfig(data.ref);
+	          }
+	        });
+	        localStorage.removeItem('openChangeConfigPanel');
+	      });
 	
-	            return _react2.default.createElement(
-	                'div',
-	                {
-	                    className: _UniqueSub2.default.boxpanel,
-	                    id: 'configDetails' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: _UniqueSub2.default.panel_header, style: { fontSize: '14px' } },
-	                    '配置信息'
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    {
-	                        className: _UniqueSub2.default.panel_body,
-	                        id: 'Configpanel_body' },
-	                    _react2.default.createElement(
-	                        _antd.Button,
-	                        {
-	                            id: 'crossConfig',
-	                            ref: 'crossConfig',
-	                            className: _UniqueSub2.default.button_primary,
-	                            type: 'primary',
-	                            size: 'small',
-	                            disabled: false,
-	                            onClick: function onClick() {
-	                                return _this4.onClickButton('fhld');
-	                            } },
-	                        '复合路段'
-	                    ),
-	                    _react2.default.createElement(
-	                        _antd.Popover,
-	                        {
-	                            ref: 'roadConfig',
-	                            content: roadConfig,
-	                            placement: 'bottom',
-	                            trigger: 'hover',
-	                            getTooltipContainer: function getTooltipContainer() {
-	                                return document.getElementById('configDetails');
-	                            } },
-	                        _react2.default.createElement(
-	                            _antd.Button,
-	                            {
-	                                id: 'roadConfig',
-	                                ref: 'roadConfig',
-	                                className: _UniqueSub2.default.button_primary,
-	                                type: 'primary',
-	                                size: 'small'
-	                            },
-	                            '双向路段'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _antd.Popover,
-	                        {
-	                            ref: 'regionConfig',
-	                            content: regionConfig,
-	                            placement: 'bottom',
-	                            trigger: 'hover',
-	                            getTooltipContainer: function getTooltipContainer() {
-	                                return document.getElementById('configDetails');
-	                            } },
-	                        _react2.default.createElement(
-	                            _antd.Button,
-	                            {
-	                                id: 'regionConfig',
-	                                ref: 'regionConfig',
-	                                className: _UniqueSub2.default.button_primary,
-	                                type: 'primary',
-	                                size: 'small'
-	                            },
-	                            '区域配置'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _antd.Popover,
-	                        {
-	                            ref: 'odConfig',
-	                            content: odConfig,
-	                            placement: 'bottom',
-	                            trigger: 'hover',
-	                            getTooltipContainer: function getTooltipContainer() {
-	                                return document.getElementById('configDetails');
-	                            } },
-	                        _react2.default.createElement(
-	                            _antd.Button,
-	                            {
-	                                id: 'odConfig',
-	                                ref: 'odConfig',
-	                                className: _UniqueSub2.default.button_primary,
-	                                type: 'primary',
-	                                size: 'small' },
-	                            'OD区域'
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement('br', null),
-	                _react2.default.createElement('div', { id: 'configPanel' })
-	            );
-	        }
-	    }]);
+	      lmsg.subscribe('deleteqy', function (data) {
+	        setTimeout(function () {
+	          Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	            CI.displayConfigLayer(resp.aaData);
+	          }, function (e) {
+	            console.log(e);
+	            _antd.message.error('后台传输错误！', 5);
+	          });
+	        }, 1000);
 	
-	    return ConfigSubPanel;
+	        localStorage.removeItem('deleteqy');
+	      });
+	      lmsg.subscribe('deleteod', function (data) {
+	        setTimeout(function () {
+	          Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	            CI.displayConfigLayer(resp.aaData);
+	          }, function (e) {
+	            console.log(e);
+	            _antd.message.error('后台传输错误！', 5);
+	          });
+	        }, 1000);
+	
+	        localStorage.removeItem('deleteod');
+	      });
+	      lmsg.subscribe('deleteld', function (data) {
+	        setTimeout(function () {
+	          Ds.DataService('/trafficindex_map/roadMap.json', null, function (resp) {
+	            CI.displayConfigLayer_road(resp.aaData);
+	          }, function (e) {
+	            console.log(e);
+	            _antd.message.error('后台传输错误！', 5);
+	          });
+	        }, 1000);
+	        localStorage.removeItem('deleteld');
+	      });
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      lmap.removeEchartsLayer();
+	      CI.clearLayer();
+	      DR.drawFeatures.disable();
+	      lmsg.unsubscribe('peizhi');
+	      lmsg.unsubscribe('openChangeConfigPanel');
+	      lmsg.unsubscribe('deleteld');
+	      lmsg.unsubscribe('deleteod');
+	      lmsg.unsubscribe('deleteqy');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+	
+	      var regionConfig = _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _antd.Tooltip,
+	          { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	              return document.getElementById('configDetails');
+	            } },
+	          _react2.default.createElement(_antd.Button, {
+	            id: 'regionConfig_add',
+	            ref: 'regionConfig_add',
+	            className: _UniqueSub2.default.button_add,
+	            onClick: function onClick() {
+	              return _this4.onClickButton("regionConfig");
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Tooltip,
+	          { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	              return document.getElementById('configDetails');
+	            } },
+	          _react2.default.createElement(_antd.Button, {
+	            id: 'regionConfig_fix',
+	            ref: 'regionConfig_fix',
+	            className: _UniqueSub2.default.button_modify,
+	            onClick: function onClick() {
+	              return _this4.ChangeConfig("regionConfig");
+	            } })
+	        )
+	      );
+	      var odConfig = _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _antd.Tooltip,
+	          { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	              return document.getElementById('configDetails');
+	            } },
+	          _react2.default.createElement(_antd.Button, {
+	            id: 'odConfig_add',
+	            ref: 'odConfig_add',
+	            className: _UniqueSub2.default.button_add,
+	            onClick: function onClick() {
+	              return _this4.onClickButton("odConfig");
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Tooltip,
+	          { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	              return document.getElementById('configDetails');
+	            } },
+	          _react2.default.createElement(_antd.Button, {
+	            id: 'odConfig_fix',
+	            ref: 'odConfig_fix',
+	            className: _UniqueSub2.default.button_modify,
+	            onClick: function onClick() {
+	              return _this4.ChangeConfig("odConfig");
+	            } })
+	        )
+	      );
+	      var roadConfig = _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _antd.Tooltip,
+	          { title: '新增', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	              return document.getElementById('configDetails');
+	            } },
+	          _react2.default.createElement(_antd.Button, {
+	            id: 'roadConfig_add',
+	            ref: 'roadConfig_add',
+	            className: _UniqueSub2.default.button_add,
+	            onClick: function onClick() {
+	              return _this4.onClickButton("roadConfig");
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Tooltip,
+	          { title: '修改', placement: 'top', getTooltipContainer: function getTooltipContainer() {
+	              return document.getElementById('configDetails');
+	            } },
+	          _react2.default.createElement(_antd.Button, {
+	            id: 'roadConfig_fix',
+	            ref: 'roadConfig_fix',
+	            className: _UniqueSub2.default.button_modify,
+	            onClick: function onClick() {
+	              return _this4.ChangeConfig("roadConfig");
+	            } })
+	        )
+	      );
+	
+	      return _react2.default.createElement(
+	        'div',
+	        {
+	          className: _UniqueSub2.default.boxpanel,
+	          id: 'configDetails' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: _UniqueSub2.default.panel_header, style: { fontSize: '14px' } },
+	          '配置信息'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          {
+	            className: _UniqueSub2.default.panel_body,
+	            id: 'Configpanel_body' },
+	          _react2.default.createElement(
+	            _antd.Button,
+	            {
+	              id: 'crossConfig',
+	              ref: 'crossConfig',
+	              className: _UniqueSub2.default.button_primary,
+	              type: 'primary',
+	              size: 'small',
+	              disabled: true,
+	              onClick: function onClick() {
+	                return _this4.onClickButton('fhld');
+	              } },
+	            '复合路段'
+	          ),
+	          _react2.default.createElement(
+	            _antd.Popover,
+	            {
+	              ref: 'roadConfig',
+	              content: roadConfig,
+	              placement: 'bottom',
+	              trigger: 'hover',
+	              getTooltipContainer: function getTooltipContainer() {
+	                return document.getElementById('configDetails');
+	              } },
+	            _react2.default.createElement(
+	              _antd.Button,
+	              {
+	                id: 'roadConfig',
+	                ref: 'roadConfig',
+	                className: _UniqueSub2.default.button_primary,
+	                type: 'primary',
+	                size: 'small'
+	              },
+	              '双向路段'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _antd.Popover,
+	            {
+	              ref: 'regionConfig',
+	              content: regionConfig,
+	              placement: 'bottom',
+	              trigger: 'hover',
+	              getTooltipContainer: function getTooltipContainer() {
+	                return document.getElementById('configDetails');
+	              } },
+	            _react2.default.createElement(
+	              _antd.Button,
+	              {
+	                id: 'regionConfig',
+	                ref: 'regionConfig',
+	                className: _UniqueSub2.default.button_primary,
+	                type: 'primary',
+	                size: 'small'
+	              },
+	              '区域配置'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _antd.Popover,
+	            {
+	              ref: 'odConfig',
+	              content: odConfig,
+	              placement: 'bottom',
+	              trigger: 'hover',
+	              getTooltipContainer: function getTooltipContainer() {
+	                return document.getElementById('configDetails');
+	              } },
+	            _react2.default.createElement(
+	              _antd.Button,
+	              {
+	                id: 'odConfig',
+	                ref: 'odConfig',
+	                className: _UniqueSub2.default.button_primary,
+	                type: 'primary',
+	                size: 'small' },
+	              'OD区域'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('div', { id: 'configPanel' })
+	      );
+	    }
+	  }]);
+	
+	  return ConfigSubPanel;
 	}(_react2.default.Component);
 	
 	var RegionConfigPanel = _react2.default.createClass({
-	    displayName: 'RegionConfigPanel',
-	    getInitialState: function getInitialState() {
-	        return {
-	            sliderVal1: 0,
-	            sliderVal2: 0,
-	            sliderVal3: 0,
-	            sliderVal4: 1
+	  displayName: 'RegionConfigPanel',
+	  getInitialState: function getInitialState() {
+	    return {
+	      sliderVal1: 0,
+	      sliderVal2: 0,
+	      sliderVal3: 0,
+	      sliderVal4: 1
+	    };
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    var _this5 = this;
+	
+	    e.preventDefault();
+	    this.props.form.validateFields(function (errors, values) {
+	      if (!!errors) {
+	
+	        _antd.message.warning('请检查错误', 3);
+	      } else if (DR.DrawConfigLayer.DrawRegion.getValue() == null) {
+	        _antd.message.warning('请先画图', 3);
+	      } else {
+	        var sendParams_region = {
+	          qybh: values.regionNumber,
+	          qymc: values.regionName,
+	          qyfw: JSON.stringify(DR.DrawConfigLayer.DrawRegion.getValue()),
+	          ylzd1: _this5.state.sliderVal1 + ',' + _this5.state.sliderVal2 + ',' + _this5.state.sliderVal3 + ',' + _this5.state.sliderVal4,
+	          crossid: DR.DrawConfigLayer.DrawRegion.calculateWithin().crossIds.toString(),
+	          roadid: DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString()
 	        };
-	    },
-	    handleSubmit: function handleSubmit(e) {
-	        var _this5 = this;
-	
-	        e.preventDefault();
-	        //console.log(this.props.form.getFieldsValue());
-	        this.props.form.validateFields(function (errors, values) {
-	            if (!!errors) {
-	                //alert('请检查错误');
-	                _antd.message.warning('请检查错误', 3);
-	            } else if (DR.DrawConfigLayer.DrawRegion.getValue() == null) {
-	                //alert('请先画图')
-	                _antd.message.warning('请先画图', 3);
-	            } else {
-	                //console.log('传给后台的值', values);
-	                var sendParams_region = {
-	                    qybh: values.regionNumber,
-	                    qymc: values.regionName,
-	                    qyfw: JSON.stringify(DR.DrawConfigLayer.DrawRegion.getValue()),
-	                    ylzd1: _this5.state.sliderVal1 + ',' + _this5.state.sliderVal2 + ',' + _this5.state.sliderVal3 + ',' + _this5.state.sliderVal4,
-	                    crossid: DR.DrawConfigLayer.DrawRegion.calculateWithin().crossIds.toString(),
-	                    roadid: DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString()
-	                };
-	                console.log('传给后台的值', sendParams_region);
-	                Ds.DataService('/trafficindex_zoneConfig/add.json', sendParams_region, function (resp) {
-	                    console.log(resp);
-	                    if (resp.errorCode == 'success') {
-	                        //alert('保存成功');
-	                        _antd.message.success('保存成功', 3);
-	                        DR.drawFeatures.disable();
-	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	                        lmsg.send('qypz', {
-	                            'data': 'success'
-	                        });
-	                    } else {
-	                        alert(resp.errorText);
-	                    }
-	                }, function (e) {
-	                    console.log(e);
-	                    //alert('后台传输错误！')
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            }
+	        console.log('传给后台的值', sendParams_region);
+	        Ds.DataService('/trafficindex_zoneConfig/add.json', sendParams_region, function (resp) {
+	          if (resp.errorCode == 'success') {
+	            _antd.message.success('保存成功', 3);
+	            DR.drawFeatures.disable();
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            lmsg.send('qypz', {
+	              'data': 'success'
+	            });
+	            Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	              CI.displayConfigLayer(resp.aaData);
+	            }, function (e) {
+	              console.log(e);
+	              _antd.message.error('后台传输错误！', 5);
+	            });
+	          } else {
+	            alert(resp.errorText);
+	          }
+	        }, function (e) {
+	          console.log(e);
+	          //alert('后台传输错误！')
+	          _antd.message.error('后台传输错误！', 5);
 	        });
-	    },
-	    checkPrime: function checkPrime(rule, value, callback) {
-	        if (!value) {
-	            callback(new Error('编号值不能为空'));
-	        } else if (value.length !== 9) {
-	            callback(new Error('请输入9位区域编号'));
-	        } else {
-	            callback();
-	        }
-	    },
-	    SliderVal1: function SliderVal1(value) {
-	        this.setState({
-	            sliderVal1: value
-	        });
-	    },
-	    SliderVal2: function SliderVal2(value) {
-	        this.setState({
-	            sliderVal2: value
-	        });
-	    },
-	    SliderVal3: function SliderVal3(value) {
-	        this.setState({
-	            sliderVal3: value
-	        });
-	    },
-	    SliderVal4: function SliderVal4(value) {
-	        this.setState({
-	            sliderVal4: value
-	        });
-	    },
-	    componentDidMount: function componentDidMount() {},
-	    render: function render() {
-	        var getFieldDecorator = this.props.form.getFieldDecorator;
-	
-	
-	        return _react2.default.createElement(
-	            _antd.Form,
-	            {
-	                inline: true,
-	                onSubmit: this.handleSubmit },
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '区域名称' },
-	                getFieldDecorator('regionName', {
-	                    rules: [{
-	                        required: true,
-	                        message: '请填写区域名称'
-	                    }]
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请输入名称',
-	                    size: 'small',
-	                    type: 'regionName',
-	                    id: 'regionName',
-	                    name: 'regionName' }))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '区域编号' },
-	                getFieldDecorator('regionNumber', {
-	                    rules: [{
-	                        required: true,
-	                        validator: this.checkPrime
-	                    }]
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请填写区域编号',
-	                    size: 'small',
-	                    type: 'number',
-	                    id: 'regionNumber',
-	                    name: 'regionNumber' }))
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'R'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'G'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'B'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'A'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 7 },
-	                    '区域颜色预览:'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 10 },
-	                    _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ')', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 5 },
-	                    _react2.default.createElement(
-	                        _antd.Button,
-	                        { type: 'primary', size: 'small', htmlType: 'submit' },
-	                        '保存'
-	                    )
-	                )
-	            )
-	        );
+	      }
+	    });
+	  },
+	  checkPrime: function checkPrime(rule, value, callback) {
+	    if (!value) {
+	      callback(new Error('编号值不能为空'));
+	    } else if (value.length !== 9) {
+	      callback(new Error('请输入9位区域编号'));
+	    } else {
+	      callback();
 	    }
+	  },
+	  SliderVal1: function SliderVal1(value) {
+	    this.setState({
+	      sliderVal1: value
+	    });
+	  },
+	  SliderVal2: function SliderVal2(value) {
+	    this.setState({
+	      sliderVal2: value
+	    });
+	  },
+	  SliderVal3: function SliderVal3(value) {
+	    this.setState({
+	      sliderVal3: value
+	    });
+	  },
+	  SliderVal4: function SliderVal4(value) {
+	    this.setState({
+	      sliderVal4: value
+	    });
+	  },
+	  checkName: function checkName(rule, value, callback) {
+	    if (!value || value.length == 0) {
+	      callback(new Error('请输入区域名称'));
+	    } else if (value.length > 10) {
+	      callback(new Error('区域名称太长'));
+	    } else {
+	      callback();
+	    }
+	  },
+	  componentDidMount: function componentDidMount() {},
+	  render: function render() {
+	    var getFieldDecorator = this.props.form.getFieldDecorator;
+	
+	
+	    return _react2.default.createElement(
+	      _antd.Form,
+	      {
+	        inline: true,
+	        onSubmit: this.handleSubmit },
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '区域名称' },
+	        getFieldDecorator('regionName', {
+	          rules: [{
+	            required: true,
+	            validator: this.checkName
+	          }]
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请输入名称',
+	          size: 'small',
+	          type: 'regionName',
+	          id: 'regionName',
+	          name: 'regionName' }))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '区域编号' },
+	        getFieldDecorator('regionNumber', {
+	          rules: [{
+	            required: true,
+	            validator: this.checkPrime
+	          }]
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请填写区域编号',
+	          size: 'small',
+	          type: 'number',
+	          id: 'regionNumber',
+	          name: 'regionNumber' }))
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'R'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'G'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'B'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'A'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 7 },
+	          '区域颜色预览:'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 10 },
+	          _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ')', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 5 },
+	          _react2.default.createElement(
+	            _antd.Button,
+	            { type: 'primary', size: 'small', htmlType: 'submit' },
+	            '保存'
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 	RegionConfigPanel = _antd.Form.create()(RegionConfigPanel);
 	
 	var OdConfigPanel = _react2.default.createClass({
-	    displayName: 'OdConfigPanel',
-	    getInitialState: function getInitialState() {
-	        return {
-	            sliderVal1: 0,
-	            sliderVal2: 0,
-	            sliderVal3: 0,
-	            sliderVal4: 1
+	  displayName: 'OdConfigPanel',
+	  getInitialState: function getInitialState() {
+	    return {
+	      sliderVal1: 0,
+	      sliderVal2: 0,
+	      sliderVal3: 0,
+	      sliderVal4: 1
+	    };
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    var _this6 = this;
+	
+	    e.preventDefault();
+	    this.props.form.validateFieldsAndScroll(function (errors, values) {
+	      var regionFeature = DR.DrawConfigLayer.DrawOD.getValue();
+	      if (!!errors) {
+	        _antd.message.warning('请检查错误', 3);
+	      } else if (regionFeature == null) {
+	        _antd.message.warning('请绘制图层', 3);
+	      } else {
+	        var sendParams_od = {
+	          qybh: values.odNumber,
+	          qymc: values.odName,
+	          qyfw: JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()),
+	          ylzd1: _this6.state.sliderVal1 + ',' + _this6.state.sliderVal2 + ',' + _this6.state.sliderVal3 + ',' + _this6.state.sliderVal4,
+	          crossId: DR.DrawConfigLayer.DrawOD.calculateWithin().toString(),
+	          point: '[' + DR.DrawConfigLayer.DrawOD.calculateCenterPoint().toString() + ']'
+	
 	        };
-	    },
-	    handleSubmit: function handleSubmit(e) {
-	        var _this6 = this;
-	
-	        e.preventDefault();
-	        //console.log(this.props.form.getFieldsValue());
-	        this.props.form.validateFieldsAndScroll(function (errors, values) {
-	            //console.log(errors)
-	            var regionFeature = DR.DrawConfigLayer.DrawOD.getValue();
-	            if (!!errors) {
-	                _antd.message.warning('请检查错误', 3);
-	            } else if (regionFeature == null) {
-	                _antd.message.warning('请绘制图层', 3);
-	            } else {
-	                //console.log('传给后台的值', values);
-	                var sendParams_od = {
-	                    qybh: values.odNumber,
-	                    qymc: values.odName,
-	                    qyfw: JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()),
-	                    ylzd1: _this6.state.sliderVal1 + ',' + _this6.state.sliderVal2 + ',' + _this6.state.sliderVal3 + ',' + _this6.state.sliderVal4,
-	                    crossId: DR.DrawConfigLayer.DrawOD.calculateWithin().toString(),
-	                    point: '[' + DR.DrawConfigLayer.DrawOD.calculateCenterPoint().toString() + ']'
-	
-	                };
-	                Ds.DataService('/trafficindex_bodregionconfig/add.json', sendParams_od, function (resp) {
-	                    console.log(resp);
-	                    if (resp.errorCode == 'success') {
-	                        _antd.message.success('保存成功', 3);
-	                        DR.drawFeatures.disable();
-	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	                        lmsg.send('odpz', {
-	                            'data': 'success'
-	                        });
-	                    } else {
-	                        _antd.message.error('保存失败' + resp.errorText, 5);
-	                    }
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            }
+	        Ds.DataService('/trafficindex_bodregionconfig/add.json', sendParams_od, function (resp) {
+	          if (resp.errorCode == 'success') {
+	            _antd.message.success('保存成功', 3);
+	            DR.drawFeatures.disable();
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            lmsg.send('odpz', {
+	              'data': 'success'
+	            });
+	            Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	              CI.displayConfigLayer(resp.aaData);
+	            }, function (e) {
+	              console.log(e);
+	              _antd.message.error('后台传输错误！', 5);
+	            });
+	          } else {
+	            _antd.message.error('保存失败' + resp.errorText, 5);
+	          }
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
 	        });
-	    },
-	    componentDidMount: function componentDidMount() {},
-	    checkPrime: function checkPrime(rule, value, callback) {
-	        if (!value) {
-	            callback(new Error('编号值不能为空'));
-	        } else if (value.length !== 9) {
-	            callback(new Error('请输入9位区域编号'));
-	        } else {
-	            callback();
-	        }
-	    },
-	    SliderVal1: function SliderVal1(value) {
-	        this.setState({
-	            sliderVal1: value
-	        });
-	    },
-	    SliderVal2: function SliderVal2(value) {
-	        this.setState({
-	            sliderVal2: value
-	        });
-	    },
-	    SliderVal3: function SliderVal3(value) {
-	        this.setState({
-	            sliderVal3: value
-	        });
-	    },
-	    SliderVal4: function SliderVal4(value) {
-	        this.setState({
-	            sliderVal4: value
-	        });
-	    },
-	    render: function render() {
-	        var getFieldDecorator = this.props.form.getFieldDecorator;
-	
-	
-	        return _react2.default.createElement(
-	            _antd.Form,
-	            {
-	                inline: true,
-	                onSubmit: this.handleSubmit },
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: 'OD名称' },
-	                getFieldDecorator('odName', {
-	                    rules: [{
-	                        required: true,
-	                        message: '请填写OD区域名称'
-	                    }]
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请输入OD名称',
-	                    size: 'small',
-	                    type: 'odName',
-	                    id: 'odName',
-	                    name: 'odName' }))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: 'OD编号' },
-	                getFieldDecorator('odNumber', {
-	                    rules: [{
-	                        required: true,
-	                        validator: this.checkPrime
-	                    }]
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请填写OD编号',
-	                    size: 'small',
-	                    type: 'number',
-	                    id: 'odNumber',
-	                    name: 'odNumber' }))
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'R'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'G'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'B'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'A'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 7 },
-	                    '区域颜色预览:'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 10 },
-	                    _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ') ', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 5 },
-	                    _react2.default.createElement(
-	                        _antd.Button,
-	                        { type: 'primary', size: 'small', htmlType: 'submit' },
-	                        '保存'
-	                    )
-	                )
-	            )
-	        );
+	      }
+	    });
+	  },
+	  componentDidMount: function componentDidMount() {},
+	  checkPrime: function checkPrime(rule, value, callback) {
+	    if (!value) {
+	      callback(new Error('编号值不能为空'));
+	    } else if (value.length !== 9) {
+	      callback(new Error('请输入9位区域编号'));
+	    } else {
+	      callback();
 	    }
+	  },
+	  checkName: function checkName(rule, value, callback) {
+	    if (!value || value.length == 0) {
+	      callback(new Error('请输入区域名称'));
+	    } else if (value.length > 10) {
+	      callback(new Error('区域名称太长'));
+	    } else {
+	      callback();
+	    }
+	  },
+	  SliderVal1: function SliderVal1(value) {
+	    this.setState({
+	      sliderVal1: value
+	    });
+	  },
+	  SliderVal2: function SliderVal2(value) {
+	    this.setState({
+	      sliderVal2: value
+	    });
+	  },
+	  SliderVal3: function SliderVal3(value) {
+	    this.setState({
+	      sliderVal3: value
+	    });
+	  },
+	  SliderVal4: function SliderVal4(value) {
+	    this.setState({
+	      sliderVal4: value
+	    });
+	  },
+	  render: function render() {
+	    var getFieldDecorator = this.props.form.getFieldDecorator;
+	
+	
+	    return _react2.default.createElement(
+	      _antd.Form,
+	      {
+	        inline: true,
+	        onSubmit: this.handleSubmit },
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: 'OD名称' },
+	        getFieldDecorator('odName', {
+	          rules: [{
+	            required: true,
+	            validator: this.checkName
+	
+	          }]
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请输入OD名称',
+	          size: 'small',
+	          type: 'odName',
+	          id: 'odName',
+	          name: 'odName' }))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: 'OD编号' },
+	        getFieldDecorator('odNumber', {
+	          rules: [{
+	            required: true,
+	            validator: this.checkPrime
+	          }]
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请填写OD编号',
+	          size: 'small',
+	          type: 'number',
+	          id: 'odNumber',
+	          name: 'odNumber' }))
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'R'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'G'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'B'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'A'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 7 },
+	          '区域颜色预览:'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 10 },
+	          _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ') ', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 5 },
+	          _react2.default.createElement(
+	            _antd.Button,
+	            { type: 'primary', size: 'small', htmlType: 'submit' },
+	            '保存'
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 	OdConfigPanel = _antd.Form.create()(OdConfigPanel);
 	
 	var RoadConfigPanel = _react2.default.createClass({
-	    displayName: 'RoadConfigPanel',
-	    getInitialState: function getInitialState() {
-	        return {
-	            options: []
+	  displayName: 'RoadConfigPanel',
+	  getInitialState: function getInitialState() {
+	    return {
+	      options: []
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    //路段配置下拉框内容
+	    Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
+	      selectionOptions_road = resp.aaData;
+	    }, function (e) {
+	      _antd.message.error('后台传输错误！', 5);
+	      console.log(e);
+	    });
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    e.preventDefault();
+	    this.props.form.validateFields(function (errors, values) {
+	      if (!!errors) {
+	        _antd.message.warning('有误，请检查错误', 3);
+	      } else if (DR.DrawConfigLayer.DrawRoad.getValue() == null) {
+	        _antd.message.warning('请画一条道路再保存', 3);
+	      } else {
+	        var sendParam_road = {
+	          xgla: values.startSelect,
+	          xglb: values.endSelect,
+	          ldmc: values.roadName,
+	          coordinates: JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue())
 	        };
-	    },
-	    componentWillMount: function componentWillMount() {
-	        //路段配置下拉框内容
-	        Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
-	            selectionOptions_road = resp.aaData;
+	        if (!sendParam_road.coordinates) alert('请画图先');
+	        Ds.DataService('/trafficindex_roadConfiguration/addDoubleSidedRoadInfo.json', sendParam_road, function (resp) {
+	          if (resp.errorCode == 'success') {
+	            _antd.message.success('保存成功', 3);
+	            DR.drawFeatures.disable();
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            lmsg.send('ldpz', {
+	              'data': 'success'
+	            });
+	            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	
+	              CI.displayConfigLayer_road(resp.aaData);
+	            }, function (e) {
+	              _antd.message.error('后台传输错误！', 3);
+	              console.log(e);
+	            });
+	          } else {
+	            _antd.message.error('保存失败' + resp.errorText, 5);
+	          }
 	        }, function (e) {
-	            _antd.message.error('后台传输错误！', 5);
-	            console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	          console.log(e);
 	        });
-	    },
-	    handleSubmit: function handleSubmit(e) {
-	        e.preventDefault();
-	        this.props.form.validateFields(function (errors, values) {
-	            if (!!errors) {
-	                _antd.message.warning('有误，请检查错误', 3);
-	            } else if (DR.DrawConfigLayer.DrawRoad.getValue() == null) {
-	                _antd.message.warning('请画一条道路再保存', 3);
-	            } else {
-	                var sendParam_road = {
-	                    xgla: values.startSelect,
-	                    xglb: values.endSelect,
-	                    ldmc: values.roadName,
-	                    coordinates: JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue())
-	                };
-	                if (!sendParam_road.coordinates) alert('请画图先');
-	                Ds.DataService('/trafficindex_roadConfiguration/addDoubleSidedRoadInfo.json', sendParam_road, function (resp) {
-	                    if (resp.errorCode == 'success') {
-	                        _antd.message.success('保存成功', 5);
-	                        DR.drawFeatures.disable();
-	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	                        lmsg.send('ldpz', {
-	                            'data': 'success'
-	                        });
-	                    } else {
-	                        _antd.message.error('保存失败' + resp.errorText, 5);
-	                    }
-	                }, function (e) {
-	                    _antd.message.error('后台传输错误！', 5);
-	                    console.log(e);
-	                });
-	            }
-	        });
-	    },
-	    render: function render() {
-	        var getFieldDecorator = this.props.form.getFieldDecorator;
-	
-	
-	        var RoadCrossOptions = selectionOptions_road.map(function (item) {
-	            return _react2.default.createElement(
-	                Option,
-	                {
-	                    key: item.id,
-	                    value: item.id },
-	                item.name
-	            );
-	        });
-	
-	        return _react2.default.createElement(
-	            _antd.Form,
-	            {
-	                inline: true,
-	                onSubmit: this.handleSubmit },
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '路段名称' },
-	                getFieldDecorator('roadName', {
-	                    rules: [{
-	                        required: true,
-	                        message: '请填写路段名称'
-	                    }]
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请输入路段名称',
-	                    size: 'small',
-	                    type: 'roadName',
-	                    id: 'roadName',
-	                    name: 'roadName' }))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '开始路口', style: { marginLeft: '10px' } },
-	                getFieldDecorator('startSelect', {
-	                    rules: [{
-	                        required: false,
-	                        message: '请选择开始路口'
-	                    }]
-	                })(_react2.default.createElement(
-	                    _antd.Select,
-	                    {
-	                        showSearch: true,
-	                        optionFilterProp: 'children',
-	                        notFoundContent: '未找到相应信息',
-	                        placeholder: '选择开始路口',
-	                        style: { width: 150 },
-	                        size: 'small',
-	                        getPopupContainer: function getPopupContainer() {
-	                            return document.getElementById('configPanel');
-	                        } },
-	                    RoadCrossOptions
-	                ))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '结束路口', style: { marginLeft: '10px' } },
-	                getFieldDecorator('endSelect', {
-	                    rules: [{
-	                        required: false,
-	                        message: '请选择结束路口'
-	                    }]
-	                })(_react2.default.createElement(
-	                    _antd.Select,
-	                    {
-	                        showSearch: true,
-	                        optionFilterProp: 'children',
-	                        notFoundContent: '未找到相应信息',
-	                        placeholder: '选择结束路口',
-	                        style: { width: 150 },
-	                        size: 'small',
-	                        getPopupContainer: function getPopupContainer() {
-	                            return document.getElementById('configPanel');
-	                        } },
-	                    RoadCrossOptions
-	                ))
-	            ),
-	            _react2.default.createElement(
-	                _antd.Button,
-	                {
-	                    type: 'primary',
-	                    size: 'small',
-	                    htmlType: 'submit' },
-	                '保存'
-	            )
-	        );
+	      }
+	    });
+	  },
+	  checkName: function checkName(rule, value, callback) {
+	    if (!value || value.length == 0) {
+	      callback(new Error('请输入路段名称'));
+	    } else if (value.length > 10) {
+	      callback(new Error('路段名称太长'));
+	    } else {
+	      callback();
 	    }
+	  },
+	  render: function render() {
+	    var getFieldDecorator = this.props.form.getFieldDecorator;
+	
+	
+	    var RoadCrossOptions = selectionOptions_road.map(function (item) {
+	      return _react2.default.createElement(
+	        Option,
+	        {
+	          key: item.id,
+	          value: item.id },
+	        item.name
+	      );
+	    });
+	
+	    return _react2.default.createElement(
+	      _antd.Form,
+	      {
+	        inline: true,
+	        onSubmit: this.handleSubmit },
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '路段名称' },
+	        getFieldDecorator('roadName', {
+	          rules: [{
+	            required: true,
+	            validator: this.checkName
+	          }]
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请输入路段名称',
+	          size: 'small',
+	          type: 'roadName',
+	          id: 'roadName',
+	          name: 'roadName' }))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '开始路口', style: { marginLeft: '10px' } },
+	        getFieldDecorator('startSelect', {
+	          rules: [{
+	            required: false,
+	            message: '请选择开始路口'
+	          }]
+	        })(_react2.default.createElement(
+	          _antd.Select,
+	          {
+	            showSearch: true,
+	            optionFilterProp: 'children',
+	            notFoundContent: '未找到相应信息',
+	            placeholder: '选择开始路口',
+	            style: { width: 150 },
+	            size: 'small',
+	            getPopupContainer: function getPopupContainer() {
+	              return document.getElementById('configPanel');
+	            } },
+	          RoadCrossOptions
+	        ))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '结束路口', style: { marginLeft: '10px' } },
+	        getFieldDecorator('endSelect', {
+	          rules: [{
+	            required: false,
+	            message: '请选择结束路口'
+	          }]
+	        })(_react2.default.createElement(
+	          _antd.Select,
+	          {
+	            showSearch: true,
+	            optionFilterProp: 'children',
+	            notFoundContent: '未找到相应信息',
+	            placeholder: '选择结束路口',
+	            style: { width: 150 },
+	            size: 'small',
+	            getPopupContainer: function getPopupContainer() {
+	              return document.getElementById('configPanel');
+	            } },
+	          RoadCrossOptions
+	        ))
+	      ),
+	      _react2.default.createElement(
+	        _antd.Button,
+	        {
+	          type: 'primary',
+	          size: 'small',
+	          htmlType: 'submit' },
+	        '保存'
+	      )
+	    );
+	  }
 	});
 	RoadConfigPanel = _antd.Form.create()(RoadConfigPanel);
 	
 	var RegionConfigPanel_Modify = _react2.default.createClass({
-	    displayName: 'RegionConfigPanel_Modify',
-	    getInitialState: function getInitialState() {
-	        return {
-	            sliderVal1: 0,
-	            sliderVal2: 0,
-	            sliderVal3: 0,
-	            sliderVal4: 1
+	  displayName: 'RegionConfigPanel_Modify',
+	  getInitialState: function getInitialState() {
+	    return {
+	      sliderVal1: regionModifyColor.r,
+	      sliderVal2: regionModifyColor.g,
+	      sliderVal3: regionModifyColor.b,
+	      sliderVal4: regionModifyColor.a
+	    };
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    var _this7 = this;
+	
+	    e.preventDefault();
+	    this.props.form.validateFields(function (errors, values) {
+	      //var coloring = ((this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4) == '0,0,0,1') ? regionConfigModify_color : this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4;
+	      if (errors) _antd.message.warning('请检查错误', 2);else {
+	        var sendParams_region = {
+	          qybh: regionConfigModify_id,
+	          qymc: values.regionName_modify,
+	          qyfw: DR.DrawConfigLayer.DrawRegion.getValue() ? JSON.stringify(DR.DrawConfigLayer.DrawRegion.getValue()) : '',
+	          ylzd1: _this7.state.sliderVal1 + ',' + _this7.state.sliderVal2 + ',' + _this7.state.sliderVal3 + ',' + _this7.state.sliderVal4,
+	          crossid: DR.DrawConfigLayer.DrawRegion.getValue() ? DR.DrawConfigLayer.DrawRegion.calculateWithin().crossIds.toString() : '',
+	          roadid: DR.DrawConfigLayer.DrawRegion.getValue() ? DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString() : ''
 	        };
-	    },
-	    handleSubmit: function handleSubmit(e) {
-	        var _this7 = this;
-	
-	        e.preventDefault();
-	        this.props.form.validateFields(function (errors, values) {
-	            //if(!DR.DrawConfigLayer.DrawRegion.getValue()) alert('请先画图');
-	
-	            var coloring = _this7.state.sliderVal1 + ',' + _this7.state.sliderVal2 + ',' + _this7.state.sliderVal3 + ',' + _this7.state.sliderVal4 == '0,0,0,1' ? regionConfigModify_color : _this7.state.sliderVal1 + ',' + _this7.state.sliderVal2 + ',' + _this7.state.sliderVal3 + ',' + _this7.state.sliderVal4;
-	            var sendParams_region = {
-	                qybh: regionConfigModify_id,
-	                qymc: values.regionName_modify,
-	                qyfw: DR.DrawConfigLayer.DrawRegion.getValue() ? JSON.stringify(DR.DrawConfigLayer.DrawRegion.getValue()) : '',
-	                ylzd1: coloring, //this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4,
-	                crossid: DR.DrawConfigLayer.DrawRegion.getValue() ? DR.DrawConfigLayer.DrawRegion.calculateWithin().crossIds.toString() : '',
-	                roadid: DR.DrawConfigLayer.DrawRegion.getValue() ? DR.DrawConfigLayer.DrawRegion.calculateWithin().roadIds.toString() : ''
-	            };
-	            console.log('传给后台的值', sendParams_region);
-	            Ds.DataService('/trafficindex_zoneConfig/update.json', sendParams_region, function (resp) {
-	                if (resp.errorCode == 'success') {
-	                    _antd.message.success('保存成功', 5);
-	                    DR.drawFeatures.disable();
-	                    _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	                    lmsg.send('qypz', {
-	                        'data': 'success'
-	                    });
-	                } else {
-	                    _antd.message.error('保存失败' + resp.errorText, 5);
-	                }
-	            }, function (e) {
-	                console.log(e);
-	                _antd.message.error('后台传输错误！', 5);
+	        console.log('传给后台的值', sendParams_region);
+	        Ds.DataService('/trafficindex_zoneConfig/update.json', sendParams_region, function (resp) {
+	          if (resp.errorCode == 'success') {
+	            _antd.message.success('保存成功', 5);
+	            DR.drawFeatures.disable();
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            lmsg.send('qypz', {
+	              'data': 'success'
 	            });
+	            Ds.DataService('/trafficindex_map/ListZoneMap.json', null, function (resp) {
+	              CI.displayConfigLayer(resp.aaData);
+	            }, function (e) {
+	              console.log(e);
+	              _antd.message.error('后台传输错误！', 5);
+	            });
+	          } else {
+	            _antd.message.error('保存失败' + resp.errorText, 5);
+	          }
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
 	        });
-	    },
-	    componentDidMount: function componentDidMount() {},
-	    SliderVal1: function SliderVal1(value) {
-	        this.setState({
-	            sliderVal1: value
-	        });
-	    },
-	    SliderVal2: function SliderVal2(value) {
-	        this.setState({
-	            sliderVal2: value
-	        });
-	    },
-	    SliderVal3: function SliderVal3(value) {
-	        this.setState({
-	            sliderVal3: value
-	        });
-	    },
-	    SliderVal4: function SliderVal4(value) {
-	        this.setState({
-	            sliderVal4: value
-	        });
-	    },
-	    render: function render() {
-	        var getFieldDecorator = this.props.form.getFieldDecorator;
-	
-	
-	        return _react2.default.createElement(
-	            _antd.Form,
-	            {
-	                inline: true,
-	                onSubmit: this.handleSubmit },
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '区域名称' },
-	                getFieldDecorator('regionName_modify', {
-	                    initialValue: regionConfigModify_name
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请输入名称',
-	                    size: 'small',
-	                    type: 'regionName_modify',
-	                    id: 'regionName_modify',
-	                    name: 'regionName_modify' }))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '区域编号' },
-	                getFieldDecorator('regionNumber_modify', {})(_react2.default.createElement(
-	                    'p',
-	                    {
-	                        id: 'regionNumber_modify',
-	                        name: 'regionName_modify' },
-	                    regionConfigModify_id
-	                ))
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'R'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'G'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'B'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'A'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 7 },
-	                    '区域颜色预览:'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 10 },
-	                    _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ') ', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 5 },
-	                    _react2.default.createElement(
-	                        _antd.Button,
-	                        { type: 'primary', size: 'small', htmlType: 'submit' },
-	                        '保存'
-	                    )
-	                )
-	            )
-	        );
+	      }
+	    });
+	  },
+	  componentDidMount: function componentDidMount() {},
+	  SliderVal1: function SliderVal1(value) {
+	    this.setState({
+	      sliderVal1: value
+	    });
+	  },
+	  SliderVal2: function SliderVal2(value) {
+	    this.setState({
+	      sliderVal2: value
+	    });
+	  },
+	  SliderVal3: function SliderVal3(value) {
+	    this.setState({
+	      sliderVal3: value
+	    });
+	  },
+	  SliderVal4: function SliderVal4(value) {
+	    this.setState({
+	      sliderVal4: value
+	    });
+	  },
+	  checkName: function checkName(rule, value, callback) {
+	    if (!value || value.length == 0) {
+	      callback(new Error('请输入区域名称'));
+	    } else if (value.length > 10) {
+	      callback(new Error('区域名称太长'));
+	    } else {
+	      callback();
 	    }
+	  },
+	  render: function render() {
+	    var getFieldDecorator = this.props.form.getFieldDecorator;
+	
+	
+	    return _react2.default.createElement(
+	      _antd.Form,
+	      {
+	        inline: true,
+	        onSubmit: this.handleSubmit },
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '区域名称' },
+	        getFieldDecorator('regionName_modify', {
+	          initialValue: regionConfigModify_name,
+	          rules: [{
+	            required: true,
+	            validator: this.checkName
+	          }]
+	
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请输入名称',
+	          size: 'small',
+	          type: 'regionName_modify',
+	          id: 'regionName_modify',
+	          name: 'regionName_modify' }))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '区域编号' },
+	        getFieldDecorator('regionNumber_modify', {})(_react2.default.createElement(
+	          'p',
+	          {
+	            id: 'regionNumber_modify',
+	            name: 'regionName_modify' },
+	          regionConfigModify_id
+	        ))
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'R'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'G'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'B'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'A'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 7 },
+	          '区域颜色预览:'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 10 },
+	          _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ') ', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 5 },
+	          _react2.default.createElement(
+	            _antd.Button,
+	            { type: 'primary', size: 'small', htmlType: 'submit' },
+	            '保存'
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 	RegionConfigPanel_Modify = _antd.Form.create()(RegionConfigPanel_Modify);
 	
 	var OdConfigPanel_Modify = _react2.default.createClass({
-	    displayName: 'OdConfigPanel_Modify',
-	    getInitialState: function getInitialState() {
-	        return {
-	            sliderVal1: 0,
-	            sliderVal2: 0,
-	            sliderVal3: 0,
-	            sliderVal4: 1
+	  displayName: 'OdConfigPanel_Modify',
+	  getInitialState: function getInitialState() {
+	    return {
+	      sliderVal1: odModifyColor.r,
+	      sliderVal2: odModifyColor.g,
+	      sliderVal3: odModifyColor.b,
+	      sliderVal4: odModifyColor.a
+	    };
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    var _this8 = this;
+	
+	    e.preventDefault();
+	    this.props.form.validateFieldsAndScroll(function (errors, values) {
+	      //var coloring = ((this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4) == '0,0,0,1') ? odConfigModify_color : this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4;
+	      if (errors) _antd.message.warning('请检查错误', 2);else {
+	        var ODregionValue = DR.DrawConfigLayer.DrawOD.getValue();
+	        var sendParams_od = {
+	          qybh: odConfigModify_id,
+	          qymc: values.odName_modify,
+	          qyfw: ODregionValue ? JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()) : '',
+	          ylzd1: _this8.state.sliderVal1 + ',' + _this8.state.sliderVal2 + ',' + _this8.state.sliderVal3 + ',' + _this8.state.sliderVal4,
+	          crossId: ODregionValue ? DR.DrawConfigLayer.DrawOD.calculateWithin().toString() : '',
+	          point: ODregionValue ? '[' + DR.DrawConfigLayer.DrawOD.calculateCenterPoint().toString() + ']' : ''
 	        };
-	    },
-	    handleSubmit: function handleSubmit(e) {
-	        var _this8 = this;
+	        //if (sendParams_od.qymc.length !== 0) {
+	        Ds.DataService('/trafficindex_bodregionconfig/update.json', sendParams_od, function (resp) {
+	          if (resp.errorCode == 'success') {
+	            _antd.message.success('保存成功', 3);
+	            DR.drawFeatures.disable();
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            lmsg.send('odpz', {
+	              'data': 'success'
+	            });
+	            Ds.DataService('/trafficindex_map/listOdZoneMap.json', null, function (resp) {
+	              CI.displayConfigLayer(resp.aaData);
+	            }, function (e) {
+	              console.log(e);
+	              _antd.message.error('后台传输错误！', 5);
+	            });
+	          } else {
+	            _antd.message.error('保存失败' + resp.errorText, 5);
+	          }
+	        }, function (e) {
+	          console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	        });
+	      }
 	
-	        e.preventDefault();
-	        this.props.form.validateFieldsAndScroll(function (errors, values) {
-	            var coloring = _this8.state.sliderVal1 + ',' + _this8.state.sliderVal2 + ',' + _this8.state.sliderVal3 + ',' + _this8.state.sliderVal4 == '0,0,0,1' ? regionConfigModify_color : _this8.state.sliderVal1 + ',' + _this8.state.sliderVal2 + ',' + _this8.state.sliderVal3 + ',' + _this8.state.sliderVal4;
-	            var ODregionValue = DR.DrawConfigLayer.DrawOD.getValue();
-	
-	            var sendParams_od = {
-	                qybh: odConfigModify_id,
-	                qymc: values.odName_modify,
-	                qyfw: ODregionValue ? JSON.stringify(DR.DrawConfigLayer.DrawOD.getValue()) : '',
-	                ylzd1: coloring,
-	                crossId: ODregionValue ? DR.DrawConfigLayer.DrawOD.calculateWithin().toString() : '',
-	                point: ODregionValue ? '[' + DR.DrawConfigLayer.DrawOD.calculateCenterPoint().toString() + ']' : ''
-	            };
-	            if (sendParams_od.qymc.length !== 0) {
-	                Ds.DataService('/trafficindex_bodregionconfig/update.json', sendParams_od, function (resp) {
-	                    if (resp.errorCode == 'success') {
-	                        _antd.message.success('保存成功', 3);
-	                        DR.drawFeatures.disable();
-	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	                        lmsg.send('odpz', {
-	                            'data': 'success'
-	                        });
-	                    } else {
-	                        _antd.message.error('保存失败' + resp.errorText, 5);
-	                    }
-	                }, function (e) {
-	                    console.log(e);
-	                    _antd.message.error('后台传输错误！', 5);
-	                });
-	            } else _antd.message.error('区域名称不能为空', 3);
-	        });
-	    },
-	    componentDidMount: function componentDidMount() {},
-	    SliderVal1: function SliderVal1(value) {
-	        this.setState({
-	            sliderVal1: value
-	        });
-	    },
-	    SliderVal2: function SliderVal2(value) {
-	        this.setState({
-	            sliderVal2: value
-	        });
-	    },
-	    SliderVal3: function SliderVal3(value) {
-	        this.setState({
-	            sliderVal3: value
-	        });
-	    },
-	    SliderVal4: function SliderVal4(value) {
-	        this.setState({
-	            sliderVal4: value
-	        });
-	    },
-	    render: function render() {
-	        var getFieldDecorator = this.props.form.getFieldDecorator;
-	
-	
-	        return _react2.default.createElement(
-	            _antd.Form,
-	            {
-	                inline: true,
-	                onSubmit: this.handleSubmit },
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: 'OD名称' },
-	                getFieldDecorator('odName_modify', {
-	                    initialValue: odConfigModify_name
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请输入OD名称',
-	                    size: 'small',
-	                    type: 'odName_modify',
-	                    id: 'odName_modify',
-	                    name: 'odName_modify' }))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: 'OD编号' },
-	                getFieldDecorator('odNumber_modify', {})(_react2.default.createElement(
-	                    'p',
-	                    null,
-	                    odConfigModify_id
-	                ))
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'R'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'G'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'B'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 2 },
-	                    'A'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 12 },
-	                    _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 4 },
-	                    _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
-	                )
-	            ),
-	            _react2.default.createElement(
-	                _antd.Row,
-	                null,
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 7 },
-	                    '区域颜色预览:'
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 10 },
-	                    _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ') ', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
-	                ),
-	                _react2.default.createElement(
-	                    _antd.Col,
-	                    { span: 5 },
-	                    _react2.default.createElement(
-	                        _antd.Button,
-	                        { type: 'primary', size: 'small', htmlType: 'submit' },
-	                        '保存'
-	                    )
-	                )
-	            )
-	        );
+	      //} else message.error('区域名称不能为空', 3);
+	    });
+	  },
+	  componentDidMount: function componentDidMount() {},
+	  SliderVal1: function SliderVal1(value) {
+	    this.setState({
+	      sliderVal1: value
+	    });
+	  },
+	  SliderVal2: function SliderVal2(value) {
+	    this.setState({
+	      sliderVal2: value
+	    });
+	  },
+	  SliderVal3: function SliderVal3(value) {
+	    this.setState({
+	      sliderVal3: value
+	    });
+	  },
+	  SliderVal4: function SliderVal4(value) {
+	    this.setState({
+	      sliderVal4: value
+	    });
+	  },
+	  checkName: function checkName(rule, value, callback) {
+	    if (!value || value.length == 0) {
+	      callback(new Error('请输入区域名称'));
+	    } else if (value.length > 10) {
+	      callback(new Error('区域名称太长'));
+	    } else {
+	      callback();
 	    }
+	  },
+	  render: function render() {
+	    var getFieldDecorator = this.props.form.getFieldDecorator;
+	
+	
+	    return _react2.default.createElement(
+	      _antd.Form,
+	      {
+	        inline: true,
+	        onSubmit: this.handleSubmit },
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: 'OD名称' },
+	        getFieldDecorator('odName_modify', {
+	          initialValue: odConfigModify_name,
+	          rules: [{
+	            required: true,
+	            validator: this.checkName
+	          }]
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请输入OD名称',
+	          size: 'small',
+	          type: 'odName_modify',
+	          id: 'odName_modify',
+	          name: 'odName_modify' }))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: 'OD编号' },
+	        getFieldDecorator('odNumber_modify', {})(_react2.default.createElement(
+	          'p',
+	          null,
+	          odConfigModify_id
+	        ))
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'R'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal1, onChange: this.SliderVal1 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'G'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal2, onChange: this.SliderVal2 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'B'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 255, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 255, style: { marginLeft: '16px' }, value: this.state.sliderVal3, onChange: this.SliderVal3 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 2 },
+	          'A'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 12 },
+	          _react2.default.createElement(_antd.Slider, { min: 0, max: 1, step: 0.1, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 4 },
+	          _react2.default.createElement(_antd.InputNumber, { min: 0, max: 1, step: 0.1, style: { marginLeft: '16px' }, value: this.state.sliderVal4, onChange: this.SliderVal4 })
+	        )
+	      ),
+	      _react2.default.createElement(
+	        _antd.Row,
+	        null,
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 7 },
+	          '区域颜色预览:'
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 10 },
+	          _react2.default.createElement('div', { id: 'regionConfig_color', className: _UniqueSub2.default.colorpickerDiv, style: { backgroundColor: 'rgba(' + this.state.sliderVal1 + ',' + this.state.sliderVal2 + ',' + this.state.sliderVal3 + ',' + this.state.sliderVal4 + ') ', marginLeft: '5px', width: '100px', height: '20px', borderRadius: '5px' } })
+	        ),
+	        _react2.default.createElement(
+	          _antd.Col,
+	          { span: 5 },
+	          _react2.default.createElement(
+	            _antd.Button,
+	            { type: 'primary', size: 'small', htmlType: 'submit' },
+	            '保存'
+	          )
+	        )
+	      )
+	    );
+	  }
 	});
 	OdConfigPanel_Modify = _antd.Form.create()(OdConfigPanel_Modify);
 	
 	var RoadConfigPanel_Modify = _react2.default.createClass({
-	    displayName: 'RoadConfigPanel_Modify',
-	    getInitialState: function getInitialState() {
-	        return {
-	            options: []
+	  displayName: 'RoadConfigPanel_Modify',
+	  getInitialState: function getInitialState() {
+	    return {
+	      options: []
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    //路段配置下拉框内容
+	    Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
+	      selectionOptions_road = resp.aaData;
+	    }, function (e) {
+	      _antd.message.error('后台传输错误！', 5);
+	      console.log(e);
+	    });
+	  },
+	  handleSubmit: function handleSubmit(e) {
+	    e.preventDefault();
+	    this.props.form.validateFields(function (errors, values) {
+	      if (roadConfigModify_id) {
+	        var sendParam_road = {
+	          xgla: values.startSelect,
+	          xglb: values.endSelect,
+	          ldmc: values.roadName,
+	          coordinates: DR.DrawConfigLayer.DrawRoad.getValue() ? JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue()) : null,
+	          doubleroadid: roadConfigModify_id
 	        };
-	    },
-	    componentWillMount: function componentWillMount() {
-	        //路段配置下拉框内容
-	        Ds.DataService('/trafficindex_roadConfiguration/listSearchDoubleRoad.json', null, function (resp) {
-	            selectionOptions_road = resp.aaData;
+	        //if (!sendParam_road.coordinates) alert('请画图先');
+	        Ds.DataService('/trafficindex_roadConfiguration/updateDoubleSidedRoadInfo.json', sendParam_road, function (resp) {
+	          if (resp.errorCode == 'success') {
+	            _antd.message.success('保存成功', 5);
+	            DR.drawFeatures.disable();
+	            _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
+	            lmsg.send('ldpz', {
+	              'data': 'success'
+	            });
+	            Ds.DataService('/trafficindex_map/listSxRoadMap.json', null, function (resp) {
+	
+	              CI.displayConfigLayer_road(resp.aaData);
+	            }, function (e) {
+	              _antd.message.error('后台传输错误！', 3);
+	              console.log(e);
+	            });
+	          } else {
+	            _antd.message.error('保存失败' + resp.errorText, 5);
+	          }
 	        }, function (e) {
-	            _antd.message.error('后台传输错误！', 5);
-	            console.log(e);
+	          _antd.message.error('后台传输错误！', 5);
+	          console.log(e);
 	        });
-	    },
-	    handleSubmit: function handleSubmit(e) {
-	        e.preventDefault();
-	        this.props.form.validateFields(function (errors, values) {
-	            if (roadConfigModify_id) {
-	                var sendParam_road = {
-	                    xgla: values.startSelect,
-	                    xglb: values.endSelect,
-	                    ldmc: values.roadName,
-	                    coordinates: DR.DrawConfigLayer.DrawRoad.getValue() ? JSON.stringify(DR.DrawConfigLayer.DrawRoad.getValue()) : null,
-	                    doubleroadid: roadConfigModify_id
-	                };
-	                //if (!sendParam_road.coordinates) alert('请画图先');
-	                Ds.DataService('/trafficindex_roadConfiguration/updateRoadConfigInfoByComplexRoad.json', sendParam_road, function (resp) {
-	                    if (resp.errorCode == 'success') {
-	                        _antd.message.success('保存成功', 5);
-	                        DR.drawFeatures.disable();
-	                        _reactDom2.default.unmountComponentAtNode(document.getElementById("configPanel"));
-	                        lmsg.send('ldpz', {
-	                            'data': 'success'
-	                        });
-	                    } else {
-	                        _antd.message.error('保存失败' + resp.errorText, 5);
-	                    }
-	                }, function (e) {
-	                    _antd.message.error('后台传输错误！', 5);
-	                    console.log(e);
-	                });
-	            }
-	        });
-	    },
-	    render: function render() {
-	        var getFieldDecorator = this.props.form.getFieldDecorator;
-	
-	
-	        var RoadCrossOptions = selectionOptions_road.map(function (item) {
-	            return _react2.default.createElement(
-	                Option,
-	                {
-	                    key: item.id,
-	                    value: item.id },
-	                item.name
-	            );
-	        });
-	
-	        return _react2.default.createElement(
-	            _antd.Form,
-	            {
-	                inline: true,
-	                onSubmit: this.handleSubmit },
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '路段名称' },
-	                getFieldDecorator('roadName', {
-	                    rules: [{
-	                        required: true,
-	                        message: '请填写路段名称'
-	                    }],
-	                    initialValue: roadConfigModify_name
-	                })(_react2.default.createElement(_antd.Input, {
-	                    placeholder: '请输入路段名称',
-	                    size: 'small',
-	                    type: 'roadName',
-	                    id: 'roadName',
-	                    name: 'roadName' }))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '开始路口', style: { marginLeft: '10px' } },
-	                getFieldDecorator('startSelect', {
-	                    rules: [{
-	                        required: false,
-	                        message: '请选择开始路口'
-	                    }]
-	                })(_react2.default.createElement(
-	                    _antd.Select,
-	                    {
-	                        showSearch: true,
-	                        optionFilterProp: 'children',
-	                        notFoundContent: '未找到相应信息',
-	                        placeholder: '选择开始路口',
-	                        style: { width: 150 },
-	                        size: 'small',
-	                        getPopupContainer: function getPopupContainer() {
-	                            return document.getElementById('configPanel');
-	                        } },
-	                    RoadCrossOptions
-	                ))
-	            ),
-	            _react2.default.createElement(
-	                FormItem,
-	                { label: '结束路口', style: { marginLeft: '10px' } },
-	                getFieldDecorator('endSelect', {
-	                    rules: [{
-	                        required: false,
-	                        message: '请选择结束路口'
-	                    }]
-	                })(_react2.default.createElement(
-	                    _antd.Select,
-	                    {
-	                        showSearch: true,
-	                        optionFilterProp: 'children',
-	                        notFoundContent: '未找到相应信息',
-	                        placeholder: '选择结束路口',
-	                        style: { width: 150 },
-	                        size: 'small',
-	                        getPopupContainer: function getPopupContainer() {
-	                            return document.getElementById('configPanel');
-	                        } },
-	                    RoadCrossOptions
-	                ))
-	            ),
-	            _react2.default.createElement(
-	                _antd.Button,
-	                {
-	                    type: 'primary',
-	                    size: 'small',
-	                    htmlType: 'submit' },
-	                '保存'
-	            )
-	        );
+	      }
+	    });
+	  },
+	  checkName: function checkName(rule, value, callback) {
+	    if (!value || value.length == 0) {
+	      callback(new Error('请输入区域名称'));
+	    } else if (value.length > 10) {
+	      callback(new Error('区域名称太长'));
+	    } else {
+	      callback();
 	    }
+	  },
+	  render: function render() {
+	    var getFieldDecorator = this.props.form.getFieldDecorator;
+	
+	
+	    var RoadCrossOptions = selectionOptions_road.map(function (item) {
+	      return _react2.default.createElement(
+	        Option,
+	        {
+	          key: item.id,
+	          value: item.id },
+	        item.name
+	      );
+	    });
+	
+	    return _react2.default.createElement(
+	      _antd.Form,
+	      {
+	        inline: true,
+	        onSubmit: this.handleSubmit },
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '路段名称' },
+	        getFieldDecorator('roadName', {
+	          rules: [{
+	            required: true,
+	            validator: this.checkName
+	          }],
+	          initialValue: roadConfigModify_name
+	        })(_react2.default.createElement(_antd.Input, {
+	          placeholder: '请输入路段名称',
+	          size: 'small',
+	          type: 'roadName',
+	          id: 'roadName',
+	          name: 'roadName' }))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '开始路口', style: { marginLeft: '10px' } },
+	        getFieldDecorator('startSelect', {
+	          rules: [{
+	            required: false,
+	            message: '请选择开始路口'
+	          }]
+	        })(_react2.default.createElement(
+	          _antd.Select,
+	          {
+	            showSearch: true,
+	            optionFilterProp: 'children',
+	            notFoundContent: '未找到相应信息',
+	            placeholder: '选择开始路口',
+	            style: { width: 150 },
+	            size: 'small',
+	            getPopupContainer: function getPopupContainer() {
+	              return document.getElementById('configPanel');
+	            } },
+	          RoadCrossOptions
+	        ))
+	      ),
+	      _react2.default.createElement(
+	        FormItem,
+	        { label: '结束路口', style: { marginLeft: '10px' } },
+	        getFieldDecorator('endSelect', {
+	          rules: [{
+	            required: false,
+	            message: '请选择结束路口'
+	          }]
+	        })(_react2.default.createElement(
+	          _antd.Select,
+	          {
+	            showSearch: true,
+	            optionFilterProp: 'children',
+	            notFoundContent: '未找到相应信息',
+	            placeholder: '选择结束路口',
+	            style: { width: 150 },
+	            size: 'small',
+	            getPopupContainer: function getPopupContainer() {
+	              return document.getElementById('configPanel');
+	            } },
+	          RoadCrossOptions
+	        ))
+	      ),
+	      _react2.default.createElement(
+	        _antd.Button,
+	        {
+	          type: 'primary',
+	          size: 'small',
+	          htmlType: 'submit' },
+	        '保存'
+	      )
+	    );
+	  }
 	});
 	RoadConfigPanel_Modify = _antd.Form.create()(RoadConfigPanel_Modify);
 	
 	exports.default = ConfigSub;
 
 /***/ },
-/* 243 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31303,7 +31922,7 @@
 	
 	var action = _interopRequireWildcard(_searchAction);
 	
-	var _rbox = __webpack_require__(244);
+	var _rbox = __webpack_require__(251);
 	
 	var _rbox2 = _interopRequireDefault(_rbox);
 	
@@ -31311,11 +31930,11 @@
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _SearchResults = __webpack_require__(247);
+	var _SearchResults = __webpack_require__(254);
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
-	var _CraResults = __webpack_require__(250);
+	var _CraResults = __webpack_require__(257);
 	
 	var _CraResults2 = _interopRequireDefault(_CraResults);
 	
@@ -31327,13 +31946,15 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
+	var _drawFeatures = __webpack_require__(240);
+	
+	var DR = _interopRequireWildcard(_drawFeatures);
+	
 	var _antd = __webpack_require__(108);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -31405,11 +32026,28 @@
 	    }, {
 	        key: 'crsBtnClick',
 	        value: function crsBtnClick(layerName, t) {
+	            var self = this;
 	            this.setState({
 	                initCraResults: true,
 	                contraction: false
 	            });
 	            this.props.fetchCRAList(layerName, t);
+	
+	            var audio = document.getElementById("mp3Player");
+	            Ds.DataService('/trafficindex_cross/panduanIndex.json', {
+	                bs: layerName
+	            }, function (resp) {
+	                if (resp.aaData == 0) {
+	                    audio.currentTime = 0;
+	                    audio.play();
+	                } else if (resp.aaData == 1) {
+	                    audio.pause();
+	                    audio.currentTime = 0;
+	                }
+	            }, function (e) {
+	                console.log(e);
+	                _antd.message.error('后台传输错误');
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -31429,14 +32067,14 @@
 	                title: '拥堵名称',
 	                dataIndex: 'Name'
 	            }, {
-	                title: '畅通指数',
-	                dataIndex: 'ctjls'
+	                title: '拥堵时间',
+	                dataIndex: 'ydjls'
 	            }, {
-	                title: '缓行指数',
+	                title: '缓行时间',
 	                dataIndex: 'hxjls'
 	            }, {
-	                title: '拥堵指数',
-	                dataIndex: 'ydjls'
+	                title: '畅通时间',
+	                dataIndex: 'ctjls'
 	            }];
 	
 	            var sectionPanel = this.state.initCraResults ? [_react2.default.createElement(
@@ -31494,15 +32132,31 @@
 	                { id: 'rbox', className: _rbox2.default.rbox },
 	                _react2.default.createElement(
 	                    'div',
-	                    { id: 'navBody', className: this.state.contraction ? _rbox2.default.navBody_none : _rbox2.default.navBody_display },
+	                    null,
+	                    _react2.default.createElement(
+	                        'audio',
+	                        { id: 'mp3Player' },
+	                        _react2.default.createElement('source', { src: _imagePath + '/sweet.mp3', type: 'audio/mp3' })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    {
+	                        id: 'navBody',
+	                        className: this.state.contraction ? _rbox2.default.navBody_none : _rbox2.default.navBody_display },
 	                    sectionPanel
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { id: 'contractionBtn', className: _rbox2.default.rboxPanCtrl, onClick: function onClick() {
+	                    {
+	                        id: 'contractionBtn',
+	                        className: _rbox2.default.rboxPanCtrl,
+	                        onClick: function onClick() {
 	                            return _this2.contractionBtnClick();
 	                        } },
-	                    _react2.default.createElement('i', { className: _rbox2.default.fa + ' ' + _rbox2.default.faChevronUp, id: 'contractionInsideBtnUp' })
+	                    _react2.default.createElement('i', {
+	                        className: _rbox2.default.fa + ' ' + _rbox2.default.faChevronUp,
+	                        id: 'contractionInsideBtnUp' })
 	                )
 	            );
 	        }
@@ -31512,22 +32166,24 @@
 	            //self的是代表整个component的this，如果是lmsg的，就错了
 	            var self = this;
 	            lmsg.subscribe('crsBtnClick', function (data) {
+	                _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
 	                console.log('crsBtnClick', data);
 	                self.setState({
 	                    contraction: false,
 	                    initCraResults: true
 	                });
 	                self.crsBtnClick(data.params, data.time);
-	                _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
+	
 	                localStorage.removeItem('crsBtnClick');
 	            });
 	
 	            lmsg.subscribe('jrlzbbSend', function (data) {
 	                console.log('jrlzbbSend', data);
+	                _reactDom2.default.unmountComponentAtNode(document.getElementById("presetBox"));
 	                Ds.DataService('/trafficindex_map/initMap.json', {
 	                    querytime: data.time
 	                }, function (resp) {
-	                    CI.displayCommonLayer(resp.aaData);
+	                    CI.initMapLayer(resp.aaData);
 	                    self.setState({
 	                        contraction: true,
 	                        initCraResults: false,
@@ -31537,6 +32193,7 @@
 	                    console.log(e);
 	                    _antd.message.error('后台传输错误', 5);
 	                });
+	
 	                localStorage.removeItem('jrlzbbSend');
 	            });
 	
@@ -31545,19 +32202,20 @@
 	                self.setState({
 	                    cfydTabledata: []
 	                });
-	                if (data.isCross == 1) {
+	                if (data.isCross == "1") {
 	                    //路口
 	                    Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
 	                        if (!resp.aaData) _antd.message.warning('没有相应信息', 3);else {
 	
 	                            for (var i = 0; i < resp.aaData.length; i++) {
-	                                cfydTabledata.push(_defineProperty({
+	                                cfydTabledata.push({
 	                                    No: i + 1,
 	                                    Name: resp.aaData[i].crossName,
 	                                    ctjls: resp.aaData[i].ctjls,
-	                                    ydjls: resp.aaData[i].hxjls
-	                                }, 'ydjls', resp.aaData[i].ydjls));
+	                                    hxjls: resp.aaData[i].hxjls,
+	                                    ydjls: resp.aaData[i].ydjls
+	                                });
 	                            }
 	                            self.setState({
 	                                initCraResults: false,
@@ -31570,19 +32228,20 @@
 	                        console.log(e);
 	                        _antd.message.error('后台传输错误', 5);
 	                    });
-	                } else if (data.isCross == 2) {
+	                } else if (data.isCross == "2") {
 	                    //路段
 	                    Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
 	                        if (!resp.aaData) _antd.message.warning('没有相应信息', 3);else {
 	
 	                            for (var i = 0; i < resp.aaData.length; i++) {
-	                                cfydTabledata.push(_defineProperty({
+	                                cfydTabledata.push({
 	                                    No: i + 1,
 	                                    Name: resp.aaData[i].roadName,
 	                                    ctjls: resp.aaData[i].ctjls,
-	                                    ydjls: resp.aaData[i].hxjls
-	                                }, 'ydjls', resp.aaData[i].ydjls));
+	                                    hxjls: resp.aaData[i].hxjls,
+	                                    ydjls: resp.aaData[i].ydjls
+	                                });
 	                            }
 	                            self.setState({
 	                                initCraResults: false,
@@ -31599,13 +32258,13 @@
 	                localStorage.removeItem('cfxydBtnClick');
 	            });
 	
-	            lmsg.subscribe('locating', function () {
+	            lmsg.subscribe('locating_start', function () {
 	                self.setState({
 	                    contraction: true,
 	                    initCraResults: false,
 	                    isCFYDpanel: false
 	                });
-	                localStorage.removeItem('locating');
+	                localStorage.removeItem('locating_start');
 	            });
 	            lmsg.subscribe('tracktaxi', function () {
 	                self.setState({
@@ -31615,30 +32274,70 @@
 	                });
 	                localStorage.removeItem('tracktaxi');
 	            });
-	            lmsg.subscribe('ODClick', function (data) {
+	            lmsg.subscribe('ODClick_start', function (data) {
 	                self.setState({
 	                    contraction: true,
 	                    initCraResults: false,
 	                    isCFYDpanel: false
 	                });
-	                localStorage.removeItem('ODClick');
+	                localStorage.removeItem('ODClick_start');
 	            });
-	            lmsg.subscribe('peizhi', function (data) {
+	            lmsg.subscribe('peizhi_start', function (data) {
 	                self.setState({
 	                    contraction: true,
 	                    initCraResults: false,
 	                    isCFYDpanel: false
 	                });
-	                localStorage.removeItem('peizhi');
+	                localStorage.removeItem('peizhi_start');
 	            });
-	            lmsg.subscribe('hbjjrToMap', function (data) {
+	            lmsg.subscribe('hbjjrToMap_start', function (data) {
 	                self.setState({
 	                    contraction: true,
 	                    initCraResults: false,
 	                    isCFYDpanel: false
 	                });
-	                localStorage.removeItem('hbjjrToMap');
+	                localStorage.removeItem('hbjjrToMap_start');
 	            });
+	
+	            /*   lmsg.subscribe('hbjjrToMap_start', (data) => {
+	                   self.setState({
+	                       contraction: true,
+	                       initCraResults: false,
+	                       isCFYDpanel: false
+	                   });
+	                   localStorage.removeItem('hbjjrToMap_start');
+	               });*/
+	            //停车场页面逻辑/监听
+	            lmsg.subscribe('carpark_init', function () {
+	                console.log('carpark_init');
+	                self.setState({
+	                    contraction: true,
+	                    initCraResults: false,
+	                    isCFYDpanel: false
+	                });
+	                _antd.message.success('停车场页面');
+	                DR.drawFeatures.disable();
+	                CI.displayCarParkLayer();
+	                localStorage.removeItem('carpark_init');
+	            });
+	            lmsg.subscribe('carpark_start', function () {
+	                console.log('carpark_start');
+	                _antd.message.success('请点击右侧工具来进行定位', 10);
+	                DR.carParkLocating();
+	                localStorage.removeItem('carpark_start');
+	            });
+	            lmsg.subscribe('carpark_tr', function (data) {
+	                console.log('carpark_tr', data);
+	                CI.selectCarparkById(data.id);
+	                localStorage.removeItem('carpark_tr');
+	            });
+	            /*setTimeout(function() {
+	                CI.displayCarParkLayer();
+	                setTimeout(function() {
+	                    CI.selectCarparkById('P0019');
+	                    DR.carParkLocating();
+	                }, 5000)
+	              }, 2000)*/
 	        }
 	    }]);
 	
@@ -31654,16 +32353,16 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, action)(Rbox);
 
 /***/ },
-/* 244 */
+/* 251 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"rbox":"_2llNwVAGqDnhF4R1h3Zbm0","rboxSearchPanCtrl":"sFUUVXbHaLALSm4q7vCq-","rboxSearchPanCtrl_none":"_33d8lw-jW4ai9FG64eZ9ww sFUUVXbHaLALSm4q7vCq-","rboxSearchPanCtrl_display":"IPeljpTu3qd4XLKM1pLzg sFUUVXbHaLALSm4q7vCq-","navBody_display":"_1R_Edmj22xLahYtwnxPeN0","navBody_none":"_2W-ZMEGCJKS84iLfLfVom0","rboxPanels":"_3o_YCjzp4mJXJgrCZNRvnH","rboxPanCtrl":"_1gvDLBF1Z5F0zGrYEZvlGi","fa":"sd4QPqnJs3x-nNxJwTPlR","faChevronUp":"_3D8FssioAMIXT4EmtHhofX","nav":"_3JBIUlb5GasfGhTK5GMe9Y","navLi":"_3lvCjyESKb74vmNE1uFE5S","craLi":"_1wSq2-NcWDmN0AZ03ocdG4 _3lvCjyESKb74vmNE1uFE5S","navTxt":"_1ofkmpDkq-90qIuuGxSEPK","resultPanel":"tc4cTEpC8yn8zHWBwGt9L","rboxPanel2":"_3nnZ53mW6wLdGl31YWBkQB"};
 
 /***/ },
-/* 245 */,
-/* 246 */,
-/* 247 */
+/* 252 */,
+/* 253 */,
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31678,7 +32377,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _SearchResults = __webpack_require__(248);
+	var _SearchResults = __webpack_require__(255);
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
@@ -31940,15 +32639,15 @@
 	exports.default = SearchResults;
 
 /***/ },
-/* 248 */
+/* 255 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"drop_button":"_3xAJYEmGKcooe-b84qX1C","buttonPulse":"_1RUgxiOWYEdorZxWfY8l0S","content":"dVixhqaCII1FYUUdJRcq6","content_header":"_35QXSfwsZUjx1jkwG4OhNZ","content_split_line":"_2kN5CyRridIuYRNOT-iGA8","bordered":"gN5dCjVJyKcSddELwoVNI","highlight":"_3BIq6b4JLGi3kQmdnx2JTg","font_color1":"_7OR1cc3D4C2MDLZQw6R2s","font_color2":"_1-7MKJtxt23zsyLuLBwFBj","font_color3":"_1ftUlVuGQWZAKjV6VkokJ4","font_color4":"_1s0wX0nMG7GzWnOiKo_Q7G","font_color5":"_3ZaaJ9t-UDCU90xfHf29rV"};
 
 /***/ },
-/* 249 */,
-/* 250 */
+/* 256 */,
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31963,7 +32662,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _craResults = __webpack_require__(251);
+	var _craResults = __webpack_require__(258);
 	
 	var _craResults2 = _interopRequireDefault(_craResults);
 	
@@ -31993,7 +32692,8 @@
 	
 	var children_rboxkey = null,
 	    last_Path = null,
-	    JtzsList = null;
+	    JtzsList = null,
+	    rboxkey1 = null;
 	var d = new Date();
 	var month = d.getMonth() + 1;
 	
@@ -32008,74 +32708,69 @@
 	        _this.state = {
 	            tableContent: [],
 	            t: undefined,
-	            pageNumber: 1
+	            pageNumber: 1,
+	            rboxkey12: null
 	        };
 	        _this.pagination = _this.pagination.bind(_this);
+	        _this.onKeyDown = _this.onKeyDown.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(CraResults, [{
 	        key: 'pagination',
 	        value: function pagination(page) {
-	            var _this2 = this;
-	
-	            var rboxkey1 = this.props.children;
+	            var rboxkey1 = this.state.rboxkey12;
 	            var self = this;
 	            var sendParam2 = null;
 	            this.setState({
 	                pageNumber: page
-	            }
-	            /*, () => {
-	                        onSetNumber();
-	                    }*/
-	            );
-	            var onSetNumber = function onSetNumber() {
-	                if (_this2.state.t == undefined) {
-	                    var myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-	                    if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-	                    sendParam2 = {
-	                        queryTime: myday,
-	                        pageIndex: page,
-	                        pageSize: 10,
-	                        isFirst: false
-	                    };
-	                } else if (_this2.state.t && _this2.state.t.flags == null) {
-	                    if (_this2.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (_this2.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (_this2.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-	                    sendParam2 = {
-	                        queryTime: _this2.state.t.sj,
-	                        pageIndex: page,
-	                        pageSize: 10,
-	                        isFirst: false
-	                    };
-	                } else {
-	                    var _myday = _this2.state.t.sj;
-	                    var YWD = _this2.state.t.flags;
-	                    sendParam2 = {
-	                        date: _myday,
-	                        flag: YWD,
-	                        pageIndex: page,
-	                        pageSize: 10,
-	                        isFirst: false
-	                    };
-	                    if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
-	                }
+	            });
 	
-	                Ds.DataService(last_Path, sendParam2, function (resp) {
-	                    self.setState({
-	                        tableContent: resp.aaData.jtzsPage.jtzsList
-	                    });
-	                }, function (e) {
-	                    console.log(e);
+	            if (this.state.t == undefined) {
+	                var myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+	                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+	                sendParam2 = {
+	                    queryTime: myday,
+	                    pageIndex: page,
+	                    pageSize: 10,
+	                    isFirst: false
+	                };
+	            } else if (this.state.t && this.state.t.flags == null) {
+	                if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+	                sendParam2 = {
+	                    queryTime: this.state.t.sj,
+	                    pageIndex: page,
+	                    pageSize: 10,
+	                    isFirst: false
+	                };
+	            } else {
+	                var _myday = this.state.t.sj;
+	                var YWD = this.state.t.flags;
+	                sendParam2 = {
+	                    date: _myday,
+	                    flag: YWD,
+	                    pageIndex: page,
+	                    pageSize: 10,
+	                    isFirst: false
+	                };
+	                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
+	            }
+	
+	            Ds.DataService(last_Path, sendParam2, function (resp) {
+	                self.setState({
+	                    tableContent: resp.aaData.jtzsPage.jtzsList
 	                });
-	            };
-	            onSetNumber();
+	            }, function (e) {
+	                console.log(e);
+	            });
 	        }
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var self = this;
 	            this.setState({
-	                tableContent: JtzsList.jtzsList
+	                tableContent: JtzsList.jtzsList,
+	                rboxkey12: this.props.children
 	            });
 	            lmsg.subscribe('crsBtnClick', function (data) {
 	                self.setState({
@@ -32089,8 +32784,25 @@
 	        value: function componentWillReceiveProps(nextProps) {
 	            this.setState({
 	                tableContent: nextProps.jtzsPage.jtzsList,
-	                pageNumber: 1
+	                pageNumber: 1,
+	                rboxkey12: nextProps.children
 	            });
+	        }
+	    }, {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            //this.setState({rboxkey12})
+	        }
+	    }, {
+	        key: 'onKeyDown',
+	        value: function onKeyDown(e) {
+	            if (e.keyCode == 13) {
+	                this.pagination(document.getElementById('inputnn').value * 1);
+	            }
+	            if (document.getElementById('inputnn').value * 1 > Math.ceil(JtzsList.total / 10)) {
+	                _antd.message.warning('输入页数过多');
+	                this.pagination(Math.ceil(JtzsList.total / 10));
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -32245,7 +32957,7 @@
 	                            _react2.default.createElement(
 	                                _antd.Col,
 	                                { span: 2 },
-	                                _react2.default.createElement(_antd.InputNumber, { style: { width: '50px' }, size: 'small', min: 1, max: JtzsList.total, defaultValue: this.state.pageNumber, value: this.state.pageNumber, onChange: this.pagination })
+	                                _react2.default.createElement(_antd.InputNumber, { id: 'inputnn', style: { width: '50px' }, size: 'small', min: 1, max: JtzsList.total, defaultValue: this.state.pageNumber, value: this.state.pageNumber, onKeyDown: this.onKeyDown, onChange: this.pagination })
 	                            )
 	                        )
 	                    )
@@ -32263,10 +32975,10 @@
 	    function TableRow() {
 	        _classCallCheck(this, TableRow);
 	
-	        var _this3 = _possibleConstructorReturn(this, (TableRow.__proto__ || Object.getPrototypeOf(TableRow)).call(this));
+	        var _this2 = _possibleConstructorReturn(this, (TableRow.__proto__ || Object.getPrototypeOf(TableRow)).call(this));
 	
-	        _this3.onClickRow = _this3.onClickRow.bind(_this3);
-	        return _this3;
+	        _this2.onClickRow = _this2.onClickRow.bind(_this2);
+	        return _this2;
 	    }
 	
 	    _createClass(TableRow, [{
@@ -32394,15 +33106,15 @@
 	exports.default = CraResults;
 
 /***/ },
-/* 251 */
+/* 258 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"traffic_tag":"_2QJnB2jDtlx59N8rYhJQDp","smooth_jam":"_3UQw6znoq4z3hf_bujtVol","smooth_jam1":"_3zAIgTfi8UfrmGM4R3aP0l","smooth_jam2":"Gb742l6idHSLTzBs0NEi1","separator":"_1vnoXI7SYPJGHe59VgO5pl","separator_LV0":"_1wQmKz2VoDC9RlW7JOAq9N _1vnoXI7SYPJGHe59VgO5pl","separator_LV1":"_3H-rd-gbiQ1LyC2FVCtpAI _1vnoXI7SYPJGHe59VgO5pl","separator_LV2":"_3rPkbBz3J6OrSlgIOWvBYq _1vnoXI7SYPJGHe59VgO5pl","separator_LV3":"_1auAliDqRNL4-AXamKQH58 _1vnoXI7SYPJGHe59VgO5pl","separator_LV4":"_36HpZPni8e1S5mFFlk6S6f _1vnoXI7SYPJGHe59VgO5pl","separator_LV5":"_31MmFVuVPDDfvye5OUW5VU _1vnoXI7SYPJGHe59VgO5pl","smooth_jam_num":"_134rXSuFrb4OYv56FuxPwA","smooth_jam_num2":"X7lzYQQ-O5i15gDzdDX3H","smooth_jam_num3":"_2k0MLw45uibr10eS_dLCTL","smooth_jam_num4":"_3-fRQBRu4UuMkTjtpbRiEM","traffic_level_li":"aqLdrHJj6cVGxytDPdSDE","traffic_level_1":"_3ZBO6tWqT7ZT_nJgPRsI7r","traffic_level_2":"scQFseyUg8d9RrX68H19Q","traffic_level_3":"jxIFuPMZwGEFdf8sCzBpr aqLdrHJj6cVGxytDPdSDE","traffic_level_4":"_2s7XNHzKSz0WRfATTpzQML aqLdrHJj6cVGxytDPdSDE","traffic_level_5":"_2GnY7zN8lv0KqcKZUWzuSE aqLdrHJj6cVGxytDPdSDE","table":"_1q3WE4u-kmR7C5mX_-gzHm","smooth_jam_rank":"qToumJB2gXsDBeUzyHlYr","smooth_jam_num_name":"_1ESFhCXVWVXYbQiOOOFVH_","smooth_jam_num_index":"_3kePYNBcBMqLCkhEY-hUMx","smooth_jam_num_hierarchy":"_1edwuPGtcyoo02IbZVrk8V","table_rows":"_2_Kny_cVYENe6CjUCyMRyx","row":"_3Lmq-mhslhkjqMavWHlbZ_","rank":"_1TSHcWSZHyZzFV1STuXfqt","name":"_2NPYSAwgx8m1UihCw0GybB","index":"v3CkNskKlV1o9UNGwr-lc","hierarchy":"_3uabfAoG7Rqgug4ki9iYQS","pager":"_2hpJLn6FTwtQ6EDixh_OQv"};
 
 /***/ },
-/* 252 */,
-/* 253 */
+/* 259 */,
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32425,7 +33137,7 @@
 	
 	var _esriLeaflet2 = _interopRequireDefault(_esriLeaflet);
 	
-	var _leafletDraw = __webpack_require__(234);
+	var _leafletDraw = __webpack_require__(241);
 	
 	var LDraw = _interopRequireWildcard(_leafletDraw);
 	
@@ -32467,13 +33179,13 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var map = _leaflet2.default.map("map", {
-	                center: [28.31, 121.37],
-	                zoom: 12,
+	                center: _mapConfig.center,
+	                zoom: _mapConfig.defaultZoom,
+	                minZoom: _mapConfig.minZoom,
+	                maxZoom: _mapConfig.maxZoom,
 	                drawControl: false,
-	                zoomControl: false
-	
-	                //visualClick: false,
-	
+	                zoomControl: false,
+	                maxBounds: _leaflet2.default.latLngBounds(_leaflet2.default.latLng(_mapConfig.bounds.minx, _mapConfig.bounds.miny), _leaflet2.default.latLng(_mapConfig.bounds.maxx, _mapConfig.bounds.maxy))
 	
 	            });
 	            _leaflet2.default.esri.tiledMapLayer({
@@ -32491,7 +33203,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 254 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32562,7 +33274,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 255 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32611,7 +33323,7 @@
 	exports.default = TrafficGuidance;
 
 /***/ },
-/* 256 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32622,11 +33334,11 @@
 	
 	var _redux = __webpack_require__(74);
 	
-	var _reduxThunk = __webpack_require__(257);
+	var _reduxThunk = __webpack_require__(264);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _index = __webpack_require__(258);
+	var _index = __webpack_require__(265);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -32642,7 +33354,7 @@
 	exports.default = initStore;
 
 /***/ },
-/* 257 */
+/* 264 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32670,7 +33382,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 258 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32681,11 +33393,11 @@
 	
 	var _redux = __webpack_require__(74);
 	
-	var _search = __webpack_require__(259);
+	var _search = __webpack_require__(266);
 	
 	var _search2 = _interopRequireDefault(_search);
 	
-	var _cra = __webpack_require__(260);
+	var _cra = __webpack_require__(267);
 	
 	var _cra2 = _interopRequireDefault(_cra);
 	
@@ -32699,7 +33411,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 259 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32740,7 +33452,7 @@
 	});
 
 /***/ },
-/* 260 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32753,7 +33465,7 @@
 	
 	var _util = __webpack_require__(106);
 	
-	var _craAction = __webpack_require__(261);
+	var _craAction = __webpack_require__(268);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -32766,7 +33478,7 @@
 	});
 
 /***/ },
-/* 261 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

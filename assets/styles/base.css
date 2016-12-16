@@ -3,7 +3,7 @@ html, body, #map {
             height: 100%;
             margin: 0;
             padding: 0;
-            background-color: slategrey;
+            background-color: #fff;
             position: absolute;
 }
 
@@ -374,3 +374,26 @@ html, body, #map {
 				filter: alpha(opacity=0);
 			}
 		}
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+  /*  background: rgba(0,0,0,0);
+    box-shadow:0 0 0 0 rgba(0,0,0,0);*/
+}
+
+._epHidden{display:none!important;}
+/*@media print {
+	html {padding: 0px!important;}
+}*/
+
+.parking_logoImg{
+	    float: left;
+    width: 18px;
+    height: 18px;
+    display:inline;
+}
+.carParkPopup .leaflet-popup-content-wrapper {
+	border-radius: 2px;
+	min-width: 150px;
+/*	background-color:'blue';*/
+	height:100px;
+}

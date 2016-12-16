@@ -36,7 +36,7 @@ class Search extends React.Component {
                 <header className={styles.searchbox}>
                     <img className={styles.logo} src={logoSrc} draggable="false"/>
                     <div className={styles.iptbox}>
-                        <input type="text" ref="searchVal" id="searchipt" onKeyDown={this.onKeyDown} placeholder="搜索位置、公交站、地铁站" className={styles.searchipt}/>
+                        <input type="text" ref="searchVal" id="searchipt" onKeyDown={this.onKeyDown} placeholder="搜索相关路口，路段，区域指数" className={styles.searchipt}/>
                     </div>
                     <span id="separator" className={styles.separator}></span>
                     <div className={styles.direntry} id="searchbtn" title="搜索" onClick={()=>this.update()}>

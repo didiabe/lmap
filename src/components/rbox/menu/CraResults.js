@@ -6,12 +6,14 @@ import {
     Pagination,
     InputNumber,
     Col,
-    Row
+    Row,
+    message
 } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 var children_rboxkey = null,
     last_Path = null,
-    JtzsList = null;
+    JtzsList = null,
+    rboxkey1 = null;
 let d = new Date();
 let month = d.getMonth() + 1;
 class CraResults extends React.Component {
@@ -20,73 +22,70 @@ class CraResults extends React.Component {
         this.state = {
             tableContent: [],
             t: undefined,
-            pageNumber: 1
+            pageNumber: 1,
+            rboxkey12: null
         }
         this.pagination = this.pagination.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
     pagination(page) {
-        let rboxkey1 = this.props.children;
+        let rboxkey1 = this.state.rboxkey12;
         let self = this;
         var sendParam2 = null;
         this.setState({
-                pageNumber: page
-            }
-            /*, () => {
-                        onSetNumber();
-                    }*/
-        );
-        var onSetNumber = () => {
-            if (this.state.t == undefined) {
-                let myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
-                else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
-                else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-                sendParam2 = {
-                    queryTime: myday,
-                    pageIndex: page,
-                    pageSize: 10,
-                    isFirst: false
-                };
-            } else if (this.state.t && (this.state.t.flags == null)) {
-                if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
-                else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
-                else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
-                sendParam2 = {
-                    queryTime: this.state.t.sj,
-                    pageIndex: page,
-                    pageSize: 10,
-                    isFirst: false
-                };
-            } else {
-                let myday = this.state.t.sj;
-                let YWD = this.state.t.flags;
-                sendParam2 = {
-                    date: myday,
-                    flag: YWD,
-                    pageIndex: page,
-                    pageSize: 10,
-                    isFirst: false
-                };
-                if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';
-                else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';
-                else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
-            }
+            pageNumber: page
+        });
 
-            Ds.DataService(last_Path, sendParam2, (resp) => {
-                self.setState({
-                    tableContent: resp.aaData.jtzsPage.jtzsList
-                });
-            }, (e) => {
-                console.log(e);
+        if (this.state.t == undefined) {
+            let myday = d.getFullYear() + "/" + month + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+            if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+            else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+            else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+            sendParam2 = {
+                queryTime: myday,
+                pageIndex: page,
+                pageSize: 10,
+                isFirst: false
+            };
+        } else if (this.state.t && (this.state.t.flags == null)) {
+            if (this.state.t.rboxkey == 'cross') last_Path = '/trafficindex_map/listYdlkMore.json';
+            else if (this.state.t.rboxkey == 'road') last_Path = '/trafficindex_map/listYdldMore.json';
+            else if (this.state.t.rboxkey == 'area') last_Path = '/trafficindex_map/listYdqyMore.json';
+            sendParam2 = {
+                queryTime: this.state.t.sj,
+                pageIndex: page,
+                pageSize: 10,
+                isFirst: false
+            };
+        } else {
+            let myday = this.state.t.sj;
+            let YWD = this.state.t.flags;
+            sendParam2 = {
+                date: myday,
+                flag: YWD,
+                pageIndex: page,
+                pageSize: 10,
+                isFirst: false
+            };
+            if (rboxkey1 == 'cross') last_Path = '/trafficindex_map/crossJtda.json';
+            else if (rboxkey1 == 'road') last_Path = '/trafficindex_map/roadJtda.json';
+            else if (rboxkey1 == 'area') last_Path = '/trafficindex_map/zoneJtda.json';
+        }
+
+        Ds.DataService(last_Path, sendParam2, (resp) => {
+            self.setState({
+                tableContent: resp.aaData.jtzsPage.jtzsList
             });
-        };
-        onSetNumber();
+        }, (e) => {
+            console.log(e);
+        });
 
     }
     componentDidMount() {
         let self = this;
         this.setState({
-            tableContent: JtzsList.jtzsList
+            tableContent: JtzsList.jtzsList,
+            rboxkey12: this.props.children
         });
         lmsg.subscribe('crsBtnClick', (data) => {
             self.setState({
@@ -98,8 +97,21 @@ class CraResults extends React.Component {
     componentWillReceiveProps(nextProps) {
         this.setState({
             tableContent: nextProps.jtzsPage.jtzsList,
-            pageNumber: 1
+            pageNumber: 1,
+            rboxkey12: nextProps.children
         });
+    }
+    componentWillMount() {
+        //this.setState({rboxkey12})
+    }
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            this.pagination((document.getElementById('inputnn').value) * 1)
+        }
+        if (((document.getElementById('inputnn').value) * 1) > Math.ceil(JtzsList.total / 10)) {
+            message.warning('输入页数过多');
+            this.pagination(Math.ceil(JtzsList.total / 10));
+        }
     }
     render() {
         children_rboxkey = this.props.children;
@@ -162,7 +174,7 @@ class CraResults extends React.Component {
                 <Col span={1}>
                 </Col>
                 <Col span={2}>
-        <InputNumber style={{width:'50px'}} size="small" min={1} max={JtzsList.total} defaultValue={this.state.pageNumber} value={this.state.pageNumber} onChange={this.pagination} />
+        <InputNumber id='inputnn' style={{width:'50px'}} size="small" min={1} max={JtzsList.total} defaultValue={this.state.pageNumber} value={this.state.pageNumber} onKeyDown={this.onKeyDown} onChange={this.pagination} />
                 </Col>
                 </Row>
                 </div>

@@ -10,6 +10,8 @@ import SearchResults from './menu/SearchResults';
 import CraResults from './menu/CraResults';
 import * as lmsg from '../../libs/lmsg';
 import * as Ds from '../../libs/DataService';
+import * as DR from '../../scripts/drawFeatures';
+import drawFeature from '../../scripts/drawfeatures2';
 import {
     Table,
     message
@@ -64,11 +66,29 @@ class Rbox extends React.Component {
         }
     }
     crsBtnClick(layerName, t) {
+        let self = this;
         this.setState({
             initCraResults: true,
             contraction: false
         });
         this.props.fetchCRAList(layerName, t);
+
+        let audio = document.getElementById("mp3Player");
+        Ds.DataService('/trafficindex_cross/panduanIndex.json', {
+            bs: layerName
+        }, (resp) => {
+            if (resp.aaData == 0) {
+                audio.currentTime = 0;
+                audio.play();
+            } else if (resp.aaData == 1) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }, (e) => {
+            console.log(e);
+            message.error('后台传输错误')
+        });
+
 
     }
     render() {
@@ -86,14 +106,14 @@ class Rbox extends React.Component {
                 title: '拥堵名称',
                 dataIndex: 'Name',
             }, {
-                title: '畅通指数',
-                dataIndex: 'ctjls',
+                title: '拥堵时间',
+                dataIndex: 'ydjls',
             }, {
-                title: '缓行指数',
+                title: '缓行时间',
                 dataIndex: 'hxjls',
             }, {
-                title: '拥堵指数',
-                dataIndex: 'ydjls',
+                title: '畅通时间',
+                dataIndex: 'ctjls',
             }];
 
         const sectionPanel = this.state.initCraResults ? [
@@ -118,39 +138,52 @@ class Rbox extends React.Component {
                 <Table columns={cfydTableContent} dataSource={this.state.cfydTabledata} size='middle' pagination={false}/>
             </section>
         ] : [<section key={"rboxPanels3"} id="rboxPanels" className={styles.rboxPanels}></section>];
-        return (
-            <div id="rbox" className={styles.rbox}>
-        <div id="navBody" className={this.state.contraction ? styles.navBody_none : styles.navBody_display}>
-                    {sectionPanel}
-                </div>
-                
-                <div id="contractionBtn" className={styles.rboxPanCtrl} onClick={() => this.contractionBtnClick() }>
-                    <i className={styles.fa + ' ' + styles.faChevronUp} id="contractionInsideBtnUp"></i>
-                </div>
-            </div>
-        )
+        return (<div id="rbox" className={ styles.rbox }>
+  <div><audio id='mp3Player'><source src={_imagePath +'/sweet.mp3'} type="audio/mp3"/></audio></div>
+  <div
+       id="navBody"
+       className={ this.state.contraction ? styles.navBody_none : styles.navBody_display }>
+    { sectionPanel }
+    </div>
+      <div
+            id="contractionBtn"
+            className={ styles.rboxPanCtrl }
+            onClick={ () => this.contractionBtnClick() }>
+        <i
+           className={ styles.fa + ' ' + styles.faChevronUp }
+           id="contractionInsideBtnUp"></i>
+        </div>
+          </div>)
     }
 
     componentDidMount() {
+        //CI.test();
+        var aa = new drawFeature(map);
+        console.log(aa)
+        aa.start();
+
+
         //self的是代表整个component的this，如果是lmsg的，就错了
         let self = this;
         lmsg.subscribe('crsBtnClick', (data) => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
             console.log('crsBtnClick', data);
             self.setState({
                 contraction: false,
                 initCraResults: true
             });
             self.crsBtnClick(data.params, data.time);
-            ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
+
             localStorage.removeItem('crsBtnClick');
         });
 
         lmsg.subscribe('jrlzbbSend', (data) => {
             console.log('jrlzbbSend', data);
+            ReactDOM.unmountComponentAtNode(document.getElementById("presetBox"));
             Ds.DataService('/trafficindex_map/initMap.json', {
                 querytime: data.time
             }, (resp) => {
-                CI.displayCommonLayer(resp.aaData);
+                CI.initMapLayer(resp.aaData);
                 self.setState({
                     contraction: true,
                     initCraResults: false,
@@ -160,6 +193,7 @@ class Rbox extends React.Component {
                 console.log(e);
                 message.error('后台传输错误', 5);
             });
+
             localStorage.removeItem('jrlzbbSend');
         });
 
@@ -168,7 +202,7 @@ class Rbox extends React.Component {
             self.setState({
                 cfydTabledata: []
             });
-            if (data.isCross == 1) {
+            if (data.isCross == "1") {
                 //路口
                 Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
@@ -180,7 +214,7 @@ class Rbox extends React.Component {
                                 No: i + 1,
                                 Name: resp.aaData[i].crossName,
                                 ctjls: resp.aaData[i].ctjls,
-                                ydjls: resp.aaData[i].hxjls,
+                                hxjls: resp.aaData[i].hxjls,
                                 ydjls: resp.aaData[i].ydjls
                             });
                         }
@@ -196,7 +230,7 @@ class Rbox extends React.Component {
                     message.error('后台传输错误', 5);
                 });
 
-            } else if (data.isCross == 2) {
+            } else if (data.isCross == "2") {
                 //路段
                 Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
@@ -208,7 +242,7 @@ class Rbox extends React.Component {
                                 No: i + 1,
                                 Name: resp.aaData[i].roadName,
                                 ctjls: resp.aaData[i].ctjls,
-                                ydjls: resp.aaData[i].hxjls,
+                                hxjls: resp.aaData[i].hxjls,
                                 ydjls: resp.aaData[i].ydjls
                             });
                         }
@@ -227,13 +261,13 @@ class Rbox extends React.Component {
             localStorage.removeItem('cfxydBtnClick');
         });
 
-        lmsg.subscribe('locating', () => {
+        lmsg.subscribe('locating_start', () => {
             self.setState({
                 contraction: true,
                 initCraResults: false,
                 isCFYDpanel: false
             });
-            localStorage.removeItem('locating');
+            localStorage.removeItem('locating_start');
         });
         lmsg.subscribe('tracktaxi', () => {
             self.setState({
@@ -243,31 +277,74 @@ class Rbox extends React.Component {
             });
             localStorage.removeItem('tracktaxi');
         });
-        lmsg.subscribe('ODClick', (data) => {
+        lmsg.subscribe('ODClick_start', (data) => {
             self.setState({
                 contraction: true,
                 initCraResults: false,
                 isCFYDpanel: false
             });
-            localStorage.removeItem('ODClick');
+            localStorage.removeItem('ODClick_start');
         });
-        lmsg.subscribe('peizhi', (data) => {
+        lmsg.subscribe('peizhi_start', (data) => {
             self.setState({
                 contraction: true,
                 initCraResults: false,
                 isCFYDpanel: false
             });
-            localStorage.removeItem('peizhi');
+            localStorage.removeItem('peizhi_start');
         });
-        lmsg.subscribe('hbjjrToMap', (data) => {
+        lmsg.subscribe('hbjjrToMap_start', (data) => {
             self.setState({
                 contraction: true,
                 initCraResults: false,
                 isCFYDpanel: false
             });
-            localStorage.removeItem('hbjjrToMap');
+            localStorage.removeItem('hbjjrToMap_start');
         });
+
+        /*   lmsg.subscribe('hbjjrToMap_start', (data) => {
+               self.setState({
+                   contraction: true,
+                   initCraResults: false,
+                   isCFYDpanel: false
+               });
+               localStorage.removeItem('hbjjrToMap_start');
+           });*/
+        //停车场页面逻辑/监听
+        lmsg.subscribe('carpark_init', () => {
+            console.log('carpark_init');
+            self.setState({
+                contraction: true,
+                initCraResults: false,
+                isCFYDpanel: false
+            });
+            message.success('停车场页面');
+            DR.drawFeatures.disable();
+            CI.displayCarParkLayer();
+            localStorage.removeItem('carpark_init');
+        });
+        lmsg.subscribe('carpark_start', () => {
+            console.log('carpark_start');
+            message.success('请点击右侧工具来进行定位', 10);
+            DR.carParkLocating();
+            localStorage.removeItem('carpark_start');
+        });
+        lmsg.subscribe('carpark_tr', (data) => {
+            console.log('carpark_tr', data);
+            CI.selectCarparkById(data.id);
+            localStorage.removeItem('carpark_tr');
+        });
+        /*setTimeout(function() {
+            CI.displayCarParkLayer();
+            setTimeout(function() {
+                CI.selectCarparkById('P0019');
+                DR.carParkLocating();
+            }, 5000)
+
+        }, 2000)*/
     }
+
+
 
 }
 

@@ -12,7 +12,11 @@ export const drawFeatures = {
 	}
 }
 
-var drawnItemsLayer = null,
+var drawnItemsLayer1 = null,
+	drawnItemsLayer2 = null,
+	drawnItemsLayer3 = null,
+	drawnItemsLayer4 = null,
+	drawnItemsLayer5 = null,
 	drawControl = null,
 	NewRoadfeature = null,
 	NewRegionfeature = null,
@@ -29,6 +33,8 @@ var drawnItemsLayer = null,
 	totalIdWithin_Region = {},
 	doublerIds = [],
 	drawHolidayRegionLayer = null,
+	drawHolidayRegionLayer2 = null,
+	drawHolidayRegionLayer3 = null,
 	holidayRoadSelectRegion = null,
 	holidayRoadSelectIds = [],
 	CenterPoint_OD = null;
@@ -86,7 +92,7 @@ L.drawLocal = {
 				}
 			},
 			polyline: {
-				error: '<strong>Error:</strong> 不能重叠，重叠了亲',
+				error: '<strong>Error:</strong> 不能重叠，重叠了',
 				tooltip: {
 					start: '点击开始绘制线',
 					cont: '继续点击，继续绘制',
@@ -140,29 +146,22 @@ L.drawLocal = {
 	}
 };
 const activateDrawToolbar = function() {
+	drawnItemsLayer1 = null;
 
-	if (drawnItemsLayer) {
-		map.removeLayer(drawnItemsLayer);
-		drawnItemsLayer = null;
-	}
-	if (drawControl) {
-		map.removeControl(drawControl);
-		drawControl = null;
-	}
-	drawnItemsLayer = new L.FeatureGroup();
-	map.addLayer(drawnItemsLayer);
+	var drawnItemsLayer12 = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer12);
 
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawnItemsLayer,
-			//remove: false
+			featureGroup: drawnItemsLayer12,
+			remove: true
 		},
 		draw: {
 			polyline: {
 				allowIntersection: false,
 				drawError: {
 					color: '#e1e100',
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#f357a1',
@@ -175,15 +174,15 @@ const activateDrawToolbar = function() {
 				drawError: {
 					color: '#b00b00',
 					timeout: 1000,
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#00f6ff',
 					stroke: true,
 					weight: '6',
 					fill: '#00f6ff'
-				}
-				//showArea: true
+				},
+				showArea: true
 			},
 			rectangle: {
 				shapeOptions: {
@@ -199,77 +198,79 @@ const activateDrawToolbar = function() {
 		position: 'topright'
 	});
 	map.addControl(drawControl);
-	map.on('draw:created', drawCreated);
+	map.on('draw:created', (e) => {
+
+		let type = e.layerType;
+		let layer = e.layer;
+		var latlngs = [],
+			coords = null,
+			featureDrawn = null,
+			measurement = null;
+		if (type == 'polyline') {
+			layer._latlngs.map((item) => {
+				coords = [item.lng, item.lat];
+				latlngs.push(coords);
+			});
+			featureDrawn = turf.lineString(latlngs);
+			measurement = turf.lineDistance(featureDrawn, "kilometers");
+
+		} else if (type == 'polygon' || type == 'rectangle') {
+			layer._latlngs[0].map((item) => {
+				coords = [item.lng, item.lat];
+				latlngs.push(coords);
+			});
+			//第一个点和最后一个点要保持一致，要不turf解析不了。
+			latlngs.push(latlngs[0])
+			featureDrawn = turf.polygon([latlngs]);
+			//面积是平方公里
+			measurement = turf.area(featureDrawn) / 1000000;
+
+		} else if (type == "circle") {} else if (type == "marker") {
+			latlngs = [layer._latlng.lng, layer._latlng.lat];
+			measurement = latlngs;
+			featureDrawn = turf.point(latlngs);
+		} else {
+			alert("创建图形失败");
+			return;
+		}
+		//传给1屏的,不包括后台
+		if (measurement && featureDrawn) {
+			console.log('transfer to screen 1');
+			lmsg.send('jtgz', {
+				finish: true,
+				params: {
+					geometry: featureDrawn,
+					measurement: measurement
+				}
+			});
+			lmsg.send('jtsg', {
+				finish: true,
+				params: {
+					geometry: featureDrawn,
+					measurement: measurement
+				}
+			});
+			lmsg.send('dlsg', {
+				finish: true,
+				params: {
+					geometry: featureDrawn,
+					measurement: measurement
+				}
+			});
+		}
+		drawnItemsLayer12.addLayer(layer);
+		//map.removeEventListener('draw:created');
+	});
 }
 
-const drawCreated = (e) => {
 
-	let type = e.layerType;
-	let layer = e.layer;
-	var latlngs = [],
-		coords = null,
-		featureDrawn = null,
-		measurement = null;
-	if (type == 'polyline') {
-		layer._latlngs.map((item) => {
-			coords = [item.lng, item.lat];
-			latlngs.push(coords);
-		});
-		featureDrawn = turf.lineString(latlngs);
-		measurement = turf.lineDistance(featureDrawn, "kilometers");
-
-	} else if (type == 'polygon' || type == 'rectangle') {
-		layer._latlngs[0].map((item) => {
-			coords = [item.lng, item.lat];
-			latlngs.push(coords);
-		});
-		//第一个点和最后一个点要保持一致，要不turf解析不了。
-		latlngs.push(latlngs[0])
-		featureDrawn = turf.polygon([latlngs]);
-		//面积是平方公里
-		measurement = turf.area(featureDrawn) / 1000000;
-
-	} else if (type == "circle") {} else if (type == "marker") {
-		latlngs = [layer._latlng.lng, layer._latlng.lat];
-		measurement = latlngs;
-		featureDrawn = turf.point(latlngs);
-	} else {
-		alert("创建图形失败");
-		return;
-	}
-	//传给1屏的,不包括后台
-	if (measurement && featureDrawn) {
-		console.log('transfer to screen 1');
-		lmsg.send('jtgz', {
-			finish: true,
-			params: {
-				geometry: featureDrawn,
-				measurement: measurement
-			}
-		});
-		lmsg.send('jtsg', {
-			finish: true,
-			params: {
-				geometry: featureDrawn,
-				measurement: measurement
-			}
-		});
-		lmsg.send('dlsg', {
-			finish: true,
-			params: {
-				geometry: featureDrawn,
-				measurement: measurement
-			}
-		});
-	}
-	drawnItemsLayer.addLayer(layer);
-	map.removeEventListener('draw:created');
-}
 
 const stopDrawToolbar = () => {
-	if (drawnItemsLayer) map.removeLayer(drawnItemsLayer);
+	/*	map.eachLayer((layer) => {
+			if (layer.options.id != 'streetLayer')
+				map.removeLayer(layer);
+		});*/
 	if (drawControl) map.removeControl(drawControl);
-	drawnItemsLayer = null;
 	drawControl = null;
 	map.removeEventListener('draw:created');
 	map.removeEventListener('draw:edited');
@@ -280,6 +281,7 @@ export const DrawConfigLayer = {
 	DrawRoad: {
 		activate: function() {
 			DrawConfigLayer_road();
+
 		},
 		getValue: function() {
 			return NewRoadfeature;
@@ -335,11 +337,12 @@ export const DrawConfigLayer = {
 const DrawConfigLayer_road = () => {
 	NewFhldfeature = null;
 	stopDrawToolbar();
-	drawnItemsLayer = new L.FeatureGroup();
-	map.addLayer(drawnItemsLayer);
+	drawnItemsLayer2 = null;
+	drawnItemsLayer2 = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer2);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawnItemsLayer,
+			featureGroup: drawnItemsLayer2,
 			//remove: false
 		},
 		draw: {
@@ -347,7 +350,7 @@ const DrawConfigLayer_road = () => {
 				allowIntersection: false,
 				drawError: {
 					color: '#e1e100',
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#f357a1',
@@ -373,7 +376,7 @@ const DrawConfigLayer_road = () => {
 			latlngs.push(coords);
 		});
 		NewRoadfeature = turf.lineString(latlngs);
-		drawnItemsLayer.addLayer(layer);
+		drawnItemsLayer2.addLayer(layer);
 		map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
@@ -387,10 +390,6 @@ const DrawConfigLayer_road = () => {
 		map.removeEventListener('draw:edited');
 	});
 	map.on('draw:deleted', function(e) {
-		if (drawnItemsLayer) {
-			map.removeLayer(drawnItemsLayer);
-			drawnItemsLayer = null;
-		}
 		NewRoadfeature = null;
 		map.removeEventListener('draw:deleted');
 	});
@@ -399,11 +398,12 @@ const DrawConfigLayer_road = () => {
 const DrawConfigLayer_region = () => {
 	NewFhldfeature = null;
 	stopDrawToolbar();
-	drawnItemsLayer = new L.FeatureGroup();
-	map.addLayer(drawnItemsLayer);
+	drawnItemsLayer3 = null;
+	drawnItemsLayer3 = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer3);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawnItemsLayer,
+			featureGroup: drawnItemsLayer3,
 			//remove: false
 		},
 		draw: {
@@ -414,7 +414,7 @@ const DrawConfigLayer_region = () => {
 				drawError: {
 					color: '#b00b00',
 					timeout: 1000,
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#00f6ff',
@@ -430,9 +430,11 @@ const DrawConfigLayer_region = () => {
 				},
 				showArea: true
 			},
-			marker: {
-				icon: new MyCustomMarker()
-			},
+			marker: false
+				/*{
+								icon: new MyCustomMarker()
+							}*/
+				,
 			circle: false
 		},
 		position: 'topright'
@@ -450,7 +452,7 @@ const DrawConfigLayer_region = () => {
 		//第一个点和最后一个点要保持一致，要不turf解析不了。
 		latlngs.push(latlngs[0])
 		NewRegionfeature = turf.polygon([latlngs]);
-		drawnItemsLayer.addLayer(layer);
+		drawnItemsLayer3.addLayer(layer);
 		map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
@@ -474,11 +476,12 @@ const DrawConfigLayer_region = () => {
 const DrawConfigLayer_ODregion = () => {
 	NewFhldfeature = null;
 	stopDrawToolbar();
-	drawnItemsLayer = new L.FeatureGroup();
-	map.addLayer(drawnItemsLayer);
+	drawnItemsLayer4 = null;
+	drawnItemsLayer4 = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer4);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawnItemsLayer,
+			featureGroup: drawnItemsLayer4,
 			//remove: false
 		},
 		draw: {
@@ -489,7 +492,7 @@ const DrawConfigLayer_ODregion = () => {
 				drawError: {
 					color: '#b00b00',
 					timeout: 1000,
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#00f6ff',
@@ -505,9 +508,11 @@ const DrawConfigLayer_ODregion = () => {
 				},
 				showArea: true
 			},
-			marker: {
-				icon: new MyCustomMarker()
-			},
+			marker: false
+				/*{
+								icon: new MyCustomMarker()
+							}*/
+				,
 			circle: false
 		},
 		position: 'topright'
@@ -525,8 +530,8 @@ const DrawConfigLayer_ODregion = () => {
 		//第一个点和最后一个点要保持一致，要不turf解析不了。
 		latlngs.push(latlngs[0])
 		NewODRegionfeature = turf.polygon([latlngs]);
-		drawnItemsLayer.addLayer(layer);
-		map.removeEventListener('draw:created');
+		drawnItemsLayer4.addLayer(layer);
+		//map.removeEventListener('draw:created');
 	});
 	map.on('draw:edited', function(e) {
 		for (var id in e.layers._layers) {
@@ -538,11 +543,11 @@ const DrawConfigLayer_ODregion = () => {
 		//第一个点和最后一个点要保持一致，要不turf解析不了。
 		latlngs.push(latlngs[0])
 		NewODRegionfeature = turf.polygon([latlngs]);
-		map.removeEventListener('draw:edited');
+		//map.removeEventListener('draw:edited');
 	});
 	map.on('draw:deleted', function(e) {
 		NewODRegionfeature = null;
-		map.removeEventListener('draw:deleted');
+		//map.removeEventListener('draw:deleted');
 	});
 }
 
@@ -631,12 +636,12 @@ const CalculateCenterPoint_OD = () => {
 
 const drawFhld = (doublersData) => {
 	stopDrawToolbar();
-	drawnItemsLayer = null;
-	drawnItemsLayer = new L.FeatureGroup();
-	map.addLayer(drawnItemsLayer);
+	var drawnItemsLayer5 = null;
+	drawnItemsLayer5 = new L.FeatureGroup();
+	map.addLayer(drawnItemsLayer5);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawnItemsLayer,
+			featureGroup: drawnItemsLayer5,
 			//remove: false
 		},
 		draw: {
@@ -644,7 +649,7 @@ const drawFhld = (doublersData) => {
 				allowIntersection: false,
 				drawError: {
 					color: '#e1e100',
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#f357a1',
@@ -669,7 +674,7 @@ const drawFhld = (doublersData) => {
 			latlngs.push(coords);
 		});
 		NewFhldfeature = turf.lineString(latlngs);
-		drawnItemsLayer.addLayer(layer);
+		drawnItemsLayer5.addLayer(layer);
 		if (NewFhldfeature) {
 			var bufferedFhld = turf.buffer(NewFhldfeature, 50, 'meters')
 			var bufferFC = {
@@ -727,11 +732,17 @@ const drawFhld = (doublersData) => {
 					});
 				}
 			};
-
+			var measurement = turf.lineDistance(NewFhldfeature, 'meters');
 			lmsg.send('fhld_ok', {
 				new_fhld: NewFhldfeature,
-				doublers: doublerIds
+				doublers: doublerIds,
+				measurement: measurement
 			});
+			console.log({
+				new_fhld: NewFhldfeature,
+				doublers: doublerIds,
+				measurement: measurement
+			})
 			console.log('fhld_ok sent to screen 1', doublerIds);
 		}
 		map.removeControl(drawControl);
@@ -755,8 +766,9 @@ export const DrawHoliday = {
 
 const drawHolidayRegion = () => {
 	newHolidayRegion = null;
-	drawnItemsLayer = null;
+	drawControl = null;
 	stopDrawToolbar();
+	var drawHolidayRegionLayer = null;
 	drawHolidayRegionLayer = new L.FeatureGroup();
 	map.addLayer(drawHolidayRegionLayer);
 	drawControl = new L.Control.Draw({
@@ -772,7 +784,7 @@ const drawHolidayRegion = () => {
 				drawError: {
 					color: '#b00b00',
 					timeout: 1000,
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#00f6ff',
@@ -827,13 +839,14 @@ const drawHolidayRegion = () => {
 const holiday_selectRoad = (roadData) => {
 	var fhldData = roadData;
 	holidayRoadSelectRegion = null;
-	drawnItemsLayer = null;
+	drawControl = null;
 	stopDrawToolbar();
-	drawHolidayRegionLayer = new L.FeatureGroup();
-	map.addLayer(drawHolidayRegionLayer);
+	var drawHolidayRegionLayer2 = null;
+	drawHolidayRegionLayer2 = new L.FeatureGroup();
+	map.addLayer(drawHolidayRegionLayer2);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawHolidayRegionLayer,
+			featureGroup: drawHolidayRegionLayer2,
 			//remove: false
 		},
 		draw: {
@@ -844,7 +857,7 @@ const holiday_selectRoad = (roadData) => {
 				drawError: {
 					color: '#b00b00',
 					timeout: 1000,
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#00f6ff',
@@ -872,7 +885,7 @@ const holiday_selectRoad = (roadData) => {
 		var type = e.layerType,
 			layer = e.layer;
 
-		drawHolidayRegionLayer.addLayer(layer);
+		drawHolidayRegionLayer2.addLayer(layer);
 		layer._latlngs[0].map((item) => {
 			coords = [item.lng, item.lat];
 			latlngs.push(coords);
@@ -946,13 +959,14 @@ const holiday_selectRoad = (roadData) => {
 const holiday_selectCross = (crossData) => {
 	var crossData_fc = crossData;
 	holidayRoadSelectRegion = null;
-	drawnItemsLayer = null;
+	drawControl = null;
 	stopDrawToolbar();
-	drawHolidayRegionLayer = new L.FeatureGroup();
-	map.addLayer(drawHolidayRegionLayer);
+	var drawHolidayRegionLayer3 = null;
+	drawHolidayRegionLayer3 = new L.FeatureGroup();
+	map.addLayer(drawHolidayRegionLayer3);
 	drawControl = new L.Control.Draw({
 		edit: {
-			featureGroup: drawHolidayRegionLayer,
+			featureGroup: drawHolidayRegionLayer3,
 			//remove: false
 		},
 		draw: {
@@ -963,7 +977,7 @@ const holiday_selectCross = (crossData) => {
 				drawError: {
 					color: '#b00b00',
 					timeout: 1000,
-					message: '<strong>STOP<strong>重叠了亲'
+					message: '<strong>STOP<strong>重叠了'
 				},
 				shapeOptions: {
 					color: '#00f6ff',
@@ -992,7 +1006,7 @@ const holiday_selectCross = (crossData) => {
 		var type = e.layerType,
 			layer = e.layer;
 
-		drawHolidayRegionLayer.addLayer(layer);
+		drawHolidayRegionLayer3.addLayer(layer);
 		layer._latlngs[0].map((item) => {
 			coords = [item.lng, item.lat];
 			latlngs.push(coords);
@@ -1019,5 +1033,39 @@ const holiday_selectCross = (crossData) => {
 		console.log('holidayCrossWithin send to HBjj', holidayCrossWithin);
 		map.removeControl(drawControl);
 		map.removeEventListener('draw:created');
+	});
+}
+
+var carparkLocLayer = null,
+	carParkCoords = null;
+
+export const carParkLocating = () => {
+	carparkLocLayer = null;
+	carparkLocLayer = new L.FeatureGroup();
+	map.addLayer(carparkLocLayer);
+
+	drawControl = new L.Control.Draw({
+		edit: false,
+		draw: {
+			polyline: false,
+			polygon: false,
+			rectangle: false,
+			marker: {
+				icon: new MyCustomMarker()
+			},
+			circle: false
+		},
+		position: 'topright'
+	});
+	map.addControl(drawControl);
+	map.on('draw:created', (e) => {
+		let layer = e.layer;
+		lmsg.send('carpark_end', {
+			coordinates: [e.layer._latlng.lng, e.layer._latlng.lat]
+		});
+		console.log('transfer to screen 1', [e.layer._latlng.lng, e.layer._latlng.lat]);
+		carparkLocLayer.addLayer(layer);
+		map.removeEventListener('draw:created');
+		map.removeControl(drawControl);
 	});
 }

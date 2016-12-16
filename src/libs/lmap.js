@@ -99,38 +99,38 @@ export const geoTime = (geoJSON, options) => {
             switch (true) {
                 case index < 2:
                     return icon({
-                        iconSize: [index * 2, index * 2],
-                        color: '#36AE4C',
+                        iconSize: [15, 15],
+                        color: '#277b04',
                         heartbeat: 1
                     });
                 case index < 4:
                     return icon({
-                        iconSize: [index * 2, index * 2],
-                        color: '#6AB72D',
+                        iconSize: [15, 15],
+                        color: '#34b100',
                         heartbeat: 1
                     });
                 case index < 6:
                     return icon({
-                        iconSize: [index * 2, index * 2],
-                        color: '#ECE839',
+                        iconSize: [15, 15],
+                        color: '#ffcb00',
                         heartbeat: 1
                     });
                 case index < 8:
                     return icon({
-                        iconSize: [index * 2, index * 2],
-                        color: '#F29618',
+                        iconSize: [15, 15],
+                        color: '#ff8800',
                         heartbeat: 1
                     });
                 case index < 10:
                     return icon({
-                        iconSize: [index * 2, index * 2],
-                        color: '#E41A16',
+                        iconSize: [15, 15],
+                        color: '#df0000',
                         heartbeat: 1
                     });
                 default:
                     return icon({
-                        iconSize: [index * 2, index * 2],
-                        color: '#36AE4C',
+                        iconSize: [15, 15],
+                        color: '#277b04',
                         heartbeat: 1
                     });
 
@@ -577,4 +577,21 @@ export const echartsLayer = (id, ec) => {
 
     });
     return new L.EchartsLayer(id, ec);
+}
+
+export const printMap = (elementsToHide) => {
+    if (elementsToHide) {
+        var htmlElementsToHide = document.querySelectorAll(elementsToHide);
+        for (var i = 0; i < htmlElementsToHide.length; i++) {
+            htmlElementsToHide[i].className = htmlElementsToHide[i].className + ' _epHidden';
+        }
+    }
+    window.print();
+    //console.log(document.querySelectorAll(elementsToHide))
+    if (elementsToHide) {
+        var htmlElementsToHide = document.querySelectorAll(elementsToHide);
+        for (var i = 0; i < htmlElementsToHide.length; i++) {
+            htmlElementsToHide[i].className = htmlElementsToHide[i].className.replace(' _epHidden', '');
+        }
+    }
 }

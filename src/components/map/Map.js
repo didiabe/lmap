@@ -20,10 +20,13 @@ class Map extends React.Component {
     }
     componentDidMount() {
         var map = L.map("map", {
-            center: [28.31, 121.37],
-            zoom: 12,
+            center: _mapConfig.center,
+            zoom: _mapConfig.defaultZoom,
+            minZoom: _mapConfig.minZoom,
+            maxZoom: _mapConfig.maxZoom,
             drawControl: false,
-            zoomControl: false
+            zoomControl: false,
+            maxBounds: L.latLngBounds(L.latLng(_mapConfig.bounds.minx, _mapConfig.bounds.miny), L.latLng(_mapConfig.bounds.maxx, _mapConfig.bounds.maxy)),
 
             //visualClick: false,
 
@@ -31,7 +34,8 @@ class Map extends React.Component {
         });
         L.esri.tiledMapLayer({
             id: 'streetLayer',
-            url: _mapserverUrl.streetLayer
+            url: _mapserverUrl.streetLayer,
+            //errorTileUrl: _imagePath + '/errorTile.png'
         }).addTo(map);
 
         window.map = map;

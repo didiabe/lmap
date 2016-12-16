@@ -120,6 +120,7 @@ class UpdateIndexPanel extends React.Component {
             EndTime: null,
             dataList: null,
             selectIDs: null,
+            radioVal: 1
         }
         this.selectCongestion = this.selectCongestion.bind(this);
         this.selectCRA = this.selectCRA.bind(this);
@@ -284,7 +285,8 @@ class UpdateIndexPanel extends React.Component {
             T3Checked: true,
             StartTime: null,
             EndTime: null,
-            updateMins: null
+            updateMins: null,
+            radioVal: e.target.value
         });
         switch (e.target.value) {
             case 1:
@@ -358,7 +360,7 @@ class UpdateIndexPanel extends React.Component {
             <div  key={'bb'}>
             <Row>
             <Col span={4}>
-        <RadioGroup onChange={this.switchRadio} defaultValue={1}>
+        <RadioGroup onChange={this.switchRadio} value={this.state.radioVal} defaultValue={1}>
                 <Radio style={{
                   display: 'block',
                   height: '30px',

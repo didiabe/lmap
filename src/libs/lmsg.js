@@ -11,37 +11,39 @@
 			}
 		}(), e.isLSAvailable) {
 		var t = 100,
-			r = 1e3,
+			r = 200,
 			o = localStorage,
 			n = {},
 			i = !1,
-			f = {},
-			u = function() {
+			u = {},
+			f = function() {
 				for (var e in n) {
 					var i = o.getItem(e);
-					if (i && f[e] && -1 === f[e].indexOf(i)) {
-						f[e].push(i);
+					if (i && u[e] && -1 === u[e].indexOf(i)) {
+						u[e].push(i);
 						try {
-							var a = JSON.parse(i);
-							a && (i = a)
-						} catch (c) {}
-						for (var s = 0; s < n[e].length; s++) n[e][s](i);
+							var c = JSON.parse(i);
+							c && (i = c)
+						} catch (s) {}
+						for (var a = 0; a < n[e].length; a++) n[e][a](i);
 						o.getItem(e + "-removeit") || (o.setItem(e + "-removeit", "1"), function(t) {
 							setTimeout(function() {
-								o.removeItem(t), o.removeItem(t + "-removeit"), f[e] = []
+								o.removeItem(t), o.removeItem(t + "-removeit"), u[e] = []
 							}, r)
 						}(e))
-					} else i || (f[e] = [])
+					} else i || (u[e] = [])
 				}
-				return setTimeout(u, t), !0
+				return setTimeout(f, t), !0
 			};
 		e.send = function(e, t) {
 			var r = "";
 			"function" == typeof t && (t = t()), r = "object" == typeof t ? JSON.stringify(t) : t, o.setItem(e, r)
 		}, e.subscribe = function(e, t) {
-			n[e] || (n[e] = [], f[e] = []), n[e].push(t), i || (i = u())
+			n[e] || (n[e] = [], u[e] = []), n[e].push(t), i || (i = f())
+		}, e.unsubscribe = function(e) {
+			n[e] && (n[e] = []), u[e] && (u[e] = [])
 		}, e.getBuffer = function() {
-			return f
+			return u
 		}
 	} else e.send = e.subscribe = function() {
 		throw new Error("localStorage not supported.")

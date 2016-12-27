@@ -151,15 +151,15 @@ const crossLayer = function(data) {
             pointToLayer: function(feature, latlng) {
                 var indexVal = feature.properties.index;
                 var pointMarkerOption;
-                if (indexVal >= 0 && indexVal < 2)
+                if (indexVal >= 0 && indexVal <= 2)
                     pointMarkerOption = greenMarker;
-                else if (indexVal >= 2 && indexVal < 4)
+                else if (indexVal > 2 && indexVal <= 4)
                     pointMarkerOption = yellowMarker;
-                else if (indexVal >= 4 && indexVal < 6)
+                else if (indexVal > 4 && indexVal <= 6)
                     pointMarkerOption = orangeMarker;
-                else if (indexVal >= 6 && indexVal < 8)
+                else if (indexVal > 6 && indexVal <= 8)
                     pointMarkerOption = brownMarker;
-                else if (indexVal >= 8)
+                else if (indexVal > 8)
                     pointMarkerOption = redMarker;
                 return L.marker(latlng, {
                     icon: pointMarkerOption
@@ -292,11 +292,11 @@ const roadLayer = function(data) {
         lineLayer = L.geoJson(GeoJsonLines, {
             style: function(feature) {
                 var indexVal = feature.properties.index;
-                if (indexVal >= 0 && indexVal < 2) return greenLine;
-                else if (indexVal >= 2 && indexVal < 4) return yellowLine;
-                else if (indexVal >= 4 && indexVal < 6) return orangeLine;
-                else if (indexVal >= 6 && indexVal < 8) return brownLine;
-                else if (indexVal >= 8) return redLine;
+                if (indexVal >= 0 && indexVal <= 2) return greenLine;
+                else if (indexVal > 2 && indexVal <= 4) return yellowLine;
+                else if (indexVal > 4 && indexVal <= 6) return orangeLine;
+                else if (indexVal > 6 && indexVal <= 8) return brownLine;
+                else if (indexVal > 8) return redLine;
             },
             onEachFeature: eachLineFeature
         }).addTo(map);
@@ -361,7 +361,7 @@ const areaLayer = function(data) {
             map.fitBounds(e.target.getBounds());
             var popupArea = document.createElement('div');
             var p = document.createElement('p');
-            p.innerHTML = '路段名称:' + e.target.feature.properties.name
+            p.innerHTML = '区域名称:' + e.target.feature.properties.name
             var button1 = document.createElement('button');
             button1.classList.add('green_button');
             button1.innerHTML = '更新';
@@ -642,7 +642,7 @@ export const displayUniLayer = (ref, data) => {
             var indexVal = feature.properties.index;
             var yongduCrossIcon = lmap.icon({
                 iconSize: [18, 18],
-                color: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon'
+                color: (indexVal >= 0 && indexVal <= 2) ? 'rgb(54,174,76)' : (indexVal > 2 && indexVal <= 4) ? 'rgb(106,183,45)' : (indexVal > 4 && indexVal <= 6) ? 'rgb(236,232,57)' : (indexVal > 6 && indexVal <= 8) ? 'rgb(242,150,24)' : (indexVal > 8) ? 'rgb(228,26,22)' : 'LightSalmon'
             });
             return L.marker(latlng, {
                 icon: yongduCrossIcon
@@ -658,10 +658,10 @@ export const displayUniLayer = (ref, data) => {
         specialstyle = (feature) => {
             var indexVal = feature.properties.index;
             return {
-                fillColor: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                fillColor: (indexVal >= 0 && indexVal <= 2) ? 'rgb(54,174,76)' : (indexVal > 2 && indexVal <= 4) ? 'rgb(106,183,45)' : (indexVal > 4 && indexVal <= 6) ? 'rgb(236,232,57)' : (indexVal > 6 && indexVal <= 8) ? 'rgb(242,150,24)' : (indexVal > 8) ? 'rgb(228,26,22)' : 'LightSalmon',
                 weight: 6,
                 opacity: 0.8,
-                color: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                color: (indexVal >= 0 && indexVal <= 2) ? 'rgb(54,174,76)' : (indexVal > 2 && indexVal <= 4) ? 'rgb(106,183,45)' : (indexVal > 4 && indexVal <= 6) ? 'rgb(236,232,57)' : (indexVal > 6 && indexVal <= 8) ? 'rgb(242,150,24)' : (indexVal > 8) ? 'rgb(228,26,22)' : 'LightSalmon',
                 fillOpacity: 0.9
             };
         }
@@ -675,10 +675,10 @@ export const displayUniLayer = (ref, data) => {
         specialstyle = (feature) => {
             var indexVal = feature.properties.index;
             return {
-                fillColor: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                fillColor: (indexVal >= 0 && indexVal <= 2) ? 'rgb(54,174,76)' : (indexVal > 2 && indexVal <= 4) ? 'rgb(106,183,45)' : (indexVal > 4 && indexVal <= 6) ? 'rgb(236,232,57)' : (indexVal > 6 && indexVal <= 8) ? 'rgb(242,150,24)' : (indexVal > 8) ? 'rgb(228,26,22)' : 'LightSalmon',
                 weight: 6,
                 opacity: 0.8,
-                color: (indexVal >= 0 && indexVal < 2) ? 'rgb(54,174,76)' : (indexVal >= 2 && indexVal < 4) ? 'rgb(106,183,45)' : (indexVal >= 4 && indexVal < 6) ? 'rgb(236,232,57)' : (indexVal >= 6 && indexVal < 8) ? 'rgb(242,150,24)' : (indexVal >= 8) ? 'rgb(228,26,22)' : 'LightSalmon',
+                color: (indexVal >= 0 && indexVal <= 2) ? 'rgb(54,174,76)' : (indexVal > 2 && indexVal <= 4) ? 'rgb(106,183,45)' : (indexVal > 4 && indexVal <= 6) ? 'rgb(236,232,57)' : (indexVal > 6 && indexVal <= 8) ? 'rgb(242,150,24)' : (indexVal > 8) ? 'rgb(228,26,22)' : 'LightSalmon',
                 fillOpacity: 0.9
             };
         }
@@ -722,9 +722,9 @@ export const displayUniLayer = (ref, data) => {
                 "浮动车速度: " + popupData.velocity + ' km/h' + '<br/>');
 
         } else if (ref == 'jiari_zone' || ref == 'jiari_cross' || ref == 'jiari_road') {
-            specialpopup = L.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数:' + e.target.feature.properties.index)
+            specialpopup = L.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数：' + e.target.feature.properties.index)
         } else if (ref == 'yongdu_cross' || ref == 'yongdu_road') {
-            specialpopup = L.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '时间' + e.target.feature.properties.index)
+            specialpopup = L.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '时间：' + e.target.feature.properties.index)
         }
         SpecificLayer.bindPopup(specialpopup).addTo(map);
 
@@ -1424,24 +1424,24 @@ export const initMapLayer = (data) => {
     CommonLayer = L.geoJson(GeoJson, {
         style: function(feature) {
             var indexVal = feature.properties.index;
-            if (indexVal >= 0 && indexVal < 2) return greenLine;
-            else if (indexVal >= 2 && indexVal < 4) return yellowLine;
-            else if (indexVal >= 4 && indexVal < 6) return orangeLine;
-            else if (indexVal >= 6 && indexVal < 8) return brownLine;
-            else if (indexVal >= 8) return redLine;
+            if (indexVal >= 0 && indexVal <= 2) return greenLine;
+            else if (indexVal > 2 && indexVal <= 4) return yellowLine;
+            else if (indexVal > 4 && indexVal <= 6) return orangeLine;
+            else if (indexVal > 6 && indexVal <= 8) return brownLine;
+            else if (indexVal > 8) return redLine;
         },
         pointToLayer: function(feature, latlng) {
                 var indexVal = feature.properties.index;
                 var pointMarkerOption = null;
-                if (indexVal >= 0 && indexVal < 2)
+                if (indexVal >= 0 && indexVal <= 2)
                     pointMarkerOption = greenMarker;
-                else if (indexVal >= 2 && indexVal < 4)
+                else if (indexVal > 2 && indexVal <= 4)
                     pointMarkerOption = yellowMarker;
-                else if (indexVal >= 4 && indexVal < 6)
+                else if (indexVal > 4 && indexVal <= 6)
                     pointMarkerOption = orangeMarker;
-                else if (indexVal >= 6 && indexVal < 8)
+                else if (indexVal > 6 && indexVal <= 8)
                     pointMarkerOption = brownMarker;
-                else if (indexVal >= 8)
+                else if (indexVal > 8)
                     pointMarkerOption = redMarker;
                 return L.marker(latlng, {
                     icon: pointMarkerOption
@@ -1451,9 +1451,3 @@ export const initMapLayer = (data) => {
     }).addTo(map);
     //lineLayer.bindPopup(popup2).addTo(map);
 };
-
-
-export const test = () => {
-    var aa = DrawFeature.test(map, {});
-    aa.start();
-}

@@ -326,20 +326,20 @@ class UniquePanel extends React.Component {
         });
 
 
-        lmsg.subscribe('cfxydBtnClick', (data) => {
-            console.log('cfxydBtnClick', data);
-            //message.success('您已进入常发拥堵界面');
-            if (data.isCross == 1) {
-                //路口
-                self.onClickButton('yongdu_cross', data.time);
-                //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
-            } else if (data.isCross == 2) {
-                //路段
-                self.onClickButton('yongdu_road', data.time);
-                //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
-            } else message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
-            localStorage.removeItem('cfxydBtnClick');
-        });
+        /* lmsg.subscribe('cfxydBtnClick', (data) => {
+             console.log('cfxydBtnClick', data);
+             //message.success('您已进入常发拥堵界面');
+             if (data.isCross == 1) {
+                 //路口
+                 self.onClickButton('yongdu_cross', data.time);
+                 //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
+             } else if (data.isCross == 2) {
+                 //路段
+                 self.onClickButton('yongdu_road', data.time);
+                 //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
+             } else message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
+             localStorage.removeItem('cfxydBtnClick');
+         });*/
         lmsg.subscribe('ODClick', (data) => {
             console.log('ODClick', data);
             message.success('您已进入OD分析页面');
@@ -451,7 +451,7 @@ class UniquePanel extends React.Component {
         lmsg.unsubscribe('locating');
         lmsg.unsubscribe('ODClick');
         lmsg.unsubscribe('hbjjrToMap');
-        //.lmsg.unsubscribe('cfxydBtnClick');
+        //lmsg.unsubscribe('cfxydBtnClick');
     }
     render() {
         const yongduButton = (
@@ -496,167 +496,3 @@ class UniquePanel extends React.Component {
 }
 
 export default UniqueSub
-
-
-/*   var option = {
-          color: ['gold', 'aqua', 'lime'],
-          tooltip: {
-              trigger: 'item',
-              formatter: '{b}'
-          },
-          legend: {
-              orient: 'vertical',
-              x: 'left',
-              data: ['北京 Top10'],
-              selectedMode: 'single',
-              selected: {
-                  '上海 Top10': false,
-                  '广州 Top10': false
-              },
-              textStyle: {
-                  color: '#fff'
-              }
-          },
-          dataRange: {
-              min: 0,
-              max: 100,
-              //calculable: true,
-              color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
-              textStyle: {
-                  color: '#fff'
-              }
-          },
-          series: [{
-              name: '北京 Top10',
-              type: 'map',
-              mapType: 'none',
-              data: [],
-              geoCoord: {
-                  '上海': [121.4648, 31.2891],
-                  '包头': [110.3467, 41.4899],
-                  '北京': [116.4551, 40.2539],
-                  '南宁': [108.479, 23.1152],
-                  '南昌': [116.0046, 28.6633],
-                  '大连': [122.2229, 39.4409],
-                  '常州': [119.4543, 31.5582],
-                  '广州': [113.5107, 23.2196],
-                  '重庆': [107.7539, 30.1904]
-              },
-              markLine: {
-                  smooth: true,
-                  effect: {
-                      show: true,
-                      scaleSize: 1,
-                      period: 30,
-                      color: '#fff',
-                      shadowBlur: 10
-                  },
-                  itemStyle: {
-                      normal: {
-                          borderWidth: 1,
-                          lineStyle: {
-                              type: 'solid',
-                              shadowBlur: 10
-                          }
-                      }
-                  },
-                  data: [
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '上海',
-                          value: 95
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '广州',
-                          value: 90
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '大连',
-                          value: 80
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '南宁',
-                          value: 70
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '南昌',
-                          value: 60
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '包头',
-                          value: 30
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '重庆',
-                          value: 20
-                      }],
-                      [{
-                          name: '北京'
-                      }, {
-                          name: '常州',
-                          value: 10
-                      }]
-                  ]
-              },
-              markPoint: {
-                  symbol: 'emptyCircle',
-                  symbolSize: function(v) {
-                      return 10 + v / 10
-                  },
-                  effect: {
-                      show: true,
-                      shadowBlur: 0
-                  },
-                  itemStyle: {
-                      normal: {
-                          label: {
-                              show: false
-                          }
-                      },
-                      emphasis: {
-                          label: {
-                              position: 'top'
-                          }
-                      }
-                  },
-                  data: [{
-                      name: '上海',
-                      value: 95
-                  }, {
-                      name: '广州',
-                      value: 90
-                  }, {
-                      name: '大连',
-                      value: 80
-                  }, {
-                      name: '南宁',
-                      value: 70
-                  }, {
-                      name: '南昌',
-                      value: 60
-                  }, {
-                      name: '包头',
-                      value: 30
-                  }, {
-                      name: '重庆',
-                      value: 20
-                  }, {
-                      name: '常州',
-                      value: 10
-                  }]
-              }
-          }]
-      };*/

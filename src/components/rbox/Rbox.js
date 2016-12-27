@@ -11,7 +11,7 @@ import CraResults from './menu/CraResults';
 import * as lmsg from '../../libs/lmsg';
 import * as Ds from '../../libs/DataService';
 import * as DR from '../../scripts/drawFeatures';
-import drawFeature from '../../scripts/drawfeatures2';
+/*import drawFeature from '../../scripts/lrDraw';*/
 import {
     Table,
     message
@@ -157,12 +157,6 @@ class Rbox extends React.Component {
     }
 
     componentDidMount() {
-        //CI.test();
-        var aa = new drawFeature(map);
-        console.log(aa)
-        aa.start();
-
-
         //self的是代表整个component的this，如果是lmsg的，就错了
         let self = this;
         lmsg.subscribe('crsBtnClick', (data) => {
@@ -198,11 +192,13 @@ class Rbox extends React.Component {
         });
 
         lmsg.subscribe('cfxydBtnClick', (data) => {
+            ReactDOM.unmountComponentAtNode(document.getElementById('presetBox'));
             console.log('cfxydBtnClick', data);
             self.setState({
                 cfydTabledata: []
             });
-            if (data.isCross == "1") {
+            if (data.isCross == 1) {
+                CI.displayUniLayer('yongdu_cross', data.time);
                 //路口
                 Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
@@ -230,7 +226,8 @@ class Rbox extends React.Component {
                     message.error('后台传输错误', 5);
                 });
 
-            } else if (data.isCross == "2") {
+            } else if (data.isCross == 2) {
+                CI.displayUniLayer('yongdu_road', data.time);
                 //路段
                 Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, (resp) => {
                     var cfydTabledata = [];
@@ -302,14 +299,6 @@ class Rbox extends React.Component {
             localStorage.removeItem('hbjjrToMap_start');
         });
 
-        /*   lmsg.subscribe('hbjjrToMap_start', (data) => {
-               self.setState({
-                   contraction: true,
-                   initCraResults: false,
-                   isCFYDpanel: false
-               });
-               localStorage.removeItem('hbjjrToMap_start');
-           });*/
         //停车场页面逻辑/监听
         lmsg.subscribe('carpark_init', () => {
             console.log('carpark_init');
@@ -334,14 +323,6 @@ class Rbox extends React.Component {
             CI.selectCarparkById(data.id);
             localStorage.removeItem('carpark_tr');
         });
-        /*setTimeout(function() {
-            CI.displayCarParkLayer();
-            setTimeout(function() {
-                CI.selectCarparkById('P0019');
-                DR.carParkLocating();
-            }, 5000)
-
-        }, 2000)*/
     }
 
 

@@ -66,11 +66,11 @@
 	
 	var _CongestionIndex2 = _interopRequireDefault(_CongestionIndex);
 	
-	var _TrafficGuidance = __webpack_require__(262);
+	var _TrafficGuidance = __webpack_require__(263);
 	
 	var _TrafficGuidance2 = _interopRequireDefault(_TrafficGuidance);
 	
-	var _index = __webpack_require__(263);
+	var _index = __webpack_require__(264);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -7772,21 +7772,25 @@
 	
 	var _ToolBar2 = _interopRequireDefault(_ToolBar);
 	
-	var _Rbox = __webpack_require__(250);
+	var _Rbox = __webpack_require__(251);
 	
 	var _Rbox2 = _interopRequireDefault(_Rbox);
 	
-	var _Map = __webpack_require__(260);
+	var _Map = __webpack_require__(261);
 	
 	var _Map2 = _interopRequireDefault(_Map);
 	
-	var _Emap = __webpack_require__(261);
+	var _Emap = __webpack_require__(262);
 	
 	var _Emap2 = _interopRequireDefault(_Emap);
 	
 	var _DataService = __webpack_require__(107);
 	
 	var Ds = _interopRequireWildcard(_DataService);
+	
+	var _lmsg = __webpack_require__(228);
+	
+	var lmsg = _interopRequireWildcard(_lmsg);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -7804,51 +7808,23 @@
 	    function CongestionIndex() {
 	        _classCallCheck(this, CongestionIndex);
 	
-	        var _this = _possibleConstructorReturn(this, (CongestionIndex.__proto__ || Object.getPrototypeOf(CongestionIndex)).call(this));
-	
-	        _this.state = {
-	            islogin: true
-	        };
-	        return _this;
+	        return _possibleConstructorReturn(this, (CongestionIndex.__proto__ || Object.getPrototypeOf(CongestionIndex)).call(this));
 	    }
 	
 	    _createClass(CongestionIndex, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            /*        let self = this;
-	                    Ds.DataService('/isMaplogin.json', null, (resp) => {
-	                        console.log('asdaadas', resp)
-	                        var status = resp.aaData;
-	                        self.setState({
-	                            islogin: status
-	                        });
-	                    }, (e) => {
-	                        console.log('error', e);
-	                        self.setState({
-	                            islogin: false
-	                        })
-	                    });*/
-	
-	        }
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {}
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var loginPanel = this.state.islogin ? [_react2.default.createElement(
+	
+	            return _react2.default.createElement(
 	                'div',
-	                { key: 'a' },
+	                null,
 	                _react2.default.createElement(_Map2.default, null),
 	                _react2.default.createElement(_Search2.default, null),
 	                _react2.default.createElement(_ToolBar2.default, null),
 	                _react2.default.createElement(_Rbox2.default, null)
-	            )] : [_react2.default.createElement(
-	                'h1',
-	                { key: 'b' },
-	                '无权访问，请先登陆'
-	            )];
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                loginPanel
 	            );
 	        }
 	    }]);
@@ -8213,19 +8189,19 @@
 	
 	var _Traffic2 = _interopRequireDefault(_Traffic);
 	
-	var _updateIndex = __webpack_require__(236);
+	var _updateIndex = __webpack_require__(238);
 	
 	var _updateIndex2 = _interopRequireDefault(_updateIndex);
 	
-	var _Drawsth = __webpack_require__(239);
+	var _Drawsth = __webpack_require__(241);
 	
 	var _Drawsth2 = _interopRequireDefault(_Drawsth);
 	
-	var _UniqueSub = __webpack_require__(242);
+	var _UniqueSub = __webpack_require__(243);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
-	var _ConfigSub = __webpack_require__(249);
+	var _ConfigSub = __webpack_require__(250);
 	
 	var _ConfigSub2 = _interopRequireDefault(_ConfigSub);
 	
@@ -13924,6 +13900,10 @@
 	
 	var _antd = __webpack_require__(108);
 	
+	var _lrdraw = __webpack_require__(236);
+	
+	var DrawFeature = _interopRequireWildcard(_lrdraw);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -13973,7 +13953,7 @@
 	                    lmsg.send('openModal_updIdx', {
 	                        id: e.target.feature.properties.id,
 	                        index: e.target.feature.properties.index,
-	                        type: 3 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	                        type: 'cross' //（1区域(region) 2 路段(road) 3 路口(cross)）
 	                    });
 	                };
 	                var button2 = document.createElement('button');
@@ -14072,7 +14052,7 @@
 	                pointToLayer: function pointToLayer(feature, latlng) {
 	                    var indexVal = feature.properties.index;
 	                    var pointMarkerOption;
-	                    if (indexVal >= 0 && indexVal < 2) pointMarkerOption = greenMarker;else if (indexVal >= 2 && indexVal < 4) pointMarkerOption = yellowMarker;else if (indexVal >= 4 && indexVal < 6) pointMarkerOption = orangeMarker;else if (indexVal >= 6 && indexVal < 8) pointMarkerOption = brownMarker;else if (indexVal >= 8) pointMarkerOption = redMarker;
+	                    if (indexVal >= 0 && indexVal <= 2) pointMarkerOption = greenMarker;else if (indexVal > 2 && indexVal <= 4) pointMarkerOption = yellowMarker;else if (indexVal > 4 && indexVal <= 6) pointMarkerOption = orangeMarker;else if (indexVal > 6 && indexVal <= 8) pointMarkerOption = brownMarker;else if (indexVal > 8) pointMarkerOption = redMarker;
 	                    return _leaflet2.default.marker(latlng, {
 	                        icon: pointMarkerOption
 	                    });
@@ -14111,7 +14091,7 @@
 	                    lmsg.send('openModal_updIdx', {
 	                        id: e.target.feature.properties.id,
 	                        index: e.target.feature.properties.index,
-	                        type: 2 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	                        type: 'road' //（1区域(region) 2 路段(road) 3 路口(cross)）
 	                    });
 	                };
 	                var button2 = document.createElement('button');
@@ -14214,7 +14194,7 @@
 	            lineLayer = _leaflet2.default.geoJson(GeoJsonLines, {
 	                style: function style(feature) {
 	                    var indexVal = feature.properties.index;
-	                    if (indexVal >= 0 && indexVal < 2) return greenLine;else if (indexVal >= 2 && indexVal < 4) return yellowLine;else if (indexVal >= 4 && indexVal < 6) return orangeLine;else if (indexVal >= 6 && indexVal < 8) return brownLine;else if (indexVal >= 8) return redLine;
+	                    if (indexVal >= 0 && indexVal <= 2) return greenLine;else if (indexVal > 2 && indexVal <= 4) return yellowLine;else if (indexVal > 4 && indexVal <= 6) return orangeLine;else if (indexVal > 6 && indexVal <= 8) return brownLine;else if (indexVal > 8) return redLine;
 	                },
 	                onEachFeature: eachLineFeature
 	            }).addTo(map);
@@ -14244,7 +14224,7 @@
 	                map.fitBounds(e.target.getBounds());
 	                var popupArea = document.createElement('div');
 	                var p = document.createElement('p');
-	                p.innerHTML = '路段名称:' + e.target.feature.properties.name;
+	                p.innerHTML = '区域名称:' + e.target.feature.properties.name;
 	                var button1 = document.createElement('button');
 	                button1.classList.add('green_button');
 	                button1.innerHTML = '更新';
@@ -14252,7 +14232,7 @@
 	                    lmsg.send('openModal_updIdx', {
 	                        id: e.target.feature.properties.id,
 	                        index: e.target.feature.properties.index,
-	                        type: 1 //（1区域(region) 2 路段(road) 3 路口(cross)）
+	                        type: 'region' //（1区域(region) 2 路段(road) 3 路口(cross)）
 	                    });
 	                };
 	                var button2 = document.createElement('button');
@@ -14559,7 +14539,7 @@
 	            var indexVal = feature.properties.index;
 	            var yongduCrossIcon = lmap.icon({
 	                iconSize: [18, 18],
-	                color: indexVal >= 0 && indexVal < 2 ? 'rgb(54,174,76)' : indexVal >= 2 && indexVal < 4 ? 'rgb(106,183,45)' : indexVal >= 4 && indexVal < 6 ? 'rgb(236,232,57)' : indexVal >= 6 && indexVal < 8 ? 'rgb(242,150,24)' : indexVal >= 8 ? 'rgb(228,26,22)' : 'LightSalmon'
+	                color: indexVal >= 0 && indexVal <= 2 ? 'rgb(54,174,76)' : indexVal > 2 && indexVal <= 4 ? 'rgb(106,183,45)' : indexVal > 4 && indexVal <= 6 ? 'rgb(236,232,57)' : indexVal > 6 && indexVal <= 8 ? 'rgb(242,150,24)' : indexVal > 8 ? 'rgb(228,26,22)' : 'LightSalmon'
 	            });
 	            return _leaflet2.default.marker(latlng, {
 	                icon: yongduCrossIcon
@@ -14575,10 +14555,10 @@
 	        specialstyle = function specialstyle(feature) {
 	            var indexVal = feature.properties.index;
 	            return {
-	                fillColor: indexVal >= 0 && indexVal < 2 ? 'rgb(54,174,76)' : indexVal >= 2 && indexVal < 4 ? 'rgb(106,183,45)' : indexVal >= 4 && indexVal < 6 ? 'rgb(236,232,57)' : indexVal >= 6 && indexVal < 8 ? 'rgb(242,150,24)' : indexVal >= 8 ? 'rgb(228,26,22)' : 'LightSalmon',
+	                fillColor: indexVal >= 0 && indexVal <= 2 ? 'rgb(54,174,76)' : indexVal > 2 && indexVal <= 4 ? 'rgb(106,183,45)' : indexVal > 4 && indexVal <= 6 ? 'rgb(236,232,57)' : indexVal > 6 && indexVal <= 8 ? 'rgb(242,150,24)' : indexVal > 8 ? 'rgb(228,26,22)' : 'LightSalmon',
 	                weight: 6,
 	                opacity: 0.8,
-	                color: indexVal >= 0 && indexVal < 2 ? 'rgb(54,174,76)' : indexVal >= 2 && indexVal < 4 ? 'rgb(106,183,45)' : indexVal >= 4 && indexVal < 6 ? 'rgb(236,232,57)' : indexVal >= 6 && indexVal < 8 ? 'rgb(242,150,24)' : indexVal >= 8 ? 'rgb(228,26,22)' : 'LightSalmon',
+	                color: indexVal >= 0 && indexVal <= 2 ? 'rgb(54,174,76)' : indexVal > 2 && indexVal <= 4 ? 'rgb(106,183,45)' : indexVal > 4 && indexVal <= 6 ? 'rgb(236,232,57)' : indexVal > 6 && indexVal <= 8 ? 'rgb(242,150,24)' : indexVal > 8 ? 'rgb(228,26,22)' : 'LightSalmon',
 	                fillOpacity: 0.9
 	            };
 	        };
@@ -14592,10 +14572,10 @@
 	        specialstyle = function specialstyle(feature) {
 	            var indexVal = feature.properties.index;
 	            return {
-	                fillColor: indexVal >= 0 && indexVal < 2 ? 'rgb(54,174,76)' : indexVal >= 2 && indexVal < 4 ? 'rgb(106,183,45)' : indexVal >= 4 && indexVal < 6 ? 'rgb(236,232,57)' : indexVal >= 6 && indexVal < 8 ? 'rgb(242,150,24)' : indexVal >= 8 ? 'rgb(228,26,22)' : 'LightSalmon',
+	                fillColor: indexVal >= 0 && indexVal <= 2 ? 'rgb(54,174,76)' : indexVal > 2 && indexVal <= 4 ? 'rgb(106,183,45)' : indexVal > 4 && indexVal <= 6 ? 'rgb(236,232,57)' : indexVal > 6 && indexVal <= 8 ? 'rgb(242,150,24)' : indexVal > 8 ? 'rgb(228,26,22)' : 'LightSalmon',
 	                weight: 6,
 	                opacity: 0.8,
-	                color: indexVal >= 0 && indexVal < 2 ? 'rgb(54,174,76)' : indexVal >= 2 && indexVal < 4 ? 'rgb(106,183,45)' : indexVal >= 4 && indexVal < 6 ? 'rgb(236,232,57)' : indexVal >= 6 && indexVal < 8 ? 'rgb(242,150,24)' : indexVal >= 8 ? 'rgb(228,26,22)' : 'LightSalmon',
+	                color: indexVal >= 0 && indexVal <= 2 ? 'rgb(54,174,76)' : indexVal > 2 && indexVal <= 4 ? 'rgb(106,183,45)' : indexVal > 4 && indexVal <= 6 ? 'rgb(236,232,57)' : indexVal > 6 && indexVal <= 8 ? 'rgb(242,150,24)' : indexVal > 8 ? 'rgb(228,26,22)' : 'LightSalmon',
 	                fillOpacity: 0.9
 	            };
 	        };
@@ -14631,9 +14611,9 @@
 	            var floatcartype1 = popupData.floatcartype = 1 ? '公交车' : popupData.floatcartype = 2 ? '出租车' : '其他';
 	            specialpopup = _leaflet2.default.popup().setContent("车牌照: " + popupData.carid + '<br/>' + "车朝向: " + popupData.direction + '<br/>' + "浮动车类型: " + floatcartype1 + '<br/>' + "GPS时间: " + formatDateTime(popupData.gpsDate, 0) + '<br/>' + "经度: " + popupData.gpsJd + '<br/>' + "纬度: " + popupData.gpsWd + '<br/>' + "浮动车速度: " + popupData.velocity + ' km/h' + '<br/>');
 	        } else if (ref == 'jiari_zone' || ref == 'jiari_cross' || ref == 'jiari_road') {
-	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数:' + e.target.feature.properties.index);
+	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '指数：' + e.target.feature.properties.index);
 	        } else if (ref == 'yongdu_cross' || ref == 'yongdu_road') {
-	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '时间' + e.target.feature.properties.index);
+	            specialpopup = _leaflet2.default.popup().setContent('名称：' + e.target.feature.properties.name + '<br/>' + '时间：' + e.target.feature.properties.index);
 	        }
 	        SpecificLayer.bindPopup(specialpopup).addTo(map);
 	
@@ -15266,12 +15246,12 @@
 	    CommonLayer = _leaflet2.default.geoJson(GeoJson, {
 	        style: function style(feature) {
 	            var indexVal = feature.properties.index;
-	            if (indexVal >= 0 && indexVal < 2) return greenLine;else if (indexVal >= 2 && indexVal < 4) return yellowLine;else if (indexVal >= 4 && indexVal < 6) return orangeLine;else if (indexVal >= 6 && indexVal < 8) return brownLine;else if (indexVal >= 8) return redLine;
+	            if (indexVal >= 0 && indexVal <= 2) return greenLine;else if (indexVal > 2 && indexVal <= 4) return yellowLine;else if (indexVal > 4 && indexVal <= 6) return orangeLine;else if (indexVal > 6 && indexVal <= 8) return brownLine;else if (indexVal > 8) return redLine;
 	        },
 	        pointToLayer: function pointToLayer(feature, latlng) {
 	            var indexVal = feature.properties.index;
 	            var pointMarkerOption = null;
-	            if (indexVal >= 0 && indexVal < 2) pointMarkerOption = greenMarker;else if (indexVal >= 2 && indexVal < 4) pointMarkerOption = yellowMarker;else if (indexVal >= 4 && indexVal < 6) pointMarkerOption = orangeMarker;else if (indexVal >= 6 && indexVal < 8) pointMarkerOption = brownMarker;else if (indexVal >= 8) pointMarkerOption = redMarker;
+	            if (indexVal >= 0 && indexVal <= 2) pointMarkerOption = greenMarker;else if (indexVal > 2 && indexVal <= 4) pointMarkerOption = yellowMarker;else if (indexVal > 4 && indexVal <= 6) pointMarkerOption = orangeMarker;else if (indexVal > 6 && indexVal <= 8) pointMarkerOption = brownMarker;else if (indexVal > 8) pointMarkerOption = redMarker;
 	            return _leaflet2.default.marker(latlng, {
 	                icon: pointMarkerOption
 	            });
@@ -27262,6 +27242,488 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _leaflet = __webpack_require__(98);
+	
+	var _leaflet2 = _interopRequireDefault(_leaflet);
+	
+	var _turf = __webpack_require__(123);
+	
+	var _turf2 = _interopRequireDefault(_turf);
+	
+	var _leafletDraw = __webpack_require__(237);
+	
+	var _leafletDraw2 = _interopRequireDefault(_leafletDraw);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	//import pinImg from './images/pin_location.svg';
+	
+	var lrDraw = function () {
+		function drawFeature(Map, options) {
+			_classCallCheck(this, drawFeature);
+	
+			this._map = Map, this.drawControl = null, this.featureCollection = {
+				"type": "FeatureCollection",
+				"features": []
+			}, this.feature = {
+				point: null,
+				polyline: null,
+				polygon: null
+			};
+			//this.start = this._start || {};
+			//this.stop = this._stop || {};
+			var myOptions = {
+				polyline: {
+					show: true,
+					color: '#f357a1',
+					weight: 8,
+					allowIntersection: false
+				},
+				polygon: {
+					show: true,
+					color: '#007edf',
+					allowIntersection: false
+				},
+				rectangle: {
+					show: true,
+					color: '#bada55',
+					allowIntersection: false,
+					repeat: false
+				},
+				circle: {
+					show: false,
+					color: '#333333',
+					allowIntersection: false,
+					repeat: false
+				},
+				marker: {
+					url: './assets/images/pin_location.svg',
+					show: true
+				}
+			};
+			for (var obj in options) {
+				for (var i in options[obj]) {
+					myOptions[obj][i] = options[obj][i];
+				}
+			}
+			this._options = myOptions;
+		}
+	
+		_createClass(drawFeature, [{
+			key: 'start',
+			value: function start() {
+				var _map = this._map;
+				var self = this;
+				this.feature = {
+					point: null,
+					polyline: null,
+					polygon: null
+				};
+				this.featureCollection = {
+					"type": "FeatureCollection",
+					"features": []
+				};
+				var _drawControl = this.drawControl;
+				var MyCustomMarker = _leaflet2.default.Icon.extend({
+					options: {
+						shadowUrl: null,
+						iconAnchor: new _leaflet2.default.Point(25, 73),
+						iconSize: new _leaflet2.default.Point(50, 100),
+						iconUrl: this._options.marker.url
+					}
+				});
+				_leaflet2.default.drawLocal = {
+					draw: {
+						toolbar: {
+							actions: {
+								title: 'Cancel drawing',
+								text: '取消'
+							},
+							finish: {
+								title: 'Finish drawing',
+								text: '完成'
+							},
+							undo: {
+								title: 'Delete last point drawn',
+								text: '撤销'
+							},
+							buttons: {
+								polyline: '绘制线',
+								polygon: '绘制多边形',
+								rectangle: '绘制矩形',
+								circle: 'Draw a circle',
+								marker: '绘制点'
+							}
+						},
+						handlers: {
+							circle: {
+								tooltip: {
+									start: 'Click and drag to draw circle.'
+								},
+								radius: 'Radius'
+							},
+							marker: {
+								tooltip: {
+									start: '点击地图标注一个点'
+								}
+							},
+							polygon: {
+								tooltip: {
+									start: '点击开始绘制多边形',
+									cont: '继续点击，继续绘制',
+									end: '双击来结束绘制'
+								}
+							},
+							polyline: {
+								error: '<strong>Error:</strong> 不能重叠，重叠了',
+								tooltip: {
+									start: '点击开始绘制线',
+									cont: '继续点击，继续绘制',
+									end: '双击来结束绘制'
+								}
+							},
+							rectangle: {
+								tooltip: {
+									start: '长按来绘制一个矩形'
+								}
+							},
+							simpleshape: {
+								tooltip: {
+									end: '释放鼠标按键来结束绘制'
+								}
+							}
+						}
+					},
+					edit: {
+						toolbar: {
+							actions: {
+								save: {
+									title: 'Save changes.',
+									text: '保存'
+								},
+								cancel: {
+									title: 'Cancel editing, discards all changes.',
+									text: '取消'
+								}
+							},
+							buttons: {
+								edit: '编辑图形',
+								editDisabled: '没有可编辑的图形',
+								remove: '删除图形',
+								removeDisabled: '没有可删除的图形'
+							}
+						},
+						handlers: {
+							edit: {
+								tooltip: {
+									text: '拖拽节点来编辑图形',
+									subtext: '单击节点取消编辑'
+								}
+							},
+							remove: {
+								tooltip: {
+									text: '选择想要删除的图形'
+								}
+							}
+						}
+					}
+				};
+				var editableLayers = new _leaflet2.default.FeatureGroup();
+				_map.addLayer(editableLayers);
+	
+				_drawControl = new _leaflet2.default.Control.Draw({
+					position: 'topright',
+					draw: {
+						polyline: this._options.polyline.show ? {
+							shapeOptions: {
+								color: this._options.polyline.color,
+								weight: this._options.polyline.weight
+							},
+							allowIntersection: this._options.polyline.allowIntersection
+						} : false,
+						polygon: this._options.polygon.show ? {
+							allowIntersection: this._options.polygon.allowIntersection,
+							drawError: {
+								color: '#e1e100',
+								message: '<strong>重叠<strong>不可重叠'
+							},
+							shapeOptions: {
+								color: this._options.polygon.color
+							}
+						} : false,
+						circle: this._options.circle.show ? {
+							allowIntersection: this._options.circle.allowIntersection,
+							drawError: {
+								color: '#e1e100',
+								message: '<strong>重叠<strong>不可重叠'
+							},
+							shapeOptions: {
+								color: this._options.circle.color
+							},
+							repeatMode: this._options.circle.repeat
+						} : false,
+						rectangle: this._options.rectangle.show ? {
+							allowIntersection: this._options.rectangle.allowIntersection,
+							drawError: {
+								color: '#e1e100',
+								message: '<strong>重叠<strong>不可重叠'
+							},
+							shapeOptions: {
+								color: this._options.rectangle.color
+							},
+							repeatMode: this._options.rectangle.repeat
+						} : false,
+						marker: this._options.marker.show ? {
+							icon: new MyCustomMarker()
+						} : false
+					},
+					edit: this._options.circle.show || this._options.polyline.show || this._options.rectangle.show || this._options.marker.show || this._options.polygon.show ? {
+						featureGroup: editableLayers,
+						remove: true,
+						poly: {
+							allowIntersection: this._options.polygon.allowIntersection
+						}
+					} : false
+				});
+				this.drawControl = _drawControl;
+				_map.addControl(_drawControl);
+				_map.on('draw:created', function (e) {
+					var type = e.layerType,
+					    layer = e.layer;
+					editableLayers.addLayer(layer);
+					var leafletID = e.layer._leaflet_id;
+					if (type === 'polyline') {
+						(function () {
+							var coords = [];
+							layer._latlngs.map(function (item) {
+								return coords.push([item.lng, item.lat]);
+							});
+							self.feature.polyline = {
+								"type": "Feature",
+								"geometry": {
+									"type": "LineString",
+									"coordinates": coords
+								},
+								"properties": {
+									"leafletID": leafletID
+								}
+							};
+							self.featureCollection.features.push(self.feature.polyline);
+						})();
+					} else if (type === 'polygon' || type === 'rectangle') {
+						(function () {
+							var coords = [];
+							layer._latlngs[0].map(function (item) {
+								return coords.push([item.lng, item.lat]);
+							});
+							self.feature.polygon = {
+								"type": "Feature",
+								"geometry": {
+									"type": "Polygon",
+									"coordinates": [coords]
+								},
+								"properties": {
+									"leafletID": leafletID
+								}
+							};
+							self.featureCollection.features.push(self.feature.polygon);
+						})();
+					} else if (type === 'marker') {
+						self.feature.point = {
+							"type": "Feature",
+							"geometry": {
+								"type": "Point",
+								"coordinates": [layer._latlng.lng, layer._latlng.lat]
+							},
+							"properties": {
+								"leafletID": leafletID
+							}
+						};
+						self.featureCollection.features.push(self.feature.point);
+					}
+				});
+				_map.on('draw:edited', function (e) {
+					var hasEdited = false;
+					for (var i in e.layers._layers) {
+						hasEdited = true;
+					}
+					var newFeatures = [];
+					if (hasEdited) {
+						newFeatures = [];
+						e.layers.eachLayer(function (layer) {
+							var leafletID = layer._leaflet_id;
+							self.featureCollection.features.map(function (eachLayer) {
+								if (eachLayer.properties.leafletID === layer._leaflet_id) {
+									if (eachLayer.geometry.type === 'Point') {
+										var nf = {
+											"type": "Feature",
+											"geometry": {
+												"type": "Point",
+												"coordinates": [layer._latlng.lng, layer._latlng.lat]
+											},
+											"properties": {
+												"leafletID": leafletID
+											}
+										};
+										newFeatures.push(nf);
+										self.feature.point = nf;
+									} else if (eachLayer.geometry.type === 'Polygon') {
+										(function () {
+											var coords = [];
+											layer._latlngs[0].map(function (item) {
+												return coords.push([item.lng, item.lat]);
+											});
+											var nf = {
+												"type": "Feature",
+												"geometry": {
+													"type": "Polygon",
+													"coordinates": [coords]
+												},
+												"properties": {
+													"leafletID": leafletID
+												}
+											};
+											newFeatures.push(nf);
+											self.feature.polygon = nf;
+										})();
+									} else if (eachLayer.geometry.type === 'LineString') {
+										(function () {
+											var coords = [];
+											layer._latlngs.map(function (item) {
+												return coords.push([item.lng, item.lat]);
+											});
+											var nf = {
+												"type": "Feature",
+												"geometry": {
+													"type": "LineString",
+													"coordinates": coords
+												},
+												"properties": {
+													"leafletID": leafletID
+												}
+											};
+											newFeatures.push(nf);
+											self.feature.polyline = nf;
+										})();
+									}
+								}
+							});
+						});
+						var oldFeature = self.featureCollection.features;
+						for (var _i = 0; _i < oldFeature.length; _i++) {
+							for (var o = 0; o < newFeatures.length; o++) {
+								if (oldFeature[_i].properties.leafletID === newFeatures[o].properties.leafletID) {
+									oldFeature.splice(_i, 1);
+								}
+							}
+						}
+						oldFeature = oldFeature.concat(newFeatures);
+						self.featureCollection.features = oldFeature;
+					} else self.featureCollection = self.featureCollection;
+				});
+				_map.on('draw:deleted', function (e) {
+					var hasdelete = false;
+					for (var i in e.layers._layers) {
+						hasdelete = true;
+					}
+					var ids = [];
+					if (hasdelete) {
+						for (var id in e.layers._layers) {
+							ids.push(id);
+						}
+						var oldFeature = self.featureCollection.features;
+						for (var _i2 = 0; _i2 < oldFeature.length; _i2++) {
+							for (var o = 0; o < ids.length; o++) {
+								if (oldFeature[_i2].properties.leafletID === ids[o] * 1) {
+									oldFeature.splice(_i2, 1);
+								}
+							}
+						}
+						self.featureCollection.features = oldFeature;
+					} else self.featureCollection = self.featureCollection;
+				});
+			}
+		}, {
+			key: 'stop',
+			value: function stop() {
+				var map = this._map;
+				map.eachLayer(function (layer) {
+					if (layer.options.id != 'streetLayer') map.removeLayer(layer);
+				});
+				if (this.drawControl) map.removeControl(this.drawControl);
+				this.drawControl = null;
+				this.feature = {
+					point: null,
+					polyline: null,
+					polygon: null
+				};
+				this.featureCollection = {
+					"type": "FeatureCollection",
+					"features": []
+				};
+				map.removeEventListener('draw:created');
+				map.removeEventListener('draw:edited');
+				map.removeEventListener('draw:deleted');
+			}
+		}, {
+			key: 'getFeature',
+			value: function getFeature() {
+				return this.feature;
+			}
+		}, {
+			key: 'getFeatureCollection',
+			value: function getFeatureCollection() {
+				return this.featureCollection;
+			}
+		}, {
+			key: 'getArea',
+			value: function getArea(feature) {
+				var area = _turf2.default.area(feature);
+				return area;
+			}
+		}, {
+			key: 'getLength',
+			value: function getLength(feature) {
+				var linedistance = _turf2.default.lineDistance(feature, 'kilometers');
+				return linedistance;
+			}
+		}, {
+			key: 'getCenter',
+			value: function getCenter(feature) {
+				var f = null;
+				if (feature.type === 'FeatureCollection') {
+					console.warn('使用了featureCollection,不建议');
+				}
+				var centroidPt = _turf2.default.centroid(feature);
+				return centroidPt;
+			}
+		}]);
+	
+		return drawFeature;
+	}();
+	
+	exports.default = lrDraw;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports) {
+
+	module.exports = L.draw;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
@@ -27285,7 +27747,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _updateIndex = __webpack_require__(237);
+	var _updateIndex = __webpack_require__(239);
 	
 	var _updateIndex2 = _interopRequireDefault(_updateIndex);
 	
@@ -27990,15 +28452,15 @@
 	exports.default = updateIndex;
 
 /***/ },
-/* 237 */
+/* 239 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"boxpanel":"_24yt9N72LN4Qx6-UeE2ooH","panel_header":"_2D7ozc3gFeAOxjsnz3_FpT","tab1":"_3ihMGn_mwGtN1DTvpvG71g","panel_tab":"vxNXf4qXck4en6pbw8FUg","panel_tab_li":"_33U-kh2gDTElk71Vc143ud","panel_tab_li_active":"_2xNXqcRx0rYhrdOaRBirVG _33U-kh2gDTElk71Vc143ud","traffic_tag":"_3U6b0wQKXCgqaD6tQzkNxS","smooth_jam":"OhiXpH1ZWQWwpX4glxgNG","traffic_level":"_1zmvDALwkSGEcsBcfm9V18","traffic_level_li":"_3rWZMWii-Gdv4pIshwGrZn","traffic_level_1":"huBPfqObZEREqEL4ptcOW _3rWZMWii-Gdv4pIshwGrZn","traffic_level_2":"NJv6eBppuwjxXfIQ3iZFb _3rWZMWii-Gdv4pIshwGrZn","traffic_level_3":"BKdQyRlyn3r8x6jofPFcy _3rWZMWii-Gdv4pIshwGrZn","traffic_level_4":"_2CcvsemZYlgD-YyH1lHmPD _3rWZMWii-Gdv4pIshwGrZn","traffic_level_5":"_1aWd0_O21a1gjasQruUDWs _3rWZMWii-Gdv4pIshwGrZn","panel_body":"_20xJdzksmYcNv5P6m4_VCz","time_lbl":"MnoYENDmvDyVakHBtj7jP","date":"_3KK3cIy-YEiTKS_LlIwuvT","checkboxes":"_1yWPrPmSLqOiTDW66lyRhT","splitline_H":"_1eYOP9nsGvs1ORU4sX5qLu","hisPlayer_panel":"_1TEh-UIr6evqEamBx6iDBx","hisPlayer_btnL":"_2d8u1MMHSVNg2rubiVRsOo","hisPlayer_btnR":"_13lAsakV4k9DOvOKq-qPZg","hisPlayer_btn1":"_143zOHUvFaIcM3oeOWiXcD","hisPlayer_btn2":"_3w35kr9dmAsguT1Yr0k23s","QueContent":"_2kWH1TX60-11vHt0GWacZJ","radio_btnGroup":"_24MLrfVvi5b04uPHr5jwC-","selectCra":"_1CO7pW3aPJkkGPi7uRVuRW","radio_btnGroup2":"_2Vif2xy2gwHN9hI4GjKecm","ConListPanel":"_1hN2tPUz6_ECq-Xxzo-Qre","slider":"_35P-i1BHpO4WU6_GnwAxDc","button_primary":"UdvejYJdlNQncxPc9plQn","active":"_2Jmwursy_6CEuhv4LnH6_l"};
 
 /***/ },
-/* 238 */,
-/* 239 */
+/* 240 */,
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28017,7 +28479,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _drawFeatures = __webpack_require__(240);
+	var _drawFeatures = __webpack_require__(242);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -28124,7 +28586,7 @@
 	exports.default = Drawsth;
 
 /***/ },
-/* 240 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28142,7 +28604,7 @@
 	
 	var _turf2 = _interopRequireDefault(_turf);
 	
-	var _leafletDraw = __webpack_require__(241);
+	var _leafletDraw = __webpack_require__(237);
 	
 	var _leafletDraw2 = _interopRequireDefault(_leafletDraw);
 	
@@ -28772,6 +29234,8 @@
 	};
 	
 	var drawFhld = function drawFhld(doublersData) {
+		NewFhldfeature = null;
+		doublerIds = [];
 		stopDrawToolbar();
 		var drawnItemsLayer5 = null;
 		drawnItemsLayer5 = new _leaflet2.default.FeatureGroup();
@@ -29195,13 +29659,7 @@
 	};
 
 /***/ },
-/* 241 */
-/***/ function(module, exports) {
-
-	module.exports = L.draw;
-
-/***/ },
-/* 242 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29224,7 +29682,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _UniqueSub = __webpack_require__(243);
+	var _UniqueSub = __webpack_require__(244);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
@@ -29232,7 +29690,7 @@
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _drawFeatures = __webpack_require__(240);
+	var _drawFeatures = __webpack_require__(242);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -29600,20 +30058,20 @@
 	                localStorage.removeItem('locating');
 	            });
 	
-	            lmsg.subscribe('cfxydBtnClick', function (data) {
-	                console.log('cfxydBtnClick', data);
-	                //message.success('您已进入常发拥堵界面');
-	                if (data.isCross == 1) {
-	                    //路口
-	                    self.onClickButton('yongdu_cross', data.time);
-	                    //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
-	                } else if (data.isCross == 2) {
-	                    //路段
-	                    self.onClickButton('yongdu_road', data.time);
-	                    //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
-	                } else _antd.message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
-	                localStorage.removeItem('cfxydBtnClick');
-	            });
+	            /* lmsg.subscribe('cfxydBtnClick', (data) => {
+	                 console.log('cfxydBtnClick', data);
+	                 //message.success('您已进入常发拥堵界面');
+	                 if (data.isCross == 1) {
+	                     //路口
+	                     self.onClickButton('yongdu_cross', data.time);
+	                     //self.refs.yongduPop.props.content.props.children[1].props.onClick(); //yongdu_cross
+	                 } else if (data.isCross == 2) {
+	                     //路段
+	                     self.onClickButton('yongdu_road', data.time);
+	                     //self.refs.yongduPop.props.content.props.children[0].props.onClick(); //yongdu_road
+	                 } else message.error('双屏通讯错误', 5); //alert('双屏通讯错误');
+	                 localStorage.removeItem('cfxydBtnClick');
+	             });*/
 	            lmsg.subscribe('ODClick', function (data) {
 	                console.log('ODClick', data);
 	                _antd.message.success('您已进入OD分析页面');
@@ -29725,7 +30183,7 @@
 	            lmsg.unsubscribe('locating');
 	            lmsg.unsubscribe('ODClick');
 	            lmsg.unsubscribe('hbjjrToMap');
-	            //.lmsg.unsubscribe('cfxydBtnClick');
+	            //lmsg.unsubscribe('cfxydBtnClick');
 	        }
 	    }, {
 	        key: 'render',
@@ -29853,184 +30311,21 @@
 	}(_react2.default.Component);
 	
 	exports.default = UniqueSub;
-	
-	/*   var option = {
-	          color: ['gold', 'aqua', 'lime'],
-	          tooltip: {
-	              trigger: 'item',
-	              formatter: '{b}'
-	          },
-	          legend: {
-	              orient: 'vertical',
-	              x: 'left',
-	              data: ['北京 Top10'],
-	              selectedMode: 'single',
-	              selected: {
-	                  '上海 Top10': false,
-	                  '广州 Top10': false
-	              },
-	              textStyle: {
-	                  color: '#fff'
-	              }
-	          },
-	          dataRange: {
-	              min: 0,
-	              max: 100,
-	              //calculable: true,
-	              color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
-	              textStyle: {
-	                  color: '#fff'
-	              }
-	          },
-	          series: [{
-	              name: '北京 Top10',
-	              type: 'map',
-	              mapType: 'none',
-	              data: [],
-	              geoCoord: {
-	                  '上海': [121.4648, 31.2891],
-	                  '包头': [110.3467, 41.4899],
-	                  '北京': [116.4551, 40.2539],
-	                  '南宁': [108.479, 23.1152],
-	                  '南昌': [116.0046, 28.6633],
-	                  '大连': [122.2229, 39.4409],
-	                  '常州': [119.4543, 31.5582],
-	                  '广州': [113.5107, 23.2196],
-	                  '重庆': [107.7539, 30.1904]
-	              },
-	              markLine: {
-	                  smooth: true,
-	                  effect: {
-	                      show: true,
-	                      scaleSize: 1,
-	                      period: 30,
-	                      color: '#fff',
-	                      shadowBlur: 10
-	                  },
-	                  itemStyle: {
-	                      normal: {
-	                          borderWidth: 1,
-	                          lineStyle: {
-	                              type: 'solid',
-	                              shadowBlur: 10
-	                          }
-	                      }
-	                  },
-	                  data: [
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '上海',
-	                          value: 95
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '广州',
-	                          value: 90
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '大连',
-	                          value: 80
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '南宁',
-	                          value: 70
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '南昌',
-	                          value: 60
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '包头',
-	                          value: 30
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '重庆',
-	                          value: 20
-	                      }],
-	                      [{
-	                          name: '北京'
-	                      }, {
-	                          name: '常州',
-	                          value: 10
-	                      }]
-	                  ]
-	              },
-	              markPoint: {
-	                  symbol: 'emptyCircle',
-	                  symbolSize: function(v) {
-	                      return 10 + v / 10
-	                  },
-	                  effect: {
-	                      show: true,
-	                      shadowBlur: 0
-	                  },
-	                  itemStyle: {
-	                      normal: {
-	                          label: {
-	                              show: false
-	                          }
-	                      },
-	                      emphasis: {
-	                          label: {
-	                              position: 'top'
-	                          }
-	                      }
-	                  },
-	                  data: [{
-	                      name: '上海',
-	                      value: 95
-	                  }, {
-	                      name: '广州',
-	                      value: 90
-	                  }, {
-	                      name: '大连',
-	                      value: 80
-	                  }, {
-	                      name: '南宁',
-	                      value: 70
-	                  }, {
-	                      name: '南昌',
-	                      value: 60
-	                  }, {
-	                      name: '包头',
-	                      value: 30
-	                  }, {
-	                      name: '重庆',
-	                      value: 20
-	                  }, {
-	                      name: '常州',
-	                      value: 10
-	                  }]
-	              }
-	          }]
-	      };*/
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"boxpanel":"_3oH5k6spmfYsE0JkTmEtvW","panel_header":"_2cBKd-l_R6FbyFxRMwYpoE","panel_body":"_2oD5wMOVt27qGzcZ0K3om7","button1":"_3z1AgA4NnpyFuRkyx__DdC","QueContent":"_1l_RjNtiLgd3xRgbjdam72","sub_panel":"_32i3-q7MoRrXH4Dt2UIcxm","colorpickerDiv":"_3pwsO30I_vRLm_qvdja6EP","button_primary":"_2u5lvrwngoPHafXcN_fsrT","active":"_2G-HxbRgzPPpFK8ziyf3Kv","button_add":"_35cL_XO-7_rHyCoZKuDuvg","button_modify":"_3dVPSBw4-xAePERe8SmDue"};
 
 /***/ },
-/* 244 */,
 /* 245 */,
 /* 246 */,
 /* 247 */,
 /* 248 */,
-/* 249 */
+/* 249 */,
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30053,7 +30348,7 @@
 	
 	var _toolBar2 = _interopRequireDefault(_toolBar);
 	
-	var _UniqueSub = __webpack_require__(243);
+	var _UniqueSub = __webpack_require__(244);
 	
 	var _UniqueSub2 = _interopRequireDefault(_UniqueSub);
 	
@@ -30061,7 +30356,7 @@
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _drawFeatures = __webpack_require__(240);
+	var _drawFeatures = __webpack_require__(242);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -31897,7 +32192,7 @@
 	exports.default = ConfigSub;
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31922,7 +32217,7 @@
 	
 	var action = _interopRequireWildcard(_searchAction);
 	
-	var _rbox = __webpack_require__(251);
+	var _rbox = __webpack_require__(252);
 	
 	var _rbox2 = _interopRequireDefault(_rbox);
 	
@@ -31930,11 +32225,11 @@
 	
 	var CI = _interopRequireWildcard(_CongestionIndex);
 	
-	var _SearchResults = __webpack_require__(254);
+	var _SearchResults = __webpack_require__(255);
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
-	var _CraResults = __webpack_require__(257);
+	var _CraResults = __webpack_require__(258);
 	
 	var _CraResults2 = _interopRequireDefault(_CraResults);
 	
@@ -31946,7 +32241,7 @@
 	
 	var Ds = _interopRequireWildcard(_DataService);
 	
-	var _drawFeatures = __webpack_require__(240);
+	var _drawFeatures = __webpack_require__(242);
 	
 	var DR = _interopRequireWildcard(_drawFeatures);
 	
@@ -31961,6 +32256,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	/*import drawFeature from '../../scripts/lrDraw';*/
+	
 	
 	var Rbox = function (_React$Component) {
 	    _inherits(Rbox, _React$Component);
@@ -32198,11 +32495,13 @@
 	            });
 	
 	            lmsg.subscribe('cfxydBtnClick', function (data) {
+	                _reactDom2.default.unmountComponentAtNode(document.getElementById('presetBox'));
 	                console.log('cfxydBtnClick', data);
 	                self.setState({
 	                    cfydTabledata: []
 	                });
-	                if (data.isCross == "1") {
+	                if (data.isCross == 1) {
+	                    CI.displayUniLayer('yongdu_cross', data.time);
 	                    //路口
 	                    Ds.DataService('/trafficindex_recurrentCongestionCross/listQueryTheRankOfCongestionCrossTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
@@ -32228,7 +32527,8 @@
 	                        console.log(e);
 	                        _antd.message.error('后台传输错误', 5);
 	                    });
-	                } else if (data.isCross == "2") {
+	                } else if (data.isCross == 2) {
+	                    CI.displayUniLayer('yongdu_road', data.time);
 	                    //路段
 	                    Ds.DataService('/trafficindex_recurrentCongestionRoad/listQueryTheRankOfCongestionRoadTopTen.json', data.time, function (resp) {
 	                        var cfydTabledata = [];
@@ -32299,14 +32599,6 @@
 	                localStorage.removeItem('hbjjrToMap_start');
 	            });
 	
-	            /*   lmsg.subscribe('hbjjrToMap_start', (data) => {
-	                   self.setState({
-	                       contraction: true,
-	                       initCraResults: false,
-	                       isCFYDpanel: false
-	                   });
-	                   localStorage.removeItem('hbjjrToMap_start');
-	               });*/
 	            //停车场页面逻辑/监听
 	            lmsg.subscribe('carpark_init', function () {
 	                console.log('carpark_init');
@@ -32331,13 +32623,6 @@
 	                CI.selectCarparkById(data.id);
 	                localStorage.removeItem('carpark_tr');
 	            });
-	            /*setTimeout(function() {
-	                CI.displayCarParkLayer();
-	                setTimeout(function() {
-	                    CI.selectCarparkById('P0019');
-	                    DR.carParkLocating();
-	                }, 5000)
-	              }, 2000)*/
 	        }
 	    }]);
 	
@@ -32353,16 +32638,16 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, action)(Rbox);
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"rbox":"_2llNwVAGqDnhF4R1h3Zbm0","rboxSearchPanCtrl":"sFUUVXbHaLALSm4q7vCq-","rboxSearchPanCtrl_none":"_33d8lw-jW4ai9FG64eZ9ww sFUUVXbHaLALSm4q7vCq-","rboxSearchPanCtrl_display":"IPeljpTu3qd4XLKM1pLzg sFUUVXbHaLALSm4q7vCq-","navBody_display":"_1R_Edmj22xLahYtwnxPeN0","navBody_none":"_2W-ZMEGCJKS84iLfLfVom0","rboxPanels":"_3o_YCjzp4mJXJgrCZNRvnH","rboxPanCtrl":"_1gvDLBF1Z5F0zGrYEZvlGi","fa":"sd4QPqnJs3x-nNxJwTPlR","faChevronUp":"_3D8FssioAMIXT4EmtHhofX","nav":"_3JBIUlb5GasfGhTK5GMe9Y","navLi":"_3lvCjyESKb74vmNE1uFE5S","craLi":"_1wSq2-NcWDmN0AZ03ocdG4 _3lvCjyESKb74vmNE1uFE5S","navTxt":"_1ofkmpDkq-90qIuuGxSEPK","resultPanel":"tc4cTEpC8yn8zHWBwGt9L","rboxPanel2":"_3nnZ53mW6wLdGl31YWBkQB"};
 
 /***/ },
-/* 252 */,
 /* 253 */,
-/* 254 */
+/* 254 */,
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32377,7 +32662,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _SearchResults = __webpack_require__(255);
+	var _SearchResults = __webpack_require__(256);
 	
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 	
@@ -32639,15 +32924,15 @@
 	exports.default = SearchResults;
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"drop_button":"_3xAJYEmGKcooe-b84qX1C","buttonPulse":"_1RUgxiOWYEdorZxWfY8l0S","content":"dVixhqaCII1FYUUdJRcq6","content_header":"_35QXSfwsZUjx1jkwG4OhNZ","content_split_line":"_2kN5CyRridIuYRNOT-iGA8","bordered":"gN5dCjVJyKcSddELwoVNI","highlight":"_3BIq6b4JLGi3kQmdnx2JTg","font_color1":"_7OR1cc3D4C2MDLZQw6R2s","font_color2":"_1-7MKJtxt23zsyLuLBwFBj","font_color3":"_1ftUlVuGQWZAKjV6VkokJ4","font_color4":"_1s0wX0nMG7GzWnOiKo_Q7G","font_color5":"_3ZaaJ9t-UDCU90xfHf29rV"};
 
 /***/ },
-/* 256 */,
-/* 257 */
+/* 257 */,
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32662,7 +32947,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _craResults = __webpack_require__(258);
+	var _craResults = __webpack_require__(259);
 	
 	var _craResults2 = _interopRequireDefault(_craResults);
 	
@@ -33106,15 +33391,15 @@
 	exports.default = CraResults;
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"traffic_tag":"_2QJnB2jDtlx59N8rYhJQDp","smooth_jam":"_3UQw6znoq4z3hf_bujtVol","smooth_jam1":"_3zAIgTfi8UfrmGM4R3aP0l","smooth_jam2":"Gb742l6idHSLTzBs0NEi1","separator":"_1vnoXI7SYPJGHe59VgO5pl","separator_LV0":"_1wQmKz2VoDC9RlW7JOAq9N _1vnoXI7SYPJGHe59VgO5pl","separator_LV1":"_3H-rd-gbiQ1LyC2FVCtpAI _1vnoXI7SYPJGHe59VgO5pl","separator_LV2":"_3rPkbBz3J6OrSlgIOWvBYq _1vnoXI7SYPJGHe59VgO5pl","separator_LV3":"_1auAliDqRNL4-AXamKQH58 _1vnoXI7SYPJGHe59VgO5pl","separator_LV4":"_36HpZPni8e1S5mFFlk6S6f _1vnoXI7SYPJGHe59VgO5pl","separator_LV5":"_31MmFVuVPDDfvye5OUW5VU _1vnoXI7SYPJGHe59VgO5pl","smooth_jam_num":"_134rXSuFrb4OYv56FuxPwA","smooth_jam_num2":"X7lzYQQ-O5i15gDzdDX3H","smooth_jam_num3":"_2k0MLw45uibr10eS_dLCTL","smooth_jam_num4":"_3-fRQBRu4UuMkTjtpbRiEM","traffic_level_li":"aqLdrHJj6cVGxytDPdSDE","traffic_level_1":"_3ZBO6tWqT7ZT_nJgPRsI7r","traffic_level_2":"scQFseyUg8d9RrX68H19Q","traffic_level_3":"jxIFuPMZwGEFdf8sCzBpr aqLdrHJj6cVGxytDPdSDE","traffic_level_4":"_2s7XNHzKSz0WRfATTpzQML aqLdrHJj6cVGxytDPdSDE","traffic_level_5":"_2GnY7zN8lv0KqcKZUWzuSE aqLdrHJj6cVGxytDPdSDE","table":"_1q3WE4u-kmR7C5mX_-gzHm","smooth_jam_rank":"qToumJB2gXsDBeUzyHlYr","smooth_jam_num_name":"_1ESFhCXVWVXYbQiOOOFVH_","smooth_jam_num_index":"_3kePYNBcBMqLCkhEY-hUMx","smooth_jam_num_hierarchy":"_1edwuPGtcyoo02IbZVrk8V","table_rows":"_2_Kny_cVYENe6CjUCyMRyx","row":"_3Lmq-mhslhkjqMavWHlbZ_","rank":"_1TSHcWSZHyZzFV1STuXfqt","name":"_2NPYSAwgx8m1UihCw0GybB","index":"v3CkNskKlV1o9UNGwr-lc","hierarchy":"_3uabfAoG7Rqgug4ki9iYQS","pager":"_2hpJLn6FTwtQ6EDixh_OQv"};
 
 /***/ },
-/* 259 */,
-/* 260 */
+/* 260 */,
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33137,7 +33422,7 @@
 	
 	var _esriLeaflet2 = _interopRequireDefault(_esriLeaflet);
 	
-	var _leafletDraw = __webpack_require__(241);
+	var _leafletDraw = __webpack_require__(237);
 	
 	var LDraw = _interopRequireWildcard(_leafletDraw);
 	
@@ -33203,7 +33488,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33274,7 +33559,7 @@
 	exports.default = Map;
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33323,7 +33608,7 @@
 	exports.default = TrafficGuidance;
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33334,11 +33619,11 @@
 	
 	var _redux = __webpack_require__(74);
 	
-	var _reduxThunk = __webpack_require__(264);
+	var _reduxThunk = __webpack_require__(265);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _index = __webpack_require__(265);
+	var _index = __webpack_require__(266);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -33354,7 +33639,7 @@
 	exports.default = initStore;
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33382,7 +33667,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33393,11 +33678,11 @@
 	
 	var _redux = __webpack_require__(74);
 	
-	var _search = __webpack_require__(266);
+	var _search = __webpack_require__(267);
 	
 	var _search2 = _interopRequireDefault(_search);
 	
-	var _cra = __webpack_require__(267);
+	var _cra = __webpack_require__(268);
 	
 	var _cra2 = _interopRequireDefault(_cra);
 	
@@ -33411,7 +33696,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33452,7 +33737,7 @@
 	});
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33465,7 +33750,7 @@
 	
 	var _util = __webpack_require__(106);
 	
-	var _craAction = __webpack_require__(268);
+	var _craAction = __webpack_require__(269);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -33478,7 +33763,7 @@
 	});
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

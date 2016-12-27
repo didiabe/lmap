@@ -635,6 +635,8 @@ const CalculateCenterPoint_OD = () => {
 }
 
 const drawFhld = (doublersData) => {
+	NewFhldfeature = null;
+	doublerIds = [];
 	stopDrawToolbar();
 	var drawnItemsLayer5 = null;
 	drawnItemsLayer5 = new L.FeatureGroup();
